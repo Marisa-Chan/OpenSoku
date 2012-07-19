@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1342575659 source:/home/marisa/work/opensoku/file_read.cpp
+
+1342665378 source:/home/marisa/work/opensoku/main.cpp
+	"global_types.h"
+	<SFML/Graphics.hpp>
+	"file_read.h"
+
+1342580064 source:/home/marisa/work/opensoku/mt.cpp
+	"global_types.h"
+	"mt.h"
+
+1342676677 /home/marisa/work/opensoku/global_types.h
+	<inttypes.h>
+	<stdio.h>
+
+1342579968 /home/marisa/work/opensoku/mt.h
+
+1342670319 source:/home/marisa/work/opensoku/crc32.cpp
+	<inttypes.h>
+
+1342676695 /home/marisa/work/opensoku/file_read.h
+
