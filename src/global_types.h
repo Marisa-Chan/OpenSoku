@@ -3,5 +3,7 @@
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #endif // GLOBAL_TYPES_H_INCLUDED
