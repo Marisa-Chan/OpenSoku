@@ -5,7 +5,6 @@
 #include "crc32.h"
 #include <ctype.h>
 #include <map>
-#include <vector>
 
 using namespace std;
 
@@ -30,6 +29,8 @@ static void tolowerstr(char *str, uint32_t size)
     for (uint32_t i = 0; i < size; i++)
     {
         *str = tolower(*str);
+        if (*str == '\\')
+            *str = '/';
         str++;
     }
 }
@@ -114,7 +115,7 @@ filehandle *arc_get_file(const char *filepath)
 
     uint32_t slen = strlen(filepath);
 
-    char buf[256];
+    char buf[CHRBUF];
     strcpy(buf, filepath);
     tolowerstr(buf,slen);
 

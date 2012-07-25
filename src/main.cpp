@@ -1,9 +1,12 @@
 #include "global_types.h"
-#include <SFML/Graphics.hpp>
 
 
 #include "archive.h"
 #include "file_read.h"
+#include "graph.h"
+#include "framedata.h"
+#include <unistd.h>
+
 
 int main()
 {
@@ -14,13 +17,28 @@ int main()
     arc_add_dat("th123a.dat");
     arc_add_dat("th123b.dat");
 
-    filehandle *aa = arc_get_file("data/scene/select/scenario/sc.dat");
+    gr_init(640,480,"OpenSoku");
 
-    if (aa != NULL)
+    char_graph *marisa = new char_graph;
+
+    marisa->load_dat("udonge",2);
+
+    uint32_t i = 0;
+
+    while(1)
     {
-        printf("Found\n");
+        marisa->set_img(i++ / 5);
 
+        i %= 1000;
+
+        gr_clear();
+        marisa->draw(1,1);
+        gr_flip();
+
+        //sleep(1);
     }
+
+
 
     return EXIT_SUCCESS;
 }
