@@ -21,15 +21,16 @@ int main()
 
     char_graph *marisa = new char_graph;
 
-    marisa->load_dat("udonge",2);
+    marisa->load_dat("alice",2);
 
     uint32_t i = 0;
 
     while(1)
     {
-        marisa->set_img(i++ / 5);
+        marisa->set_img(i++ / 3);
+        printf("%d\n",i/3);
 
-        i %= 1000;
+        i %= 2000;
 
         gr_clear();
         marisa->draw(1,1);

@@ -97,11 +97,15 @@ gr_sprite * gr_create_sprite()
 
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex)
 {
-    spr->setTexture(*tex, true);
+    if (tex != NULL)
+        spr->setTexture(*tex, true);
 }
 
 void gr_draw_sprite(gr_sprite *spr, float x, float y)
 {
-    spr->setPosition(x,y);
-    window->draw(*spr);
+    if (spr->getTexture() != NULL)
+    {
+        spr->setPosition(x,y);
+        window->draw(*spr);
+    }
 }

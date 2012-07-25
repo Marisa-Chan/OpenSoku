@@ -35,6 +35,8 @@ bool char_graph::load_dat(const char *name, uint8_t pal)
 
     f->read(2, &pat_count);
 
+    imgs.resize(pat_count);
+
     for (uint32_t i = 0; i < pat_count; i++)
     {
         f->read(0x80, buf);
@@ -50,11 +52,14 @@ bool char_graph::load_dat(const char *name, uint8_t pal)
 
         filehandle *ft = arc_get_file(buf2);
         if (!ft)
-            return false;
+        {
+            imgs[i] = NULL;
+            continue;
+        }
 
         gr_tex *tex = gr_load_cv2(ft, plt);
 
-        imgs.push_back(tex);
+        imgs[i] = tex;
 
         delete ft;
     }
@@ -94,6 +99,8 @@ bool char_graph::load_pal_pal(const char *file,uint32_t *pal)
             delete f;
             return false;
         }
+
+
 
         delete f;
         return true;
