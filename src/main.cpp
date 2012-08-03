@@ -21,20 +21,34 @@ int main()
 
     char_graph *marisa = new char_graph;
 
-    marisa->load_dat("alice",2);
+    marisa->load_dat("reimu",0);
 
-    uint32_t i = 0;
+//    uint32_t i = 0;
+
+    float y=0,poy=15,gr=0.9;
+
+    marisa->set_seq(0);
 
     while(1)
     {
-        marisa->set_img(i++ / 3);
-        printf("%d\n",i/3);
-
-        i %= 2000;
 
         gr_clear();
-        marisa->draw(1,1);
+        marisa->draw(100,480-y);
+
+        if (y<0)
+        {
+            y=0;
+            poy = 15;
+            gr=0.8;
+        }
+
+
+        y+=poy;
+        poy-=gr;
+
         gr_flip();
+
+        marisa->process_anim();
 
         //sleep(1);
     }
