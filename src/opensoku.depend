@@ -59,3 +59,63 @@
 
 1344005028 /home/marisa/work/opensoku/framedata.h
 
+1344006491 source:/home/zidane/Projects/opensoku/archive.cpp
+	"global_types.h"
+	"archive.h"
+	"file_read.h"
+	"mt.h"
+	"crc32.h"
+	<ctype.h>
+	<map>
+
+1344006491 /home/zidane/Projects/opensoku/global_types.h
+	<inttypes.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<vector>
+	"graph.h"
+
+1344006491 /home/zidane/Projects/opensoku/graph.h
+	<SFML/Graphics.hpp>
+
+1344006491 /home/zidane/Projects/opensoku/archive.h
+
+1344006491 /home/zidane/Projects/opensoku/file_read.h
+
+1344006491 /home/zidane/Projects/opensoku/mt.h
+
+1344006491 /home/zidane/Projects/opensoku/crc32.h
+
+1344006491 source:/home/zidane/Projects/opensoku/crc32.cpp
+	<inttypes.h>
+
+1344006491 source:/home/zidane/Projects/opensoku/file_read.cpp
+	"global_types.h"
+	"file_read.h"
+
+1344097398 source:/home/zidane/Projects/opensoku/framedata.cpp
+	"global_types.h"
+	"archive.h"
+	"file_read.h"
+	"framedata.h"
+
+1344098798 /home/zidane/Projects/opensoku/framedata.h
+
+1344086261 source:/home/zidane/Projects/opensoku/graph.cpp
+	"global_types.h"
+	"file_read.h"
+	"graph.h"
+
+1344006491 source:/home/zidane/Projects/opensoku/mt.cpp
+	"global_types.h"
+	"mt.h"
+
+1344097434 source:/home/zidane/Projects/opensoku/main.cpp
+	"global_types.h"
+	"archive.h"
+	"file_read.h"
+	"graph.h"
+	"framedata.h"
+	<unistd.h>
+

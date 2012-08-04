@@ -11,6 +11,12 @@ static const uint8_t color_v_to_viii [32] =
 
 static void delete_seq(seq *sq)
 {
+    if (sq->refcount > 0)
+    {
+        sq->refcount--;
+        return;
+    }
+
     for(uint32_t i = 0; i < sq->subseqs.size(); i++)
     {
         for (uint32_t j = 0; j < sq->subseqs[i].frames.size(); j++)
@@ -93,17 +99,22 @@ bool char_graph::load_dat(const char *name, uint8_t pal)
     {
         int32_t id = 0;
 
-        //printf("%x\n",f->tell());
         f->read(4, &id);
 
-        if (id == -1)
+        if (id == -1) // mapping
         {
-            uint32_t unk1 = 0;
-            uint32_t unk2 = 0;
-            f->read(4, &unk1);
-            f->read(4, &unk2);
+            uint32_t seq_new  = 0;
+            uint32_t seq_maps = 0;
+            f->read(4, &seq_new);
+            f->read(4, &seq_maps);
 
-            //printf("0x%x  0x%x\n",unk1,unk2);
+            mapseq::iterator tmp = seqs.find(seq_maps);
+
+            if (tmp != seqs.end())
+            {
+                tmp->second->refcount++;
+                seqs[seq_new] = tmp->second;
+            }
         }
         else
         {
@@ -115,13 +126,13 @@ bool char_graph::load_dat(const char *name, uint8_t pal)
 
                 if (tmp != seqs.end())
                 {
-                   // if (id == 0)
-                       // printf("aaa\n");
                     delete_seq(tmp->second);
                 }
 
 
                 sq = new seq;
+
+                sq->refcount = 0;
 
                 seqs[id] = sq;
 
@@ -162,6 +173,7 @@ bool char_graph::load_dat(const char *name, uint8_t pal)
 
             for (uint32_t j = 0; j < nframes; j++)
             {
+
                 char_frame *frm = new char_frame;
 
                 uint32_t frame = 0;
@@ -185,34 +197,41 @@ bool char_graph::load_dat(const char *name, uint8_t pal)
 
                 if (frm->type == 2)
                 {
-                    f->read(2, &frm->blend_mode);
-                    f->read(4, &frm->unk3);
-                    f->read(2, &frm->unk4);
-                    f->read(2, &frm->scale);
-                    f->read(2, &frm->unk5);
-                    f->read(2, &frm->unk6);
-                    f->read(2, &frm->angle);
 
+                    f->read(2, &frm->blend_mode);
+                    f->read(4, &frm->color);
+
+                    int16_t tscale = 0;
+                    f->read(2, &tscale);
+                    frm->scale_x = tscale / 100.0;
+
+                    tscale = 0;
+                    f->read(2, &tscale);
+                    frm->scale_y = tscale / 100.0;
+
+                    f->read(2, &frm->angle_x);
+                    f->read(2, &frm->angle_y);
+                    f->read(2, &frm->angle_z);
                 }
 
                 f->read(2, &frm->damage);
                 f->read(2, &frm->proration);
-                f->read(2, &frm->unk7);
-                f->read(2, &frm->unk8);
+                f->read(2, &frm->health_smval);
+                f->read(2, &frm->sp_smval);
                 f->read(2, &frm->untech);
                 f->read(2, &frm->unk9);
                 f->read(2, &frm->limit);
-                f->read(2, &frm->unk10);
-                f->read(2, &frm->unk11);
-                f->read(2, &frm->unk12);
-                f->read(2, &frm->unk13);
-                f->read(2, &frm->unk14);
-                f->read(2, &frm->unk15);
-                f->read(2, &frm->unk16);
-                f->read(2, &frm->unk17);
+                f->read(2, &frm->flag196_char);
+                f->read(2, &frm->flag196_enemy);
+                f->read(2, &frm->flag196_char2);
+                f->read(2, &frm->flag196_enemy2);
+                f->read(2, &frm->card_energy);
+                f->read(2, &frm->card_energy2);
+                f->read(2, &frm->fall_seq);
+                f->read(2, &frm->fall_seq2);
                 f->read(2, &frm->velocity_x);
                 f->read(2, &frm->velocity_y);
-                f->read(2, &frm->unk18);
+                f->read(2, &frm->hit_sfx); //global sound, played then hit
                 f->read(2, &frm->unk19);
                 f->read(2, &frm->attack_type);
                 f->read(1, &frm->unk20);
@@ -331,7 +350,7 @@ bool char_graph::load_pal_pal(const char *file,uint32_t *pal)
 char_graph::char_graph()
 {
     sprite = gr_create_sprite();
-    sprite->setScale(2.0,2.0);
+    sprite->setScale(-2.0,2.0);
 }
 
 void char_graph::set_seq(uint32_t idx)
@@ -359,12 +378,15 @@ void char_graph::process_anim()
         if (cur_frame >= cur_seq->subseqs[cur_subseq].frames.size())
         {
             cur_frame = 0;
+            //if (!cur_seq->subseqs[cur_subseq].looped)
+            //{
             cur_subseq++;
 
             if (cur_subseq >= cur_seq->subseqs.size())
             {
                 cur_subseq = 0;
             }
+            //}
         }
         pframe = cur_seq->subseqs[cur_subseq].frames[cur_frame];
         gr_set_spr_tex(sprite, pframe->img);
@@ -379,6 +401,6 @@ void char_graph::set_img(uint32_t idx)
 
 void char_graph::draw(float x, float y)
 {
-    gr_draw_sprite(sprite, x-pframe->x_offset, y-pframe->y_offset);
+    gr_draw_sprite(sprite, x+pframe->x_offset, y-pframe->y_offset);
 }
 

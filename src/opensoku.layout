@@ -4,19 +4,19 @@
 	<File name="archive.h" open="1" top="0" tabpos="2">
 		<Cursor position="56" topLine="0" />
 	</File>
-	<File name="./framedata.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="1827" topLine="63" />
+	<File name="./file_read.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="0" topLine="15" />
 	</File>
-	<File name="./framedata.h" open="1" top="0" tabpos="4">
-		<Cursor position="1024" topLine="48" />
+	<File name="./framedata.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="4897" topLine="232" />
 	</File>
-	<File name="./graph.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="0" topLine="56" />
+	<File name="./framedata.h" open="1" top="0" tabpos="3">
+		<Cursor position="572" topLine="78" />
 	</File>
-	<File name="./graph.h" open="1" top="0" tabpos="7">
-		<Cursor position="0" topLine="0" />
+	<File name="./graph.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="928" topLine="33" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="371" topLine="20" />
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="516" topLine="9" />
 	</File>
 </CodeBlocks_layout_file>
