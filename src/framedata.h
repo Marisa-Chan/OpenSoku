@@ -76,10 +76,54 @@ struct subseq
 struct seq
 {
     vector<subseq>   subseqs;
+    uint32_t    id;
     uint16_t    prior;
     uint16_t    prior_for_cancel;
     uint32_t    refcount;
 };
+
+
+
+class char_sprite
+{
+    private:
+
+    gr_sprite  *sprite;
+    seq        *cur_seq;
+    char_frame *pframe;
+
+    uint32_t cur_subseq;
+    uint32_t cur_frame;
+    uint32_t cur_frame_time;
+    uint32_t cur_duration;
+    uint32_t elaps_frames;
+
+    uint32_t  _num_frames;
+    subseq   *_cur_sseq;
+
+    void frame_val_set();
+
+    public:
+
+    char_sprite();
+    ~char_sprite();
+
+    inline uint32_t get_cur_subseq();
+    inline uint32_t get_cur_frame();
+    inline uint32_t get_cur_frame_time();
+    inline uint32_t get_elaps_frames();
+    inline char_frame * get_pframe();
+
+    bool set_seq(seq *sq);
+    void reset_seq();
+    void set_frame(uint32_t frm);
+    bool next_frame(bool ignore_loop = false);
+    bool next_subseq();
+    bool process(bool ignore_loop = false);
+    void draw(float x, float y);
+};
+
+
 
 typedef map<int32_t, seq *> mapseq;
 
@@ -88,25 +132,18 @@ class char_graph
     private:
 
     vector<gr_tex *> imgs;
-    gr_sprite *sprite;
 
     mapseq seqs;
 
     bool load_pal_pal(const char *file, uint32_t *pal);
-
     //bool load_pal_bmp(const char *file, uint32_t *pal);
 
-    seq *   cur_seq;
-    uint32_t cur_subseq;
-    uint32_t cur_frame;
-    uint32_t cur_frame_time;
-    char_frame * pframe;
+    char_sprite sprite;
 
     public:
 
     bool load_dat(const char *name, uint8_t pal);
 
-    void set_img(uint32_t idx);
     void draw(float x, float y);
 
     void set_seq(uint32_t idx);

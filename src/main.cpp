@@ -13,8 +13,8 @@ int main()
     // Create the main window
 
 	// Start the game loop
-    arc_add_dat("th105a.dat");
-    arc_add_dat("th105b.dat");
+    //arc_add_dat("th105a.dat");
+    //arc_add_dat("th105b.dat");
     arc_add_dat("th123a.dat");
     arc_add_dat("th123b.dat");
 
@@ -22,13 +22,13 @@ int main()
 
     char_graph *marisa = new char_graph;
 
-    marisa->load_dat("marisa",0);
+    marisa->load_dat("marisa",1);
 
 //    uint32_t i = 0;
 
     float y=0,poy=16,gr=0.75;
 
-    marisa->set_seq(71);
+    marisa->set_seq(310);
 
     while(1)
     {
