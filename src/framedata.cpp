@@ -5,8 +5,8 @@
 
 static const uint8_t color_v_to_viii [32] =
 {
-    0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120,
-    128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248
+    0, 8, 16, 24, 32, 41, 49, 57, 65, 74, 82, 90, 98, 106, 115, 123,
+    131, 139, 148, 156, 164, 172, 180, 189, 197, 205, 213, 222, 230, 238, 246, 255
 };
 
 static void delete_seq(seq *sq)
@@ -28,11 +28,14 @@ static void delete_seq(seq *sq)
     delete sq;
 }
 
-bool char_graph::load_dat(const char *name, uint8_t pal)
+bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 {
     char buf[CHRBUF];
 
-    sprintf(buf, "data/character/%s/palette%3.3d.pal", name, pal);
+    if (pal_rev)
+        sprintf(buf, "data/character/%s/palette%3.3d%c.pal", name, pal, pal_rev);
+    else
+        sprintf(buf, "data/character/%s/palette%3.3d.pal", name, pal);
 
     uint32_t plt[256];
 
@@ -283,7 +286,7 @@ bool char_graph::load_dat(const char *name, uint8_t pal)
 
                     uint8_t s = 0;
                     f->read(1 , &s);
-                    if (s)
+                    if (s) // not found in files
                     {
                         f->read(4, &box.x1);
                         f->read(4, &box.y1);
@@ -367,9 +370,12 @@ void char_graph::process_anim()
 }
 
 
-void char_graph::draw(float x, float y)
+void char_graph::draw(float x, float y, uint8_t plane)
 {
-    sprite.draw(x-sprite.get_pframe()->x_offset,y-sprite.get_pframe()->y_offset);
+    //sprite.setOrigin(0,0);
+    //sprite.setXY(x-sprite.get_pframe()->x_offset,y-sprite.get_pframe()->y_offset);
+    sprite.setXY(x,y-sprite.get_pframe()->y_offset);
+    sprite.draw(plane);
 }
 
 
@@ -377,144 +383,4 @@ void char_graph::draw(float x, float y)
 
 
 
-char_sprite::char_sprite()
-{
-    sprite  = gr_create_sprite();
 
-    sprite->setScale(2.0,2.0);
-
-    pframe  = NULL;
-    cur_seq = NULL;
-    cur_subseq = 0;
-    cur_frame  = 0;
-    cur_frame_time = 0;
-    elaps_frames = 0;
-    _num_frames = 0;
-    _cur_sseq = NULL;
-}
-
-char_sprite::~char_sprite()
-{
-    delete sprite;
-}
-
-inline uint32_t char_sprite::get_cur_frame()
-{
-    return cur_frame;
-}
-
-inline uint32_t char_sprite::get_cur_subseq()
-{
-    return cur_subseq;
-}
-
-inline uint32_t char_sprite::get_cur_frame_time()
-{
-    return cur_frame_time;
-}
-
-inline uint32_t char_sprite::get_elaps_frames()
-{
-    return elaps_frames;
-}
-
-inline char_frame *char_sprite::get_pframe()
-{
-    return pframe;
-}
-
-bool char_sprite::set_seq(seq *sq)
-{
-    cur_seq = NULL;
-
-    if (sq == NULL)
-        return false;
-
-    if (sq->subseqs.size() <= 0)
-        return false;
-
-    if (sq->subseqs[0].frames.size() <= 0)
-        return false;
-
-    cur_seq = sq;
-
-    reset_seq();
-
-    return true;
-}
-
-void char_sprite::reset_seq()
-{
-    if (cur_seq == NULL)
-        return;
-
-    cur_subseq   = 0;
-    elaps_frames = 0;
-    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
-    _num_frames = _cur_sseq->frames.size();
-
-    set_frame(0);
-}
-
-void char_sprite::frame_val_set()
-{
-    pframe = cur_seq->subseqs[cur_subseq].frames[cur_frame];
-
-    if (pframe->img)
-    {
-        gr_set_spr_tex(sprite,pframe->img);
-
-        cur_frame_time = 0;
-        cur_duration   = pframe->durate;
-    }
-}
-
-void char_sprite::set_frame(uint32_t frm)
-{
-    if (cur_seq == NULL || frm >= _num_frames)
-        return;
-
-    cur_frame = 0;
-    frame_val_set();
-}
-
-bool char_sprite::next_frame(bool ignore_loop)
-{
-    cur_frame = (cur_frame + 1) % _num_frames;
-    frame_val_set();
-
-    return (cur_frame == 0) && ((_cur_sseq->looped == 0) || ignore_loop);
-}
-
-bool char_sprite::next_subseq()
-{
-    cur_subseq = (cur_subseq + 1) % cur_seq->subseqs.size();
-
-    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
-    _num_frames = _cur_sseq->frames.size();
-
-    set_frame(0);
-
-    if (cur_subseq == 0)
-    {
-        elaps_frames = 0;
-        return true;
-    }
-
-    return false;
-}
-
-bool char_sprite::process(bool ignore_loop)
-{
-    elaps_frames++;
-    cur_frame_time++;
-    if (cur_frame_time >= cur_duration)
-        if (next_frame(ignore_loop))
-            return next_subseq();
-    return false;
-}
-
-void char_sprite::draw(float x, float y)
-{
-    gr_draw_sprite(sprite,x,y);
-}

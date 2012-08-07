@@ -2,7 +2,11 @@
 #include "file_read.h"
 #include "graph.h"
 
-sf::RenderWindow *window = NULL;
+static sf::RenderWindow *window = NULL;
+
+
+static gr_state zerostate;
+static gr_state states[MAX_STATES];
 
 void gr_init(uint32_t width, uint32_t height, const char *caption)
 {
@@ -12,7 +16,7 @@ void gr_init(uint32_t width, uint32_t height, const char *caption)
 
 void gr_clear()
 {
-    window->clear();
+    window->clear(sf::Color(128,128,128, 255));
 }
 
 void gr_flip()
@@ -52,7 +56,7 @@ gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal)
 
     uint32_t *img = (uint32_t *)malloc(hdr.width * hdr.height * 4);
 
-    if (hdr.bpp == 8)
+    if (hdr.bpp == 8 && pal != NULL)
     {
         uint8_t *buf = (uint8_t *)malloc(hdr.pitch * hdr.height);
         f->read(hdr.pitch * hdr.height, buf);
@@ -108,4 +112,69 @@ void gr_draw_sprite(gr_sprite *spr, float x, float y)
         spr->setPosition(x,y);
         window->draw(*spr);
     }
+}
+
+void gr_setxy_sprite(gr_sprite *spr, float x, float y)
+{
+    spr->setPosition(x,y);
+}
+
+void gr_setscale_sprite(gr_sprite *spr, float x, float y)
+{
+    spr->setScale(x,y);
+}
+
+void gr_draw_sprite(gr_sprite *spr,gr_blend blend,uint8_t plane)
+{
+    if (plane < MAX_STATES)
+    {
+        sf::BlendMode tmp = states[plane].blendMode;
+        switch(blend)
+        {
+            case gr_add:
+                states[plane].blendMode = sf::BlendAdd;
+                break;
+            case gr_mult:
+                states[plane].blendMode = sf::BlendMultiply;
+                break;
+            case gr_alpha:
+                states[plane].blendMode = sf::BlendAlpha;
+                break;
+            case gr_none:
+                states[plane].blendMode = sf::BlendNone;
+                break;
+        };
+
+        window->draw(*spr,states[plane]);
+        states[plane].blendMode = tmp;
+    }
+}
+
+void gr_setorigin_sprite(gr_sprite *spr, float x, float y)
+{
+    spr->setOrigin(x,y);
+}
+
+void gr_reset_state(uint8_t plane)
+{
+    if (plane < MAX_STATES)
+        states[plane] = zerostate;
+}
+
+void gr_plane_scale(uint8_t plane, float x, float y)
+{
+    if (plane < MAX_STATES)
+        states[plane].transform.scale(x,y);
+}
+
+void gr_plane_rotate(uint8_t plane, float angle)
+{
+    if (plane < MAX_STATES)
+        states[plane].transform.rotate(angle);
+}
+
+void gr_plane_translate(uint8_t plane, float x, float y)
+{
+    if (plane < MAX_STATES)
+        states[plane].transform.translate(x,y);
 }

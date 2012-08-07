@@ -42,6 +42,9 @@
 		</Linker>
 		<Unit filename="./archive.cpp" />
 		<Unit filename="archive.h" />
+		<Unit filename="./background.cpp" />
+		<Unit filename="./background.h" />
+		<Unit filename="./char_sprite.cpp" />
 		<Unit filename="./crc32.cpp" />
 		<Unit filename="./crc32.h" />
 		<Unit filename="./file_read.cpp" />

@@ -89,6 +89,8 @@ class char_sprite
     private:
 
     gr_sprite  *sprite;
+    gr_blend    blend;
+
     seq        *cur_seq;
     char_frame *pframe;
 
@@ -112,7 +114,7 @@ class char_sprite
     inline uint32_t get_cur_frame();
     inline uint32_t get_cur_frame_time();
     inline uint32_t get_elaps_frames();
-    inline char_frame * get_pframe();
+    char_frame * get_pframe();
 
     bool set_seq(seq *sq);
     void reset_seq();
@@ -120,7 +122,13 @@ class char_sprite
     bool next_frame(bool ignore_loop = false);
     bool next_subseq();
     bool process(bool ignore_loop = false);
-    void draw(float x, float y);
+
+    void setXY(float x, float y);
+    void setScale(float x, float y);
+    void setOrigin(float x, float y);
+    void setBlend(gr_blend blend);
+
+    void draw(uint8_t plane = 0);
 };
 
 
@@ -142,9 +150,9 @@ class char_graph
 
     public:
 
-    bool load_dat(const char *name, uint8_t pal);
+    bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
 
-    void draw(float x, float y);
+    void draw(float x, float y, uint8_t plane);
 
     void set_seq(uint32_t idx);
     void process_anim();
