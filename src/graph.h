@@ -47,4 +47,6 @@ void gr_plane_scale(uint8_t plane, float x, float y);
 void gr_plane_rotate(uint8_t plane, float angle);
 void gr_plane_translate(uint8_t plane, float x, float y);
 
+void gr_draw_box(float x1,float y1, int r, int g, int b,uint8_t plane);
+
 #endif // GRAPH_H_INCLUDED

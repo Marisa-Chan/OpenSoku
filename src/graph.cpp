@@ -178,3 +178,11 @@ void gr_plane_translate(uint8_t plane, float x, float y)
     if (plane < MAX_STATES)
         states[plane].transform.translate(x,y);
 }
+
+void gr_draw_box(float x1,float y1, int r, int g, int b,uint8_t plane)
+{
+    sf::RectangleShape box(sf::Vector2f(10,10));
+    box.setFillColor(sf::Color(r,g,b,255));
+    box.setPosition(x1-5,y1-5);
+    window->draw(box,states[plane]);
+}

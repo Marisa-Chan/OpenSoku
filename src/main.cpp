@@ -9,6 +9,30 @@
 #include <unistd.h>
 
 
+void camera(float x1, float y1, float x2, float y2)
+{
+        gr_reset_state(1);
+
+        gr_plane_translate(1,0,420);
+        float scale = 640.0/(x2-x1);
+        if (scale > 1.0)
+            scale = 1.0;
+        if (scale < 0.5)
+            scale = 0.5;
+
+        float xpos = (x1 + x2)/2.0 - ((640.0/2.0)*scale);
+        gr_plane_scale(1,scale,scale);
+        gr_plane_translate(1,-xpos,0);
+
+        gr_reset_state(2);
+
+        gr_plane_translate(2,0,420);
+        gr_plane_scale(2,scale,scale);
+        gr_plane_translate(2,-xpos,0);
+        gr_plane_translate(2,-60,-960);
+}
+
+
 int main()
 {
     // Create the main window
@@ -27,41 +51,46 @@ int main()
 
     marisa->load_dat("marisa",0);
 
+    char_graph *alice = new char_graph;
+
+    alice->load_dat("alice",0);
+
 //    uint32_t i = 0;
 //
 //    float y=0,poy=16,gr=0.75;
 
     marisa->set_seq(0);
-    background_10  bkg;
+    alice->set_seq(0);
+    background_11  bkg;
 
-    float a =1;
+    //float a =1;
 
-    float x1=300,x2=800,y1=400,y2=400;
+    float x1=480,x2=800,y1=00,y2=00;
 
     while(1)
     {
 
         gr_clear();
 
+        camera(x1,y1,x2,y2);
 
 
-        gr_reset_state(1);
+        //x2+=1;
+        if (x2 >= 1240)
+            x2 = 1240;
 
-        gr_plane_scale(1,640.0/((x2+40)-(x1-40)),640.0/((x2+40)-(x1-40)));
-        gr_plane_translate(1,-x1+40,100);
-
-
-        x2+=a;
-
-        a+=0.0001;
+       // a+=0.0001;
 
         bkg.draw();
 
-        marisa->draw(x1,y1,1);
+        gr_draw_box(x1,y1,255,0,0,1);
+        gr_draw_box(x2,y2,255,0,0,1);
 
-        marisa->draw(x2,y2,1);
+        marisa->draw(x1,y1,1,1);
 
-        marisa->draw(200,500,0);
+        alice->draw(x2,y2,1,-1);
+
+        //marisa->draw(200,500,0);
 
 
 //        if (y<0)
@@ -72,12 +101,13 @@ int main()
 //        }
 
 
-        //y+=poy;
+        //y+=poy;z
         //poy-=gr;
 
         gr_flip();
 
         marisa->process_anim();
+        alice->process_anim();
 
         //sleep(1);
     }

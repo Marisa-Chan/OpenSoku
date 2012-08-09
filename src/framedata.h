@@ -152,7 +152,7 @@ class char_graph
 
     bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
 
-    void draw(float x, float y, uint8_t plane);
+    void draw(float x, float y, uint8_t plane,int8_t direct);
 
     void set_seq(uint32_t idx);
     void process_anim();

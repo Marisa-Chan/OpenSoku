@@ -370,11 +370,12 @@ void char_graph::process_anim()
 }
 
 
-void char_graph::draw(float x, float y, uint8_t plane)
+void char_graph::draw(float x, float y, uint8_t plane, int8_t direct)
 {
-    //sprite.setOrigin(0,0);
-    //sprite.setXY(x-sprite.get_pframe()->x_offset,y-sprite.get_pframe()->y_offset);
-    sprite.setXY(x,y-sprite.get_pframe()->y_offset);
+    sprite.setScale(direct*2,2);
+    sprite.setOrigin(sprite.get_pframe()->x_offset/2,sprite.get_pframe()->y_offset/2);
+    sprite.setXY(x,y);
+
     sprite.draw(plane);
 }
 

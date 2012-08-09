@@ -31,5 +31,11 @@ class background_10: public background
     background_10();
 };
 
+class background_11: public background
+{
+    public:
+    background_11();
+};
+
 
 #endif // BACKGROUND_H_INCLUDED
