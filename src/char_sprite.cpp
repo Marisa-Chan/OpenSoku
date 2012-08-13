@@ -146,7 +146,7 @@ void char_sprite::draw(uint8_t plane)
 
 void char_sprite::setXY(float x, float y)
 {
-    gr_setxy_sprite(sprite,x,y);
+    gr_setxy_sprite(sprite,x,-y);
 }
 
 void char_sprite::setScale(float x, float y)

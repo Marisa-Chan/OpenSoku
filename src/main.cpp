@@ -6,31 +6,11 @@
 #include "graph.h"
 #include "framedata.h"
 #include "background.h"
+#include "input.h"
+#include "scene.h"
+#include <math.h>
 #include <unistd.h>
 
-
-void camera(float x1, float y1, float x2, float y2)
-{
-        gr_reset_state(1);
-
-        gr_plane_translate(1,0,420);
-        float scale = 640.0/(x2-x1);
-        if (scale > 1.0)
-            scale = 1.0;
-        if (scale < 0.5)
-            scale = 0.5;
-
-        float xpos = (x1 + x2)/2.0 - ((640.0/2.0)*scale);
-        gr_plane_scale(1,scale,scale);
-        gr_plane_translate(1,-xpos,0);
-
-        gr_reset_state(2);
-
-        gr_plane_translate(2,0,420);
-        gr_plane_scale(2,scale,scale);
-        gr_plane_translate(2,-xpos,0);
-        gr_plane_translate(2,-60,-960);
-}
 
 
 int main()
@@ -57,7 +37,10 @@ int main()
 
 //    uint32_t i = 0;
 //
-//    float y=0,poy=16,gr=0.75;
+    float poy=0,gr=0;
+    float poy2=0,gr2=0;
+
+    inp_kb kb;
 
     marisa->set_seq(0);
     alice->set_seq(0);
@@ -65,26 +48,54 @@ int main()
 
     //float a =1;
 
-    float x1=480,x2=800,y1=00,y2=00;
+    uint32_t a = 0;
 
-    while(1)
+    float x1=40,x2=400,y1=000,y2=000;
+
+    c_scene scn;
+
+    scn.set_camera(x1,y1,x2,y2);
+
+    while(!kb.rawPressed(kC_Escape))
     {
 
         gr_clear();
 
-        camera(x1,y1,x2,y2);
+        scn.upd_camera(x1,y1,x2,y2);
 
+        if (kb.rawPressed(kC_A))
+            x1-=5;
 
-        //x2+=1;
+        if (kb.rawPressed(kC_D))
+            x1+=5;
+
+        if (kb.rawPressed(kC_Left))
+            x2-=5;
+
+        if (kb.rawPressed(kC_Right))
+            x2+=5;
+
+        //x2+=2;
+
         if (x2 >= 1240)
             x2 = 1240;
+        if (x2 <= 40)
+            x2 = 40;
+
+        if (x1 >= 1240)
+            x1 = 1240;
+        if (x1 <= 40)
+            x1 = 40;
 
        // a+=0.0001;
 
+
+
         bkg.draw();
 
-        gr_draw_box(x1,y1,255,0,0,1);
-        gr_draw_box(x2,y2,255,0,0,1);
+        gr_draw_box(x1,-y1,255,0,0,1);
+        gr_draw_box(x2,-y2,255,0,0,1);
+
 
         marisa->draw(x1,y1,1,1);
 
@@ -93,16 +104,40 @@ int main()
         //marisa->draw(200,500,0);
 
 
-//        if (y<0)
-//        {
-//            y=0;
-//            poy = 16;
-//            gr=0.75;
-//        }
+        if (y1<=0)
+        {
+            y1=0;
+            poy = 0;
+            gr=0.0;
+
+            if (kb.rawPressed(kC_W))
+            {
+                poy = 20;
+                gr = 0.3;
+            }
+        }
+
+        a = (a + 1) % 3;
+
+        y1+=poy;
+        poy-=gr;
+
+        if (y2<=0)
+        {
+            y2=0;
+            poy2 = 0;
+            gr2=0.0;
+
+            if (kb.rawPressed(kC_Up))
+            {
+                poy2 = 20;
+                gr2 = 0.3;
+            }
+        }
 
 
-        //y+=poy;z
-        //poy-=gr;
+        y2+=poy2;
+        poy2-=gr2;
 
         gr_flip();
 
@@ -110,6 +145,7 @@ int main()
         alice->process_anim();
 
         //sleep(1);
+        kb.update();
     }
 
 
