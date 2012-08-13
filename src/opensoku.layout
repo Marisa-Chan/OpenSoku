@@ -2,18 +2,27 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="archive.h" open="1" top="0" tabpos="2">
-		<Cursor position="295" topLine="0" />
+		<Cursor position="225" topLine="0" />
 	</File>
-	<File name="./graph.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="348" topLine="36" />
+	<File name="./background.h" open="1" top="0" tabpos="7">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="./file_read.h" open="1" top="0" tabpos="8">
+		<Cursor position="518" topLine="0" />
+	</File>
+	<File name="./framedata.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="26" topLine="0" />
+	</File>
+	<File name="./framedata.h" open="1" top="0" tabpos="9">
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="./input.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="800" topLine="16" />
+		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="./input.h" open="1" top="0" tabpos="7">
-		<Cursor position="2140" topLine="134" />
+	<File name="./input.h" open="1" top="0" tabpos="5">
+		<Cursor position="77" topLine="0" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="1594" topLine="84" />
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="600" topLine="11" />
 	</File>
 </CodeBlocks_layout_file>

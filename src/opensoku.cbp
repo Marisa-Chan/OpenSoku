@@ -59,6 +59,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="./mt.cpp" />
 		<Unit filename="./mt.h" />
+		<Unit filename="./music.cpp" />
+		<Unit filename="./music.h" />
 		<Unit filename="./scene.cpp" />
 		<Unit filename="./scene.h" />
 		<Extensions>

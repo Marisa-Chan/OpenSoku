@@ -1,8 +1,7 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/Joystick.hpp>
+#include <SFML/Window.hpp>
 
 enum kCode
 {

@@ -7,6 +7,7 @@
 #include "framedata.h"
 #include "background.h"
 #include "input.h"
+#include "music.h"
 #include "scene.h"
 #include <math.h>
 #include <unistd.h>
@@ -55,6 +56,8 @@ int main()
     c_scene scn;
 
     scn.set_camera(x1,y1,x2,y2);
+
+    playmusic();
 
     while(!kb.rawPressed(kC_Escape))
     {
