@@ -155,7 +155,11 @@ class char_graph
     void draw(float x, float y, uint8_t plane,int8_t direct);
 
     void set_seq(uint32_t idx);
-    void process_anim();
+    void reset_seq();
+    void set_frame(uint32_t frm);
+    bool next_frame(bool ignore_loop = false);
+    bool next_subseq();
+    bool process(bool ignore_loop = false);
 
     char_graph();
   //  ~char_graph();

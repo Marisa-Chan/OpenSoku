@@ -133,6 +133,9 @@ protected:
     bool key_dn[INP_KEYS];
     bool pr_key_dn[INP_KEYS];
 
+    int8_t x_axis;
+    int8_t y_axis;
+
     void flush_cur();
     void set_key(inp_keys key);
 

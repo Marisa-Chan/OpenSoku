@@ -89,6 +89,8 @@ void char_sprite::frame_val_set()
 
         cur_frame_time = 0;
         cur_duration   = pframe->durate;
+
+        setOrigin(pframe->x_offset,pframe->y_offset);
     }
 }
 

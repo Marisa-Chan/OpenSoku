@@ -5,8 +5,10 @@
 #include "file_read.h"
 #include "graph.h"
 #include "framedata.h"
-#include "background.h"
 #include "input.h"
+#include "character_def.h"
+#include "chars.h"
+#include "background.h"
 #include "music.h"
 #include "scene.h"
 #include <math.h>
@@ -28,9 +30,7 @@ int main()
 
     gr_init(640,480,"OpenSoku");
 
-    char_graph *marisa = new char_graph;
-
-    marisa->load_dat("marisa",0);
+    char_c *marisa = new char_marisa;
 
     char_graph *alice = new char_graph;
 
@@ -57,7 +57,7 @@ int main()
 
     scn.set_camera(x1,y1,x2,y2);
 
-    playmusic();
+    //playmusic();
 
     while(!kb.rawPressed(kC_Escape))
     {
@@ -100,7 +100,7 @@ int main()
         gr_draw_box(x2,-y2,255,0,0,1);
 
 
-        marisa->draw(x1,y1,1,1);
+        marisa->draw(x1,y1,1);
 
         alice->draw(x2,y2,1,-1);
 
@@ -115,8 +115,8 @@ int main()
 
             if (kb.rawPressed(kC_W))
             {
-                poy = 20;
-                gr = 0.3;
+                poy = 16;
+                gr = 0.8;
             }
         }
 
@@ -144,8 +144,8 @@ int main()
 
         gr_flip();
 
-        marisa->process_anim();
-        alice->process_anim();
+        marisa->process();
+        alice->process();
 
         //sleep(1);
         kb.update();

@@ -195,7 +195,9 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 f->read(2, &frm->tx_width);
                 f->read(2, &frm->tx_height);
                 f->read(2, &frm->x_offset);
+                frm->x_offset /= 2;
                 f->read(2, &frm->y_offset);
+                frm->y_offset /= 2;
                 f->read(2, &frm->durate);
 
                 f->read(1, &frm->type);
@@ -364,16 +366,36 @@ void char_graph::set_seq(uint32_t idx)
        sprite.set_seq(tmp->second);
 }
 
-void char_graph::process_anim()
+bool char_graph::process(bool ignore_loop)
 {
-    sprite.process(true);
+    return sprite.process(ignore_loop);
 }
+
+bool char_graph::next_frame(bool ignore_loop)
+{
+    return sprite.next_frame(ignore_loop);
+}
+
+bool char_graph::next_subseq()
+{
+    return sprite.next_subseq();
+}
+
+void char_graph::reset_seq()
+{
+    sprite.reset_seq();
+}
+
+void char_graph::set_frame(uint32_t frm)
+{
+    sprite.set_frame(frm);
+}
+
 
 
 void char_graph::draw(float x, float y, uint8_t plane, int8_t direct)
 {
     sprite.setScale(direct*2,2);
-    sprite.setOrigin(sprite.get_pframe()->x_offset/2,sprite.get_pframe()->y_offset/2);
     sprite.setXY(x,y);
 
     sprite.draw(plane);
