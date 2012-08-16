@@ -48,6 +48,8 @@
 		<Unit filename="./character_def.cpp" />
 		<Unit filename="./character_def.h" />
 		<Unit filename="./chars.h" />
+		<Unit filename="chars/alice.cpp" />
+		<Unit filename="chars/alice.h" />
 		<Unit filename="./chars/marisa.cpp" />
 		<Unit filename="chars/marisa.h" />
 		<Unit filename="./crc32.cpp" />

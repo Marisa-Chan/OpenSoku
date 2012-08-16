@@ -1,6 +1,12 @@
 #include "global_types.h"
 #include <math.h>
 #include "scene.h"
+#include "graph.h"
+#include "framedata.h"
+#include "input.h"
+#include "character_def.h"
+#include "chars.h"
+#include "background.h"
 
 
 #define CHAR_PADDING  40
@@ -13,6 +19,12 @@
 #define BKG_HOR_PAD   60.0
 
 #define CAM_SPEED     0.3
+
+void c_scene::set_camera(char_c *p1,char_c *p2)
+{
+    set_camera(p1->getX(), p1->getY(),
+              p2->getX(), p2->getY());
+}
 
 void c_scene::set_camera(float x1, float y1, float x2, float y2)
 {
@@ -78,4 +90,47 @@ void c_scene::upd_camera(float x1, float y1, float x2, float y2)
     cam.scale = tmp.scale + (cam.scale - tmp.scale) * CAM_SPEED;
 
     apply_camera();
+}
+
+void c_scene::upd_camera(char_c *p1,char_c *p2)
+{
+    upd_camera(p1->getX(), p1->getY(),
+               p2->getX(), p2->getY());
+}
+
+c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
+{
+    bkg = bg;
+    chrs[0] = p1;
+    chrs[1] = p2;
+
+    chrs[0]->setXY(480,0);
+    chrs[1]->setXY(800,0);
+
+    set_camera(chrs[0],chrs[1]);
+}
+
+void c_scene::draw_scene()
+{
+    upd_camera(chrs[0],chrs[1]);
+
+    bkg->draw();
+
+    for (uint32_t i=0; i < 2; i++)
+        chrs[i]->draw();
+}
+
+void c_scene::update_char_anims()
+{
+    for (uint32_t i=0; i < 2; i++)
+        chrs[i]->process();
+}
+
+void c_scene::players_input()
+{
+    for (uint32_t i=0; i < 2; i++)
+        chrs[i]->input_update();
+
+    for (uint32_t i=0; i < 2; i++)
+        chrs[i]->basic_input();
 }

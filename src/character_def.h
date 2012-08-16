@@ -1,6 +1,7 @@
 #ifndef CHARACTER_DEF_H_INCLUDED
 #define CHARACTER_DEF_H_INCLUDED
 
+
 class char_c
 {
     protected:
