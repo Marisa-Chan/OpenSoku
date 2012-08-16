@@ -110,10 +110,10 @@ class char_sprite
     char_sprite();
     ~char_sprite();
 
-    inline uint32_t get_cur_subseq();
-    inline uint32_t get_cur_frame();
-    inline uint32_t get_cur_frame_time();
-    inline uint32_t get_elaps_frames();
+    uint32_t get_cur_subseq();
+    uint32_t get_cur_frame();
+    uint32_t get_cur_frame_time();
+    uint32_t get_elaps_frames();
     char_frame * get_pframe();
 
     bool set_seq(seq *sq);
@@ -160,6 +160,12 @@ class char_graph
     bool next_frame(bool ignore_loop = false);
     bool next_subseq();
     bool process(bool ignore_loop = false);
+
+    uint32_t get_subseq();
+    uint32_t get_frame();
+    uint32_t get_frame_time();
+    uint32_t get_elaps_frames();
+    char_frame * get_pframe();
 
     char_graph();
   //  ~char_graph();

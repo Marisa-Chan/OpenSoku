@@ -59,6 +59,9 @@ int main()
 
         scn.players_input();
 
+        scn.players_collisions();
+        scn.xy_pos_check();
+
         scn.draw_scene();
 
         scn.update_char_anims();

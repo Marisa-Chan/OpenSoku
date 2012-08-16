@@ -9,6 +9,7 @@ char_c::char_c(inp_ab *func)
     input = func;
     x = 0;
     y = 0;
+    dir = 1.0;
 }
 
 void char_c::set_seq(uint32_t idx)
@@ -48,8 +49,24 @@ void char_c::draw(float x, float y, float dir)
 
 void char_c::draw()
 {
-    viz.draw(x,y,1,1);
+    viz.draw(x,y,1,dir);
     gr_draw_box(x,-y,255,0,0,1);
+
+    char_frame *pf = viz.get_pframe();
+
+    if (pf->box_coll.size() > 0)
+    {
+        for (uint32_t i=0; i<pf->box_coll.size();i++)
+        {
+            gr_draw_box(x+pf->box_coll[i].x1,
+                        -y+pf->box_coll[i].y1,
+                        pf->box_coll[i].x2-pf->box_coll[i].x1,
+                        pf->box_coll[i].y2-pf->box_coll[i].y1,
+                        255,255,255,128,1);
+
+        }
+    }
+
 }
 
 void char_c::input_update()
@@ -116,4 +133,29 @@ void char_c::setXY(float _x, float _y)
 {
     x = _x;
     y = _y;
+}
+
+char_frame *char_c::get_pframe()
+{
+    return viz.get_pframe();
+}
+
+void char_c::setDir(float d)
+{
+    dir = d;
+}
+
+float char_c::getDir()
+{
+    return dir;
+}
+
+void char_c::mvX(float _x)
+{
+    x += _x;
+}
+
+void char_c::mvY(float _y)
+{
+    y += _y;
 }

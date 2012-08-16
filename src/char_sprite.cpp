@@ -21,22 +21,22 @@ char_sprite::~char_sprite()
     delete sprite;
 }
 
-inline uint32_t char_sprite::get_cur_frame()
+uint32_t char_sprite::get_cur_frame()
 {
     return cur_frame;
 }
 
-inline uint32_t char_sprite::get_cur_subseq()
+uint32_t char_sprite::get_cur_subseq()
 {
     return cur_subseq;
 }
 
-inline uint32_t char_sprite::get_cur_frame_time()
+uint32_t char_sprite::get_cur_frame_time()
 {
     return cur_frame_time;
 }
 
-inline uint32_t char_sprite::get_elaps_frames()
+uint32_t char_sprite::get_elaps_frames()
 {
     return elaps_frames;
 }

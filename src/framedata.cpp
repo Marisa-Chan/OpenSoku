@@ -401,7 +401,27 @@ void char_graph::draw(float x, float y, uint8_t plane, int8_t direct)
     sprite.draw(plane);
 }
 
+uint32_t char_graph::get_subseq()
+{
+    return sprite.get_cur_subseq();
+}
+uint32_t char_graph::get_frame()
+{
+    return sprite.get_cur_frame();
+}
+uint32_t char_graph::get_frame_time()
+{
+    return sprite.get_cur_frame_time();
+}
+uint32_t char_graph::get_elaps_frames()
+{
+    return sprite.get_elaps_frames();
+}
 
+char_frame * char_graph::get_pframe()
+{
+    return sprite.get_pframe();
+}
 
 
 

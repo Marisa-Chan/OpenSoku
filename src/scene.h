@@ -36,6 +36,8 @@ class c_scene
     void draw_scene();
     void update_char_anims();
     void players_input();
+    void players_collisions();
+    void xy_pos_check();
 };
 
 

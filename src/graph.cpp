@@ -186,3 +186,11 @@ void gr_draw_box(float x1,float y1, int r, int g, int b,uint8_t plane)
     box.setPosition(x1-5,y1-5);
     window->draw(box,states[plane]);
 }
+
+void gr_draw_box(float x1,float y1,float w, float h, int r, int g, int b,int a,uint8_t plane)
+{
+    sf::RectangleShape box(sf::Vector2f(w,h));
+    box.setFillColor(sf::Color(r,g,b,a));
+    box.setPosition(x1,y1);
+    window->draw(box,states[plane]);
+}
