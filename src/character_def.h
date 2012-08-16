@@ -14,6 +14,8 @@ class char_c
 
     public:
 
+    char_c(inp_ab *func);
+
     void set_seq(uint32_t idx);
     void reset_seq();
     void set_frame(uint32_t frm);
@@ -21,7 +23,19 @@ class char_c
     bool next_subseq();
     bool process(bool ignore_loop = false);
 
+    void input_update();
+
+    float getX();
+    float getY();
+
+    void setX(float x);
+    void setY(float y);
+    void setXY(float x,float y);
+
     virtual void draw(float x, float y, float dir);
+    virtual void draw();
+
+    virtual void basic_input();
 };
 
 #endif // CHARACTER_DEF_H_INCLUDED

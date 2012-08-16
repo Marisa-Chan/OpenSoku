@@ -4,8 +4,8 @@
 class char_marisa: public char_c
 {
     public:
-    char_marisa();
-    char_marisa(uint8_t pal);
+    char_marisa(inp_ab *func);
+    char_marisa(inp_ab *func,uint8_t pal);
 
 };
 

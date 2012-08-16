@@ -30,7 +30,9 @@ int main()
 
     gr_init(640,480,"OpenSoku");
 
-    char_c *marisa = new char_marisa;
+
+
+    char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_KB));
 
     char_graph *alice = new char_graph;
 
@@ -57,25 +59,24 @@ int main()
 
     scn.set_camera(x1,y1,x2,y2);
 
+    marisa->setX(x1);
+
     //playmusic();
 
     while(!kb.rawPressed(kC_Escape))
     {
+        marisa->input_update();
+        kb.update();
 
         gr_clear();
 
-        scn.upd_camera(x1,y1,x2,y2);
+        scn.upd_camera(marisa->getX(),marisa->getY(),x2,y2);
+
 
         if (kb.rawPressed(kC_A))
-            x1-=5;
-
-        if (kb.rawPressed(kC_D))
-            x1+=5;
-
-        if (kb.rawPressed(kC_Left))
             x2-=5;
 
-        if (kb.rawPressed(kC_Right))
+        if (kb.rawPressed(kC_D))
             x2+=5;
 
         //x2+=2;
@@ -96,29 +97,19 @@ int main()
 
         bkg.draw();
 
-        gr_draw_box(x1,-y1,255,0,0,1);
+        marisa->basic_input();
+
+        //gr_draw_box(x1,-y1,255,0,0,1);
         gr_draw_box(x2,-y2,255,0,0,1);
 
 
-        marisa->draw(x1,y1,1);
+        marisa->draw();
 
         alice->draw(x2,y2,1,-1);
 
         //marisa->draw(200,500,0);
 
 
-        if (y1<=0)
-        {
-            y1=0;
-            poy = 0;
-            gr=0.0;
-
-            if (kb.rawPressed(kC_W))
-            {
-                poy = 16;
-                gr = 0.8;
-            }
-        }
 
         a = (a + 1) % 3;
 
@@ -131,7 +122,7 @@ int main()
             poy2 = 0;
             gr2=0.0;
 
-            if (kb.rawPressed(kC_Up))
+            if (kb.rawPressed(kC_W))
             {
                 poy2 = 20;
                 gr2 = 0.3;
@@ -148,7 +139,7 @@ int main()
         alice->process();
 
         //sleep(1);
-        kb.update();
+
     }
 
 
