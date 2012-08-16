@@ -131,7 +131,7 @@ enum inp_keys
 };
 
 #define INP_KEYS  11
-#define INPKEYBUF  90 //1.5 sec
+#define INPKEYBUF  40 //1.5 sec
 
 
 struct kmapper
@@ -175,8 +175,6 @@ class inp_kb: public inp_ab
 {
 private:
     sf::Keyboard kbd;
-
-    bool state[sf::Keyboard::KeyCount];
 
     uint32_t map[INP_KEYS];
 

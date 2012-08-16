@@ -4,46 +4,22 @@
 	<File name="archive.h" open="1" top="0" tabpos="2">
 		<Cursor position="286" topLine="0" />
 	</File>
-	<File name="./char_sprite.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="588" topLine="77" />
-	</File>
-	<File name="./character_def.cpp" open="1" top="0" tabpos="9">
-		<Cursor position="716" topLine="131" />
-	</File>
-	<File name="./character_def.h" open="1" top="0" tabpos="13">
-		<Cursor position="634" topLine="0" />
-	</File>
 	<File name="chars/alice.cpp" open="1" top="0" tabpos="4">
 		<Cursor position="215" topLine="0" />
 	</File>
 	<File name="chars/alice.h" open="1" top="0" tabpos="5">
-		<Cursor position="41" topLine="0" />
+		<Cursor position="214" topLine="0" />
 	</File>
 	<File name="chars/marisa.h" open="1" top="0" tabpos="3">
 		<Cursor position="167" topLine="0" />
 	</File>
-	<File name="./framedata.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="9509" topLine="81" />
+	<File name="./input.cpp" open="1" top="1" tabpos="6">
+		<Cursor position="3509" topLine="162" />
 	</File>
-	<File name="./framedata.h" open="1" top="0" tabpos="7">
-		<Cursor position="3114" topLine="141" />
+	<File name="./input.h" open="1" top="0" tabpos="7">
+		<Cursor position="2445" topLine="165" />
 	</File>
-	<File name="./global_types.h" open="1" top="0" tabpos="14">
-		<Cursor position="0" topLine="0" />
-	</File>
-	<File name="./graph.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="4483" topLine="166" />
-	</File>
-	<File name="./graph.h" open="1" top="0" tabpos="11">
-		<Cursor position="1370" topLine="22" />
-	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="1043" topLine="45" />
-	</File>
-	<File name="./scene.cpp" open="1" top="0" tabpos="12">
-		<Cursor position="5279" topLine="209" />
-	</File>
-	<File name="./scene.h" open="1" top="0" tabpos="15">
-		<Cursor position="702" topLine="13" />
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1043" topLine="18" />
 	</File>
 </CodeBlocks_layout_file>

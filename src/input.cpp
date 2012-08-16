@@ -193,25 +193,19 @@ void inp_kb::update()
 {
     flush_cur();
 
-    for (uint32_t i=0; i<sf::Keyboard::KeyCount; i++)
-        state[i] = kbd.isKeyPressed((sf::Keyboard::Key)i);
-
     for (uint32_t i=0; i<INP_KEYS; i++)
-        key_dn[i] = state[map[i]];
+        key_dn[i] = kbd.isKeyPressed((sf::Keyboard::Key)map[i]);
 
     fill_kframes();
 }
 
 bool inp_kb::rawPressed(uint32_t key)
 {
-    return state[key];
+    return kbd.isKeyPressed((sf::Keyboard::Key)key);
 }
 
 inp_kb::inp_kb()
 {
-    for (uint32_t i=0; i<sf::Keyboard::KeyCount; i++)
-        state[i] = false;
-
     load_def_profile();
 }
 

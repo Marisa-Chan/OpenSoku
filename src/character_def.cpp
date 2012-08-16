@@ -89,7 +89,7 @@ void char_c::basic_input()
     }
 
 
-    asd = input->check_input_seq("623X",15,1);
+    asd = input->check_input_seq("623X",20,1);
     if (asd > -1)
     {
         printf("623X!\n");
