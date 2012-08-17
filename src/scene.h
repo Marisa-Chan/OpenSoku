@@ -1,6 +1,9 @@
 #ifndef SCENE_H_INCLUDED
 #define SCENE_H_INCLUDED
 
+#define CHAR_PADDING  40
+#define BKG_WIDTH     1280
+
 struct s_camera
 {
     float x;
@@ -40,5 +43,12 @@ class c_scene
     void xy_pos_check();
 };
 
+
+
+int8_t get_border_near(char_c *chr);
+float getlvl_height(char_c *chr);
+float getlvl_height(char_c *chr, float dx);
+bool char_on_ground(char_c *chr);
+void char_xy_pos_calculation(char_c *chr);
 
 #endif // SCENE_H_INCLUDED

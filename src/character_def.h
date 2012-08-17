@@ -6,9 +6,6 @@ class char_c
 {
     protected:
 
-    float x;
-    float y;
-    float dir;
     char_graph   viz;
 
     inp_ab      *input;
@@ -16,7 +13,35 @@ class char_c
 
     public:
 
+
+
+    float x;
+    float y;
+    float dir;
+    float h_inerc;
+    float v_inerc;
+    float v_force;
+
+    char_c *enemy;
+
     char_c(inp_ab *func);
+
+    int16_t field_196;
+    int16_t field_4A8;
+    int8_t  field_4C4;
+    int8_t  field_571;
+    float   field_744;
+    float   field_74C;
+    float   field_564;
+    float   field_568;
+    int8_t  field_572;
+
+
+
+
+
+
+
 
     void set_seq(uint32_t idx);
     void reset_seq();
@@ -28,16 +53,6 @@ class char_c
 
     void input_update();
 
-    float getX();
-    float getY();
-
-    void setX(float x);
-    void setY(float y);
-    void setXY(float x,float y);
-    void setDir(float d);
-    float getDir();
-    void mvX(float x);
-    void mvY(float y);
 
     virtual void draw(float x, float y, float dir);
     virtual void draw();

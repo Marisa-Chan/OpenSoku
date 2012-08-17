@@ -4,6 +4,12 @@
 	<File name="archive.h" open="1" top="0" tabpos="2">
 		<Cursor position="286" topLine="0" />
 	</File>
+	<File name="./character_def.cpp" open="1" top="1" tabpos="7">
+		<Cursor position="1729" topLine="83" />
+	</File>
+	<File name="./character_def.h" open="1" top="0" tabpos="8">
+		<Cursor position="519" topLine="19" />
+	</File>
 	<File name="chars/alice.cpp" open="1" top="0" tabpos="4">
 		<Cursor position="215" topLine="0" />
 	</File>
@@ -13,13 +19,16 @@
 	<File name="chars/marisa.h" open="1" top="0" tabpos="3">
 		<Cursor position="167" topLine="0" />
 	</File>
-	<File name="./input.cpp" open="1" top="1" tabpos="6">
-		<Cursor position="3509" topLine="162" />
-	</File>
-	<File name="./input.h" open="1" top="0" tabpos="7">
-		<Cursor position="2445" topLine="165" />
+	<File name="./framedata.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="0" topLine="66" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="1043" topLine="18" />
+	</File>
+	<File name="./scene.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="2649" topLine="294" />
+	</File>
+	<File name="./scene.h" open="1" top="0" tabpos="10">
+		<Cursor position="943" topLine="20" />
 	</File>
 </CodeBlocks_layout_file>

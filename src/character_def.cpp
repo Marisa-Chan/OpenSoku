@@ -10,6 +10,23 @@ char_c::char_c(inp_ab *func)
     x = 0;
     y = 0;
     dir = 1.0;
+
+    field_196 = 0;
+    field_4A8 = 0;
+    field_4C4 = 0;
+    field_564 = 1.0;
+    field_568 = 1.0;
+    field_571 = 1;
+    field_572 = 1;
+    field_744 = 0;
+    field_74C = 0;
+
+    h_inerc = 0;
+    v_inerc = 0;
+    v_force = 0;
+
+    enemy = NULL;
+
 }
 
 void char_c::set_seq(uint32_t idx)
@@ -81,6 +98,14 @@ void char_c::basic_input()
     if (input->keyDown(INP_RIGHT))
         x += 5;
 
+    v_inerc = v_inerc - v_force;
+
+    if (input->keyDown(INP_UP))
+    {
+        v_force = 0.7;
+        v_inerc = 15;
+    }
+
     int32_t asd = input->check_input_seq("236X",20,1);
     if (asd > -1)
     {
@@ -109,53 +134,7 @@ void char_c::basic_input()
         //x -= 5;
 }
 
-float char_c::getX()
-{
-    return x;
-}
-
-float char_c::getY()
-{
-    return y;
-}
-
-void char_c::setX(float _x)
-{
-    x = _x;
-}
-
-void char_c::setY(float _y)
-{
-    y = _y;
-}
-
-void char_c::setXY(float _x, float _y)
-{
-    x = _x;
-    y = _y;
-}
-
 char_frame *char_c::get_pframe()
 {
     return viz.get_pframe();
-}
-
-void char_c::setDir(float d)
-{
-    dir = d;
-}
-
-float char_c::getDir()
-{
-    return dir;
-}
-
-void char_c::mvX(float _x)
-{
-    x += _x;
-}
-
-void char_c::mvY(float _y)
-{
-    y += _y;
 }
