@@ -12,6 +12,14 @@ struct frame_box
 	int32_t     y2;
 };
 
+struct box_box
+{
+	float		x1;
+	float       y1;
+	float       x2;
+	float       y2;
+};
+
 struct char_frame
 {
 	gr_tex * img;
@@ -115,6 +123,9 @@ class char_sprite
     uint32_t get_cur_frame_time();
     uint32_t get_elaps_frames();
     char_frame * get_pframe();
+    uint32_t get_seq_id();
+    uint16_t get_cprior();
+    uint16_t get_prior();
 
     bool set_seq(seq *sq);
     void reset_seq();
@@ -166,6 +177,9 @@ class char_graph
     uint32_t get_frame_time();
     uint32_t get_elaps_frames();
     char_frame * get_pframe();
+    uint32_t get_seq_id();
+    uint16_t get_cprior();
+    uint16_t get_prior();
 
     char_graph();
   //  ~char_graph();

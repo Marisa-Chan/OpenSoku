@@ -165,3 +165,18 @@ void char_sprite::setBlend(gr_blend _blend)
 {
     blend = _blend;
 }
+
+uint16_t char_sprite::get_cprior()
+{
+    return cur_seq->prior_for_cancel;
+}
+
+uint16_t char_sprite::get_prior()
+{
+    return cur_seq->prior;
+}
+
+uint32_t char_sprite::get_seq_id()
+{
+    return cur_seq->id;
+}

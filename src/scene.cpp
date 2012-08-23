@@ -149,118 +149,20 @@ void c_scene::players_input()
         chrs[i]->basic_input();
 }
 
-float box_col_intersect(float x11, float y11, float x12, float y12,
-                        float x21, float y21, float x22, float y22)
-{
-    float l1,r1,t1,b1;
-    if (x11 > x12)
-    {
-        l1 = x12;
-        r1 = x11;
-    }
-    else
-    {
-        r1 = x12;
-        l1 = x11;
-    }
-    if (y11 > y12)
-    {
-        t1 = y12;
-        b1 = y11;
-    }
-    else
-    {
-        b1 = y12;
-        t1 = y11;
-    }
-
-    float l2,r2,t2,b2;
-    if (x21 > x22)
-    {
-        l2 = x22;
-        r2 = x21;
-    }
-    else
-    {
-        r2 = x22;
-        l2 = x21;
-    }
-    if (y21 > y22)
-    {
-        t2 = y22;
-        b2 = y21;
-    }
-    else
-    {
-        b2 = y22;
-        t2 = y21;
-    }
-
-    if ((t1 < b2) && (t2 < b1)) // intersect?
-    {
-        if ((r2 > l1) && (l2 < r1)) //intersect!
-        {
-
-            return  (min(r1,r2)-max(l1,l2))/2.0;
-        }
-    }
-    return 0;
-}
-
-void c_scene::players_collisions()
-{
-    float mm = 0;
-
-    char_frame *p1 = chrs[0]->get_pframe();
-    char_frame *p2 = chrs[1]->get_pframe();
-
-    for (uint32_t i=0; i < p1->box_coll.size(); i++)
-        for (uint32_t j=0; j < p2->box_coll.size(); j++)
-        {
-            mm = box_col_intersect(chrs[0]->x + chrs[0]->dir*p1->box_coll[i].x1,
-                                   chrs[0]->y + p1->box_coll[i].y1,
-                                   chrs[0]->x + chrs[0]->dir*p1->box_coll[i].x2,
-                                   chrs[0]->y + p1->box_coll[i].y2,
-                                   chrs[1]->x + chrs[1]->dir*p2->box_coll[i].x1,
-                                   chrs[1]->y + p2->box_coll[i].y1,
-                                   chrs[1]->x + chrs[1]->dir*p2->box_coll[i].x2,
-                                   chrs[1]->y + p2->box_coll[i].y2);
-            if (mm > 0)
-            {
-                if (chrs[0]->x > chrs[1]->x)
-                {
-                    chrs[0]->x += mm;
-                    chrs[1]->x -= mm;
-                }
-                else
-                {
-                    chrs[0]->x -= mm;
-                    chrs[1]->x += mm;
-                }
-            }
-        }
-}
-
-void c_scene::xy_pos_check()
-{
-    for (uint32_t i=0; i < 2; i++)
-    {
-        char_xy_pos_calculation(chrs[i]);
-    }
-
-}
-
-
-int8_t get_border_near(char_c *chr)
+//Borders:
+// 0 - center
+//-1 - right border
+// 1 - left border
+s_border get_border_near(char_c *chr)
 {
     if ( chr->x - 40.0 > 0.0 )
     {
         if ( chr->x + 40.0 < 1280.0 )
-            return 0;
+            return BORD_CENT;
         else
-            return -1;
+            return BORD_RIGHT;
     }
-    return 1;
+    return BORD_LEFT;
 }
 
 float getlvl_height(char_c *chr)
@@ -316,7 +218,7 @@ void char_xy_pos_calculation(char_c *chr)
                     chr->x = (BKG_WIDTH - CHAR_PADDING);
             }
             else
-                chr->x = (enemy->field_74C + chr->h_inerc) * chr->dir * chr->field_564 + chr->x;
+                chr->x += (enemy->field_74C + chr->h_inerc) * chr->dir * chr->field_564;
 
             chr->y = chr->field_568 * chr->v_inerc + chr->y;
 
@@ -326,3 +228,277 @@ void char_xy_pos_calculation(char_c *chr)
         }
     }
 }
+
+void c_scene::func16()
+{
+
+}
+
+void c_scene::func12()
+{
+
+}
+
+void scene_subfunc1(c_scene *scn)
+{
+    for (uint32_t i=0; i < 2; i++)
+        scn->chrs[i]->func16();
+
+    //for (uint32_t i=0; i < 2; i++)
+    //scn->chrs[i]->smclass2->func3();
+
+    for (uint32_t i=0; i < 2; i++)
+        scn->chrs[i]->func10();
+
+    for (uint32_t i=0; i < 2; i++)
+    {
+        if ( !scn->chrs[i]->field_196 )
+        {
+            if ( !scn->chrs[i]->enemy->field_4A8 )
+            {
+                if ( char_idle_or_move(scn->chrs[i]) )
+                {
+                    scn->chrs[i]->func18();
+                    if ( !scn->chrs[i]->field_4C0 )
+                        scn->chrs[i]->field_4BE = 0;
+                }
+                /*if (char_is_shock(scn->chrs[i]))
+                    if ( scn->chrs[i]->y > 0.0 )
+                        sub_462FF0(scn->chrs[i]);*/
+            }
+            if ( scn->chrs[i]->get_seq() < 300 )
+            {
+                //if ( v1->some_input_var <= 6 )
+                //zero_input_charclass_ispressed_vars(v1);
+            }
+            scn->chrs[i]->func20();
+        }
+    }
+
+    //for (uint32_t i=0; i < 2; i++)
+    //scn->chrs[i]->smclass2->func4();
+
+}
+
+
+void scene_subfunc2(c_scene *scn)
+{
+
+}
+
+
+
+void box_coll_get(char_c *chr, box_box *box)
+{
+    if (chr->dir == 1)
+    {
+        box->x1 = chr->x + chr->get_pframe()->box_coll[0].x1;
+        box->x2 = chr->x + chr->get_pframe()->box_coll[0].x2;
+    }
+    else
+    {
+        box->x1 = chr->x - chr->get_pframe()->box_coll[0].x2;
+        box->x2 = chr->x - chr->get_pframe()->box_coll[0].x1;
+    }
+    box->y1 = chr->get_pframe()->box_coll[0].y1 - chr->y;
+    box->y2 = chr->get_pframe()->box_coll[0].y2 - chr->y;
+
+}
+
+bool scene_collid(c_scene *scn, box_box *b1, box_box *b2)
+{
+    if ((b2->x1 - b1->x2) >= 0 ||
+            (b1->x1 - b2->x2) >= 0 ||
+            (b2->y1 - b1->y2) >= 0 ||
+            (b1->y1 - b2->y2) >= 0)
+    {
+        return false;
+    }
+    else
+    {
+        //sub_4790B0(this, a2, a3);
+        return true;
+    }
+}
+
+//Previous frame character near border
+// -1 - no char, 0 - player 1, 1 - player 2
+int8_t bdr_r_char = -1;
+int8_t bdr_l_char = -1;
+
+void scene_subfunc3(c_scene *scn)
+{
+    char_c *p1 = scn->chrs[0];
+    char_c *p2 = scn->chrs[1];
+
+    p1->field_744 = 0.0;
+    p2->field_744 = 0.0;
+
+    if ( !p1->get_pframe()->box_coll.size() || !p2->get_pframe()->box_coll.size() )
+        return;
+
+    //Detecting who firstly take border
+
+    if      ( bdr_r_char == 1 && get_border_near(p2) != BORD_RIGHT )
+        bdr_r_char = -1;
+    else if ( bdr_r_char == 0 && get_border_near(p1) != BORD_RIGHT )
+        bdr_r_char = -1;
+
+    if      ( bdr_l_char == 1 && get_border_near(p2) != BORD_LEFT )
+        bdr_l_char = -1;
+    else if ( bdr_l_char == 0 && get_border_near(p1) != BORD_LEFT )
+        bdr_l_char = -1;
+
+    if      (get_border_near(p1) == BORD_LEFT  && bdr_l_char == -1)
+        bdr_l_char = 0;
+    else if (get_border_near(p1) == BORD_RIGHT && bdr_r_char == -1)
+        bdr_r_char = 0;
+
+    if      (get_border_near(p2) == BORD_LEFT  && bdr_l_char == -1)
+        bdr_l_char = 1;
+    else if (get_border_near(p2) == BORD_RIGHT && bdr_r_char == -1)
+        bdr_r_char = 1;
+
+    //now we finally know it.
+
+    box_box p1_box;
+    box_box p2_box;
+
+    box_coll_get(p1, &p1_box);
+    box_coll_get(p2, &p2_box);
+
+    if ( !scene_collid(scn, &p1_box, &p2_box) )
+        return;
+//    sub_479330(v1);
+
+
+
+    float p1_frc = (p2->field_74C + p1->h_inerc) * p1->field_564;
+    float p2_frc = (p1->field_74C + p2->h_inerc) * p2->field_564;
+
+    if ( get_border_near(p1) == BORD_RIGHT && bdr_r_char == 0 ) //P1 at right border
+    {
+        p2->x -= (p2_box.x2 - p1_box.x1 - 1.0);
+
+        if ( p2->dir * p2_frc + p1->dir * p1_frc >= 0.0 &&
+             p2->dir * p2_frc >= 0.0 )
+        {
+            p1->field_744 = -p1_frc;
+            p2->field_744 = -p2_frc;
+        }
+    }
+    else if ( get_border_near(p1) == BORD_LEFT  && bdr_l_char == 0 ) //P1 at left border
+    {
+        p2->x += (p1_box.x2 - p2_box.x1 - 1.0);
+
+        if ( p2->dir * p2_frc + p1->dir * p1_frc <= 0.0 &&
+             p2->dir * p2_frc <= 0.0 )
+        {
+            p1->field_744 = -p1_frc;
+            p2->field_744 = -p2_frc;
+        }
+    }
+    else if ( get_border_near(p2) == BORD_RIGHT && bdr_r_char == 1 ) //P2 at right border
+    {
+        p1->x -= (p1_box.x2 - p2_box.x1 - 1.0);
+
+        if ( p1->dir * p1_frc + p2->dir * p2_frc < 0.0 &&
+             p1->dir * p1_frc < 0.0 )
+        {
+            p1->field_744 = -p1_frc;
+            p2->field_744 = -p2_frc;
+        }
+    }
+    else if ( get_border_near(p2) == BORD_LEFT && bdr_l_char == 1 ) //P2 at left border
+    {
+        p1->x += (p2_box.x2 - p1_box.x1 - 1.0);
+
+        if ( p1->dir * p1_frc + p2->dir * p2_frc <= 0.0 &&
+             p1->dir * p1_frc <= 0.0 )
+        {
+            p1->field_744 = -p1_frc;
+            p2->field_744 = -p2_frc;
+        }
+    }
+    else // not at border
+    {
+        float p1_xx = p1_box.x1 + p1_box.x2;
+        float p2_xx = p2_box.x1 + p2_box.x2;
+        float p1_yy = p1_box.y1 + p1_box.y2;
+        float p2_yy = p2_box.y1 + p2_box.y2;
+
+        if ( p1_xx > p2_xx || (p1_xx == p2_xx && p2_yy > p1_yy)) // if p1 at right of p2 or if p1 == p2 and p2 upper than p1
+        {
+            float dist = (p2_box.x2 - p1_box.x1 - 1.0);
+
+            if ( dist < 0.0 )
+                dist = 0.0;
+
+            float mv_dist = dist / 2.0;
+
+            if ( getlvl_height(p1, mv_dist) == 0 )
+                p1->x += mv_dist;
+
+            if ( getlvl_height(p2,-mv_dist) == 0 )
+                p2->x -= mv_dist;
+
+            if ( p2->dir * p2->field_564 * p2->h_inerc >=
+                 p1->dir * p1->field_564 * p1->h_inerc )
+            {
+                float force = (p1_frc * p1->dir + p2_frc * p2->dir) / 2.0;
+                p1->field_744 = p1->dir * force - p1->h_inerc;
+                p2->field_744 = p2->dir * force - p2->h_inerc;
+            }
+        }
+        else
+        {
+            float dist = (p1_box.x2 - p2_box.x1 - 1.0);
+
+            if ( dist < 0.0 )
+                dist = 0.0;
+
+            float mv_dist = dist / 2.0;
+
+            if ( getlvl_height(p1, mv_dist) == 0 )
+                p1->x -= mv_dist;
+
+            if ( getlvl_height(p2,-mv_dist) == 0 )
+                p2->x += mv_dist;
+
+
+            if ( p2->dir * p2->field_564 * p2->h_inerc <=
+                 p1->dir * p1->field_564 * p1->h_inerc )
+            {
+                float force = (p1_frc * p1->dir + p2_frc * p2->dir) / 2.0;
+                p1->field_744 = p1->dir * force - p1->field_564 * p1->h_inerc;
+                p2->field_744 = p2->dir * force - p2->field_564 * p2->h_inerc;
+            }
+        }
+    }
+}
+
+void scene_subfunc4(c_scene *scn)
+{
+    for (uint32_t i=0; i < 2; i++)
+        char_xy_pos_calculation(scn->chrs[i]);
+}
+
+void scene_subfunc5(c_scene *scn)
+{
+
+}
+
+void c_scene::update()
+{
+    func16();
+    scene_subfunc1(this);
+    scene_subfunc2(this);
+    scene_subfunc3(this);
+    scene_subfunc4(this);
+    scene_subfunc5(this);
+    func12();
+}
+
+
+
+

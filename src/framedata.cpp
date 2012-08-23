@@ -423,7 +423,16 @@ char_frame * char_graph::get_pframe()
     return sprite.get_pframe();
 }
 
+uint32_t char_graph::get_seq_id()
+{
+    return sprite.get_seq_id();
+}
 
-
-
-
+uint16_t char_graph::get_prior()
+{
+    return sprite.get_prior();
+}
+uint16_t char_graph::get_cprior()
+{
+    return sprite.get_cprior();
+}

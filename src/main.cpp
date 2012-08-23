@@ -32,9 +32,9 @@ int main()
 
 
 
-    char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_KB));
+    char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_NONE));
 
-    char_c *alice = new char_alice(inp_createinput(INP_TYPE_NONE));
+    char_c *alice = new char_alice(inp_createinput(INP_TYPE_KB));
 
 
 //    uint32_t i = 0;
@@ -44,11 +44,11 @@ int main()
 
     marisa->set_seq(0);
     alice->set_seq(0);
-    background_11  bkg;
+    background  *bkg = new background_11;
 
 
 
-    c_scene scn(&bkg,marisa,alice);
+    c_scene *scn = new c_scene(bkg,marisa,alice);
 
 
     while(!kb.rawPressed(kC_Escape))
@@ -57,14 +57,14 @@ int main()
 
         gr_clear();
 
-        scn.players_input();
+        scn->players_input();
 
-        scn.players_collisions();
-        scn.xy_pos_check();
+        //scn.players_collisions();
+        scn->update();
 
-        scn.draw_scene();
+        scn->draw_scene();
 
-        scn.update_char_anims();
+        scn->update_char_anims();
 
         gr_flip();
 

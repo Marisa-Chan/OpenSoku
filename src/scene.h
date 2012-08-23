@@ -4,6 +4,13 @@
 #define CHAR_PADDING  40
 #define BKG_WIDTH     1280
 
+enum s_border
+{
+    BORD_LEFT  = 1,
+    BORD_CENT  = 0,
+    BORD_RIGHT = -1
+};
+
 struct s_camera
 {
     float x;
@@ -39,13 +46,16 @@ class c_scene
     void draw_scene();
     void update_char_anims();
     void players_input();
-    void players_collisions();
-    void xy_pos_check();
+
+
+    void func16();
+    void func12();
+    void update();
 };
 
 
 
-int8_t get_border_near(char_c *chr);
+s_border get_border_near(char_c *chr);
 float getlvl_height(char_c *chr);
 float getlvl_height(char_c *chr, float dx);
 bool char_on_ground(char_c *chr);

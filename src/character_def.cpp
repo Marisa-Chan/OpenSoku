@@ -21,6 +21,9 @@ char_c::char_c(inp_ab *func)
     field_744 = 0;
     field_74C = 0;
 
+    speed_mult = 1.0;
+    field_834  = 0;
+
     h_inerc = 0;
     v_inerc = 0;
     v_force = 0;
@@ -94,11 +97,16 @@ void char_c::input_update()
 void char_c::basic_input()
 {
     if (input->keyDown(INP_LEFT))
-        x -= 5;
+        char_h_move(this, -15);
     if (input->keyDown(INP_RIGHT))
-        x += 5;
+        char_h_move(this, 15);
 
     v_inerc = v_inerc - v_force;
+
+    if (h_inerc > 0)
+        h_inerc -= 0.5;
+    if (h_inerc < 0)
+        h_inerc += 0.5;
 
     if (input->keyDown(INP_UP))
     {
@@ -137,4 +145,65 @@ void char_c::basic_input()
 char_frame *char_c::get_pframe()
 {
     return viz.get_pframe();
+}
+
+uint32_t char_c::get_seq()
+{
+    return viz.get_seq_id();
+}
+
+
+void char_c::func10()
+{
+
+}
+
+void char_c::func16()
+{
+
+}
+
+void char_c::func18()
+{
+
+}
+
+void char_c::func20()
+{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+bool char_idle_or_move(char_c *chr)
+{
+    return chr->get_seq() < 50;
+}
+
+bool char_is_shock(char_c *chr)
+{
+    uint32_t s = chr->get_seq();
+    return s >= 50 && s < 150;
+}
+
+
+void char_h_move(char_c *chr, float move)
+{
+  float movel;
+
+  movel = chr->speed_mult * move;
+  chr->h_inerc = movel;
+  if ( move > 0.0 )
+    chr->h_inerc += chr->field_834 * 0.5;
+  else if ( move < 0.0 )
+    chr->h_inerc -= chr->field_834 * 0.5;
 }
