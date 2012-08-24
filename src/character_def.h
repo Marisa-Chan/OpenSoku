@@ -69,11 +69,13 @@ class char_c
     virtual void basic_input();
 
     bool flip_to_enemy();
+    void reset_forces();
 
-    void func10();
-    void func16();
-    bool func18();
-    void func20();
+    virtual void func10();
+    virtual void set_seq_params(); //func15
+    virtual void func16();
+    virtual void func18();
+    virtual void func20();
 };
 
 

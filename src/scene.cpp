@@ -136,8 +136,8 @@ void c_scene::draw_scene()
 
 void c_scene::update_char_anims()
 {
-    for (uint32_t i=0; i < 2; i++)
-        chrs[i]->process(true);
+   // for (uint32_t i=0; i < 2; i++)
+      //  chrs[i]->process(true);
 }
 
 void c_scene::players_input()
@@ -193,6 +193,13 @@ float getlvl_height(char_c *chr, float dx)
 bool char_on_ground(char_c *chr)
 {
     return getlvl_height(chr) >= chr->y;
+}
+
+bool char_on_ground_down(char_c *chr)
+{
+    return getlvl_height(chr) >= chr->y &&
+            chr->v_inerc < 0 /*&&
+            !chr->field_4C4*/;
 }
 
 

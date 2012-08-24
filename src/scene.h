@@ -59,6 +59,7 @@ s_border get_border_near(char_c *chr);
 float getlvl_height(char_c *chr);
 float getlvl_height(char_c *chr, float dx);
 bool char_on_ground(char_c *chr);
+bool char_on_ground_down(char_c *chr);
 void char_xy_pos_calculation(char_c *chr);
 
 #endif // SCENE_H_INCLUDED

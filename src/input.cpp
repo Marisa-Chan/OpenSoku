@@ -187,14 +187,6 @@ int8_t inp_ab::gY()
 
 
 
-
-
-
-
-
-
-
-
 void inp_kb::update(int8_t dir)
 {
     flush_cur();
@@ -212,10 +204,10 @@ void inp_kb::update(int8_t dir)
         x_axis += 1*dir;
 
     if (key_dn[INP_UP])
-        y_axis -= 1;
+        y_axis += 1;
 
     if (key_dn[INP_DOWN])
-        y_axis += 1;
+        y_axis -= 1;
 
     fill_kframes();
 }

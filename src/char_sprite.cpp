@@ -99,7 +99,7 @@ void char_sprite::set_frame(uint32_t frm)
     if (cur_seq == NULL || frm >= _num_frames)
         return;
 
-    cur_frame = 0;
+    cur_frame = frm;
     frame_val_set();
 }
 
