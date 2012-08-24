@@ -68,9 +68,11 @@ class char_c
 
     virtual void basic_input();
 
+    bool flip_to_enemy();
+
     void func10();
     void func16();
-    void func18();
+    bool func18();
     void func20();
 };
 

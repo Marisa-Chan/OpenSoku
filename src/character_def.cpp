@@ -2,6 +2,7 @@
 #include "framedata.h"
 #include "input.h"
 #include "character_def.h"
+#include "scene.h"
 
 
 char_c::char_c(inp_ab *func)
@@ -74,15 +75,15 @@ void char_c::draw()
 
     char_frame *pf = viz.get_pframe();
 
-    if (pf->box_coll.size() > 0)
+    if (pf->box_atk.size() > 0)
     {
-        for (uint32_t i=0; i<pf->box_coll.size();i++)
+        for (uint32_t i=0; i<pf->box_atk.size();i++)
         {
-            gr_draw_box(x+pf->box_coll[i].x1,
-                        -y+pf->box_coll[i].y1,
-                        pf->box_coll[i].x2-pf->box_coll[i].x1,
-                        pf->box_coll[i].y2-pf->box_coll[i].y1,
-                        255,255,255,128,1);
+            gr_draw_box(x+pf->box_atk[i].x1,
+                        -y+pf->box_atk[i].y1,
+                        pf->box_atk[i].x2-pf->box_atk[i].x1,
+                        pf->box_atk[i].y2-pf->box_atk[i].y1,
+                        255,0,0,128,1);
 
         }
     }
@@ -91,14 +92,14 @@ void char_c::draw()
 
 void char_c::input_update()
 {
-    input->update();
+    input->update(dir);
 }
 
 void char_c::basic_input()
 {
-    if (input->keyDown(INP_LEFT))
+    if (input->gX() == -1)
         char_h_move(this, -15);
-    if (input->keyDown(INP_RIGHT))
+    if (input->gX() == 1)
         char_h_move(this, 15);
 
     v_inerc = v_inerc - v_force;
@@ -114,7 +115,7 @@ void char_c::basic_input()
         v_inerc = 15;
     }
 
-    int32_t asd = input->check_input_seq("236X",20,1);
+    int32_t asd = input->check_input_seq("236X",20,dir);
     if (asd > -1)
     {
         printf("236X!\n");
@@ -122,7 +123,7 @@ void char_c::basic_input()
     }
 
 
-    asd = input->check_input_seq("623X",20,1);
+    asd = input->check_input_seq("623X",20,dir);
     if (asd > -1)
     {
         printf("623X!\n");
@@ -130,11 +131,11 @@ void char_c::basic_input()
     }
 
 
-    asd = input->check_input_seq("412X",15,1);
+    asd = input->check_input_seq("412X",15,dir);
     if (asd > -1)
         printf("412X!\n");
 
-    asd = input->check_input_seq("8N8",15,1);
+    asd = input->check_input_seq("8N8",15,dir);
     if (asd > -1)
         printf("8N8!\n");
 
@@ -163,16 +164,119 @@ void char_c::func16()
 
 }
 
-void char_c::func18()
-{
-
-}
-
 void char_c::func20()
 {
 
 }
 
+bool char_c::flip_to_enemy()
+{
+  int8_t d = dir;
+
+  if (enemy->x < x)
+  {
+      dir = -1;
+      return d != -1;
+  }
+  else if (enemy->x > x)
+  {
+      dir = 1;
+      return d != 1;
+  }
+  return false;
+}
+
+bool char_c::func18()
+{
+
+
+  bool grn = char_on_ground(this);
+  /*if ( grn && v1->field_4C4 == offsetof(char_class_vars, class) )
+  {
+    v1->field_49B = 0;
+    v1->field_49C = 0;
+  }*/
+  //if ( !v1->current_seq_frames_vector->field_10 )
+    if ( grn /*&& v1->field_4C4 == 0*/ )
+    {
+      int32_t sq = get_seq();
+      if ( sq != 6 && sq != 7 && sq != 8 )
+        {
+          int8_t in_y = input->gY();
+          int8_t in_x = input->gX();
+          if ( in_y >= 0 )
+          {
+            if ( in_y == 0 )
+            {
+              if ( in_x != 0 )
+              {
+                flip_to_enemy();
+                if ( in_x < 0)
+                {
+                  if ( sq != 5 )
+                  {
+                    set_seq(5);
+                    return flip_to_enemy();
+                  }
+                }
+                else if (in_x > 0)
+                {
+                  if ( sq != 4 )
+                  {
+                    set_seq(4);
+                    return flip_to_enemy();
+                  }
+                }
+              }
+              else if (in_x == 0)
+              {
+                if ( sq == 1 || sq == 2 )
+                {
+                  set_seq(3);
+                }
+                else if ( sq != 0 && sq != 3 && sq != 10 )
+                  {
+                    set_seq(0);
+                    return flip_to_enemy();
+                  }
+              }
+            }
+            else if ( in_y > 0 )
+            {
+              if ( sq != 2 && sq != 1 )
+              {
+                set_seq(1);
+                return flip_to_enemy();
+              }
+            }
+            return flip_to_enemy();
+          }
+          flip_to_enemy();
+
+          if ( in_x != 0 )
+          {
+
+            if ( in_x <= 0 )
+            {
+              if ( in_x < 0 )
+                if ( sq != 8 )
+                    set_seq(8);
+            }
+            else
+            {
+              if ( sq != 7 )
+                set_seq(7);
+            }
+          }
+          else
+          {
+            if ( sq != 6 )
+              set_seq(6);
+          }
+        }
+      }
+  return true;
+}
 
 
 

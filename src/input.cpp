@@ -175,6 +175,15 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
 }
 
 
+int8_t inp_ab::gX()
+{
+    return x_axis;
+}
+
+int8_t inp_ab::gY()
+{
+    return y_axis;
+}
 
 
 
@@ -186,15 +195,27 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
 
 
 
-
-
-
-void inp_kb::update()
+void inp_kb::update(int8_t dir)
 {
     flush_cur();
 
     for (uint32_t i=0; i<INP_KEYS; i++)
         key_dn[i] = kbd.isKeyPressed((sf::Keyboard::Key)map[i]);
+
+    x_axis = 0;
+    y_axis = 0;
+
+    if (key_dn[INP_LEFT])
+        x_axis -= 1*dir;
+
+    if (key_dn[INP_RIGHT])
+        x_axis += 1*dir;
+
+    if (key_dn[INP_UP])
+        y_axis -= 1;
+
+    if (key_dn[INP_DOWN])
+        y_axis += 1;
 
     fill_kframes();
 }
@@ -240,7 +261,7 @@ void inp_js::load_def_profile()
     return;
 }
 
-void inp_js::update()
+void inp_js::update(int8_t dir)
 {
     return;
 }

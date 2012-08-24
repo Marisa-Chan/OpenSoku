@@ -115,7 +115,7 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     chrs[1]->y = 0;
 
     chrs[0]->dir = 1.0;
-    chrs[1]->dir = 1.0;
+    chrs[1]->dir = -1.0;
 
     chrs[0]->enemy = chrs[1];
     chrs[1]->enemy = chrs[0];
@@ -137,7 +137,7 @@ void c_scene::draw_scene()
 void c_scene::update_char_anims()
 {
     for (uint32_t i=0; i < 2; i++)
-        chrs[i]->process();
+        chrs[i]->process(true);
 }
 
 void c_scene::players_input()
@@ -326,7 +326,7 @@ bool scene_collid(c_scene *scn, box_box *b1, box_box *b2)
 int8_t bdr_r_char = -1;
 int8_t bdr_l_char = -1;
 
-void scene_subfunc3(c_scene *scn)
+void scene_check_collisions(c_scene *scn)
 {
     char_c *p1 = scn->chrs[0];
     char_c *p2 = scn->chrs[1];
@@ -493,7 +493,7 @@ void c_scene::update()
     func16();
     scene_subfunc1(this);
     scene_subfunc2(this);
-    scene_subfunc3(this);
+    scene_check_collisions(this);
     scene_subfunc4(this);
     scene_subfunc5(this);
     func12();
