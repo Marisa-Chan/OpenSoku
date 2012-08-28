@@ -34,10 +34,9 @@ void c_scene::set_camera(char_c *p1,char_c *p2)
 void c_scene::set_camera(float x1, float y1, float x2, float y2)
 {
     float xdist = fabs(x1-x2)+CHAR_PADDING * 2;
-    float ydist = fabs(y1-y2);
+    float ydist = fabs(y1-y2)*VERT_SCALE;
 
-    float sq = sqrt(ydist*VERT_SCALE*
-                    ydist*VERT_SCALE+
+    float sq = sqrt(ydist*ydist+
                     xdist*xdist);
 
     float new_scale = 1.0;

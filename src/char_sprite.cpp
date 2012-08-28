@@ -113,7 +113,12 @@ bool char_sprite::next_frame(bool ignore_loop)
 
 bool char_sprite::next_subseq()
 {
+    uint32_t tmp = cur_subseq;
     cur_subseq = (cur_subseq + 1) % cur_seq->subseqs.size();
+
+    if (tmp != cur_subseq)
+        elaps_frames = 0;
+
 
     _cur_sseq   = &cur_seq->subseqs[cur_subseq];
     _num_frames = _cur_sseq->frames.size();

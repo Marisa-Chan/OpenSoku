@@ -175,9 +175,9 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
 }
 
 
-int8_t inp_ab::gX()
+int8_t inp_ab::gX(int8_t dir)
 {
-    return x_axis;
+    return x_axis * dir;
 }
 
 int8_t inp_ab::gY()
@@ -185,9 +185,7 @@ int8_t inp_ab::gY()
     return y_axis;
 }
 
-
-
-void inp_kb::update(int8_t dir)
+void inp_kb::update()
 {
     flush_cur();
 
@@ -198,10 +196,10 @@ void inp_kb::update(int8_t dir)
     y_axis = 0;
 
     if (key_dn[INP_LEFT])
-        x_axis -= 1*dir;
+        x_axis -= 1;
 
     if (key_dn[INP_RIGHT])
-        x_axis += 1*dir;
+        x_axis += 1;
 
     if (key_dn[INP_UP])
         y_axis += 1;
@@ -253,7 +251,7 @@ void inp_js::load_def_profile()
     return;
 }
 
-void inp_js::update(int8_t dir)
+void inp_js::update()
 {
     return;
 }

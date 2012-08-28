@@ -163,12 +163,12 @@ public:
     bool keyDown(inp_keys key);
     bool keyHit(inp_keys key);
     bool keyUp(inp_keys key);
-    int8_t gX();
+    int8_t gX(int8_t dir);
     int8_t gY();
 
     int8_t check_input_seq(const char *sq, uint8_t frames, int8_t direction);
 
-    virtual void update(int8_t dir = 1) = 0;
+    virtual void update() = 0;
     virtual void load_def_profile() = 0;
     virtual void load_profile(kmapper keys) = 0;
 };
@@ -186,7 +186,7 @@ public:
     void load_profile(kmapper keys);
     void load_def_profile();
     bool rawPressed(uint32_t key);
-    void update(int8_t dir = 1);
+    void update();
 };
 
 class inp_js: public inp_ab
@@ -194,7 +194,7 @@ class inp_js: public inp_ab
 public:
     void load_profile(kmapper keys);
     void load_def_profile();
-    void update(int8_t dir = 1);
+    void update();
 };
 
 class inp_none: public inp_ab
@@ -206,7 +206,7 @@ public:
         {return;};
     void load_def_profile()
         {return;};
-    void update(int8_t dir = 1)
+    void update()
         {return;};
 };
 

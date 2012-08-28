@@ -95,23 +95,23 @@ void char_c::draw()
 
 void char_c::input_update()
 {
-    input->update(dir);
+    input->update();
 }
 
 void char_c::basic_input()
 {
-   // v_inerc = v_inerc - v_force;
+    // v_inerc = v_inerc - v_force;
 
-   // if (h_inerc > 0)
-   //     h_inerc -= 0.5;
-   // if (h_inerc < 0)
+    // if (h_inerc > 0)
+    //     h_inerc -= 0.5;
+    // if (h_inerc < 0)
     //    h_inerc += 0.5;
 
-   // if (input->keyDown(INP_UP))
-   // {
-   //     v_force = 0.7;
-   //     v_inerc = 15;
-   // }
+    // if (input->keyDown(INP_UP))
+    // {
+    //     v_force = 0.7;
+    //     v_inerc = 15;
+    // }
 
     int32_t asd = input->check_input_seq("236X",20,dir);
     if (asd > -1)
@@ -205,14 +205,14 @@ void char_c::func18()
       v1->field_49B = 0;
       v1->field_49C = 0;
     }*/
-    //if ( !v1->current_seq_frames_vector->field_10 )
+    if ( !viz.get_prior())
     if ( grn /*&& v1->field_4C4 == 0*/ )
     {
         int32_t sq = get_seq();
         if ( sq != 6 && sq != 7 && sq != 8 )
         {
             int8_t in_y = input->gY();
-            int8_t in_x = input->gX();
+            int8_t in_x = input->gX(dir);
 
             if (in_y == 0)
             {
@@ -243,6 +243,7 @@ void char_c::func18()
             else if (in_y > 0)
             {
                 flip_to_enemy();
+                in_x = input->gX(dir);
 
                 if ( in_x < 0 )
                 {
@@ -273,7 +274,50 @@ void char_c::func18()
 }
 
 
+bool sub10func(char_c *chr)
+{
+    int32_t sq = chr->get_seq();
 
+    if ( chr->field_4C4 || (char_on_ground(chr) && chr->field_4C4 == 0))
+        return false;
+    if ( chr->y - getlvl_height(chr) <= 5.0|| sq == 98 || sq == 99 )
+    {
+        chr->y = getlvl_height(chr);
+        return false;
+    }
+    if ( sq < 50 || sq > 149 )
+    {
+        chr->v_inerc = 0.0;
+        chr->v_force = 0.5;
+
+        if ( chr->h_inerc > 10.0 )
+            chr->h_inerc = 10.0;
+        if ( chr->h_inerc < -10.0 )
+            chr->h_inerc = -10.0;
+
+        if ( sq < 700 || sq > 799 )
+        {
+            chr->scaleX = 1.0;
+            chr->scaleY = 1.0;
+
+            chr->set_seq(9);
+        }
+        else
+            chr->set_seq(704);
+    }
+    else
+    {
+        chr->field_1A8 = 0.0;
+        chr->field_1A4 = -chr->h_inerc;
+        chr->scaleX = 1.0;
+        chr->scaleY = 1.0;
+        chr->angZ    = 0.0;
+        chr->v_force = 0.5;
+
+        chr->set_seq(71);
+    }
+    return true;
+}
 
 
 

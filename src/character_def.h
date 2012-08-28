@@ -22,9 +22,19 @@ class char_c
     float v_inerc;
     float v_force;
 
+    float angX;
+    float angY;
+    float angZ;
+
+    float scaleX;
+    float scaleY;
+
     char_c *enemy;
 
     char_c(inp_ab *func);
+
+    float   field_1A4;
+    float   field_1A8;
 
     int16_t field_196;
     int16_t field_4A8;
@@ -37,6 +47,8 @@ class char_c
     float   field_564;
     float   field_568;
     int8_t  field_572;
+
+    int8_t  field_49A;
 
 
     int16_t health;
@@ -83,5 +95,6 @@ class char_c
 bool char_idle_or_move(char_c *chr);
 bool char_is_shock(char_c *chr);
 void char_h_move(char_c *chr, float move);
+bool sub10func(char_c *chr);
 
 #endif // CHARACTER_DEF_H_INCLUDED
