@@ -381,6 +381,11 @@ bool char_graph::next_subseq()
     return sprite.next_subseq();
 }
 
+bool char_graph::set_subseq(uint32_t idx)
+{
+    return sprite.set_subseq(idx);
+}
+
 void char_graph::reset_seq()
 {
     sprite.reset_seq();
@@ -435,4 +440,19 @@ uint16_t char_graph::get_prior()
 uint16_t char_graph::get_cprior()
 {
     return sprite.get_cprior();
+}
+
+uint16_t char_graph::get_prior(uint32_t idx)
+{
+    mapseq::iterator tmp = seqs.find(idx);
+    if (tmp != seqs.end())
+       return tmp->second->prior;
+    return 0xFFFF;
+}
+uint16_t char_graph::get_cprior(uint32_t idx)
+{
+    mapseq::iterator tmp = seqs.find(idx);
+    if (tmp != seqs.end())
+       return tmp->second->prior_for_cancel;
+    return 0xFFFF;
 }

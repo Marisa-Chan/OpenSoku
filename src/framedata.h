@@ -132,6 +132,7 @@ class char_sprite
     void set_frame(uint32_t frm);
     bool next_frame(bool ignore_loop = false);
     bool next_subseq();
+    bool set_subseq(uint32_t idx);
     bool process(bool ignore_loop = false);
 
     void setXY(float x, float y);
@@ -170,6 +171,7 @@ class char_graph
     void set_frame(uint32_t frm);
     bool next_frame(bool ignore_loop = false);
     bool next_subseq();
+    bool set_subseq(uint32_t idx);
     bool process(bool ignore_loop = false);
 
     uint32_t get_subseq();
@@ -180,6 +182,8 @@ class char_graph
     uint32_t get_seq_id();
     uint16_t get_cprior();
     uint16_t get_prior();
+    uint16_t get_cprior(uint32_t idx);
+    uint16_t get_prior(uint32_t idx);
 
     char_graph();
   //  ~char_graph();

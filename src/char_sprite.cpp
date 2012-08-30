@@ -134,6 +134,29 @@ bool char_sprite::next_subseq()
     return false;
 }
 
+bool char_sprite::set_subseq(uint32_t idx)
+{
+    uint32_t tmp = cur_subseq;
+    cur_subseq = idx % cur_seq->subseqs.size();
+
+    if (tmp != cur_subseq)
+        elaps_frames = 0;
+
+
+    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
+    _num_frames = _cur_sseq->frames.size();
+
+    set_frame(0);
+
+    if (cur_subseq == 0)
+    {
+        elaps_frames = 0;
+        return true;
+    }
+
+    return false;
+}
+
 bool char_sprite::process(bool ignore_loop)
 {
     elaps_frames++;

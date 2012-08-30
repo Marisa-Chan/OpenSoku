@@ -8,9 +8,11 @@ class char_marisa: public char_c
     char_marisa(inp_ab *func,uint8_t pal);
 
     void stopping();
+    void stopping_posit(float p);
     void set_seq_params();
 
     void func10();
+    void func20();
 };
 
 #endif // MARISA_CPP_INCLUDED

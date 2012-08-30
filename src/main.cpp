@@ -34,7 +34,7 @@ int main()
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_KB));
 
-    char_c *alice = new char_alice(inp_createinput(INP_TYPE_NONE));
+    char_c *alice = new char_alice(inp_createinput(INP_TYPE_NONE),1);
 
 
 //    uint32_t i = 0;

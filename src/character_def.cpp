@@ -29,6 +29,8 @@ char_c::char_c(inp_ab *func)
     v_inerc = 0;
     v_force = 0;
 
+    not_charge_attack = 1;
+
     enemy = NULL;
 
 }
@@ -98,47 +100,60 @@ void char_c::input_update()
     input->update();
 }
 
-void char_c::basic_input()
+void char_c::check_seq_input()
 {
-    // v_inerc = v_inerc - v_force;
+    pres_move = 0;
+    pres_comb = 0;
 
-    // if (h_inerc > 0)
-    //     h_inerc -= 0.5;
-    // if (h_inerc < 0)
-    //    h_inerc += 0.5;
+    if (input->check_input_seq("NRNR", 15,dir))
+        pres_move |= 1;
+    if (input->check_input_seq("NLNL", 15,dir))
+        pres_move |= 2;
 
-    // if (input->keyDown(INP_UP))
-    // {
-    //     v_force = 0.7;
-    //     v_inerc = 15;
-    // }
+    if (input->check_input_seq("N09", 20,dir))
+        pres_move |= 0x10;
+    if (input->check_input_seq("N07", 20,dir))
+        pres_move |= 8;
+    if (input->check_input_seq("N08", 20,dir))
+        pres_move |= 4;
 
-    int32_t asd = input->check_input_seq("236X",20,dir);
-    if (asd > -1)
-    {
-        printf("236X!\n");
-        set_seq(720);
-    }
+    if (input->check_input_seq("DD", 15,dir))
+        pres_move |= 0x20;
 
+    int8_t t = 0;
 
-    asd = input->check_input_seq("623X",20,dir);
-    if (asd > -1)
-    {
-        printf("623X!\n");
-        set_seq(521);
-    }
+    t = input->check_input_seq("421X", 15,dir);
+    if (t)
+        pres_comb |= 0x1000 << (t - 1);
 
+    t = input->check_input_seq("214X", 15,dir);
+    if (t)
+        pres_comb |= 0x10 << (t - 1);
 
-    asd = input->check_input_seq("412X",15,dir);
-    if (asd > -1)
-        printf("412X!\n");
+    t = input->check_input_seq("412X", 15,dir);
+    if (t)
+        pres_comb |= 0x10000 << (t - 1);
 
-    asd = input->check_input_seq("8N8",15,dir);
-    if (asd > -1)
-        printf("8N8!\n");
+    t = input->check_input_seq("623X", 15,dir);
+    if (t)
+        pres_comb |= 0x100 << (t - 1);
 
-    //if (input->KeyDown(INP_LEFT))
-    //x -= 5;
+    t = input->check_input_seq("236X", 15,dir);
+    if (t)
+        pres_comb |= 0x1 << (t - 1);
+
+    t = input->check_input_seq("4136X", 20,dir);
+    if (t)
+        pres_comb |= 0x100000 << (t - 1);
+
+    t = input->check_input_seq("6314X", 20,dir);
+    if (t)
+        pres_comb |= 0x1000000 << (t - 1);
+
+    t = input->check_input_seq("2N2X", 15,dir);
+    if (t)
+        pres_comb |= 0x10000000 << (t - 1);
+
 }
 
 char_frame *char_c::get_pframe()
@@ -205,7 +220,7 @@ void char_c::func18()
       v1->field_49B = 0;
       v1->field_49C = 0;
     }*/
-    if ( !viz.get_prior())
+    if ( viz.get_prior() == 0)
     if ( grn /*&& v1->field_4C4 == 0*/ )
     {
         int32_t sq = get_seq();

@@ -22,6 +22,14 @@ void gr_clear()
 void gr_flip()
 {
     window->display();
+    sf::Event ev;
+    while(window->pollEvent(ev))
+    {
+        if (ev.type == sf::Event::Closed)
+        {
+
+        }
+    };
 }
 
 void gr_tex_update(gr_tex *tex, void *buf, uint32_t wi, uint32_t hi)
@@ -50,7 +58,13 @@ gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal)
 			uint8_t  unknown3;
 		} __attribute__((packed)) hdr;
 
-    f->read(sizeof(hdr), &hdr);
+    f->read(1, &hdr.bpp);
+    f->read(4, &hdr.width);
+    f->read(4, &hdr.height);
+    f->read(4, &hdr.pitch);
+    f->read(1, &hdr.unknown);
+    f->read(2, &hdr.unknown2);
+    f->read(1, &hdr.unknown3);
 
     tex = gr_create_tex(hdr.width, hdr.height);
 

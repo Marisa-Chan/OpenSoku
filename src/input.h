@@ -145,6 +145,7 @@ protected:
 
     bool key_dn[INP_KEYS];
     bool pr_key_dn[INP_KEYS];
+    uint8_t key_frm[INP_KEYS];
 
     int8_t x_axis;
     int8_t y_axis;
@@ -163,6 +164,7 @@ public:
     bool keyDown(inp_keys key);
     bool keyHit(inp_keys key);
     bool keyUp(inp_keys key);
+    uint8_t keyFramed(inp_keys key);
     int8_t gX(int8_t dir);
     int8_t gY();
 

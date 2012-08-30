@@ -4,6 +4,7 @@
 #include "../character_def.h"
 #include "../scene.h"
 #include "marisa.h"
+#include <math.h>
 
 char_marisa::char_marisa(inp_ab *func):
     char_c::char_c(func)
@@ -17,10 +18,6 @@ char_marisa::char_marisa(inp_ab *func, uint8_t pal):
     viz.load_dat("marisa",pal);
 };
 
-void char_marisa::set_seq_params()
-{
-
-}
 
 void char_marisa::stopping()
 {
@@ -43,6 +40,21 @@ void char_marisa::stopping()
                 reset_forces();
                 field_49A = 0;
             }
+        }
+    }
+    else
+        reset_forces();
+}
+
+void char_marisa::stopping_posit(float p)
+{
+    if (field_49A)
+    {
+        h_inerc -= p;
+        if (h_inerc < 0)
+        {
+            reset_forces();
+            field_49A = 0;
         }
     }
     else
@@ -211,6 +223,121 @@ void char_marisa::func10()
             set_seq(0);
         break;
 
+    case 300: //near A-attack
+        sub10func(this);
+        stopping_posit(0.5);
+
+        if ( viz.process())
+            set_seq(0);
+        if ( viz.get_frame_time() == 0 && viz.get_frame() == 4 )
+        {
+            //play_sfx_global(0x1Bu);
+            field_49A = 0;
+        }
+        break;
+    case 301: //far A-attack
+        sub10func(this);
+        stopping_posit(0.5);
+        if (viz.get_frame() > 4 )
+            stopping_posit(1.5);
+
+        if ( viz.process() )
+            set_seq(0);
+        if ( viz.get_frame_time() == 0 )
+        {
+            if ( viz.get_frame() == 3 )
+                h_inerc = 30.0;
+            if ( viz.get_frame() == 4 )
+            {
+                h_inerc = 10.0;
+                //play_sfx_global(0x1Bu);
+                field_49A = 0;
+            }
+        }
+        if ( viz.get_frame() > 3 )
+            stopping_posit(0.5);
+        break;
+
+    case 302: //6A(A)
+    {
+        uint32_t ssq = viz.get_subseq();
+        if ( ssq == 0 || ssq == 1 || ssq == 4 )
+            sub10func(this);
+
+        if ( viz.get_frame() < 2 )
+            if ( !input->keyDown(INP_A))
+                not_charge_attack = 0;  // yeah, CHARGE
+
+        if ( ssq == 0 )
+            if ( h_inerc > 0)
+                stopping_posit(0.75);
+
+        if (viz.get_frame_time()   == 0 &&
+                viz.get_frame()        == 0 &&
+                viz.get_elaps_frames() == 0)
+        {
+            if (ssq == 2)
+            {
+                //play_char_sound_(v3, 0x11u);
+                h_inerc = 15.5;
+                v_inerc = 4.0;
+                v_force = 0.55;
+            }
+            else if (ssq == 3)
+            {
+                //play_char_sound_(v3, 0x11u);
+                h_inerc = 18.5;
+                v_inerc = 7.5;
+                v_force = 0.55;
+            }
+        }
+
+        if ( viz.process() )
+            set_seq(0);
+
+        ssq = viz.get_subseq();
+        uint32_t tf = viz.get_elaps_frames();
+
+        if (viz.get_frame_time() == 0 &&
+            viz.get_frame()      == 0 &&
+                tf  == 0 &&
+                ssq == 5)
+            set_seq(0);
+
+        if (ssq == 1)
+        {
+            if ( not_charge_attack == 0 && tf < 2 )
+                next_subseq();
+            else if ( tf > 12 )
+                viz.set_subseq(3);
+            else if ( tf == 2 ) // charge effect
+            {
+                //v241 = v3->rend_cls.y_pos + 68.0;
+                //sub_438170(v3, 62, v3->rend_cls.x_pos, v241, v3->rend_cls.horizontal_direction, 1);
+            }
+        }
+        else if ( ssq == 3 || ssq == 2 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down(this) )
+            {
+                //play_char_sound_(v3, 0x12u);
+                if ( ssq == 2 )
+                    viz.set_subseq(4);
+                else
+                    viz.set_subseq(5);
+
+                y = getlvl_height(this);
+                v_inerc = 0.0;
+                h_inerc = 5.0;
+            }
+        }
+        else if ( ssq == 4 || ssq == 5 )
+            stopping_posit(0.5);
+    }
+    break;
+
+
     case 521:
     {
 
@@ -263,7 +390,7 @@ void char_marisa::func10()
             set_seq(0);
 
         if (viz.get_subseq() == 1 && viz.get_frame_time()   == 0 &&
-            viz.get_frame()  == 0 && viz.get_elaps_frames() == 0)
+                viz.get_frame()  == 0 && viz.get_elaps_frames() == 0)
         {
             //v1661 = -85.0;
             //v1662 = 0.0;
@@ -281,10 +408,56 @@ void char_marisa::func10()
             v_force = 0.6;
         }
 
-        }
+    }
 
-        break;
+    break;
     default:
         viz.process();
+    }
+}
+
+
+void char_marisa::func20()
+{
+    if (char_on_ground(this))
+    {
+        {
+
+
+            if (input->keyHit(INP_A) && input->gX(dir) == 0)
+            {
+                if (fabs(x - enemy->x) < 90)
+                {
+                    set_seq(300);
+                }
+                else
+                {
+                    set_seq(301);
+                }
+
+            }
+            else if (input->keyHit(INP_A) && input->gX(dir) > 0)
+            {
+                set_seq(302);
+
+            }
+        }
+    }
+}
+
+
+void char_marisa::set_seq_params()
+{
+    switch(viz.get_seq_id())
+    {
+    case 302:
+
+        if ( !field_49A )
+            reset_forces();
+        //field_190 = 0;
+        field_49A = 0;
+        //field_194 = 1;
+        not_charge_attack = 1;
+        break;
     }
 }

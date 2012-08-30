@@ -10,10 +10,7 @@ class char_c
 
     inp_ab      *input;
 
-
     public:
-
-
 
     float x;
     float y;
@@ -50,6 +47,8 @@ class char_c
 
     int8_t  field_49A;
 
+    int8_t  not_charge_attack;
+
 
     int16_t health;
     int16_t SP;
@@ -58,7 +57,8 @@ class char_c
     int16_t field_834;
 
 
-
+    uint32_t pres_comb;
+    uint32_t pres_move;
 
 
     uint32_t get_seq();
@@ -78,7 +78,7 @@ class char_c
     virtual void draw(float x, float y, float dir);
     virtual void draw();
 
-    virtual void basic_input();
+    virtual void check_seq_input();
 
     bool flip_to_enemy();
     void reset_forces();

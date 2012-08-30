@@ -145,7 +145,7 @@ void c_scene::players_input()
         chrs[i]->input_update();
 
     for (uint32_t i=0; i < 2; i++)
-        chrs[i]->basic_input();
+        chrs[i]->check_seq_input();
 }
 
 //Borders:
@@ -408,8 +408,8 @@ void scene_check_collisions(c_scene *scn)
     {
         p1->x -= (p1_box.x2 - p2_box.x1 - 1.0);
 
-        if ( p1->dir * p1_frc + p2->dir * p2_frc < 0.0 &&
-             p1->dir * p1_frc < 0.0 )
+        if ( p1->dir * p1_frc + p2->dir * p2_frc > 0.0 &&
+             p1->dir * p1_frc > 0.0 )
         {
             p1->field_744 = -p1_frc;
             p2->field_744 = -p2_frc;

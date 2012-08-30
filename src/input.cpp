@@ -17,7 +17,11 @@ inp_ab::inp_ab()
     {
         pr_key_dn[i] = false;
         key_dn[i] = false;
+        key_frm[i] = 0;
     }
+
+    x_axis = 0;
+    y_axis = 0;
 
     flush_kframes();
 }
@@ -63,6 +67,14 @@ void inp_ab::fill_kframes()
         vkf |= KF_D;
 
     k_frames[0] = vkf;
+
+    for (uint32_t i=0; i<INP_KEYS; i++)
+    {
+        if (key_dn[i] && key_frm[i] < 255)
+            key_frm[i]++;
+        else if (!pr_key_dn[i] && !key_dn[i])
+            key_frm[i] = 0;
+    }
 }
 
 void inp_ab::set_key(inp_keys key)
@@ -85,6 +97,11 @@ bool inp_ab::keyUp(inp_keys key)
     return (!key_dn[key]) && pr_key_dn[key];
 }
 
+uint8_t inp_ab::keyFramed(inp_keys key)
+{
+    return key_frm[key];
+}
+
 void inp_ab::flush_kframes()
 {
     for(uint32_t i=0; i<INPKEYBUF; i++)
@@ -100,6 +117,8 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
 
     uint8_t XX = KF_A | KF_B | KF_C;
 
+    int8_t ret_val = 0;
+
     for (uint32_t i=0; i < sl; i++)
     {
         uint8_t t = 0;
@@ -107,7 +126,7 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
         char in = tolower(sq[i]);
 
         if (in == '0')
-            t = 0;
+            t = KF_DOWN;
         else if (in == '5')
             t = 0;
         else if (in == '1')
@@ -139,6 +158,12 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
                 t = (~KF_RIGHT & t) | KF_LEFT;
 
         }
+
+        if (in == 'r')
+            t = KF_RIGHT;
+        else if (in == 'l')
+            t = KF_LEFT;
+
         buf[i] = t;
     }
 
@@ -157,6 +182,13 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
             {
                 if (k_frames[i] & buf[j])
                     j++;
+
+                if (k_frames[i] & KF_A)
+                    ret_val = 1;
+                else if (k_frames[i] & KF_B)
+                    ret_val = 2;
+                else if (k_frames[i] & KF_C)
+                    ret_val = 3;
             }
         }
         else if (k_frames[i] == 0) // no input check
@@ -166,12 +198,16 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
         if (j == sl)
         {
             flush_kframes();
-            return 0;
+            if (ret_val == 0)
+                ret_val = 1;
+
+            //printf("pressed %s %d\n",sq,ret_val);
+            return ret_val;
         }
 
     }
 
-    return -1;
+    return ret_val;
 }
 
 
@@ -184,6 +220,10 @@ int8_t inp_ab::gY()
 {
     return y_axis;
 }
+
+
+
+
 
 void inp_kb::update()
 {
