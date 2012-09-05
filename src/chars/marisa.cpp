@@ -10,12 +10,14 @@ char_marisa::char_marisa(inp_ab *func):
     char_c::char_c(func)
 {
     viz.load_dat("marisa",0);
+    char_loadsfx(this,"marisa");
 };
 
 char_marisa::char_marisa(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
     viz.load_dat("marisa",pal);
+    char_loadsfx(this,"marisa");
 };
 
 
@@ -231,7 +233,7 @@ void char_marisa::func10()
             set_seq(0);
         if ( viz.get_frame_time() == 0 && viz.get_frame() == 4 )
         {
-            //play_sfx_global(0x1Bu);
+            scene_play_sfx(27);
             field_49A = 0;
         }
         break;
@@ -250,7 +252,7 @@ void char_marisa::func10()
             if ( viz.get_frame() == 4 )
             {
                 h_inerc = 10.0;
-                //play_sfx_global(0x1Bu);
+                scene_play_sfx(27);
                 field_49A = 0;
             }
         }
@@ -278,14 +280,14 @@ void char_marisa::func10()
         {
             if (ssq == 2)
             {
-                //play_char_sound_(v3, 0x11u);
+                play_sfx(17);
                 h_inerc = 15.5;
                 v_inerc = 4.0;
                 v_force = 0.55;
             }
             else if (ssq == 3)
             {
-                //play_char_sound_(v3, 0x11u);
+                play_sfx(17);
                 h_inerc = 18.5;
                 v_inerc = 7.5;
                 v_force = 0.55;
@@ -321,7 +323,7 @@ void char_marisa::func10()
             v_inerc -= v_force;
             if ( char_on_ground_down(this) )
             {
-                //play_char_sound_(v3, 0x12u);
+                play_sfx(18);
                 if ( ssq == 2 )
                     viz.set_subseq(4);
                 else
@@ -400,7 +402,7 @@ void char_marisa::func10()
             //v521 = (61 * v3->rend_cls.horizontal_direction) + v3->rend_cls.x_pos;
             //sub_46E2F0(v3, 849, v521, v520, v3->rend_cls.horizontal_direction, 1, &v1661, 3);
             //sub_438170(v3, 127, v3->rend_cls.x_pos, v3->rend_cls.y_pos, v3->rend_cls.horizontal_direction, -1);
-            //play_char_sound_(v3, 5u);
+            play_sfx(5);
             //sub_479FF0(v3, 200, 120);
             //add_card_energy(v3, 50);
             h_inerc = 15.0;
@@ -415,7 +417,6 @@ void char_marisa::func10()
         viz.process();
     }
 }
-
 
 void char_marisa::func20()
 {
@@ -443,6 +444,7 @@ void char_marisa::func20()
             }
         }
     }
+
 }
 
 

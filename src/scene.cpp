@@ -7,6 +7,8 @@
 #include "character_def.h"
 #include "chars.h"
 #include "background.h"
+#include "archive.h"
+#include "file_read.h"
 
 #define VERT_SCALE    2.0
 #define SCR_WIDTH     640.0
@@ -16,6 +18,10 @@
 #define BKG_HOR_PAD   60.0
 
 #define CAM_SPEED     0.3
+
+#define MAX_GLB_SFX     0x100
+
+static sfxc *snds[MAX_GLB_SFX];
 
 float lvl_height[BKG_WIDTH];
 
@@ -207,7 +213,7 @@ void char_xy_pos_calculation(char_c *chr)
 
     char_c *enemy = chr->enemy;
 
-    if ( !chr->field_196 )
+    if ( !chr->hit_stop )
     {
         if ( !enemy->field_4A8 )
         {
@@ -258,7 +264,7 @@ void scene_subfunc1(c_scene *scn)
 
     for (uint32_t i=0; i < 2; i++)
     {
-        if ( !scn->chrs[i]->field_196 )
+        if ( !scn->chrs[i]->hit_stop )
         {
             if ( !scn->chrs[i]->enemy->field_4A8 )
             {
@@ -506,5 +512,28 @@ void c_scene::update()
 }
 
 
+void scene_load_sounds()
+{
+    char buf[CHRBUF];
+    for (uint32_t i=0; i<MAX_GLB_SFX; i++)
+    {
+        sprintf(buf,"data/se/%3.3d.cv3",i);
 
+        filehandle *ft = arc_get_file(buf);
+
+        snds[i] = NULL;
+
+        if (ft)
+        {
+            snds[i] = sfx_load_cv3(ft);
+            delete ft;
+        }
+    }
+}
+
+void scene_play_sfx(uint32_t idx)
+{
+    if (snds[idx % MAX_GLB_SFX] != NULL)
+        sfx_play(snds[idx % MAX_GLB_SFX]);
+}
 

@@ -29,6 +29,8 @@ int main()
     arc_add_dat("th123c.dat");
 
     gr_init(640,480,"OpenSoku");
+    sfx_init();
+    scene_load_sounds();
 
 
 

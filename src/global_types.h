@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "graph.h"
+#include "sfx.h"
 
 #define CHRBUF 256
 

@@ -62,4 +62,7 @@ bool char_on_ground(char_c *chr);
 bool char_on_ground_down(char_c *chr);
 void char_xy_pos_calculation(char_c *chr);
 
+
+void scene_load_sounds();
+void scene_play_sfx(uint32_t idx);
 #endif // SCENE_H_INCLUDED
