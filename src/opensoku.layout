@@ -4,22 +4,40 @@
 	<File name="archive.h" open="1" top="0" tabpos="2">
 		<Cursor position="286" topLine="0" />
 	</File>
-	<File name="./character_def.h" open="1" top="0" tabpos="7">
-		<Cursor position="1075" topLine="51" />
-	</File>
 	<File name="chars/alice.cpp" open="1" top="0" tabpos="4">
 		<Cursor position="215" topLine="0" />
 	</File>
 	<File name="chars/alice.h" open="1" top="0" tabpos="5">
-		<Cursor position="181" topLine="0" />
+		<Cursor position="214" topLine="0" />
+	</File>
+	<File name="./chars/marisa.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="7236" topLine="297" />
 	</File>
 	<File name="chars/marisa.h" open="1" top="0" tabpos="3">
 		<Cursor position="229" topLine="0" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="780" topLine="33" />
+	<File name="./fx_sprite.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="3806" topLine="179" />
 	</File>
-	<File name="./scene.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="4530" topLine="203" />
+	<File name="./graph.cpp" open="1" top="0" tabpos="13">
+		<Cursor position="5027" topLine="183" />
+	</File>
+	<File name="./graph.h" open="1" top="0" tabpos="14">
+		<Cursor position="1480" topLine="18" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="780" topLine="41" />
+	</File>
+	<File name="./scene.h" open="1" top="0" tabpos="12">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="./scene_fx.cpp" open="1" top="1" tabpos="8">
+		<Cursor position="7201" topLine="343" />
+	</File>
+	<File name="./scene_fx.h" open="1" top="0" tabpos="9">
+		<Cursor position="1716" topLine="57" />
+	</File>
+	<File name="sfx.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="1126" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

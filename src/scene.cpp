@@ -21,6 +21,8 @@
 
 #define MAX_GLB_SFX     0x100
 
+c_scene_sp img_sp;
+
 static sfxc *snds[MAX_GLB_SFX];
 
 float lvl_height[BKG_WIDTH];
@@ -125,8 +127,13 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     chrs[0]->enemy = chrs[1];
     chrs[1]->enemy = chrs[0];
 
+    chrs[0]->player_index = 0;
+    chrs[1]->player_index = 1;
+
     set_camera(chrs[0],chrs[1]);
     init_scene_height();
+
+    img_sp.load_dat();
 }
 
 void c_scene::draw_scene()
@@ -137,6 +144,9 @@ void c_scene::draw_scene()
 
     for (uint32_t i=0; i < 2; i++)
         chrs[i]->draw();
+
+    img_sp.draw();
+
 }
 
 void c_scene::update_char_anims()
@@ -509,6 +519,7 @@ void c_scene::update()
     scene_subfunc4(this);
     scene_subfunc5(this);
     func12();
+    img_sp.update();
 }
 
 
@@ -536,4 +547,17 @@ void scene_play_sfx(uint32_t idx)
     if (snds[idx % MAX_GLB_SFX] != NULL)
         sfx_play(snds[idx % MAX_GLB_SFX]);
 }
+
+
+c_scene_sp *scene_get_sp()
+{
+    return &img_sp;
+}
+
+void scene_add_effect(int32_t idx, float x, float y, int8_t dir)
+{
+    img_sp.addeffect(idx,x,y,dir);
+}
+
+
 

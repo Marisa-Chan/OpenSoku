@@ -26,6 +26,8 @@ char_c::char_c(inp_ab *func)
 
     field_19C = 0;
     field_838 = 0;
+    field_526 = 0;
+    weather_var = 0;
 
     speed_mult = 1.0;
     tengu_fan  = 0;
@@ -571,7 +573,7 @@ void char_c::func16()
         field_54C = 0;
         field_7F8--;
     }
-    if ( field_526 != 0)
+    if ( field_526 == 0)
     {
         switch ( weather_var )
         {
@@ -628,14 +630,14 @@ void char_c::func16()
             if ( player_index == 1 )
                 field_4D4 = enemy->field_4D4;
             else
-                field_4D4 = (sin(field_808) * 480.0 + 480.0);
+                field_4D4 = (sin(field_808 * 3.1415926/180.0) * 480.0 + 480.0);
 
-            if ( viz.get_seq_id() <= 99 || (viz.get_seq_id() >= 112 && viz.get_seq_id() <= 499 ))
+            if ( viz.get_seq_id() < 100 || (viz.get_seq_id() > 111 && viz.get_seq_id() < 500 ))
             {
 
                 field_808++;
 
-                float tmp = (fabs(enemy->x - x) - field_4D4) * 0.009999;
+                float tmp = (fabs(enemy->x - x) - field_4D4) * 0.01;
 
                 if ( tmp < -3.0 )
                     tmp = -3.0;

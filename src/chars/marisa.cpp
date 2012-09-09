@@ -316,6 +316,7 @@ void char_marisa::func10()
             {
                 //v241 = v3->rend_cls.y_pos + 68.0;
                 //sub_438170(v3, 62, v3->rend_cls.x_pos, v241, v3->rend_cls.horizontal_direction, 1);
+                scene_add_effect(62,x,y+68,dir);
             }
         }
         else if ( ssq == 3 || ssq == 2 )

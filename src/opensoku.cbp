@@ -58,6 +58,7 @@
 		<Unit filename="./file_read.h" />
 		<Unit filename="./framedata.cpp" />
 		<Unit filename="./framedata.h" />
+		<Unit filename="./fx_sprite.cpp" />
 		<Unit filename="./global_types.h" />
 		<Unit filename="./graph.cpp" />
 		<Unit filename="./graph.h" />
@@ -70,6 +71,8 @@
 		<Unit filename="./music.h" />
 		<Unit filename="./scene.cpp" />
 		<Unit filename="./scene.h" />
+		<Unit filename="./scene_fx.cpp" />
+		<Unit filename="./scene_fx.h" />
 		<Unit filename="sfx.cpp" />
 		<Unit filename="sfx.h" />
 		<Extensions>

@@ -1,6 +1,12 @@
 #ifndef SCENE_H_INCLUDED
 #define SCENE_H_INCLUDED
 
+#include "framedata.h"
+#include "scene_fx.h"
+
+using namespace std;
+
+
 #define CHAR_PADDING  40
 #define BKG_WIDTH     1280
 
@@ -21,11 +27,16 @@ struct s_camera
 class char_c;
 class background;
 
+
+
+
+
 class c_scene
 {
     private:
 
     s_camera cam;
+
 
     public:
 
@@ -65,4 +76,7 @@ void char_xy_pos_calculation(char_c *chr);
 
 void scene_load_sounds();
 void scene_play_sfx(uint32_t idx);
+
+void scene_add_effect(int32_t idx, float x, float y, int8_t dir);
+c_scene_sp *scene_get_sp();
 #endif // SCENE_H_INCLUDED

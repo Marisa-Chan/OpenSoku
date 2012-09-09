@@ -1,9 +1,9 @@
 #include "global_types.h"
 #include "archive.h"
 #include "file_read.h"
-#include "framedata.h"
+#include "scene_fx.h"
 
-char_sprite::char_sprite()
+sc_fx_sprite::sc_fx_sprite()
 {
     sprite  = gr_create_sprite();
     pframe  = NULL;
@@ -16,37 +16,37 @@ char_sprite::char_sprite()
     _cur_sseq = NULL;
 }
 
-char_sprite::~char_sprite()
+sc_fx_sprite::~sc_fx_sprite()
 {
     delete sprite;
 }
 
-uint32_t char_sprite::get_cur_frame()
+uint32_t sc_fx_sprite::get_cur_frame()
 {
     return cur_frame;
 }
 
-uint32_t char_sprite::get_cur_subseq()
+uint32_t sc_fx_sprite::get_cur_subseq()
 {
     return cur_subseq;
 }
 
-uint32_t char_sprite::get_cur_frame_time()
+uint32_t sc_fx_sprite::get_cur_frame_time()
 {
     return cur_frame_time;
 }
 
-uint32_t char_sprite::get_elaps_frames()
+uint32_t sc_fx_sprite::get_elaps_frames()
 {
     return elaps_frames;
 }
 
-char_frame *char_sprite::get_pframe()
+sc_fx_frame *sc_fx_sprite::get_pframe()
 {
     return pframe;
 }
 
-bool char_sprite::set_seq(seq *sq)
+bool sc_fx_sprite::set_seq(sc_seq *sq)
 {
     cur_seq = NULL;
 
@@ -66,7 +66,7 @@ bool char_sprite::set_seq(seq *sq)
     return true;
 }
 
-void char_sprite::reset_seq()
+void sc_fx_sprite::reset_seq()
 {
     if (cur_seq == NULL)
         return;
@@ -79,7 +79,7 @@ void char_sprite::reset_seq()
     set_frame(0);
 }
 
-void char_sprite::frame_val_set()
+void sc_fx_sprite::frame_val_set()
 {
     pframe = cur_seq->subseqs[cur_subseq].frames[cur_frame];
 
@@ -105,7 +105,7 @@ void char_sprite::frame_val_set()
     }
 }
 
-void char_sprite::set_frame(uint32_t frm)
+void sc_fx_sprite::set_frame(uint32_t frm)
 {
     if (cur_seq == NULL || frm >= _num_frames)
         return;
@@ -114,7 +114,7 @@ void char_sprite::set_frame(uint32_t frm)
     frame_val_set();
 }
 
-bool char_sprite::next_frame(bool ignore_loop)
+bool sc_fx_sprite::next_frame(bool ignore_loop)
 {
     cur_frame = (cur_frame + 1) % _num_frames;
     frame_val_set();
@@ -122,7 +122,7 @@ bool char_sprite::next_frame(bool ignore_loop)
     return (cur_frame == 0) && ((_cur_sseq->looped == 0) || ignore_loop);
 }
 
-bool char_sprite::next_subseq()
+bool sc_fx_sprite::next_subseq()
 {
     uint32_t tmp = cur_subseq;
     cur_subseq = (cur_subseq + 1) % cur_seq->subseqs.size();
@@ -145,7 +145,7 @@ bool char_sprite::next_subseq()
     return false;
 }
 
-bool char_sprite::set_subseq(uint32_t idx)
+bool sc_fx_sprite::set_subseq(uint32_t idx)
 {
     uint32_t tmp = cur_subseq;
     cur_subseq = idx % cur_seq->subseqs.size();
@@ -168,7 +168,7 @@ bool char_sprite::set_subseq(uint32_t idx)
     return false;
 }
 
-bool char_sprite::process(bool ignore_loop)
+bool sc_fx_sprite::process(bool ignore_loop)
 {
     elaps_frames++;
     cur_frame_time++;
@@ -178,44 +178,40 @@ bool char_sprite::process(bool ignore_loop)
     return false;
 }
 
-void char_sprite::draw(uint8_t plane)
+void sc_fx_sprite::draw(uint8_t plane)
 {
     gr_draw_sprite(sprite,blend,plane);
 }
 
 
 
-void char_sprite::setXY(float x, float y)
+void sc_fx_sprite::setXY(float x, float y)
 {
     gr_setxy_sprite(sprite,x,-y);
 }
 
-void char_sprite::setScale(float x, float y)
+void sc_fx_sprite::setScale(float x, float y)
 {
     gr_setscale_sprite(sprite,x,y);
 }
 
-void char_sprite::setOrigin(float x, float y)
+void sc_fx_sprite::setOrigin(float x, float y)
 {
     gr_setorigin_sprite(sprite,x,y);
 }
 
-void char_sprite::setBlend(gr_blend _blend)
+void sc_fx_sprite::setBlend(gr_blend _blend)
 {
     blend = _blend;
 }
 
-uint16_t char_sprite::get_cprior()
-{
-    return cur_seq->prior_for_cancel;
-}
-
-uint16_t char_sprite::get_prior()
-{
-    return cur_seq->prior;
-}
-
-uint32_t char_sprite::get_seq_id()
+uint32_t sc_fx_sprite::get_seq_id()
 {
     return cur_seq->id;
+}
+
+
+void sc_fx_sprite::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+    gr_setcolor_sprite(sprite, r,g,b,a);
 }

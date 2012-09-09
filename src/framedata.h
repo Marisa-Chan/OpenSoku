@@ -94,7 +94,7 @@ struct seq
 
 class char_sprite
 {
-    private:
+    protected:
 
     gr_sprite  *sprite;
     gr_blend    blend;

@@ -208,3 +208,13 @@ void gr_draw_box(float x1,float y1,float w, float h, int r, int g, int b,int a,u
     box.setPosition(x1,y1);
     window->draw(box,states[plane]);
 }
+
+void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B, uint8_t A)
+{
+    spr->setColor(sf::Color(R,G,B,A));
+}
+
+void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B)
+{
+    spr->setColor(sf::Color(R,G,B));
+}
