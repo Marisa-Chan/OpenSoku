@@ -139,6 +139,7 @@ class char_sprite
     void setScale(float x, float y);
     void setOrigin(float x, float y);
     void setBlend(gr_blend blend);
+    void setRotate(float angl);
 
     void draw(uint8_t plane = 0);
 };
@@ -165,6 +166,7 @@ class char_graph
     bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
 
     void draw(float x, float y, uint8_t plane,int8_t direct);
+    void draw(float x, float y, uint8_t plane, int8_t direct, float rotate);
 
     void set_seq(uint32_t idx);
     void reset_seq();

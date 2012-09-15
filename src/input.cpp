@@ -26,6 +26,12 @@ inp_ab::inp_ab()
     flush_kframes();
 }
 
+void inp_ab::zero_input()
+{
+    for (uint32_t i=0; i<INP_KEYS; i++)
+        key_dn[i] = false;
+}
+
 void inp_ab::flush_cur()
 {
     for (uint32_t i=0; i<INP_KEYS; i++)
@@ -169,7 +175,7 @@ int8_t inp_ab::check_input_seq(const char *sq, uint8_t frames, int8_t direction)
 
     uint32_t j = 0;
 
-    for (int32_t i=frames-1; i > 0; i--)
+    for (int32_t i=frames-1; i >= 0; i--)
     {
         if (buf[j] != 0)
         {

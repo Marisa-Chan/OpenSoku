@@ -88,19 +88,23 @@ class sc_fx_sprite
     void setOrigin(float x, float y);
     void setBlend(gr_blend blend);
     void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+    void setRotate(float angl);
 
     void draw(uint8_t plane = 0);
 };
 
+class char_c;
 
 class c_scene_fx
 {
     public:
+    c_scene_fx(sc_seq *sq, char_c *chr, float x, float y, int8_t dir, int8_t order);
     sc_fx_sprite viz;
 
     float x;
     float y;
     int8_t dir;
+    int8_t order;
     float h_inerc;
     float v_inerc;
     float v_force;
@@ -118,6 +122,8 @@ class c_scene_fx
 	uint8_t  c_R;
 	uint8_t  c_G;
 	uint8_t  c_B;
+
+	char_c *parent;
 
     void func10();
     void set_seq_params(); //func15
@@ -142,9 +148,9 @@ class c_scene_sp
 
     bool load_dat();
 
-    void addeffect(int32_t idx, float x, float y, int8_t dir);
+    void addeffect(char_c *chr, int32_t idx, float x, float y, int8_t dir, int8_t order);
     void update();
-    void draw();
+    void draw(int8_t order);
 
 };
 

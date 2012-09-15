@@ -14,6 +14,10 @@ char_c::char_c(inp_ab *func)
     y = 0;
     dir = 1.0;
 
+    angZ = 0;
+    angX = 0;
+    angY = 0;
+
     hit_stop = 0;
     field_4A8 = 0;
     field_4C4 = 0;
@@ -27,7 +31,23 @@ char_c::char_c(inp_ab *func)
     field_19C = 0;
     field_838 = 0;
     field_526 = 0;
+
+    field_890 = 0;
+    field_892 = 0;
+
     weather_var = 0;
+
+    dash_angle = 0;
+    field_7D2 = 0;
+    field_7D4 = 0;
+    field_7D6 = 0;
+    field_7DC = 0;
+
+    field_190 = 1;
+    //field_49A = 0;
+    field_84C = 0;
+    spell_energy = 1000;
+    max_spell_energy = 1000;
 
     speed_mult = 1.0;
     tengu_fan  = 0;
@@ -86,7 +106,10 @@ void char_c::draw(float x, float y, int8_t dir)
 
 void char_c::draw()
 {
-    viz.draw(x,y,1,dir);
+    if (angZ != 0)
+        viz.draw(x,y,1,dir,angZ);
+    else
+        viz.draw(x,y,1,dir);
     gr_draw_box(x,-y,255,0,0,1);
 
     char_frame *pf = viz.get_pframe();
@@ -104,6 +127,12 @@ void char_c::draw()
         }
     }
 
+}
+
+bool char_c::field_sq_check()
+{
+    uint32_t sq = viz.get_seq_id();
+    return (sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300;
 }
 
 void char_c::input_update()
@@ -177,14 +206,16 @@ uint32_t char_c::get_seq()
     return viz.get_seq_id();
 }
 
+uint32_t char_c::get_subseq()
+{
+    return viz.get_subseq();
+}
+
 void char_c::func10()
 {
     viz.process(true);
 }
 
-void char_c::set_seq_params()
-{
-}
 
 void char_c::func16()
 {
@@ -934,7 +965,10 @@ void char_c::func18()
     if ( grn /*&& v1->field_4C4 == 0*/ )
     {
         air_dash_cnt = 0;
-        //v1->field_49C = 0;
+        //field_49C = 0;
+
+        //// HACK
+        field_190 = 1;
     }
     if ( viz.get_prior() == 0)
         if ( grn /*&& v1->field_4C4 == 0*/ )
@@ -1058,10 +1092,96 @@ void char_c::play_sfx(uint32_t idx)
         sfx_play(sfx[idx % MAX_CHR_SFX]);
 }
 
+bool char_c::keyDown(inp_keys key)
+{
+    return input->keyDown(key);
+}
+bool char_c::keyHit(inp_keys key)
+{
+    return input->keyHit(key);
+}
 
+int8_t char_c::gX(int8_t dir)
+{
+    return input->gX(dir);
+}
+int8_t char_c::gY()
+{
+    return input->gY();
+}
 
+uint16_t char_c::get_prior(uint32_t idx)
+{
+    return viz.get_prior(idx);
+}
 
+void char_c::set_seq_params()
+{
+    int32_t sq = get_seq();
+    switch(sq)
+    {
+    case 6:
+        if ( (pres_move & 4) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) != 0 ))
+        {
+            if ( field_49A == 0 )
+                reset_forces();
+            v_force = 0.0;
+        }
+        else
+            set_seq(208);
 
+        break;
+    case 7:
+        if ( (pres_move & 0x10) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) <= 0 ))
+        {
+            if ( field_49A == 0 )
+                reset_forces();
+            v_force = 0.0;
+        }
+        else
+            set_seq(209);
+
+        break;
+    case 8:
+        if ( (pres_move & 8) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) >= 0 ))
+        {
+            if ( field_49A == 0 )
+                reset_forces();
+            v_force = 0.0;
+        }
+        else
+            set_seq(210);
+
+        break;
+    case 200:
+        field_49A = 1;
+        reset_forces();
+        field_7DC = 0.0;
+        dash_angle = 0.0;
+        field_7E4 = 0.0;
+        field_7D4 = 0;
+        field_7D2 = 0;
+        field_7D0 = 0;
+        break;
+    case 201:
+    case 202:
+    case 203:
+        reset_forces();
+        field_7D4 = 0;
+        field_7D2 = 0;
+        field_7D0 = 0;
+        break;
+    case 208:
+    case 209:
+    case 210:
+    case 211:
+    case 212:
+        if ( field_49A == 0 )
+            reset_forces();
+        v_force = 0.0;
+        break;
+    }
+}
 
 bool char_idle_or_move(char_c *chr)
 {
@@ -1106,5 +1226,6 @@ void char_loadsfx(char_c *chr, const char *name)
         }
     }
 }
+
 
 

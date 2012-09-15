@@ -39,6 +39,7 @@ void gr_setxy_sprite(gr_sprite *spr, float x, float y);
 void gr_setscale_sprite(gr_sprite *spr, float x, float y);
 void gr_setscale_sprite(gr_sprite *spr, float x, float y);
 void gr_setorigin_sprite(gr_sprite *spr, float x, float y);
+void gr_setrotate_sprite(gr_sprite *spr, float angl);
 
 void gr_draw_sprite(gr_sprite *spr, gr_blend blend = gr_alpha, uint8_t plane = 0);
 

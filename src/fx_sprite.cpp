@@ -1,7 +1,9 @@
 #include "global_types.h"
+#include <math.h>
 #include "archive.h"
 #include "file_read.h"
 #include "scene_fx.h"
+
 
 sc_fx_sprite::sc_fx_sprite()
 {
@@ -102,6 +104,8 @@ void sc_fx_sprite::frame_val_set()
                 setBlend(gr_add);
 
         }
+        setRotate(0);
+        setScale(1.0,1.0);
     }
 }
 
@@ -192,7 +196,19 @@ void sc_fx_sprite::setXY(float x, float y)
 
 void sc_fx_sprite::setScale(float x, float y)
 {
-    gr_setscale_sprite(sprite,x,y);
+    if (pframe)
+    {
+        if (pframe->angle_x != 0 || pframe->angle_y != 0)
+        {
+            float xx = x*pframe->scale_x * cos(pframe->angle_y * 3.1415/180.0);
+            float yy = y*pframe->scale_y * cos(pframe->angle_x * 3.1415/180.0);
+            gr_setscale_sprite(sprite,xx,yy);
+        }
+        else
+            gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_x);
+    }
+    else
+        gr_setscale_sprite(sprite,x,y);
 }
 
 void sc_fx_sprite::setOrigin(float x, float y)
@@ -203,6 +219,14 @@ void sc_fx_sprite::setOrigin(float x, float y)
 void sc_fx_sprite::setBlend(gr_blend _blend)
 {
     blend = _blend;
+}
+
+void sc_fx_sprite::setRotate(float angl)
+{
+    if (pframe)
+        gr_setrotate_sprite(sprite,angl+pframe->angle_z);
+    else
+        gr_setrotate_sprite(sprite,angl);
 }
 
 uint32_t sc_fx_sprite::get_seq_id()

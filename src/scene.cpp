@@ -9,6 +9,7 @@
 #include "background.h"
 #include "archive.h"
 #include "file_read.h"
+#include "mt.h"
 
 #define VERT_SCALE    2.0
 #define SCR_WIDTH     640.0
@@ -26,6 +27,8 @@ c_scene_sp img_sp;
 static sfxc *snds[MAX_GLB_SFX];
 
 float lvl_height[BKG_WIDTH];
+
+mtwist randomm;
 
 void init_scene_height()
 {
@@ -76,7 +79,6 @@ void c_scene::set_camera(float x1, float y1, float x2, float y2)
     cam.x = xpos;
     cam.y = ypos;
     cam.scale = new_scale;
-
 }
 
 void c_scene::apply_camera()
@@ -134,6 +136,7 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     init_scene_height();
 
     img_sp.load_dat();
+    randomm.set_seed(time(NULL));
 }
 
 void c_scene::draw_scene()
@@ -142,10 +145,12 @@ void c_scene::draw_scene()
 
     bkg->draw();
 
+    img_sp.draw(-1);
+
     for (uint32_t i=0; i < 2; i++)
         chrs[i]->draw();
 
-    img_sp.draw();
+    img_sp.draw(1);
 
 }
 
@@ -208,6 +213,11 @@ float getlvl_height(char_c *chr, float dx)
 bool char_on_ground(char_c *chr)
 {
     return getlvl_height(chr) >= chr->y;
+}
+
+bool char_on_ground_flag(char_c *chr)
+{
+    return getlvl_height(chr) >= chr->y && chr->field_4C4 == 0;
 }
 
 bool char_on_ground_down(char_c *chr)
@@ -554,10 +564,18 @@ c_scene_sp *scene_get_sp()
     return &img_sp;
 }
 
-void scene_add_effect(int32_t idx, float x, float y, int8_t dir)
+void scene_add_effect(char_c *chr, int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
-    img_sp.addeffect(idx,x,y,dir);
+    img_sp.addeffect(chr, idx,x,y,dir, order);
 }
 
 
+uint32_t scene_rand()
+{
+    return randomm.get_next();
+}
 
+uint32_t scene_rand_rng(uint32_t rng)
+{
+    return randomm.get_next_ranged(rng);
+}

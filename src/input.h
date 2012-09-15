@@ -168,6 +168,8 @@ public:
     int8_t gX(int8_t dir);
     int8_t gY();
 
+    void zero_input();
+
     int8_t check_input_seq(const char *sq, uint8_t frames, int8_t direction);
 
     virtual void update() = 0;

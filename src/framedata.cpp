@@ -181,6 +181,14 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 
                 char_frame *frm = new char_frame;
 
+                frm->angle_z = 0;
+                frm->angle_x = 0;
+                frm->angle_y = 0;
+                frm->scale_x = 2.0;
+                frm->scale_y = 2.0;
+                frm->color = 0xFFFFFFFF;
+                frm->blend_mode = 0;
+
                 uint32_t frame = 0;
                 f->read(4, &frame);
 
@@ -400,7 +408,16 @@ void char_graph::set_frame(uint32_t frm)
 
 void char_graph::draw(float x, float y, uint8_t plane, int8_t direct)
 {
-    sprite.setScale(direct*2,2);
+    sprite.setScale(direct*1.0,1);
+    sprite.setXY(x,y);
+
+    sprite.draw(plane);
+}
+
+void char_graph::draw(float x, float y, uint8_t plane, int8_t direct, float rotate)
+{
+    sprite.setRotate(rotate);
+    sprite.setScale(direct*1.0,1);
     sprite.setXY(x,y);
 
     sprite.draw(plane);

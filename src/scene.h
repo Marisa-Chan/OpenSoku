@@ -70,6 +70,7 @@ s_border get_border_near(char_c *chr);
 float getlvl_height(char_c *chr);
 float getlvl_height(char_c *chr, float dx);
 bool char_on_ground(char_c *chr);
+bool char_on_ground_flag(char_c *chr);
 bool char_on_ground_down(char_c *chr);
 void char_xy_pos_calculation(char_c *chr);
 
@@ -77,6 +78,10 @@ void char_xy_pos_calculation(char_c *chr);
 void scene_load_sounds();
 void scene_play_sfx(uint32_t idx);
 
-void scene_add_effect(int32_t idx, float x, float y, int8_t dir);
+void scene_add_effect(char_c *chr, int32_t idx, float x, float y, int8_t dir, int8_t order);
 c_scene_sp *scene_get_sp();
+
+
+uint32_t scene_rand();
+uint32_t scene_rand_rng(uint32_t rng);
 #endif // SCENE_H_INCLUDED

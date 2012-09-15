@@ -100,8 +100,9 @@ void char_sprite::frame_val_set()
                 setBlend(gr_add);
             else if (pframe->blend_mode == 3)
                 setBlend(gr_add);
-
         }
+        setRotate(0);
+        setScale(1.0,1.0);
     }
 }
 
@@ -192,7 +193,10 @@ void char_sprite::setXY(float x, float y)
 
 void char_sprite::setScale(float x, float y)
 {
-    gr_setscale_sprite(sprite,x,y);
+    if (pframe)
+        gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_x);
+    else
+        gr_setscale_sprite(sprite,x*2.0,y*2.0);
 }
 
 void char_sprite::setOrigin(float x, float y)
@@ -205,17 +209,31 @@ void char_sprite::setBlend(gr_blend _blend)
     blend = _blend;
 }
 
+void char_sprite::setRotate(float angl)
+{
+    if (pframe)
+        gr_setrotate_sprite(sprite,angl+pframe->angle_z);
+    else
+        gr_setrotate_sprite(sprite,angl);
+}
+
 uint16_t char_sprite::get_cprior()
 {
-    return cur_seq->prior_for_cancel;
+    if (cur_seq)
+        return cur_seq->prior_for_cancel;
+    return 0xFFFF;
 }
 
 uint16_t char_sprite::get_prior()
 {
-    return cur_seq->prior;
+    if (cur_seq)
+        return cur_seq->prior;
+    return 0xFFFF;
 }
 
 uint32_t char_sprite::get_seq_id()
 {
-    return cur_seq->id;
+    if (cur_seq)
+        return cur_seq->id;
+    return 0xFFFFFFFF;
 }

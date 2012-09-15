@@ -3,6 +3,58 @@
 
 #define MAX_CHR_SFX     0x100
 
+#define FF_STAND        0x1
+#define FF_CROUCH       0x2
+#define FF_AIRBORNE     0x4
+#define FF_UNK8         0x8
+#define FF_GUARDCANC    0x10
+#define FF_CANCELLEABLE 0x20
+#define FF_CH_ON_HIT    0x40
+#define FF_SUPERARMOR   0x80
+#define FF_GUARD        0x100
+#define FF_GUARD2       0x200
+#define FF_GRAZE        0x400
+#define FF_UNK800       0x800
+#define FF_UNK1000      0x1000
+#define FF_MEL_INV_GND  0x2000
+#define FF_INV_FIRE     0x4000
+#define FF_INV_AIRBORNE 0x8000
+#define FF_INV_MID_BLOW 0x10000
+#define FF_INV_LOW_BLOW 0x20000
+#define FF_INV_SHOOT    0x40000
+#define FF_UNK80000     0x80000
+#define FF_UNK100000    0x100000
+#define FF_UNK200000    0x200000
+#define FF_UNK400000    0x400000
+#define FF_UNK800000    0x800000
+#define FF_UNK1000000   0x1000000
+
+#define AF_UNK1         0x1
+#define AF_MID_HIT      0x2
+#define AF_LOW_HIT      0x4
+#define AF_AIR_HIT      0x8
+#define AF_U_HIT        0x10
+#define AF_UNK20        0x20
+#define AF_UNK40        0x40       //TRANSLATE
+#define AF_UNK80        0x80       //TRANSLATE!
+#define AF_UNK100       0x100
+#define AF_UNK200       0x200
+#define AF_CRASH_HIT    0x400
+#define AF_UNK800       0x800
+#define AF_UNK1000      0x1000
+#define AF_UNK2000      0x2000
+#define AF_UNK4000      0x4000
+#define AF_KNOCK_BACK   0x8000
+#define AF_UNK10000     0x10000
+#define AF_UNK20000     0x20000
+#define AF_UNK40000     0x40000
+#define AF_GUARDCRUSH   0x80000
+#define AF_UNK100000    0x100000   //TRANSLATE
+#define AF_STAGGER      0x200000
+#define AF_UNK400000    0x400000   //TRANSLATE
+#define AF_UNK800000    0x800000   //TRANSLATE
+#define AF_UNK1000000   0x1000000
+
 class char_c
 {
     protected:
@@ -61,6 +113,8 @@ class char_c
     int8_t  field_115;
     int8_t  field_116;
     int8_t  field_18C;
+    int32_t field_190;
+    int8_t  field_194;
     int32_t field_198;
     float   field_19C;
     int16_t field_4AA;
@@ -74,6 +128,7 @@ class char_c
     int8_t  field_4D8;
     int16_t field_51C;
     int16_t field_520;
+    int16_t field_522;
     int16_t field_524;
     int16_t field_526;
     int16_t field_52A;
@@ -95,6 +150,13 @@ class char_c
     int8_t  field_570;
     int8_t  field_574;
     int8_t  field_577;
+    int16_t field_7D0;
+    int16_t field_7D2;
+    int16_t field_7D4;
+    int16_t field_7D6;
+    int16_t field_7D8;
+    float   field_7DC;
+    float   field_7E4;
     int8_t  field_7F7;
     int16_t field_7F8;
     int8_t  field_800;
@@ -117,11 +179,14 @@ class char_c
     int16_t field_84E;
     int16_t field_850;
     int16_t field_852;
+    int16_t field_892;
+    int16_t field_890;
     int16_t weather;        //Must be global var
     int16_t weather_time;   //Must be global var
     int16_t weather_var;    //Must be global var???
     int32_t time_count;    //Must be global var???
     int8_t  player_index;
+    float  dash_angle;
 
 
 
@@ -148,6 +213,7 @@ class char_c
 
 
     uint32_t get_seq();
+    uint32_t get_subseq();
 
 
     void set_seq(uint32_t idx);
@@ -167,6 +233,7 @@ class char_c
     virtual void check_seq_input();
 
     bool flip_to_enemy();
+    bool field_sq_check();
     void flip_with_force();
     void reset_forces();
 
@@ -177,6 +244,14 @@ class char_c
     virtual void func16();
     virtual void func18();
     virtual void func20();
+
+    uint16_t get_prior(uint32_t idx);
+
+    //input functions
+    bool keyDown(inp_keys key);
+    bool keyHit(inp_keys key);
+    int8_t gX(int8_t dir);
+    int8_t gY();
 };
 
 
