@@ -21,17 +21,17 @@ char_sprite::~char_sprite()
     delete sprite;
 }
 
-uint32_t char_sprite::get_cur_frame()
+uint32_t char_sprite::get_frame()
 {
     return cur_frame;
 }
 
-uint32_t char_sprite::get_cur_subseq()
+uint32_t char_sprite::get_subseq()
 {
     return cur_subseq;
 }
 
-uint32_t char_sprite::get_cur_frame_time()
+uint32_t char_sprite::get_frame_time()
 {
     return cur_frame_time;
 }
@@ -91,7 +91,7 @@ void char_sprite::frame_val_set()
         cur_frame_time = 0;
         cur_duration   = pframe->durate;
 
-        setOrigin(pframe->x_offset,pframe->y_offset);
+        setOrigin(0,0);
         if (pframe->type == 2)
         {
             if (pframe->blend_mode == 1)
@@ -101,8 +101,13 @@ void char_sprite::frame_val_set()
             else if (pframe->blend_mode == 3)
                 setBlend(gr_add);
         }
+        else
+        {
+            setBlend(gr_alpha);
+        }
         setRotate(0);
         setScale(1.0,1.0);
+        setColor(255,255,255,255);
     }
 }
 
@@ -194,14 +199,28 @@ void char_sprite::setXY(float x, float y)
 void char_sprite::setScale(float x, float y)
 {
     if (pframe)
-        gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_x);
+        gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_y);
     else
-        gr_setscale_sprite(sprite,x*2.0,y*2.0);
+        gr_setscale_sprite(sprite,x,y);
+}
+
+void char_sprite::setAScale(float w, float h)
+{
+    if (pframe)
+    {
+        //gr_setorigin_sprite(sprite,0,0);
+        gr_setscale_sprite(sprite,w / pframe->tx_width, h / pframe->tx_height);
+    }
 }
 
 void char_sprite::setOrigin(float x, float y)
 {
-    gr_setorigin_sprite(sprite,x,y);
+    if (pframe)
+    {
+        gr_setorigin_sprite(sprite,pframe->x_offset+x/pframe->scale_x,pframe->y_offset+y/pframe->scale_y);
+    }
+    else
+        gr_setorigin_sprite(sprite,x,y);
 }
 
 void char_sprite::setBlend(gr_blend _blend)
@@ -236,4 +255,16 @@ uint32_t char_sprite::get_seq_id()
     if (cur_seq)
         return cur_seq->id;
     return 0xFFFFFFFF;
+}
+
+
+void char_sprite::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+    if (pframe)
+        gr_setcolor_sprite(sprite, (r*pframe->c_R) / 255,
+                                   (g*pframe->c_G) / 255,
+                                   (b*pframe->c_B) / 255,
+                                   (a*pframe->c_A) / 255);
+    else
+        gr_setcolor_sprite(sprite, r,g,b,a);
 }

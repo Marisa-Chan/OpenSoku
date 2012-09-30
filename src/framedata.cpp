@@ -186,7 +186,10 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 frm->angle_y = 0;
                 frm->scale_x = 2.0;
                 frm->scale_y = 2.0;
-                frm->color = 0xFFFFFFFF;
+                frm->c_A = 255;
+                frm->c_R = 255;
+                frm->c_G = 255;
+                frm->c_B = 255;
                 frm->blend_mode = 0;
 
                 uint32_t frame = 0;
@@ -197,24 +200,25 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 else
                     frm->img = NULL;
 
-                f->read(2, &frm->unk1);
-                f->read(2, &frm->unk2);
+                f->read(2, &frm->unk1); //tex_x
+                f->read(2, &frm->unk2); //tex_y
 
                 f->read(2, &frm->tx_width);
                 f->read(2, &frm->tx_height);
                 f->read(2, &frm->x_offset);
-                frm->x_offset /= 2;
                 f->read(2, &frm->y_offset);
-                frm->y_offset /= 2;
                 f->read(2, &frm->durate);
 
                 f->read(1, &frm->type);
 
                 if (frm->type == 2)
                 {
-
                     f->read(2, &frm->blend_mode);
-                    f->read(4, &frm->color);
+
+                    f->read(1, &frm->c_A);
+                    f->read(1, &frm->c_R);
+                    f->read(1, &frm->c_G);
+                    f->read(1, &frm->c_B);
 
                     int16_t tscale = 0;
                     f->read(2, &tscale);
@@ -227,6 +231,11 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                     f->read(2, &frm->angle_x);
                     f->read(2, &frm->angle_y);
                     f->read(2, &frm->angle_z);
+                }
+                else
+                {
+                    frm->x_offset /= frm->scale_x;
+                    frm->y_offset /= frm->scale_y;
                 }
 
                 f->read(2, &frm->damage);
@@ -374,6 +383,15 @@ void char_graph::set_seq(uint32_t idx)
        sprite.set_seq(tmp->second);
 }
 
+seq *char_graph::get_seq(uint32_t idx)
+{
+    mapseq::iterator tmp = seqs.find(idx);
+    if (tmp != seqs.end())
+       return(tmp->second);
+
+    return NULL;
+}
+
 bool char_graph::process(bool ignore_loop)
 {
     return sprite.process(ignore_loop);
@@ -410,30 +428,39 @@ void char_graph::draw(float x, float y, uint8_t plane, int8_t direct)
 {
     sprite.setScale(direct*1.0,1);
     sprite.setXY(x,y);
-
+    sprite.setOrigin(x_off,y_off);
     sprite.draw(plane);
 }
 
 void char_graph::draw(float x, float y, uint8_t plane, int8_t direct, float rotate)
 {
-    sprite.setRotate(rotate);
-    sprite.setScale(direct*1.0,1);
-    sprite.setXY(x,y);
+    if (rotate < -90 || rotate > 90)
+    {
+        sprite.setRotate(180-rotate);
+        sprite.setScale(-direct*1.0,1);
+    }
+    else
+    {
+        sprite.setRotate(rotate);
+        sprite.setScale(direct*1.0,1);
+    }
 
+    sprite.setXY(x,y);
+    sprite.setOrigin(x_off,y_off);
     sprite.draw(plane);
 }
 
 uint32_t char_graph::get_subseq()
 {
-    return sprite.get_cur_subseq();
+    return sprite.get_subseq();
 }
 uint32_t char_graph::get_frame()
 {
-    return sprite.get_cur_frame();
+    return sprite.get_frame();
 }
 uint32_t char_graph::get_frame_time()
 {
-    return sprite.get_cur_frame_time();
+    return sprite.get_frame_time();
 }
 uint32_t char_graph::get_elaps_frames()
 {

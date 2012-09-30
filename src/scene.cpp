@@ -10,6 +10,7 @@
 #include "archive.h"
 #include "file_read.h"
 #include "mt.h"
+#include "./bullets.h"
 
 #define VERT_SCALE    2.0
 #define SCR_WIDTH     640.0
@@ -151,6 +152,7 @@ void c_scene::draw_scene()
         chrs[i]->draw();
 
     img_sp.draw(1);
+    drawbullet(1);
 
 }
 
@@ -185,7 +187,7 @@ s_border get_border_near(char_c *chr)
     return BORD_LEFT;
 }
 
-float getlvl_height(char_c *chr)
+float getlvl_height(moveable *chr)
 {
     if ( chr->x > 0.0 )
     {
@@ -197,7 +199,7 @@ float getlvl_height(char_c *chr)
     return lvl_height[0];
 }
 
-float getlvl_height(char_c *chr, float dx)
+float getlvl_height(moveable *chr, float dx)
 {
     float t = chr->x + dx;
     if ( t > 0.0 )
@@ -278,6 +280,8 @@ void scene_subfunc1(c_scene *scn)
 
     //for (uint32_t i=0; i < 2; i++)
     //scn->chrs[i]->smclass2->func3();
+
+    updatebullet();
 
     for (uint32_t i=0; i < 2; i++)
         scn->chrs[i]->func10();

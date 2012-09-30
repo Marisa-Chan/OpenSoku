@@ -55,7 +55,9 @@
 #define AF_UNK800000    0x800000   //TRANSLATE
 #define AF_UNK1000000   0x1000000
 
-class char_c
+class c_bullet;
+
+class char_c : public moveable
 {
     protected:
 
@@ -66,20 +68,6 @@ class char_c
     public:
 
     sfxc *sfx[MAX_CHR_SFX];
-
-    float x;
-    float y;
-    int8_t dir;
-    float h_inerc;
-    float v_inerc;
-    float v_force;
-
-    float angX;
-    float angY;
-    float angZ;
-
-    float scaleX;
-    float scaleY;
 
     char_c *enemy;
 
@@ -214,6 +202,8 @@ class char_c
 
     uint32_t get_seq();
     uint32_t get_subseq();
+    uint32_t get_frame();
+    seq * get_seq(uint32_t idx);
 
 
     void set_seq(uint32_t idx);
@@ -246,6 +236,8 @@ class char_c
     virtual void func20();
 
     uint16_t get_prior(uint32_t idx);
+
+    virtual c_bullet *new_bullet() ;
 
     //input functions
     bool keyDown(inp_keys key);

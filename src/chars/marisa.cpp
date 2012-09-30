@@ -3,6 +3,7 @@
 #include "../input.h"
 #include "../character_def.h"
 #include "../scene.h"
+#include "../bullets.h"
 #include "marisa.h"
 #include <math.h>
 
@@ -499,7 +500,7 @@ void char_marisa::func10()
                 {
                     field_7D6 ++;
                     field_7D4 = field_7D2 - dash_angle;
-                    if ( field_7D4 > 180 )
+                    if ( field_7D4 >180 )
                         field_7D4 -= 360;
                     else if (field_7D4 < -180)
                         field_7D4 += 360;
@@ -535,8 +536,8 @@ void char_marisa::func10()
                     angZ = -dash_angle;
 
 
-                    if ( h_inerc < 0.0 )
-                        angZ = 180.0 - dash_angle;
+                    //  if ( h_inerc < 0.0 )
+                    //   angZ = 180.0 - dash_angle;
 
                     if ( h_inerc < 0.0 )
                         if ( viz.get_subseq() == 1 )
@@ -562,10 +563,10 @@ void char_marisa::func10()
                     }
                     if ( (input->keyDown(INP_D) == 0 && field_7D6 > 10) || spell_energy <= 0 )
                     {
-                        //initclass_rendercharclass(&v3->rend_cls);
+                        reset_ofs();
                         angZ = 0;
 
-                        if ( viz.get_subseq() != 0 || viz.get_subseq() == 2 )
+                        if ( viz.get_subseq() == 1 || viz.get_subseq() == 2 )
                         {
                             if ( dir == 1 )
                             {
@@ -626,7 +627,7 @@ void char_marisa::func10()
                 v_inerc = 0.0;
                 if ( viz.get_subseq() < 5 )
                 {
-                    //initclass_rendercharclass(&v3->rend_cls);
+                    reset_ofs();
                     angZ = 0;
                     set_seq(215);
                 }
@@ -903,13 +904,12 @@ void char_marisa::func10()
                             h_inerc = -8.0;
                             v_inerc = 7.0;
                             v_force = 0.5;
-                            /*v1793 = 0.0;
-                            v1794 = 0.0;
-                            v1795 = 1.0;
-                            v252 = v3->rend_cls.y_pos + 110.0;
-                            v253 = v252;
-                            v254 = (67 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                            sub_46E2F0(v3, 848, v254, v253, v3->rend_cls.dir, 1, &v1793, 3);*/
+
+                            float params[3];
+                            params[0] = 0;
+                            params[1] = 0;
+                            params[2] = 1;
+                            addbullet(this,NULL,848,x + dir*67, y+110, dir, 1, params,3);
                         }
                     }
                     if ( viz.get_subseq() == 1 )
@@ -935,20 +935,11 @@ void char_marisa::func10()
                             v_force = 0.5;
                             v_inerc = 7.0;
 
-                            /* v1444 = 3;
-
-                             v1419 = &v1868;
-                             v1396 = 1;
-
-                             v1868 = 0.0;
-                             v1869 = 20.0;
-                             v1373 = v3->rend_cls.dir;
-                             v260 = v3->rend_cls.y_pos + 110.0;
-                             v1356 = v260;
-                             v261 = (67 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                             v262 = v261;
-                             v263 = v262;
-                             sub_46E2F0(v3, 804, v263, v1356, v1373, v1396, v1419, v1444);*/
+                            float params[3];
+                            params[0] = 0;
+                            params[1] = 20;
+                            params[2] = 0;
+                            addbullet(this,NULL,804,x + dir*67, y+110, dir, 1, params,2);
                             field_190 = 1;
                         }
                     }
@@ -999,14 +990,11 @@ void char_marisa::func10()
                             h_inerc = -4.0;
                             v_inerc = 8.0;
                             v_force = 0.5;
-                            /*v1799 = 60.0;
-                            v1800 = 1.0;
-                            v1801 = 1.0;
-                            v265 = v3->rend_cls.dir;
-                            v266 = v3->rend_cls.y_pos + 30.0;
-                            v267 = v266;
-                            v268 = (30 * v265) + v3->rend_cls.x_pos;
-                            sub_46E2F0(v3, 848, v268, v267, v265, v251, &v1799, 3);*/
+                            float params[3];
+                            params[0] = 60;
+                            params[1] = 1;
+                            params[2] = 1;
+                            addbullet(this,NULL,848,x + dir*30, y+30, dir, 1, params,3);
                         }
                     }
 
@@ -1033,21 +1021,11 @@ void char_marisa::func10()
                             h_inerc = -4.0;
                             v_force = 0.5;
                             v_inerc = 8.0;
-
-                            /*
-                                      v1444 = 3;
-                                      v1419 = &v1870;
-                                      v1396 = v251;
-                                      v1870 = 60.0;
-                                      v1871 = 20.0;
-                                      v1373 = v3->rend_cls.dir;
-                                      v274 = v3->rend_cls.y_pos + 30.0;
-                                      v1356 = v274;
-                                      v275 = (30 * v1373) + v3->rend_cls.x_pos;
-                                      v262 = v275;
-                                      v263 = v262;
-                                      sub_46E2F0(v3, 804, v263, v1356, v1373, v1396, v1419, v1444);*/
-
+                            float params[3];
+                            params[0] = 60;
+                            params[1] = 20;
+                            params[2] = 0;
+                            addbullet(this,NULL,804,x + dir*30, y+30, dir, 1, params,2);
                             field_190 = 1;
                         }
                     }
@@ -1719,14 +1697,12 @@ void char_marisa::func10()
             play_sfx(4);
             field_190 = 1;
             //sub_479FF0(v3, 200, 60);
-            /*v1591 = 0.0;
-            v1592 = 0.0;
-            v1593 = 4.0;
-            v412 = v3->rend_cls.dir;
-            v413 = v3->rend_cls.y_pos + 85.0;
-            v414 = v413;
-            v415 = (44 * v412) + v3->rend_cls.x_pos;
-            sub_46E2F0(v3, 803, v415, v414, v412, 1, &v1591, 3);*/
+
+            float t[3];
+            t[0] = 0;
+            t[1] = 0;
+            t[2] = 4;
+            addbullet(this, NULL,803, 44*dir + x, y+85, dir, 1, t, 3);
         }
 
         if ( viz.process() )
@@ -1747,16 +1723,14 @@ void char_marisa::func10()
         if ( viz.get_subseq() == 2 && viz.get_frame() == 1 && viz.get_frame_time() == 0 )
         {
             play_sfx(7);
-            /*v1625 = 0.0;
-            v1626 = v3->field_7DC / 40.0;
-            v1627 = 0.0;
-            v3->field_190 = 1;
-            sub_479FF0(v3, 200, 60);
-            add_card_energy(v3, 50);
-            v419 = v3->rend_cls.y_pos + 162.0;
-            v420 = v419;
-            v421 = (70 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-            sub_46E2F0(v3, 802, v421, v420, v3->rend_cls.dir, 1, &v1625, 3);*/
+            float t[3];
+            t[0] = 0;
+            t[1] = field_7DC / 40.0;
+            t[2] = 0;
+            field_190 = 1;
+            //sub_479FF0(v3, 200, 60);
+            //add_card_energy(v3, 50);
+            addbullet(this, NULL,802, 70*dir + x, y+162, dir, 1, t, 3);
         }
 
         if ( viz.process() )
@@ -1888,6 +1862,11 @@ void char_marisa::func10()
                 //add_card_energy(v3, 50);
                 if ( field_7D8 == 1 )
                 {
+                    float t[3];
+                    t[0] = 0;
+                    t[1] = 2;
+                    t[2] = 4;
+                    addbullet(this, NULL,803, 48*dir + x, y+104, dir, 1, t, 3);
                     /*v1790 = 0.0;
                     v1426 = &v1790;
                     v1791 = 2.0;
@@ -1904,6 +1883,11 @@ void char_marisa::func10()
                 }
                 else
                 {
+                    float t[3];
+                    t[0] = 0;
+                    t[1] = 2;
+                    t[2] = 4;
+                    addbullet(this, NULL,803, 48*dir + x, y+104, dir, 1, t, 3);
                     /*v1637 = 0.0;
                     v1426 = &v1637;
                     v1638 = 2.0;
@@ -1923,7 +1907,7 @@ void char_marisa::func10()
             if ( viz.process() )
                 set_seq(0);
 
-            if ( viz.get_subseq() == 5 && viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0 )
+            if ( viz.get_subseq() == 6 && viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0 )
                 set_seq(9);
             else if ((viz.get_subseq() == 1 && viz.get_elaps_frames() > 4 && (not_charge_attack == 0 || viz.get_elaps_frames() > 25)) ||
                      (viz.get_subseq() == 4 && viz.get_elaps_frames() > 12))
@@ -1932,71 +1916,71 @@ void char_marisa::func10()
                 v_force = 0.6;
         }
         break;
-        case 416:
-          if ( viz.get_subseq() == 1 )
+    case 416:
+        if ( viz.get_subseq() == 1 )
             sub10func(this);
-          if ( viz.get_subseq() == 0 )
-          {
+        if ( viz.get_subseq() == 0 )
+        {
             v_inerc -= v_force;
             if ( char_on_ground_down(this) )
             {
-              viz.next_subseq();
-              y = getlvl_height(this);
-              reset_forces();
-              break;
+                viz.next_subseq();
+                y = getlvl_height(this);
+                reset_forces();
+                break;
             }
-          }
+        }
 
-          if ( viz.process() )
+        if ( viz.process() )
             set_seq(0);
 
-          if (viz.get_subseq() == 1 && viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0)
+        if (viz.get_subseq() == 1 && viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0)
             set_seq(9);
-          else if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 &&  viz.get_frame() == 5 )
-              {
-                play_sfx(2);
-                h_inerc = -4.0;
-                v_inerc = 8.0;
-                v_force = 0.5;
-                /*v1748 = 60.0;
-                v1749 = 0.0;
-                v1750 = 0.0;
-                v3->field_190 = 1;
-                sub_479FF0(v3, 200, 60);
-                add_card_energy(v3, 50);
-                v449 = v3->rend_cls.dir;
-                v450 = v3->rend_cls.y_pos + 30.0;
-                v451 = v450;
-                v452 = (30 * v449) + v3->rend_cls.x_pos;
-                sub_46E2F0(v3, 801, v452, v451, v449, 1, &v1748, 3);*/
-              }
-          break;
-        case 418:
-          sub10func(this);
+        else if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 &&  viz.get_frame() == 5 )
+        {
+            play_sfx(2);
+            h_inerc = -4.0;
+            v_inerc = 8.0;
+            v_force = 0.5;
+            /*v1748 = 60.0;
+            v1749 = 0.0;
+            v1750 = 0.0;
+            v3->field_190 = 1;
+            sub_479FF0(v3, 200, 60);
+            add_card_energy(v3, 50);
+            v449 = v3->rend_cls.dir;
+            v450 = v3->rend_cls.y_pos + 30.0;
+            v451 = v450;
+            v452 = (30 * v449) + v3->rend_cls.x_pos;
+            sub_46E2F0(v3, 801, v452, v451, v449, 1, &v1748, 3);*/
+        }
+        break;
+    case 418:
+        sub10func(this);
 
-          h_inerc -= 0.5;
-          if ( h_inerc < 0.0 )
+        h_inerc -= 0.5;
+        if ( h_inerc < 0.0 )
             h_inerc = 0.0;
 
-          if ( viz.process() )
+        if ( viz.process() )
             set_seq(0);
 
-          if ( viz.get_frame_time() == 0 )
-          {
+        if ( viz.get_frame_time() == 0 )
+        {
             if (viz.get_frame() == 4)
             {
-              /*v1643 = 0.0;
-              v1644 = 0.0;
-              v1645 = 0.0;
-              sub_46E2F0(v3, 848, v3->rend_cls.x_pos, v3->rend_cls.y_pos, v3->rend_cls.dir, 1, &v1643, 3);*/
+                /*v1643 = 0.0;
+                v1644 = 0.0;
+                v1645 = 0.0;
+                sub_46E2F0(v3, 848, v3->rend_cls.x_pos, v3->rend_cls.y_pos, v3->rend_cls.dir, 1, &v1643, 3);*/
             }
             else if ( viz.get_frame() == 5 )
-              {
+            {
                 scene_play_sfx(29);
                 field_49A = 0;
-              }
-          }
-          break;
+            }
+        }
+        break;
     case 521:
     {
 
@@ -2621,7 +2605,7 @@ void char_marisa::func20()
                                 return;
                             }
                         }
-                        else if ( input->gY() == 0  && input->gX(dir) > 0 && cprior <= viz.get_prior(411) ) // 5C
+                        else if ( input->gY() == 0  && input->gX(dir) > 0 && cprior <= viz.get_prior(411) ) // 6C
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2726,14 +2710,1037 @@ void char_marisa::func20()
             }
         }
     }
- 
+    /*
+      v10 = v1->pressed_BC;
+      if ( !v9 )
+      {
+        if ( (v10 && v10 < 3 || v1->is_pressed_BC_1) && sub_468660(v1, 0) && !v1->field_836 )
+        {
+          cprior = v147;
+          if ( sub_489F10(v1, *&v147) )
+            return;
+          if ( *get_carduse_cost(&v1->field_5E8, 0) >= 100 )
+          {
+            if ( *get_carduse_cost(&v1->field_5E8, 0) <= 199 )
+            {
+              if ( v147 <= 50 )
+              {
+                if ( (v12 = v1->playing_seq, v12 > 299) && (v13 = v1->field_190, v13 != 3) && v13 || v12 < 300 )
+                {
+                  switch ( *get_carduse_cost(&v1->field_5E8, 0) )
+                  {
+                    case 100:
+                      if ( !v1->field_800 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_800 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v14);
+                      sub_4873B0(v1, 500, v147);
+                      break;
+                    case 101:
+                      if ( !v1->field_801 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_801 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v15);
+                      sub_4873B0(v1, 520, v147);
+                      break;
+                    case 102:
+                      if ( !v1->field_802 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_802 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v16);
+                      sub_4873B0(v1, 540, v147);
+                      break;
+                    case 103:
+                      if ( !v1->field_803 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_803 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v17);
+                      sub_4873B0(v1, 560, v147);
+                      break;
+                    case 104:
+                      if ( !v1->field_800 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_800 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v18);
+                      sub_4873B0(v1, 505, v147);
+                      break;
+                    case 105:
+                      if ( !v1->field_801 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_801 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v19);
+                      sub_4873B0(v1, 525, v147);
+                      break;
+                    case 106:
+                      if ( !v1->field_802 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_802 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v20);
+                      sub_4873B0(v1, 545, v147);
+                      break;
+                    case 107:
+                      if ( !v1->field_803 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_803 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v21);
+                      sub_4873B0(v1, 565, v147);
+                      break;
+                    case 108:
+                      if ( !v1->field_800 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_800 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v22);
+                      sub_4873B0(v1, 510, v147);
+                      break;
+                    case 109:
+                      if ( !v1->field_801 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_801 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v23);
+                      sub_4873B0(v1, 530, v147);
+                      break;
+                    case 110:
+                      if ( !v1->field_802 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_802 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v24);
+                      sub_4873B0(v1, 550, v147);
+                      break;
+                    case 111:
+                      if ( !v1->field_803 )
+                      {
+                        ++v1->field_4C8;
+                        v1->field_803 = 1;
+                      }
+                      sub_4834F0(v1);
+                      sub_488E70(v1, v25);
+                      sub_4873B0(v1, 570, v147);
+                      break;
+                    default:
+                      goto LABEL_77;
+                  }
+                  return;
+                }
+              }
+            }
+          }
+    LABEL_77:
+          if ( v147 <= 100 )
+          {
+            if ( *get_carduse_cost(&v1->field_5E8, 0) >= 200 )
+            {
+              if ( *get_carduse_cost(&v1->field_5E8, 0) <= 299 )
+              {
+                if ( !v1->pressed_x_axis )
+                {
+                  if ( (v26 = v1->playing_seq, v26 > 299) && (v27 = v1->field_190) != 0 && v27 != 3 || v26 < 300 )
+                  {
+                    switch ( *get_carduse_cost(&v1->field_5E8, 0) )
+                    {
+                      case 200:
+                        sub_487370(v1, 600, v147);
+                        break;
+                      case 201:
+                        sub_487370(v1, 601, v147);
+                        break;
+                      case 202:
+                        sub_487370(v1, 602, v147);
+                        break;
+                      case 203:
+                        sub_487370(v1, 603, v147);
+                        break;
+                      case 204:
+                        sub_487370(v1, 604, v147);
+                        break;
+                      case 205:
+                        sub_487370(v1, 605, v147);
+                        break;
+                      case 206:
+                        sub_487370(v1, 606, v147);
+                        break;
+                      case 207:
+                        sub_487370(v1, 607, v147);
+                        break;
+                      case 208:
+                        sub_487370(v1, 608, v147);
+                        break;
+                      case 209:
+                        sub_487370(v1, 609, v147);
+                        break;
+                      case 210:
+                        sub_487370(v1, 610, v147);
+                        break;
+                      case 211:
+                        sub_487370(v1, 611, v147);
+                        break;
+                      case 212:
+                        sub_487370(v1, 612, v147);
+                        break;
+                      case 213:
+                        sub_487370(v1, 613, v147);
+                        break;
+                      case 214:
+                        sub_487370(v1, 614, v147);
+                        break;
+                      case 215:
+                        if ( BYTE2(v1->field_8A6) )
+                          goto LABEL_108;
+                        sub_487370(v1, 615, v147);
+                        break;
+                      case 216:
+                        sub_487370(v1, 616, v147);
+                        break;
+                      case 217:
+                        sub_487370(v1, 617, v147);
+                        break;
+                      case 218:
+                        sub_487370(v1, 618, v147);
+                        break;
+                      case 219:
+                        sub_487370(v1, 619, v147);
+                        break;
+                      default:
+                        goto LABEL_108;
+                    }
+                    return;
+                  }
+                }
+              }
+            }
+          }
+        }
+        else
+        {
+          v11 = cprior;
+        }
+    LABEL_108:
+        if ( sub_4870D0(v1) )
+        {
+          if ( v1->pressed_combination & 0x400 )
+          {
+            if ( SBYTE1(v1->field_6AC) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 531) || (v28 = v1->playing_seq, v28 >= 500) && v28 <= 599 && !v1->field_801 )
+              {
+                if ( !v1->field_801 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_801 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 531, v11);
+                return;
+              }
+            }
+            if ( SBYTE1(v1->field_6A8) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 526) || (v29 = v1->playing_seq, v29 >= 500) && v29 <= 599 && !v1->field_801 )
+              {
+                if ( !v1->field_801 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_801 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 526, v11);
+                return;
+              }
+            }
+            if ( v11 <= get_prior(v1, 521) || (v30 = v1->playing_seq, v30 >= 500) && v30 <= 599 && !v1->field_801 )
+            {
+              if ( !v1->field_801 )
+              {
+                ++v1->field_4C8;
+                v1->field_801 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 521, v11);
+              return;
+            }
+          }
+          if ( v1->pressed_combination & 0x200 )
+          {
+            if ( SBYTE1(v1->field_6AC) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 530) || (v31 = v1->playing_seq, v31 >= 500) && v31 <= 599 && !v1->field_801 )
+              {
+                if ( !v1->field_801 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_801 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 530, v11);
+                return;
+              }
+            }
+            if ( SBYTE1(v1->field_6A8) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 525) || (v32 = v1->playing_seq, v32 >= 500) && v32 <= 599 && !v1->field_801 )
+              {
+                if ( !v1->field_801 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_801 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 525, v11);
+                return;
+              }
+            }
+            if ( v11 <= get_prior(v1, 520) || (v33 = v1->playing_seq, v33 >= 500) && v33 <= 599 && !v1->field_801 )
+            {
+              if ( !v1->field_801 )
+              {
+                ++v1->field_4C8;
+                v1->field_801 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 520, v11);
+              return;
+            }
+          }
+          if ( v1->pressed_combination & 4 )
+          {
+            if ( SBYTE3(v1->field_6AC) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 571) || (v34 = v1->playing_seq, v34 >= 500) && v34 <= 599 && !v1->field_803 )
+              {
+                if ( !v1->field_803 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_803 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 571, v11);
+                return;
+              }
+            }
+            if ( SBYTE3(v1->field_6A8) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 566) || (v35 = v1->playing_seq, v35 >= 500) && v35 <= 599 && !v1->field_803 )
+              {
+                if ( !v1->field_803 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_803 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 566, v11);
+                return;
+              }
+            }
+            if ( v11 <= get_prior(v1, 561) || (v36 = v1->playing_seq, v36 >= 500) && v36 <= 599 && !v1->field_803 )
+            {
+              if ( !v1->field_803 )
+              {
+                ++v1->field_4C8;
+                v1->field_803 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 561, v11);
+              return;
+            }
+          }
+          if ( v1->pressed_combination & 2 )
+          {
+            if ( SBYTE3(v1->field_6AC) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 570) || (v37 = v1->playing_seq, v37 >= 500) && v37 <= 599 && !v1->field_803 )
+              {
+                if ( !v1->field_803 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_803 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 570, v11);
+                return;
+              }
+            }
+            if ( SBYTE3(v1->field_6A8) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 565) || (v38 = v1->playing_seq, v38 >= 500) && v38 <= 599 && !v1->field_803 )
+              {
+                if ( !v1->field_803 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_803 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 565, v11);
+                return;
+              }
+            }
+            if ( v11 <= get_prior(v1, 560) || (v39 = v1->playing_seq, v39 >= 500) && v39 <= 599 && !v1->field_803 )
+            {
+              if ( !v1->field_803 )
+              {
+                ++v1->field_4C8;
+                v1->field_803 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 560, v11);
+              return;
+            }
+          }
+          if ( v1->pressed_combination & 0x40 )
+          {
+            if ( SLOBYTE(v1->field_6AC) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 511) || (v40 = v1->playing_seq, v40 >= 500) && v40 <= 599 && !v1->field_800 )
+              {
+                if ( !v1->field_800 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_800 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 511, v11);
+                return;
+              }
+            }
+            if ( SLOBYTE(v1->field_6A8) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 506) || (v41 = v1->playing_seq, v41 >= 500) && v41 <= 599 && !v1->field_800 )
+              {
+                if ( !v1->field_800 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_800 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 506, v11);
+                return;
+              }
+            }
+            if ( v11 <= get_prior(v1, 500) )
+              goto LABEL_247;
+            v42 = v1->playing_seq;
+            if ( v42 >= 500 && v42 <= 599 && !v1->field_800 )
+              goto LABEL_248;
+          }
+          if ( v1->pressed_combination & 0x20 )
+          {
+            if ( SLOBYTE(v1->field_6AC) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 510) || (v43 = v1->playing_seq, v43 >= 500) && v43 <= 599 && !v1->field_800 )
+              {
+                if ( !v1->field_800 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_800 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 510, v11);
+                return;
+              }
+            }
+            if ( SLOBYTE(v1->field_6A8) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 505) || (v44 = v1->playing_seq, v44 >= 500) && v44 <= 599 && !v1->field_800 )
+              {
+                if ( !v1->field_800 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_800 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 505, v11);
+                return;
+              }
+            }
+            if ( v11 <= get_prior(v1, 500) || (v45 = v1->playing_seq, v45 >= 500) && v45 <= 599 && !v1->field_800 )
+            {
+    LABEL_247:
+              if ( v1->field_800 )
+              {
+    LABEL_249:
+                sub_4834F0(v1);
+                sub_4873B0(v1, 500, v11);
+                return;
+              }
+    LABEL_248:
+              ++v1->field_4C8;
+              v1->field_800 = 1;
+              goto LABEL_249;
+            }
+          }
+          if ( v1->pressed_combination & 0x40000000 )
+          {
+            if ( SBYTE2(v1->field_6AC) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 551) || (v46 = v1->playing_seq, v46 >= 500) && v46 <= 599 && !v1->field_802 )
+              {
+                if ( !v1->field_802 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_802 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 551, v11);
+                return;
+              }
+            }
+            if ( SBYTE2(v1->field_6A8) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 546) || (v47 = v1->playing_seq, v47 >= 500) && v47 <= 599 && !v1->field_802 )
+              {
+                if ( !v1->field_802 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_802 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 546, v11);
+                return;
+              }
+            }
+            if ( v11 <= get_prior(v1, 541) || (v48 = v1->playing_seq, v48 >= 500) && v48 <= 599 && !v1->field_802 )
+            {
+              if ( !v1->field_802 )
+              {
+                ++v1->field_4C8;
+                v1->field_802 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 541, v11);
+              return;
+            }
+          }
+          if ( v1->pressed_combination & 0x20000000 )
+          {
+            if ( SBYTE2(v1->field_6AC) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 550) || (v49 = v1->playing_seq, v49 >= 500) && v49 <= 599 && !v1->field_802 )
+              {
+                if ( !v1->field_802 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_802 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 550, v11);
+                return;
+              }
+            }
+            if ( SBYTE2(v1->field_6A8) >= 1 )
+            {
+              if ( v11 <= get_prior(v1, 545) || (v50 = v1->playing_seq, v50 >= 500) && v50 <= 599 && !v1->field_802 )
+              {
+                if ( !v1->field_802 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_802 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 545, v11);
+                return;
+              }
+            }
+            if ( v11 <= get_prior(v1, 540) || (v51 = v1->playing_seq, v51 >= 500) && v51 <= 599 && !v1->field_802 )
+            {
+              if ( !v1->field_802 )
+              {
+                ++v1->field_4C8;
+                v1->field_802 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 540, v11);
+              return;
+            }
+          }
+        }
+        goto LABEL_503;
+      }
+      if ( (v10 && v10 < 3 || v1->is_pressed_BC_1) && sub_468660(v1, 0) && !v1->field_836 )
+      {
+        if ( *get_carduse_cost(&v1->field_5E8, 0) < 100 || *get_carduse_cost(&v1->field_5E8, 0) > 199 )
+        {
+          v11 = v147;
+        }
+        else
+        {
+          v11 = v147;
+          if ( v147 <= 50 )
+          {
+            if ( (v52 = v1->playing_seq, v52 > 299) && (v53 = v1->field_190, v53 != 3) && v53 || v52 < 300 )
+            {
+              switch ( *get_carduse_cost(&v1->field_5E8, 0) )
+              {
+                case 100:
+                  if ( !v1->field_800 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_800 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v54);
+                  sub_4873B0(v1, 500, v147);
+                  break;
+                case 102:
+                  if ( !v1->field_802 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_802 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v55);
+                  sub_4873B0(v1, 542, v147);
+                  break;
+                case 103:
+                  if ( !v1->field_803 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_803 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v56);
+                  sub_4873B0(v1, 562, v147);
+                  break;
+                case 104:
+                  if ( !v1->field_800 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_800 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v57);
+                  sub_4873B0(v1, 505, v147);
+                  break;
+                case 106:
+                  if ( SBYTE2(v1->field_6A8) < 1 )
+                    goto LABEL_341;
+                  if ( !v1->field_802 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_802 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v58);
+                  sub_4873B0(v1, 547, v147);
+                  break;
+                case 107:
+                  if ( !v1->field_803 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_803 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v59);
+                  sub_4873B0(v1, 567, v147);
+                  break;
+                case 108:
+                  if ( !v1->field_800 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_800 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v60);
+                  sub_4873B0(v1, 512, v147);
+                  break;
+                case 110:
+                  if ( SBYTE2(v1->field_6AC) < 1 )
+                    goto LABEL_341;
+                  if ( !v1->field_802 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_802 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v61);
+                  sub_4873B0(v1, 552, v147);
+                  break;
+                case 111:
+                  if ( !v1->field_803 )
+                  {
+                    ++v1->field_4C8;
+                    v1->field_803 = 1;
+                  }
+                  sub_4834F0(v1);
+                  sub_488E70(v1, v62);
+                  sub_4873B0(v1, 572, v147);
+                  break;
+                default:
+                  goto LABEL_341;
+              }
+              return;
+            }
+          }
+        }
+    LABEL_341:
+        if ( v11 <= 100 )
+        {
+          if ( *get_carduse_cost(&v1->field_5E8, 0) >= 200 )
+          {
+            if ( *get_carduse_cost(&v1->field_5E8, 0) <= 299 )
+            {
+              if ( !v1->pressed_x_axis )
+              {
+                if ( (v63 = v1->playing_seq, v63 > 299) && (v64 = v1->field_190) != 0 && v64 != 3 || v63 < 300 )
+                {
+                  switch ( *get_carduse_cost(&v1->field_5E8, 0) )
+                  {
+                    case 203:
+                      sub_487370(v1, 603, v11);
+                      break;
+                    case 205:
+                      sub_487370(v1, 605, v11);
+                      break;
+                    case 207:
+                      sub_487370(v1, 607, v11);
+                      break;
+                    case 208:
+                      sub_487370(v1, 658, v11);
+                      break;
+                    case 211:
+                      sub_487370(v1, 611, v11);
+                      break;
+                    default:
+                      goto LABEL_356;
+                  }
+                  return;
+                }
+              }
+            }
+          }
+        }
+      }
+      else
+      {
+        v11 = v147;
+      }
+    LABEL_356:
+      if ( sub_4870D0(v1) )
+      {
+        if ( v1->pressed_combination & 4 )
+        {
+          if ( SBYTE3(v1->field_6AC) >= 1 )
+          {
+            if ( v11 <= get_prior(v1, 573) || (v65 = v1->playing_seq, v65 >= 500) && v65 <= 599 && !v1->field_803 )
+            {
+              if ( !v1->field_803 )
+              {
+                ++v1->field_4C8;
+                v1->field_803 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 573, v11);
+              return;
+            }
+          }
+          if ( SBYTE3(v1->field_6A8) >= 1 )
+          {
+            if ( v11 <= get_prior(v1, 568) || (v66 = v1->playing_seq, v66 >= 500) && v66 <= 599 && !v1->field_803 )
+            {
+              if ( !v1->field_803 )
+              {
+                ++v1->field_4C8;
+                v1->field_803 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 568, v11);
+              return;
+            }
+          }
+          if ( v11 <= get_prior(v1, 563) || (v67 = v1->playing_seq, v67 >= 500) && v67 <= 599 && !v1->field_803 )
+          {
+            if ( !v1->field_803 )
+            {
+              ++v1->field_4C8;
+              v1->field_803 = 1;
+            }
+            sub_4834F0(v1);
+            sub_4873B0(v1, 563, v11);
+            return;
+          }
+        }
+        if ( v1->pressed_combination & 2 )
+        {
+          if ( SBYTE3(v1->field_6AC) >= 1 )
+          {
+            if ( v11 <= get_prior(v1, 572) || (v68 = v1->playing_seq, v68 >= 500) && v68 <= 599 && !v1->field_803 )
+            {
+              if ( !v1->field_803 )
+              {
+                ++v1->field_4C8;
+                v1->field_803 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 572, v11);
+              return;
+            }
+          }
+          if ( SBYTE3(v1->field_6A8) >= 1 )
+          {
+            if ( v11 <= get_prior(v1, 567) || (v69 = v1->playing_seq, v69 >= 500) && v69 <= 599 && !v1->field_803 )
+            {
+              if ( !v1->field_803 )
+              {
+                ++v1->field_4C8;
+                v1->field_803 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 567, v11);
+              return;
+            }
+          }
+          if ( v11 <= get_prior(v1, 562) || (v70 = v1->playing_seq, v70 >= 500) && v70 <= 599 && !v1->field_803 )
+          {
+            if ( !v1->field_803 )
+            {
+              ++v1->field_4C8;
+              v1->field_803 = 1;
+            }
+            sub_4834F0(v1);
+            sub_4873B0(v1, 562, v11);
+            return;
+          }
+        }
+        if ( v1->pressed_combination & 0x40 )
+        {
+          if ( SLOBYTE(v1->field_6AC) >= 1 )
+          {
+            if ( v11 <= get_prior(v1, 513) || (v71 = v1->playing_seq, v71 >= 500) && v71 <= 599 && !v1->field_800 )
+            {
+              if ( !v1->field_800 )
+              {
+                ++v1->field_4C8;
+                v1->field_800 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 513, v11);
+              return;
+            }
+          }
+          if ( SLOBYTE(v1->field_6A8) >= 1 )
+          {
+            if ( v11 <= get_prior(v1, 506) || (v72 = v1->playing_seq, v72 >= 500) && v72 <= 599 && !v1->field_800 )
+            {
+              if ( !v1->field_800 )
+              {
+                ++v1->field_4C8;
+                v1->field_800 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 506, v11);
+              return;
+            }
+          }
+          if ( v11 <= get_prior(v1, 500) )
+            goto LABEL_447;
+          v73 = v1->playing_seq;
+          if ( v73 >= 500 && v73 <= 599 && !v1->field_800 )
+            goto LABEL_448;
+        }
+        if ( v1->pressed_combination & 0x20 )
+        {
+          if ( SLOBYTE(v1->field_6AC) >= 1 )
+          {
+            if ( v11 <= get_prior(v1, 512) || (v74 = v1->playing_seq, v74 >= 500) && v74 <= 599 && !v1->field_800 )
+            {
+              if ( !v1->field_800 )
+              {
+                ++v1->field_4C8;
+                v1->field_800 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 512, v11);
+              return;
+            }
+          }
+          if ( SLOBYTE(v1->field_6A8) >= 1 )
+          {
+            if ( v11 <= get_prior(v1, 505) || (v75 = v1->playing_seq, v75 >= 500) && v75 <= 599 && !v1->field_800 )
+            {
+              if ( !v1->field_800 )
+              {
+                ++v1->field_4C8;
+                v1->field_800 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 505, v11);
+              return;
+            }
+          }
+          if ( v11 <= get_prior(v1, 500) || (v76 = v1->playing_seq, v76 >= 500) && v76 <= 599 && !v1->field_800 )
+          {
+    LABEL_447:
+            if ( v1->field_800 )
+            {
+    LABEL_449:
+              sub_4834F0(v1);
+              sub_4873B0(v1, 500, v11);
+              return;
+            }
+    LABEL_448:
+            ++v1->field_4C8;
+            v1->field_800 = 1;
+            goto LABEL_449;
+          }
+        }
+        if ( v1->pressed_combination & 0x40000000 )
+        {
+          if ( SBYTE2(v1->field_6AC) >= 2 )
+          {
+            if ( v11 <= get_prior(v1, 553) || (v77 = v1->playing_seq, v77 >= 500) && v77 <= 599 && !v1->field_802 )
+            {
+              if ( !v1->field_802 )
+              {
+                ++v1->field_4C8;
+                v1->field_802 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 553, v11);
+              return;
+            }
+          }
+          if ( SBYTE2(v1->field_6A8) >= 2 )
+          {
+            if ( v11 <= get_prior(v1, 548) || (v78 = v1->playing_seq, v78 >= 500) && v78 <= 599 && !v1->field_802 )
+            {
+              if ( !v1->field_802 )
+              {
+                ++v1->field_4C8;
+                v1->field_802 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 548, v11);
+              return;
+            }
+          }
+          if ( !BYTE2(v1->field_6A8) )
+          {
+            if ( !BYTE2(v1->field_6AC) )
+            {
+              if ( v11 <= get_prior(v1, 543) || (v79 = v1->playing_seq, v79 >= 500) && v79 <= 599 && !v1->field_802 )
+              {
+                if ( !v1->field_802 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_802 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 543, v11);
+                return;
+              }
+            }
+          }
+        }
+        if ( v1->pressed_combination & 0x20000000 )
+        {
+          if ( SBYTE2(v1->field_6AC) >= 2 )
+          {
+            if ( v11 <= get_prior(v1, 552) || (v80 = v1->playing_seq, v80 >= 500) && v80 <= 599 && !v1->field_802 )
+            {
+              if ( !v1->field_802 )
+              {
+                ++v1->field_4C8;
+                v1->field_802 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 552, v11);
+              return;
+            }
+          }
+          if ( SBYTE2(v1->field_6A8) >= 2 )
+          {
+            if ( v11 <= get_prior(v1, 547) || (v81 = v1->playing_seq, v81 >= 500) && v81 <= 599 && !v1->field_802 )
+            {
+              if ( !v1->field_802 )
+              {
+                ++v1->field_4C8;
+                v1->field_802 = 1;
+              }
+              sub_4834F0(v1);
+              sub_4873B0(v1, 547, v11);
+              return;
+            }
+          }
+          if ( !BYTE2(v1->field_6A8) )
+          {
+            if ( !BYTE2(v1->field_6AC) )
+            {
+              if ( v11 <= get_prior(v1, 542) || (v82 = v1->playing_seq, v82 >= 500) && v82 <= 599 && !v1->field_802 )
+              {
+                if ( !v1->field_802 )
+                {
+                  ++v1->field_4C8;
+                  v1->field_802 = 1;
+                }
+                sub_4834F0(v1);
+                sub_4873B0(v1, 542, v11);
+                return;
+              }
+            }
+          }
+        }
+      }
+    LABEL_503:
+      v8 = 200;
+      goto LABEL_504;
+    }
+      }
+    */
+
 }
 
+c_bullet *char_marisa::new_bullet()
+{
+    c_bullet *tmp = new marisa_bullets();
+    return tmp;
+}
 
 void char_marisa::set_seq_params()
 {
+
     switch(viz.get_seq_id())
     {
+    case 214:
+        reset_ofs();
+        field_7D6 = 0;
+        v_inerc = 0.0;
+        h_inerc = 0.0;
+        v_force = 0.60000002;
+        field_7DC = 12.0;
+//        field_7EC = 0.0;
+        x_off = 0;
+        y_off = 95;
+        break;
     case 302:
         if ( !field_49A )
             reset_forces();

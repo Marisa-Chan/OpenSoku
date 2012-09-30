@@ -24,7 +24,7 @@ struct char_frame
 {
 	gr_tex * img;
 	uint16_t unk1;
-	int16_t unk2;
+	int16_t  unk2;
     int16_t  tx_width;
     int16_t  tx_height;
     int16_t  x_offset;
@@ -33,7 +33,10 @@ struct char_frame
 	uint8_t  type;
 
 	int16_t  blend_mode;
-	uint32_t color;
+    uint8_t  c_A;
+	uint8_t  c_R;
+	uint8_t  c_G;
+	uint8_t  c_B;
 	float    scale_x;
     float    scale_y;
 	int16_t  angle_x;
@@ -118,9 +121,9 @@ class char_sprite
     char_sprite();
     ~char_sprite();
 
-    uint32_t get_cur_subseq();
-    uint32_t get_cur_frame();
-    uint32_t get_cur_frame_time();
+    uint32_t get_subseq();
+    uint32_t get_frame();
+    uint32_t get_frame_time();
     uint32_t get_elaps_frames();
     char_frame * get_pframe();
     uint32_t get_seq_id();
@@ -137,9 +140,11 @@ class char_sprite
 
     void setXY(float x, float y);
     void setScale(float x, float y);
+    void setAScale(float w, float h);
     void setOrigin(float x, float y);
     void setBlend(gr_blend blend);
     void setRotate(float angl);
+    void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
     void draw(uint8_t plane = 0);
 };
@@ -148,7 +153,7 @@ class char_sprite
 
 typedef map<int32_t, seq *> mapseq;
 
-class char_graph
+class char_graph : public moveable
 {
     private:
 
@@ -186,6 +191,8 @@ class char_graph
     uint16_t get_prior();
     uint16_t get_cprior(uint32_t idx);
     uint16_t get_prior(uint32_t idx);
+
+    seq *get_seq(uint32_t idx);
 
     char_graph();
   //  ~char_graph();

@@ -1,6 +1,7 @@
 #include "global_types.h"
 #include "file_read.h"
 #include "graph.h"
+#include <math.h>
 
 static sf::RenderWindow *window = NULL;
 
@@ -135,7 +136,7 @@ void gr_setxy_sprite(gr_sprite *spr, float x, float y)
 
 void gr_setrotate_sprite(gr_sprite *spr, float angl)
 {
-    spr->setRotation(angl);
+    spr->setRotationZ(angl);
 }
 
 void gr_setscale_sprite(gr_sprite *spr, float x, float y)
@@ -222,4 +223,9 @@ void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B, uint8_t
 void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B)
 {
     spr->setColor(sf::Color(R,G,B));
+}
+
+void gr_rotateX(gr_sprite *spr, float X)
+{
+    spr->setRotationX(X);
 }

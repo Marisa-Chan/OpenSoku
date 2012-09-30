@@ -2,13 +2,14 @@
 #define GRAPH_H_INCLUDED
 
 #include <SFML/Graphics.hpp>
+#include "fxsprite/fxSprite.hpp"
 
 #define MAX_STATES  8
 
 class filehandle;
 
 typedef sf::Texture gr_tex;
-typedef sf::Sprite  gr_sprite;
+typedef sf::fxSprite  gr_sprite;
 typedef sf::RenderStates gr_state;
 
 enum gr_blend
@@ -53,5 +54,7 @@ void gr_draw_box(float x1,float y1,float w, float h, int r, int g, int b,int a,u
 
 void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B, uint8_t A);
 void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B);
+
+void gr_rotateX(gr_sprite *spr, float X);
 
 #endif // GRAPH_H_INCLUDED

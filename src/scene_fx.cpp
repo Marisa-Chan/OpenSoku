@@ -188,6 +188,9 @@ bool c_scene_sp::load_dat()
                 f->read(2, &frm->unk1);
                 f->read(2, &frm->unk2);
 
+                                    frm->scale_x = 2.0;
+                    frm->scale_y = 2.0;
+
                 f->read(2, &frm->tx_width);
                 f->read(2, &frm->tx_height);
                 f->read(2, &frm->x_offset);
@@ -198,8 +201,8 @@ bool c_scene_sp::load_dat()
 
                 if (frm->type == 2)
                 {
-
                     f->read(2, &frm->blend_mode);
+
                     f->read(1, &frm->c_A);
                     f->read(1, &frm->c_R);
                     f->read(1, &frm->c_G);
@@ -216,6 +219,11 @@ bool c_scene_sp::load_dat()
                     f->read(2, &frm->angle_x);
                     f->read(2, &frm->angle_y);
                     f->read(2, &frm->angle_z);
+                }
+                else
+                {
+                    frm->x_offset /= frm->scale_x;
+                    frm->x_offset /= frm->scale_y;
                 }
 
                 ssq.frames[j] = frm;
@@ -355,11 +363,11 @@ void c_scene_fx::func10()
         scaleX += 0.4;
         scaleY += 0.4;
 
-        if (c_R >= 20)
+        if (c_A >= 20)
         {
+            c_A -= 20;
             c_R -= 20;
             c_G -= 20;
-            c_B -= 20;
             if (viz.process())
                 active = false;
         }
@@ -375,11 +383,11 @@ void c_scene_fx::func10()
         scaleX+=0.2;
         scaleY+=0.2;
 
-        if (c_R >= 25)
+        if (c_A >= 25)
         {
+            c_A -= 25;
             c_R -= 25;
             c_G -= 25;
-            c_B -= 25;
             if (viz.process())
                 active = false;
         }
@@ -402,11 +410,11 @@ void c_scene_fx::func10()
 
         scaleX+=0.4;
         scaleY+=0.4;
-        if (c_R >= 15)
+        if (c_A >= 15)
         {
+            c_A -= 15;
             c_R -= 15;
             c_G -= 15;
-            c_B -= 15;
             if (viz.process())
                 active = false;
         }
@@ -418,12 +426,12 @@ void c_scene_fx::func10()
         if ( viz.get_elaps_frames() == 0 )
             h_inerc = -10.0;
 
-        if ( c_R >= 15 )
+        if ( c_A >= 15 )
         {
             x += dir * h_inerc;
+            c_A -= 15;
             c_R -= 15;
             c_G -= 15;
-            c_B -= 15;
             if (viz.process())
                 active = false;
         }
@@ -435,11 +443,11 @@ void c_scene_fx::func10()
         scaleX += 0.2;
         scaleY += 0.2;
 
-        if (c_R >= 25)
+        if (c_A >= 25)
         {
+            c_A -= 25;
             c_R -= 25;
             c_G -= 25;
-            c_B -= 25;
             if (viz.process())
                 active = false;
         }
@@ -470,10 +478,10 @@ void c_scene_fx::set_seq_params()
     case 125:
         if ( parent->get_seq() == 214 )
         {
-            if ( parent->get_subseq() == 1 || parent->get_subseq() == 2 )
+          //  if ( parent->get_subseq() == 1 || parent->get_subseq() == 2 )
                 angZ = parent->angZ;
-            else if ( parent->get_subseq() == 3 || parent->get_subseq() == 4 )
-                angZ = parent->angZ + 180.0;
+            //else if ( parent->get_subseq() == 3 || parent->get_subseq() == 4 )
+            //    angZ = parent->angZ + 180.0;
         }
         break;
     }
@@ -487,9 +495,18 @@ void c_scene_fx::draw(int8_t plane)
     if (active)
     {
         viz.setXY(x,y);
-        viz.setScale(dir*scaleX,scaleY);
         viz.setColor(c_R,c_G,c_B,c_A);
-        viz.setRotate(angZ);
+
+        if (angZ < -90 || angZ > 90)
+        {
+            viz.setRotate(180-angZ);
+            viz.setScale(-dir*scaleX,scaleY);
+        }
+        else
+        {
+            viz.setRotate(angZ);
+            viz.setScale(dir*scaleX,scaleY);
+        }
         viz.draw(1);
     }
 }

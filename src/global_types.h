@@ -9,6 +9,7 @@
 
 #include "graph.h"
 #include "sfx.h"
+#include "moveable.h"
 
 #define CHRBUF 256
 

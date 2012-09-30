@@ -18,6 +18,9 @@ char_c::char_c(inp_ab *func)
     angX = 0;
     angY = 0;
 
+    x_off = 0;
+    y_off = 0;
+
     hit_stop = 0;
     field_4A8 = 0;
     field_4C4 = 0;
@@ -106,11 +109,17 @@ void char_c::draw(float x, float y, int8_t dir)
 
 void char_c::draw()
 {
+    viz.setOrigin(-x_off,-y_off);
+
     if (angZ != 0)
-        viz.draw(x,y,1,dir,angZ);
+        viz.draw(x,y+y_off,1,dir,angZ);
     else
-        viz.draw(x,y,1,dir);
-    gr_draw_box(x,-y,255,0,0,1);
+        viz.draw(x,y+y_off,1,dir);
+
+   // gr_draw_box(x,-y,255,0,0,1);
+   // gr_draw_box(x,-y-y_off,0,255,0,1);
+
+
 
     char_frame *pf = viz.get_pframe();
 
@@ -122,8 +131,7 @@ void char_c::draw()
                         -y+pf->box_atk[i].y1,
                         pf->box_atk[i].x2-pf->box_atk[i].x1,
                         pf->box_atk[i].y2-pf->box_atk[i].y1,
-                        255,0,0,128,1);
-
+                        0,255,0,128,1);
         }
     }
 
@@ -204,6 +212,11 @@ char_frame *char_c::get_pframe()
 uint32_t char_c::get_seq()
 {
     return viz.get_seq_id();
+}
+
+seq *char_c::get_seq(uint32_t idx)
+{
+    return viz.get_seq(idx);
 }
 
 uint32_t char_c::get_subseq()
@@ -1110,6 +1123,11 @@ int8_t char_c::gY()
     return input->gY();
 }
 
+uint32_t char_c::get_frame()
+{
+    return viz.get_frame();
+}
+
 uint16_t char_c::get_prior(uint32_t idx)
 {
     return viz.get_prior(idx);
@@ -1181,6 +1199,11 @@ void char_c::set_seq_params()
         v_force = 0.0;
         break;
     }
+}
+
+c_bullet *char_c::new_bullet()
+{
+    return NULL;
 }
 
 bool char_idle_or_move(char_c *chr)

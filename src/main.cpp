@@ -32,7 +32,7 @@ int main()
     sfx_init();
     scene_load_sounds();
 
-
+   // playmusic();
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_KB));
 

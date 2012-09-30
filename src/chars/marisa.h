@@ -13,6 +13,7 @@ class char_marisa: public char_c
 
     void func10();
     void func20();
+    c_bullet *new_bullet();
 };
 
 #endif // MARISA_CPP_INCLUDED
