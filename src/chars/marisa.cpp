@@ -1128,14 +1128,12 @@ void char_marisa::func10()
             if ( viz.get_frame() == 4 )
             {
                 h_inerc = 15.0;
-                /*v1445 = 3;
-                v1420 = &v1805;
-                v1805 = 0.0;
-                v1397 = 1;
-                v1806 = 0.0;
-                v1807 = 0.0;
-                v1374 = v3->rend_cls.dir;
-                sub_46E2F0(v3, 848, v3->rend_cls.x_pos, v3->rend_cls.y_pos, v1374, v1397, v1420, v1445);*/
+
+                float t[3];
+                t[0] = 0;
+                t[1] = 0;
+                t[2] = 0;
+                addbullet(this, NULL, 848, x, y, dir, 1, t, 3);
             }
 
             if ( viz.get_frame_time() == 0  &&
@@ -1336,14 +1334,13 @@ void char_marisa::func10()
             {
                 field_190 = 1;
                 play_sfx(0);
-                /*add_card_energy(v3, 5);
-                v1742 = (MT_getnext() % 0x1E) - 15.0;
-                v1743 = (2 * v3->field_7D2 + 15);
-                v1744 = (MT_getnext() & 3) + 2.0;
-                v326 = v3->rend_cls.y_pos + 67.0;
-                v327 = v326;
-                v328 = (87 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                sub_46E2F0(v3, 800, v328, v327, v3->rend_cls.dir, 1, &v1742, 3);*/
+                //add_card_energy(v3, 5);
+                float t[3];
+                t[0] = (scene_rand() % 30) - 15.0;
+                t[1] = field_7D2*2 + 15;
+                t[2] = (scene_rand() & 3) + 2;
+                addbullet(this, NULL, 800, 87*dir + x, y+67, dir, 1, t, 3);
+
                 field_7D0 = 4;
                 field_7D2++;
             }
@@ -1591,13 +1588,11 @@ void char_marisa::func10()
         if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 6 )
         {
             play_sfx(1);
-            /*   v1736 = 0.0;
-               v1737 = 2.0;
-               v1738 = 1.0;
-               v379 = v3->rend_cls.y_pos + 103.0;
-               v380 = v379;
-               v381 = (106 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-               sub_46E2F0(v3, 848, v381, v380, v3->rend_cls.dir, 1, &v1736, 3);*/
+            float t[3];
+            t[0] = 0;
+            t[1] = 2;
+            t[2] = 1;
+            addbullet(this,NULL, 848,x +dir*106, y+103, dir ,1, t ,3);
         }
         break;
     case 409:

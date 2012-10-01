@@ -110,8 +110,8 @@ void c_bullet::draw(int8_t plane)
        // scale_real = false;
 
         viz.draw(plane);
-
-        /*char_frame *pf = viz.get_pframe();
+        /*
+        char_frame *pf = viz.get_pframe();
 
         if (pf->box_atk.size() > 0)
         {

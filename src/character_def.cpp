@@ -71,6 +71,7 @@ char_c::char_c(inp_ab *func)
 
 void char_c::set_seq(uint32_t idx)
 {
+    printf("%d\n",idx);
     viz.set_seq(idx);
     set_seq_params();
 }
