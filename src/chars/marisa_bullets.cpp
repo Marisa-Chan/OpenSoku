@@ -24,8 +24,8 @@ void marisa_bullets::func10()
         }
 
         field_36C++;
-        h_inerc = cos(addition[0] * 3.1415/180.0) * (addition[1] + field_36C * 0.2);
-        v_inerc = -sin(addition[0] * 3.1415/180.0) * (addition[1] + field_36C * 0.2);
+        h_inerc = cos_deg(addition[0]) * (addition[1] + field_36C * 0.2);
+        v_inerc = -sin_deg(addition[0]) * (addition[1] + field_36C * 0.2);
 
         if (x > 1380 || x < -100 || y > 1000 || y < -100)
         {
@@ -43,7 +43,8 @@ void marisa_bullets::func10()
 
             angZ = addition[0];
 
-            //sub_48C4B0(v1, 0.0, v5[3], 100.0);
+            sub_48C4B0(0.0, addition[3], 100.0);
+
             if ( viz.get_frame_time() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
                 parent->play_sfx(41);
@@ -150,11 +151,267 @@ void marisa_bullets::func10()
             c_G -= 20;
         }
         x += dir * h_inerc;
-            y += v_inerc;
-            if ( viz.process() )
-                active = false;
-            break;
+        y += v_inerc;
+        if ( viz.process() )
+            active = false;
+        break;
 
+        break;
+    case 801:
+        if (viz.get_subseq() == 0)
+        {
+            if ( field_190 == 5 || sub_48C6A0(0, 3, 5) )
+            {
+                active = false;
+                break;
+            }
+            addition[1] += 0.5;
+            sub_48C4B0(0.0, 0.25, 100.0);
+
+            h_inerc = cos_deg(addition[0]) * addition[1];
+            v_inerc = -sin_deg(addition[0] ) * addition[1];
+
+            angZ += 10.0;
+
+            scaleX = scaleY = sin_deg(viz.get_elaps_frames() * 10) * 0.5 + 1.0;
+
+            if ( (viz.get_elaps_frames() % 7) == 0 )
+            {
+                float t[3];
+                t[0] = addition[0];
+                t[1] = 0;
+                t[2] = 2;
+                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+            }
+
+            if (x > 1380 || x < -100 || y > 1000 || y < -100)
+            {
+                active = false;
+                break;
+            }
+
+            //sub_48C5F0(v1, 0);
+            if ( viz.get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
+            {
+                parent->play_sfx(3);
+                active = false;
+
+                float t[3];
+                t[0] = 0;
+                t[1] = 0;
+                t[2] = 3;
+                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+
+                for (int32_t i=0; i<12; i++)
+                {
+                    t[0] = scene_rand_rng(360);
+                    t[1] = scene_rand_rng(10) + 5.0;
+                    t[2] = 5.0;
+                    addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                }
+
+                t[2] = 6.0;
+                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+            }
+            x += h_inerc*dir;
+            y += v_inerc;
+        }
+        else if (viz.get_subseq() == 1)
+        {
+            if ( field_190 == 5 || sub_48C6A0(0, 3, 5) )
+            {
+                active = false;
+                break;
+            }
+            addition[1] += 0.5;
+            sub_48C4B0(0.0, 0.25, 100.0);
+
+            h_inerc = cos_deg(addition[0]) * addition[1];
+            v_inerc = -sin_deg(addition[0] ) * addition[1];
+
+            angZ += 10.0;
+
+            scaleX = scaleY = sin_deg(viz.get_elaps_frames() * 10) * 0.5 + 1.0;
+
+            if ( (viz.get_elaps_frames() % 3) == 0 )
+            {
+                float t[3];
+                t[0] = addition[0];
+                t[1] = 0;
+                t[2] = 2;
+                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+            }
+
+            if (x > 1380 || x < -100 || y > 1000 || y < -100)
+            {
+                active = false;
+                break;
+            }
+
+            //sub_48C5F0(v1, 0);
+            if ( viz.get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
+            {
+                parent->play_sfx(3);
+                active = false;
+
+                float t[3];
+                t[0] = 0;
+                t[1] = 0;
+                t[2] = 4;
+                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+
+                for (int32_t i=0; i<12; i++)
+                {
+                    t[0] = scene_rand_rng(360);
+                    t[1] = scene_rand_rng(15) + 5.0;
+                    t[2] = 5.0;
+                    addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                }
+
+                t[2] = 7.0;
+                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+            }
+
+            x += h_inerc*dir;
+            y += v_inerc;
+        }
+        else if (viz.get_subseq() == 2)
+        {
+            scaleX += 0.1;
+            scaleY += 0.1;
+
+            if ( c_A <= 20 )
+            {
+                active = false;
+                break;
+            }
+            c_A -= 20;
+            c_R -= 20;
+            c_G -= 20;
+        }
+        else if (viz.get_subseq() == 3)
+        {
+            if ( viz.get_frame() == 1 )
+            {
+                scaleX *= 0.85;
+                scaleY *= 0.85;
+
+                if ( c_A < 10 )
+                {
+                    active = false;
+                    break;
+                }
+                c_A -= 10;
+
+                if ( c_G >= 20 )
+                {
+                    c_R -= 20;
+                    c_G -= 20;
+                }
+            }
+            else
+            {
+                //sub_48C5F0(a1, 0);
+
+                if ( field_190 != 0 )
+                {
+                    if ( field_190 == 4 )
+                        field_194 = 0;
+
+                    field_370++;
+                    if ( field_370 > 5 )
+                    {
+                        field_370 = 0;
+                        field_190 = 0;
+                    }
+                }
+                scaleY = scaleX = (viz.get_elaps_frames() % 2) * 0.1 + 1.0;
+
+                if ( field_194 == 0 )
+                    viz.next_frame();
+
+            }
+        }
+        else if (viz.get_subseq() == 4)
+        {
+            if ( viz.get_frame() == 1 )
+            {
+                scaleX *= 0.85;
+                scaleY *= 0.85;
+
+                if ( c_A < 10 )
+                {
+                    active = false;
+                    break;
+                }
+                c_A -= 10;
+
+                if ( c_G >= 20 )
+                {
+                    c_R -= 20;
+                    c_G -= 20;
+                }
+            }
+            else
+            {
+                //sub_48C5F0(a1, 0);
+
+                if ( field_190 != 0 )
+                {
+                    if ( field_190 == 4 )
+                        field_194 = 0;
+
+                    field_370++;
+                    if ( field_370 > 10 )
+                    {
+                        field_370 = 0;
+                        field_190 = 0;
+                    }
+                }
+
+                scaleY = scaleX = (viz.get_elaps_frames() % 2) * 0.1 + 1.0;
+
+                if ( field_194 == 0 )
+                    viz.set_frame(1);
+            }
+        }
+        else if (viz.get_subseq() == 5)
+        {
+            h_inerc = cos_deg(addition[0]) * addition[1];
+            v_inerc = -sin_deg(addition[0] ) * addition[1];
+
+            addition[1] -= 0.4;
+            if (addition[1] < 0.5)
+                addition[1] = 0.5;
+
+            x += h_inerc * dir;
+            y += v_inerc;
+
+            scaleY = scaleX *= 0.97;
+
+            if ( c_A < 5 )
+            {
+                active = false;
+                break;
+            }
+            c_A -= 5;
+            c_R -= 5;
+            c_G -= 5;
+        }
+        else if (viz.get_subseq() == 6 || viz.get_subseq() == 7)
+        {
+            scaleX += 0.3;
+            scaleY += 0.3;
+
+            if ( c_A < 20 )
+            {
+                active = false;
+                break;
+            }
+            c_A -= 20;
+        }
+        if ( viz.process() )
+            active = false;
         break;
     case 802:
         if ( field_190 == 5 )
@@ -638,6 +895,34 @@ void marisa_bullets::set_seq_params()
             addition[1] = scene_rand_rng(15) * 0.1 + 10.0;
         }
         break;
+    case 801:
+        field_194 = 1;
+        viz.set_subseq(addition[2]);
+
+        if ( viz.get_subseq() == 0 )
+        {
+            /*sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(20.0), 6, 2, 2);*/
+        }
+        else if ( viz.get_subseq() == 1 )
+        {
+            /*sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(20.0), 6, 2, 2);*/
+        }
+        else if ( viz.get_subseq() == 2 )
+        {
+            angZ = scene_rand_rng(80) + addition[0] - 40.0;
+        }
+        else if ( viz.get_subseq() == 3 )
+            field_194 = 3;
+        else if ( viz.get_subseq() == 4 )
+            field_194 = 5;
+        else if ( viz.get_subseq() == 5 )
+        {
+            scaleY = scaleX = scene_rand_rng(200) * 0.01 + 2.0;
+            angZ = scene_rand_rng(360);
+            addition[1] = scene_rand_rng(15) * 0.1 + 10.0;
+            addition[0] = scene_rand_rng(360);
+        }
+        break;
     case 802:
 
         field_194 = 1;
@@ -694,6 +979,7 @@ void marisa_bullets::set_seq_params()
         return;
     }
 }
+
 
 
 

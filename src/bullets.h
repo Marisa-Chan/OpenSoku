@@ -24,6 +24,7 @@ class c_bullet : public moveable
 
     bool sub_48C640(int32_t p);
     bool sub_48C6A0(int32_t p1, int32_t p2, int32_t p3);
+    void sub_48C4B0(float p1, float p2, float p3);
 
 
     int8_t field_194;

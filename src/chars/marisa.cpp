@@ -1160,20 +1160,13 @@ void char_marisa::func10()
                 {
                     field_190 = 1;
                     //add_card_energy(v3, 10);
-                    /*v1446 = 4;
-                    v1421 = &v1820;
-                    v1398 = 1;
-                    v1820 = (-10 * v3->field_7D2) + v3->field_7F0;
-                    v1821 = 10.0;
-                    v1822 = 0.0;
-                    v1823 = 0.5;
-                    v1375 = v3->rend_cls.dir;
-                    v291 = v3->rend_cls.y_pos + 102.0;
-                    v1357 = v291;
-                    v292 = (94 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                    v290 = v292;
-                    v293 = v290;
-                    sub_46E2F0(v3, 800, v293, v1357, v1375, 1, v1421, v1446);*/
+                    float t[4];
+                    t[0] = (-10 * field_7D2) + field_7F0;
+                    t[1] = 10;
+                    t[2] = 0;
+                    t[3] = 0.5;
+
+                    addbullet(this, NULL, 800, dir*94 + x, y+102, dir, 1, t, 4);
                     play_sfx(0);
                     field_7D2++;
                 }
@@ -1183,21 +1176,14 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 3 )
                 {
                     field_190 = 1;
-                    /*add_card_energy(v3, 10);
-                    v1446 = 4;
-                    v1421 = &v1852;
-                    v1398 = 1;
-                    v1852 = (-10 * v3->field_7D2) + v3->field_7F0;
-                    v1853 = 7.0;
-                    v1854 = 0.0;
-                    v1855 = 0.0;
-                    v1375 = v3->rend_cls.dir;
-                    v288 = v3->rend_cls.y_pos + 102.0;
-                    v1357 = v288;
-                    v289 = (94 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                    v290 = v292;
-                    v293 = v290;
-                    sub_46E2F0(v3, 800, v293, v1357, v1375, v1398, v1421, v1446);*/
+                    //add_card_energy(v3, 10);
+                    float t[4];
+                    t[0] = (-10 * field_7D2) + field_7F0;
+                    t[1] = 7;
+                    t[2] = 0;
+                    t[3] = 0;
+
+                    addbullet(this, NULL, 800, dir*94 + x, y+102, dir, 1, t, 4);
                     play_sfx(0);
                     field_7D2++;
                 }
@@ -1220,7 +1206,7 @@ void char_marisa::func10()
         }
         if ( viz.get_subseq() == 2 && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
         {
-            //sub_486FD0(v3, 25.0, -25.0);
+            sub_486FD0(25.0, -25.0);
             field_7D0 = 1;
             //sub_479FF0(v3, 200, 45);
         }
@@ -1243,20 +1229,13 @@ void char_marisa::func10()
                 {
                     field_190 = 1;
                     //add_card_energy(v3, 10);
-                    /*v1448 = 4;
-                    v1422 = &v1828;
-                    v1399 = 1;
-                    v1828 = (-10 * v3->field_7D2) + v3->field_7F0;
-                    v1829 = 10.0;
-                    v1830 = 0.0;
-                    v1831 = 0.5;
-                    v1376 = v3->rend_cls.dir;
-                    v309 = v3->rend_cls.y_pos + 130.0;
-                    v1358 = v309;
-                    v310 = (96 * v1376) + v3->rend_cls.x_pos;
-                    v308 = v310;
-                    v311 = v308;
-                    sub_46E2F0(v3, 800, v311, v1358, v1376, v1399, v1422, v1448);*/
+                    float t[4];
+                    t[0] = (-10 * field_7D2) + field_7F0;
+                    t[1] = 10;
+                    t[2] = 0;
+                    t[3] = 0.5;
+
+                    addbullet(this, NULL, 800, dir*96 + x, y+130, dir, 1, t, 4);
                     play_sfx(0);
                     field_7D2++;
                 }
@@ -1266,21 +1245,14 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 3 )
                 {
                     field_190 = 1;
-                    /*add_card_energy(v3, 10);
-                    v1448 = 4;
-                    v1422 = &v1844;
-                    v1399 = 1;
-                    v1844 = (-10 * v3->field_7D2) + v3->field_7F0;
-                    v1845 = 7.0;
-                    v1846 = 0.0;
-                    v1847 = 0.0;
-                    v1376 = v3->rend_cls.dir;
-                    v306 = v3->rend_cls.y_pos + 130.0;
-                    v1358 = v306;
-                    v307 = (96 * v1376) + v3->rend_cls.x_pos;
-                    v308 = v307;
-                    v311 = v308;
-                    sub_46E2F0(v3, 800, v311, v1358, v1376, v1399, v1422, v1448);*/
+                    //add_card_energy(v3, 10);
+                    float t[4];
+                    t[0] = (-10 * field_7D2) + field_7F0;
+                    t[1] = 7;
+                    t[2] = 0;
+                    t[3] = 0;
+
+                    addbullet(this, NULL, 800, dir*96 + x, y+130, dir, 1, t, 4);
                     play_sfx(0);
                     field_7D2++;
                 }
@@ -1303,19 +1275,13 @@ void char_marisa::func10()
 
         if ( viz.get_subseq() == 2 && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
         {
-            /*v318 = v3->enemy;
-            v319 = (v318->rend_cls.x_pos - v3->rend_cls.x_pos) * v3->rend_cls.dir;
-            v320 = v319;
-            v321 = v318->rend_cls.y_pos - v3->rend_cls.y_pos;
-            v322 = -sub_4092A0(v321, v320);
+            field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
+            if ( field_7D4 < -40 )
+                field_7D4 = -40;
+            else if ( field_7D4 > -20 )
+                field_7D4 = -20;
 
-            v3->field_7D4 = v322;
-            if ( v322 < -40 )
-              v3->field_7D4 = -40;
-            if ( v3->field_7D4 > -20 )
-              v3->field_7D4 = -20;
-
-            sub_486FD0(v3, -20.0, -55.0);*/
+            sub_486FD0(-20.0, -55.0);
             field_7D0 = 1;
             /*sub_479FF0(v3, 200, 45);*/
         }
@@ -1381,21 +1347,14 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 5 )
                     {
                         field_190 = 1;
-                        /*add_card_energy(v3, 10);
-                        v1450 = 4;
-                        v1423 = &v1836;
-                        v1400 = 1;
-                        v1836 = (-10 * v3->field_7D2) + v3->field_7F0;
-                        v1837 = 10.0;
-                        v1838 = 0.0;
-                        v1839 = 0.5;
-                        v1377 = v3->rend_cls.dir;
-                        v340 = v3->rend_cls.y_pos + 115.0;
-                        v1359 = v340;
-                        v341 = (80 * v1377) + v3->rend_cls.x_pos;
-                        v339 = v341;
-                        v342 = v339;
-                        sub_46E2F0(v3, 800, v342, v1359, v1377, v1400, v1423, v1450);*/
+                        //add_card_energy(v3, 10);
+                        float t[4];
+                        t[0] = (-10 * field_7D2) + field_7F0;
+                        t[1] = 10.0;
+                        t[2] = 0;
+                        t[3] = 0.5;
+
+                        addbullet(this, NULL, 800, 80*dir +x, y+115, dir,1, t,4);
                         play_sfx(0);
                         field_7D2++;
                     }
@@ -1405,21 +1364,14 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 3 )
                     {
                         field_190 = 1;
-                        /*add_card_energy(v3, 10);
-                        v1450 = 4;
-                        v1423 = &v1860;
-                        v1400 = 1;
-                        v1860 = (-10 * v3->field_7D2) + v3->field_7F0;
-                        v1861 = 7.0;
-                        v1862 = 0.0;
-                        v1863 = 0.0;
-                        v1377 = v3->rend_cls.dir;
-                        v337 = v3->rend_cls.y_pos + 115.0;
-                        v1359 = v337;
-                        v338 = (80 * v1377) + v3->rend_cls.x_pos;
-                        v339 = v338;
-                        v342 = v339;
-                        sub_46E2F0(v3, 800, v342, v1359, v1377, v1400, v1423, v1450);*/
+                        //add_card_energy(v3, 10);
+                        float t[4];
+                        t[0] = (-10 * field_7D2) + field_7F0;
+                        t[1] = 7.0;
+                        t[2] = 0;
+                        t[3] = 0.0;
+
+                        addbullet(this, NULL, 800, 80*dir +x, y+115, dir,1, t,4);
                         play_sfx(0);
                         field_7D2++;
                     }
@@ -1447,20 +1399,18 @@ void char_marisa::func10()
             }
             if ( viz.get_subseq() == 2  && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
             {
-                //v350 = v3->enemy;
                 h_inerc = -6.0;
                 v_inerc = 6.0;
                 v_force = 0.5;
-                /*v351 = (v350->rend_cls.x_pos - v3->rend_cls.x_pos) * v3->rend_cls.dir;
-                v352 = v351;
-                v353 = v350->rend_cls.y_pos - v3->rend_cls.y_pos;
-                v354 = -sub_4092A0(v353, v352);
-                v3->field_7D4 = v354;
-                if ( v354 < -10 )
-                  v3->field_7D4 = -10;
-                if ( v3->field_7D4 > 10 )
-                  v3->field_7D4 = 10;*/
-                //sub_486FD0(v3, 25.0, 25.0);
+
+                field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
+                if ( field_7D4 < -10 )
+                    field_7D4 = -10;
+                else if ( field_7D4 > 10 )
+                    field_7D4 = 10;
+
+                field_7F0 = 25; //sub_486FD0(25.0, 25.0);
+
                 field_7D0 = 1;
                 //sub_479FF0(v3, 200, 45);
             }
@@ -1492,21 +1442,14 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 5 )
                     {
                         field_190 = 1;
-                        /*add_card_energy(v3, 10);
-                        v1451 = 4;
-                        v1424 = &v1816;
-                        v1401 = 1;
-                        v1816 = (10 * v3->field_7D2) + v3->field_7F0;
-                        v1817 = 10.0;
-                        v1818 = 0.0;
-                        v1819 = 0.5;
-                        v1378 = v3->rend_cls.dir;
-                        v362 = v3->rend_cls.y_pos + 87.0;
-                        v1360 = v362;
-                        v363 = (69 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                        v361 = v363;
-                        v364 = v361;
-                        sub_46E2F0(v3, 800, v364, v1360, v1378, v1401, v1424, v1451);*/
+                        //add_card_energy(v3, 10);
+                        float t[4];
+                        t[0] = (10 * field_7D2) + field_7F0;
+                        t[1] = 10.0;
+                        t[2] = 0;
+                        t[3] = 0.5;
+
+                        addbullet(this, NULL, 800, 69*dir +x, y+87, dir,1, t,4);
                         play_sfx(0);
                         field_7D2++;
                     }
@@ -1516,21 +1459,14 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 3 )
                     {
                         field_190 = 1;
-                        /*add_card_energy(v3, 10);
-                        v1451 = 4;
-                        v1424 = &v1812;
-                        v1401 = 1;
-                        v1812 = (10 * v3->field_7D2) + v3->field_7F0;
-                        v1813 = 7.0;
-                        v1814 = 0.0;
-                        v1815 = 0.0;
-                        v1378 = v3->rend_cls.dir;
-                        v359 = v3->rend_cls.y_pos + 87.0;
-                        v1360 = v359;
-                        v360 = (69 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                        v361 = v360;
-                        v364 = v361;
-                        sub_46E2F0(v3, 800, v364, v1360, v1378, v1401, v1424, v1451);*/
+                        //add_card_energy(v3, 10);
+                        float t[4];
+                        t[0] = (10 * field_7D2) + field_7F0;
+                        t[1] = 7.0;
+                        t[2] = 0;
+                        t[3] = 0.0;
+
+                        addbullet(this, NULL, 800, 69*dir +x, y+87, dir,1, t,4);
                         play_sfx(0);
                         field_7D2++;
                     }
@@ -1556,20 +1492,18 @@ void char_marisa::func10()
             }
             if ( viz.get_subseq() == 2 && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
             {
-                //v373 = v3->enemy;
                 h_inerc = -6.0;
                 v_inerc = 6.0;
                 v_force = 0.5;
-                /*v374 = (v373->rend_cls.x_pos - v3->rend_cls.x_pos) * v3->rend_cls.dir;
-                v375 = v374;
-                v376 = v373->rend_cls.y_pos - v3->rend_cls.y_pos;
-                v377 = -sub_4092A0(v376, v375);
-                v3->field_7D4 = v377;
-                if ( v377 < 20 )
-                    v3->field_7D4 = 20;
-                if ( v3->field_7D4 > 40 )
-                    v3->field_7D4 = 40;
-                sub_486FD0(v3, 60.0, 20.0);*/
+
+                field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
+                if ( field_7D4 < 20 )
+                    field_7D4 = 20;
+                else if ( field_7D4 > 40 )
+                    field_7D4 = 40;
+
+                sub_486FD0(60.0, 20.0);
+
                 field_7D0 = 1;
                 //sub_479FF0(v3, 200, 45);
             }
@@ -1615,39 +1549,31 @@ void char_marisa::func10()
             not_charge_attack = 0;
         if ( viz.get_subseq() == 2 && viz.get_frame() == 2 && viz.get_frame_time() == 0 )
         {
-            /*v385 = v3->enemy;
-            v386 = (v385->rend_cls.x_pos - v3->rend_cls.x_pos) * v3->rend_cls.dir;
-            v387 = v386;
-            v388 = v385->rend_cls.y_pos - v3->rend_cls.y_pos;
-            v389 = -sub_4092A0(v388, v387);
-            v3->field_7D4 = v389;
-            if ( v389 < -20 )
-                v3->field_7D4 = -20;
-            if ( v3->field_7D4 > 20 )
-                v3->field_7D4 = 20;*/
+            field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
+            if ( field_7D4 < -20 )
+                field_7D4 = -20;
+            else if ( field_7D4 > 20 )
+                field_7D4 = 20;
+
             play_sfx(2);
-            //sub_479FF0(v3, 200, 60);
+            //sub_479FF0(200, 60);
             field_190 = 1;
             //add_card_energy(v3, 50);
             if ( field_7D8 )
             {
-                /*v1619 = v3->field_7D4;
-                v1620 = 5.0;
-                v1621 = 1.0;
-                v391 = v3->rend_cls.y_pos + 85.0;
-                v392 = v391;
-                v393 = (44 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                sub_46E2F0(v3, 801, v393, v392, v3->rend_cls.dir, 1, &v1619, 3);*/
+                float t[3];
+                t[0] = field_7D4;
+                t[1] = 5;
+                t[2] = 1.0;
+                addbullet(this, NULL, 801, x+dir*44, y+85, dir, 1, t, 3);
             }
             else
             {
-                /*v1787 = v3->field_7D4;
-                v1788 = 5.0;
-                v1789 = 0.0;
-                v394 = v3->rend_cls.y_pos + 85.0;
-                v395 = v394;
-                v396 = (44 * v3->rend_cls.dir) + v3->rend_cls.x_pos;
-                sub_46E2F0(v3, 801, v396, v395, v3->rend_cls.dir, 1, &v1787, 3);*/
+                float t[3];
+                t[0] = field_7D4;
+                t[1] = 5;
+                t[2] = 0;
+                addbullet(this, NULL, 801, x+dir*44, y+85, dir, 1, t, 3);
             }
         }
         if ( viz.process() )
@@ -1678,17 +1604,13 @@ void char_marisa::func10()
 
         if ( viz.get_subseq() == 2 && viz.get_frame() == 2 && viz.get_frame_time() == 0 )
         {
-            /*add_card_energy(v3, 50);
-            v407 = v3->enemy;
-            v408 = (v407->rend_cls.x_pos - v3->rend_cls.x_pos) * v3->rend_cls.dir;
-            v409 = v408;
-            v410 = v407->rend_cls.y_pos - v3->rend_cls.y_pos;
-            v411 = -sub_4092A0(v410, v409);
-            v3->field_7D4 = v411;
-            if ( v411 < -10 )
-              v3->field_7D4 = -10;
-            if ( v3->field_7D4 > 10 )
-              v3->field_7D4 = 10;*/
+            //add_card_energy(v3, 50);
+            field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
+            if ( field_7D4 < -10 )
+                field_7D4 = -10;
+            else if ( field_7D4 > 10 )
+                field_7D4 = 10;
+
             play_sfx(4);
             field_190 = 1;
             //sub_479FF0(v3, 200, 60);
@@ -1760,47 +1682,31 @@ void char_marisa::func10()
             {
                 //sub_479FF0(v3, 200, 60);
                 field_190 = 1;
-                /*add_card_energy(v3, 50);
-                v422 = v3->enemy;
-                v423 = (v422->rend_cls.x_pos - v3->rend_cls.x_pos) * v3->rend_cls.dir;
-                v424 = v423;
-                v425 = v422->rend_cls.y_pos - v3->rend_cls.y_pos;
-                v426 = -sub_4092A0(v425, v424);
-                v3->field_7D4 = v426;
-                if ( v426 < -40 )
-                  v3->field_7D4 = -40;
-                if ( v3->field_7D4 > 40 )
-                  v3->field_7D4 = 40;*/
+                //add_card_energy(v3, 50);
+                field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
+                if ( field_7D4 < -40 )
+                    field_7D4 = -40;
+                else if ( field_7D4 > 40 )
+                    field_7D4 = 40;
+
                 play_sfx(2);
                 if ( field_7D8 )
                 {
-                    /*v1425 = &v1781;
-                    v1402 = 1;
-                    v1781 = v3->field_7D4;
-                    v1782 = 0.0;
-                    v1783 = 1.0;
-                    v1379 = v3->rend_cls.dir;
-                    v427 = v3->rend_cls.y_pos + 104.0;
-                    v1361 = v427;
-                    v428 = (48 * v1379) + v3->rend_cls.x_pos;
-                    v429 = v428;
-                    v432 = v429;
-                                  sub_46E2F0(v3, 801, v432, v1361, v1379, v1402, v1425, 3);*/
+                    float t[3];
+                    t[0] = field_7D4;
+                    t[1] = 0;
+                    t[2] = 1;
+
+                    addbullet(this, NULL,801, 48*dir + x, y+104, dir, 1, t, 3);
                 }
                 else
                 {
-                    /*v1425 = &v1631;
-                    v1402 = 1;
-                    v1631 = v3->field_7D4;
-                    v1632 = 0.0;
-                    v1633 = 0.0;
-                    v1379 = v3->rend_cls.dir;
-                    v430 = v3->rend_cls.y_pos + 104.0;
-                    v1361 = v430;
-                    v431 = (48 * v1379) + v3->rend_cls.x_pos;
-                    v429 = v431;
-                    v432 = v429;
-                                  sub_46E2F0(v3, 801, v432, v1361, v1379, v1402, v1425, 3);*/
+                    float t[3];
+                    t[0] = field_7D4;
+                    t[1] = 0;
+                    t[2] = 0;
+
+                    addbullet(this, NULL,801, 48*dir + x, y+104, dir, 1, t, 3);
                 }
             }
 
@@ -1937,17 +1843,16 @@ void char_marisa::func10()
             h_inerc = -4.0;
             v_inerc = 8.0;
             v_force = 0.5;
-            /*v1748 = 60.0;
-            v1749 = 0.0;
-            v1750 = 0.0;
-            v3->field_190 = 1;
-            sub_479FF0(v3, 200, 60);
-            add_card_energy(v3, 50);
-            v449 = v3->rend_cls.dir;
-            v450 = v3->rend_cls.y_pos + 30.0;
-            v451 = v450;
-            v452 = (30 * v449) + v3->rend_cls.x_pos;
-            sub_46E2F0(v3, 801, v452, v451, v449, 1, &v1748, 3);*/
+
+            field_190 = 1;
+            //sub_479FF0(v3, 200, 60);
+            //add_card_energy(v3, 50);
+
+            float t[3];
+            t[0] = 60;
+            t[1] = 0;
+            t[2] = 0;
+            addbullet(this, NULL, 801, x+dir*30, y+30, dir, 1,t,3);
         }
         break;
     case 418:
@@ -2533,7 +2438,7 @@ void char_marisa::func20()
                 }
                 else if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200 ) //In AIR
                 {
-                    if ( input->gY() < 0 && cprior <= viz.get_prior(404))
+                    if ( input->gY() >= 0 && cprior <= viz.get_prior(404))
                     {
                         if ( field_892 > 0 && field_890 != 50 )
                         {

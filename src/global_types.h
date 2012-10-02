@@ -7,6 +7,7 @@
 #include <string.h>
 #include <vector>
 
+#include "utils.h"
 #include "graph.h"
 #include "sfx.h"
 #include "moveable.h"

@@ -166,3 +166,27 @@ bool c_bullet::sub_48C6A0(int32_t p1, int32_t p2, int32_t p3)
 
     return true;
 }
+
+void c_bullet::sub_48C4B0(float p1, float p2, float p3)
+{
+  moveable *enemy = parent->enemy;
+
+  float tmp = p1 - atan2(enemy->getY() + p3 - y, (enemy->getX() - x) * dir) * 180.0/3.1415926;
+  int angl = (int)(tmp - addition[0]) % 360;
+
+  if (angl > 180)
+      angl -= 360;
+  else if (angl < -180)
+    angl += 360;
+
+  if (p2 < abs(angl))
+  {
+      if (angl > 0)
+        addition[0] += p2;
+      else if (angl < 0)
+        addition[0] -= p2;
+  }
+  else
+  addition[0] = tmp;
+
+}

@@ -45,6 +45,7 @@ char_c::char_c(inp_ab *func)
     field_7D4 = 0;
     field_7D6 = 0;
     field_7DC = 0;
+    field_7F0 = 0;
 
     field_190 = 1;
     //field_49A = 0;
@@ -117,8 +118,8 @@ void char_c::draw()
     else
         viz.draw(x,y+y_off,1,dir);
 
-   // gr_draw_box(x,-y,255,0,0,1);
-   // gr_draw_box(x,-y-y_off,0,255,0,1);
+    // gr_draw_box(x,-y,255,0,0,1);
+    // gr_draw_box(x,-y-y_off,0,255,0,1);
 
 
 
@@ -1132,6 +1133,16 @@ uint32_t char_c::get_frame()
 uint16_t char_c::get_prior(uint32_t idx)
 {
     return viz.get_prior(idx);
+}
+
+void char_c::sub_486FD0(float p1, float p2)
+{
+    field_7F0 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
+
+    if ( field_7F0 < p2)
+        field_7F0 = p2;
+    else if ( field_7F0 > p1 )
+        field_7F0 = p1;
 }
 
 void char_c::set_seq_params()

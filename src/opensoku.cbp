@@ -8,7 +8,7 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/opensoku" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="/media/202/Games/th123" />
+				<Option working_dir="/media/166/games/th123" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -87,6 +87,8 @@
 		<Unit filename="./scene_fx.h" />
 		<Unit filename="sfx.cpp" />
 		<Unit filename="sfx.h" />
+		<Unit filename="utils.cpp" />
+		<Unit filename="utils.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />

@@ -145,6 +145,7 @@ class char_c : public moveable
     int16_t field_7D8;
     float   field_7DC;
     float   field_7E4;
+    float   field_7F0;
     int8_t  field_7F7;
     int16_t field_7F8;
     int8_t  field_800;
@@ -179,7 +180,7 @@ class char_c : public moveable
 
 
 
-
+    void sub_486FD0(float p1, float p2);
 
 
     int8_t  field_49A;
