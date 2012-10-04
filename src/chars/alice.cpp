@@ -7,11 +7,11 @@
 char_alice::char_alice(inp_ab *func):
     char_c::char_c(func)
 {
-    viz.load_dat("alice",0);
+    load_dat("alice",0);
 };
 
 char_alice::char_alice(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
-    viz.load_dat("alice",pal);
+    load_dat("alice",pal);
 };

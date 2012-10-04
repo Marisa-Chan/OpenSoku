@@ -10,14 +10,14 @@
 char_marisa::char_marisa(inp_ab *func):
     char_c::char_c(func)
 {
-    viz.load_dat("marisa",0);
+    load_dat("marisa",0);
     char_loadsfx(this,"marisa");
 };
 
 char_marisa::char_marisa(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
-    viz.load_dat("marisa",pal);
+    load_dat("marisa",pal);
     char_loadsfx(this,"marisa");
 };
 
@@ -76,44 +76,44 @@ void char_marisa::func10()
         if (h_inerc == 0)
             field_49A = 0;
         stopping(0.5);
-        viz.process();
+        process();
         break;
     case 1:
         sub10func(this);
         stopping(0.5);
-        if (viz.process() && viz.get_frame() == 0)
+        if (process() && get_frame() == 0)
             set_seq(2);
         break;
     case 2:
         sub10func(this);
         stopping(0.5);
-        viz.process();
+        process();
         break;
     case 3:
         sub10func(this);
         stopping(0.5);
-        if (viz.process() && viz.get_frame() == 0)
+        if (process() && get_frame() == 0)
             set_seq(0);
         break;
     case 4:
         sub10func(this);
         char_h_move(this,6.0);
-        viz.process();
+        process();
         break;
     case 5:
         sub10func(this);
         char_h_move(this,-5.0);
-        viz.process();
+        process();
         break;
     case 6:
-        if (viz.get_subseq() == 0)
+        if (get_subseq() == 0)
         {
             sub10func(this);
             if (field_49A == 0)
                 reset_forces();
         }
 
-        if (viz.get_subseq()>0)
+        if (get_subseq()>0)
         {
             v_inerc -=v_force;
 
@@ -126,12 +126,12 @@ void char_marisa::func10()
             }
         }
 
-        viz.process();
+        process();
 
-        if (viz.get_subseq()       == 1 &&
-                viz.get_frame_time()   == 0 &&
-                viz.get_frame()        == 0 &&
-                viz.get_elaps_frames() == 0)
+        if (get_subseq()       == 1 &&
+                get_frame_time()   == 0 &&
+                get_frame()        == 0 &&
+                get_elaps_frames() == 0)
         {
             v_inerc = 16.0;
             v_force = 0.75;
@@ -139,14 +139,14 @@ void char_marisa::func10()
         break;
 
     case 7:
-        if (viz.get_subseq() == 0)
+        if (get_subseq() == 0)
         {
             sub10func(this);
             if (field_49A == 0)
                 reset_forces();
         }
 
-        if (viz.get_subseq()>0)
+        if (get_subseq()>0)
         {
             v_inerc -=v_force;
 
@@ -159,12 +159,12 @@ void char_marisa::func10()
             }
         }
 
-        viz.process();
+        process();
 
-        if (viz.get_subseq()       == 1 &&
-                viz.get_frame_time()   == 0 &&
-                viz.get_frame()        == 0 &&
-                viz.get_elaps_frames() == 0)
+        if (get_subseq()       == 1 &&
+                get_frame_time()   == 0 &&
+                get_frame()        == 0 &&
+                get_elaps_frames() == 0)
         {
             v_inerc = 16.0;
             v_force = 0.75;
@@ -172,14 +172,14 @@ void char_marisa::func10()
         }
         break;
     case 8:
-        if (viz.get_subseq() == 0)
+        if (get_subseq() == 0)
         {
             sub10func(this);
             if (field_49A == 0)
                 reset_forces();
         }
 
-        if (viz.get_subseq()>0)
+        if (get_subseq()>0)
         {
             v_inerc -=v_force;
 
@@ -192,12 +192,12 @@ void char_marisa::func10()
             }
         }
 
-        viz.process();
+        process();
 
-        if (viz.get_subseq()       == 1 &&
-                viz.get_frame_time()   == 0 &&
-                viz.get_frame()        == 0 &&
-                viz.get_elaps_frames() == 0)
+        if (get_subseq()       == 1 &&
+                get_frame_time()   == 0 &&
+                get_frame()        == 0 &&
+                get_elaps_frames() == 0)
         {
             v_inerc = 16.0;
             v_force = 0.75;
@@ -218,11 +218,11 @@ void char_marisa::func10()
             break;
         }
 
-        viz.process();
+        process();
         break;
     case 10:
         sub10func(this);
-        if (viz.process() && viz.get_frame() == 0)
+        if (process() && get_frame() == 0)
             set_seq(0);
         break;
 
@@ -237,18 +237,18 @@ void char_marisa::func10()
                 h_inerc = 12.0;
         }
 
-        viz.process();
+        process();
 
-        if ( viz.get_subseq() == 0 && viz.get_frame() == 3 && viz.get_frame_time() == 0 )
+        if ( get_subseq() == 0 && get_frame() == 3 && get_frame_time() == 0 )
         {
             char_h_move(this, 15.0);
             scene_add_effect(this, 125, 80*dir+x, y+80, dir,1);
             scene_add_effect(this, 126, x, y+80, dir,1);
             scene_play_sfx(31);
         }
-        else if (viz.get_subseq() == 1)
+        else if (get_subseq() == 1)
         {
-            if ( (viz.get_elaps_frames() % 5) == 0 )
+            if ( (get_elaps_frames() % 5) == 0 )
             {
                 float yy = (scene_rand() % 200) + y;
                 float xx = x - (scene_rand() % 100) + 50;
@@ -270,10 +270,10 @@ void char_marisa::func10()
         }
         break;
     case 201:
-        if ( viz.get_subseq() == 0 || viz.get_subseq() == 3 )
+        if ( get_subseq() == 0 || get_subseq() == 3 )
             sub10func(this);
 
-        if ( viz.get_subseq() == 3 )
+        if ( get_subseq() == 3 )
         {
             h_inerc += 2.0;
             if ( h_inerc > 0 )
@@ -281,14 +281,14 @@ void char_marisa::func10()
         }
         if ( !char_on_ground_flag(this) )
         {
-            if ( (viz.get_elaps_frames() % 5) == 0)
+            if ( (get_elaps_frames() % 5) == 0)
             {
                 float yy = (scene_rand() % 200) + y;
                 float xx = x - (scene_rand() % 100) + 50;
                 scene_add_effect(this, 124,xx,yy,-dir,1);
             }
         }
-        if ( viz.get_subseq() < 3 )
+        if ( get_subseq() < 3 )
         {
             v_inerc -= v_force;
             if ( char_on_ground_down(this) )
@@ -296,16 +296,16 @@ void char_marisa::func10()
                 v_inerc = 0.0;
                 v_force = 0.0;
                 y = getlvl_height(this);
-                viz.set_subseq(3);
+                set_subseq(3);
                 break;
             }
         }
-        if ( viz.process() )
+        if ( process() )
         {
             set_seq(0);
             reset_forces();
         }
-        else if ( viz.get_elaps_frames() ==0 && viz.get_frame_time() == 0 && viz.get_frame() == 0 && viz.get_subseq() == 1 )
+        else if ( get_elaps_frames() ==0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
         {
             char_h_move(this, -14.0);
             v_inerc = 4.0;
@@ -325,16 +325,16 @@ void char_marisa::func10()
         }
         else
         {
-            if ( (viz.get_subseq() == 1 || viz.get_subseq() == 2 ) &&  (viz.get_elaps_frames() % 5) == 0 )
+            if ( (get_subseq() == 1 || get_subseq() == 2 ) &&  (get_elaps_frames() % 5) == 0 )
             {
                 float yy = (scene_rand() % 200) + y;
                 float xx = x - (scene_rand() % 100) + 50;
                 scene_add_effect(this, 124,xx,yy,dir,1);
             }
 
-            viz.process();
+            process();
 
-            if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
+            if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 2 )
             {
                 field_7D0 = 0;
                 char_h_move(this, 11.0);
@@ -344,7 +344,7 @@ void char_marisa::func10()
                 scene_add_effect(this, 126, x, y+110, dir,1);
                 scene_play_sfx(31);
             }
-            else if (viz.get_subseq() == 2 && viz.get_frame_time() == 0 && viz.get_frame() == 0 && viz.get_elaps_frames() == 0)
+            else if (get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 0 && get_elaps_frames() == 0)
                 flip_with_force();
         }
         break;
@@ -358,16 +358,16 @@ void char_marisa::func10()
         }
         else
         {
-            if ( viz.get_subseq() < 3 && (viz.get_elaps_frames() % 5) == 0 )
+            if ( get_subseq() < 3 && (get_elaps_frames() % 5) == 0 )
             {
                 float yy = (scene_rand() % 200) + y;
                 float xx = x - (scene_rand() % 100) + 50;
                 scene_add_effect(this, 124,xx,yy,-dir,1);
             }
 
-            viz.process();
+            process();
 
-            if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 3 )
+            if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 3 )
             {
                 field_7D0 = 0;
                 char_h_move(this, -11.0);
@@ -377,7 +377,7 @@ void char_marisa::func10()
                 scene_add_effect(this, 126, x, y+120, -dir,1);
                 scene_play_sfx(31);
             }
-            else if (viz.get_subseq() == 2 && viz.get_frame_time() == 0 && viz.get_frame() == 0 && viz.get_elaps_frames() == 0)
+            else if (get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 0 && get_elaps_frames() == 0)
                 flip_with_force();
         }
         break;
@@ -389,7 +389,7 @@ void char_marisa::func10()
             h_inerc = 0.0;
             field_49A = 0;
         }
-        if ( viz.process() )
+        if ( process() )
         {
             set_seq(0);
             field_49A = 0;
@@ -402,7 +402,7 @@ void char_marisa::func10()
     case 212:
     case 221:
     case 222:
-        if ( viz.get_subseq() == 0 )
+        if ( get_subseq() == 0 )
             sub10func(this);
 
         if ( char_on_ground_down(this) )
@@ -415,19 +415,19 @@ void char_marisa::func10()
         {
             if ( char_on_ground_flag(this) || v_inerc > 0.0 )
                 field_522 = 2;
-            if ( viz.get_subseq() > 0 )
+            if ( get_subseq() > 0 )
             {
                 v_inerc -= v_force;
                 if ( v_inerc < -20.0 )
                     v_inerc = -20.0;
 
-                if ( viz.get_subseq() == 1 && v_inerc < 4.0 )
-                    viz.set_subseq(2);
+                if ( get_subseq() == 1 && v_inerc < 4.0 )
+                    set_subseq(2);
             }
 
-            viz.process();
+            process();
 
-            if ( viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0 && viz.get_subseq() == 1)
+            if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
             {
                 if (sq == 208)
                 {
@@ -465,15 +465,15 @@ void char_marisa::func10()
         }
         break;
     case 214:
-        if ( viz.process())
+        if ( process())
             set_seq(9);
         else
         {
 
-            if ( viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0 && viz.get_subseq() == 1)
+            if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
                 scene_play_sfx(31);
 
-            if (viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0 && viz.get_subseq() == 6)
+            if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 6)
                 set_seq(9);
             else
             {
@@ -494,9 +494,9 @@ void char_marisa::func10()
                     field_7D2 = -90 - input->gX(dir) * 45;
                 }
 
-                if ( viz.get_subseq() == 5 || viz.get_subseq() == 6 )
+                if ( get_subseq() == 5 || get_subseq() == 6 )
                     v_inerc -= v_force;
-                if ( viz.get_subseq() > 0 && viz.get_subseq() < 5 )
+                if ( get_subseq() > 0 && get_subseq() < 5 )
                 {
                     field_7D6 ++;
                     field_7D4 = field_7D2 - dash_angle;
@@ -541,22 +541,22 @@ void char_marisa::func10()
                        angZ = 180.0 + dash_angle;
 
                     if ( h_inerc < 0.0 )
-                        if ( viz.get_subseq() == 1 )
-                            viz.set_subseq(3);
+                        if ( get_subseq() == 1 )
+                            set_subseq(3);
 
                     if ( h_inerc >= 0 )
-                        if ( viz.get_subseq() == 3 )
-                            viz.set_subseq(1);
+                        if ( get_subseq() == 3 )
+                            set_subseq(1);
 
                     if ( h_inerc < 0.0 )
-                        if ( viz.get_subseq() == 2 )
-                            viz.set_subseq(4);
+                        if ( get_subseq() == 2 )
+                            set_subseq(4);
 
                     if ( h_inerc >= 0)
-                        if ( viz.get_subseq() == 4 )
-                            viz.set_subseq(2);
+                        if ( get_subseq() == 4 )
+                            set_subseq(2);
 
-                    if ( viz.get_elaps_frames() % 5 == 1 )
+                    if ( get_elaps_frames() % 5 == 1 )
                     {
                         float yy = sin(dash_angle * 3.1415/180.0) * 100.0 + y + 100.0;
                         float xx = cos(dash_angle * 3.1415/180.0) * 100.0 * dir + x;
@@ -567,53 +567,53 @@ void char_marisa::func10()
                         reset_ofs();
                         angZ = 0;
 
-                        if ( viz.get_subseq() == 1 || viz.get_subseq() == 2 )
+                        if ( get_subseq() == 1 || get_subseq() == 2 )
                         {
                             if ( dir == 1 )
                             {
                                 if ( enemy->x >= x )
-                                    viz.set_subseq(5);
+                                    set_subseq(5);
                                 else
                                 {
                                     dir = -dir;
                                     h_inerc = -h_inerc;
-                                    viz.set_subseq(6);
+                                    set_subseq(6);
                                 }
                             }
                             else
                             {
                                 if ( enemy->x <= x )
-                                    viz.set_subseq(5);
+                                    set_subseq(5);
                                 else
                                 {
                                     dir = -dir;
                                     h_inerc = -h_inerc;
-                                    viz.set_subseq(6);
+                                    set_subseq(6);
                                 }
                             }
                         }
-                        else if ( viz.get_subseq() == 3 || viz.get_subseq() == 4 )
+                        else if ( get_subseq() == 3 || get_subseq() == 4 )
                         {
                             if ( dir == 1 )
                             {
                                 if ( enemy->x >= x )
-                                    viz.set_subseq(6);
+                                    set_subseq(6);
                                 else
                                 {
                                     dir = -dir;
                                     h_inerc = -h_inerc;
-                                    viz.set_subseq(5);
+                                    set_subseq(5);
                                 }
                             }
                             else
                             {
                                 if ( enemy->x <= x )
-                                    viz.set_subseq(6);
+                                    set_subseq(6);
                                 else
                                 {
                                     dir = -dir;
                                     h_inerc = -h_inerc;
-                                    viz.set_subseq(5);
+                                    set_subseq(5);
                                 }
                             }
                         }
@@ -626,7 +626,7 @@ void char_marisa::func10()
                 y = getlvl_height(this);
                 v_force = 0.0;
                 v_inerc = 0.0;
-                if ( viz.get_subseq() < 5 )
+                if ( get_subseq() < 5 )
                 {
                     reset_ofs();
                     angZ = 0;
@@ -643,16 +643,16 @@ void char_marisa::func10()
     case 215:
         sub10func(this);
         stopping(0.75);
-        if ( viz.process())
+        if ( process())
             set_seq(0);
         break;
     case 300: //near A-attack
         sub10func(this);
         stopping_posit(0.5);
 
-        if ( viz.process())
+        if ( process())
             set_seq(0);
-        if ( viz.get_frame_time() == 0 && viz.get_frame() == 4 )
+        if ( get_frame_time() == 0 && get_frame() == 4 )
         {
             scene_play_sfx(27);
             field_49A = 0;
@@ -661,33 +661,33 @@ void char_marisa::func10()
     case 301: //far A-attack
         sub10func(this);
         stopping_posit(0.5);
-        if (viz.get_frame() > 4 )
+        if (get_frame() > 4 )
             stopping_posit(1.5);
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_frame_time() == 0 )
+        if ( get_frame_time() == 0 )
         {
-            if ( viz.get_frame() == 3 )
+            if ( get_frame() == 3 )
                 h_inerc = 30.0;
-            if ( viz.get_frame() == 4 )
+            if ( get_frame() == 4 )
             {
                 h_inerc = 10.0;
                 scene_play_sfx(27);
                 field_49A = 0;
             }
         }
-        if ( viz.get_frame() > 3 )
+        if ( get_frame() > 3 )
             stopping_posit(0.5);
         break;
 
     case 302: //6A(A)
     {
-        uint32_t ssq = viz.get_subseq();
+        uint32_t ssq = get_subseq();
         if ( ssq == 0 || ssq == 1 || ssq == 4 )
             sub10func(this);
 
-        if ( viz.get_frame() < 2 )
+        if ( get_frame() < 2 )
             if ( !input->keyDown(INP_A))
                 not_charge_attack = 0;  // yeah, CHARGE
 
@@ -695,9 +695,9 @@ void char_marisa::func10()
             if ( h_inerc > 0)
                 stopping_posit(0.75);
 
-        if (viz.get_frame_time()   == 0 &&
-                viz.get_frame()        == 0 &&
-                viz.get_elaps_frames() == 0)
+        if (get_frame_time()   == 0 &&
+                get_frame()        == 0 &&
+                get_elaps_frames() == 0)
         {
             if (ssq == 2)
             {
@@ -715,14 +715,14 @@ void char_marisa::func10()
             }
         }
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
 
-        ssq = viz.get_subseq();
-        uint32_t tf = viz.get_elaps_frames();
+        ssq = get_subseq();
+        uint32_t tf = get_elaps_frames();
 
-        if (viz.get_frame_time() == 0 &&
-                viz.get_frame()      == 0 &&
+        if (get_frame_time() == 0 &&
+                get_frame()      == 0 &&
                 tf  == 0 &&
                 ssq == 5)
             set_seq(0);
@@ -732,7 +732,7 @@ void char_marisa::func10()
             if ( not_charge_attack == 0 && tf < 2 )
                 next_subseq();
             else if ( tf > 12 )
-                viz.set_subseq(3);
+                set_subseq(3);
             else if ( tf == 2 ) // charge effect
                 scene_add_effect(this, 62,x,y+68,dir,1);
         }
@@ -743,9 +743,9 @@ void char_marisa::func10()
             {
                 play_sfx(18);
                 if ( ssq == 2 )
-                    viz.set_subseq(4);
+                    set_subseq(4);
                 else
-                    viz.set_subseq(5);
+                    set_subseq(5);
 
                 y = getlvl_height(this);
                 v_inerc = 0.0;
@@ -760,10 +760,10 @@ void char_marisa::func10()
     case 303:
         sub10func(this);
         stopping_posit(0.6);
-        if ( viz.process() )
+        if ( process() )
             set_seq(2);
-        if ( viz.get_frame_time() == 0 )
-            if ( viz.get_frame() == 3 )
+        if ( get_frame_time() == 0 )
+            if ( get_frame() == 3 )
                 scene_play_sfx(27);
         break;
 
@@ -778,32 +778,32 @@ void char_marisa::func10()
         if ( !input->keyDown(INP_A))
             not_charge_attack = 0;
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
 
-        if ( viz.get_elaps_frames() == 0 &&
-                viz.get_frame_time() == 0 &&
-                viz.get_frame() == 0 &&
-                viz.get_subseq() == 1 )
+        if ( get_elaps_frames() == 0 &&
+                get_frame_time() == 0 &&
+                get_frame() == 0 &&
+                get_subseq() == 1 )
         {
             set_seq(0);
         }
-        else if ( viz.get_subseq() != 0 || viz.get_frame_time() != 0 || viz.get_frame() != 4 )
+        else if ( get_subseq() != 0 || get_frame_time() != 0 || get_frame() != 4 )
         {
-            if ( viz.get_subseq() == 1 && viz.get_frame_time() == 0 )
+            if ( get_subseq() == 1 && get_frame_time() == 0 )
             {
-                if ( viz.get_frame() == 1 )
+                if ( get_frame() == 1 )
                 {
                     h_inerc = 25.0;
                     scene_play_sfx(28);
                 }
-                else if ( viz.get_frame() == 4 )
+                else if ( get_frame() == 4 )
                     h_inerc = 0.0;
             }
         }
         else if ( not_charge_attack == 1 )
         {
-            viz.next_subseq();
+            next_subseq();
             scene_add_effect(this, 62,x+dir*75,y+98,dir,1);
         }
         else if (not_charge_attack == 0)
@@ -811,14 +811,14 @@ void char_marisa::func10()
             h_inerc = 15.0;
             scene_play_sfx(28);
 
-            if ( viz.get_subseq() == 1 && viz.get_frame_time() == 0 )
+            if ( get_subseq() == 1 && get_frame_time() == 0 )
             {
-                if ( viz.get_frame() == 1 )
+                if ( get_frame() == 1 )
                 {
                     h_inerc = 25.0;
                     scene_play_sfx(28);
                 }
-                else if ( viz.get_frame() == 4 )
+                else if ( get_frame() == 4 )
                     h_inerc = 0.0;
             }
         }
@@ -827,16 +827,16 @@ void char_marisa::func10()
     case 305:
         sub10func(this);
 
-        if ( viz.get_frame() > 4 )
+        if ( get_frame() > 4 )
         {
             h_inerc --;
             if ( h_inerc < 0.0 )
                 h_inerc = 0.0;
         }
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_frame_time() == 0 )
-            if ( viz.get_frame() == 4 )
+        if ( get_frame_time() == 0 )
+            if ( get_frame() == 4 )
                 scene_play_sfx(28);
         break;
 
@@ -850,15 +850,15 @@ void char_marisa::func10()
         }
         else
         {
-            if ( viz.get_subseq() == 1 &&
-                    viz.get_elaps_frames() > 12 )
+            if ( get_subseq() == 1 &&
+                    get_elaps_frames() > 12 )
                 next_subseq();
 
-            if ( viz.process() )
+            if ( process() )
                 set_seq(9);
-            if ( viz.get_subseq() == 0 &&
-                    viz.get_frame()  == 1 &&
-                    viz.get_frame_time() ==0 )
+            if ( get_subseq() == 0 &&
+                    get_frame()  == 1 &&
+                    get_frame_time() ==0 )
                 scene_play_sfx(27);
         }
         return;
@@ -878,28 +878,28 @@ void char_marisa::func10()
         else
         {
 
-            if ( viz.process() )
+            if ( process() )
                 set_seq(9);
 
-            if ( viz.get_elaps_frames() == 0 &&
-                    viz.get_frame_time() == 0 &&
-                    viz.get_frame() == 0 &&
-                    viz.get_subseq() == 1 )
+            if ( get_elaps_frames() == 0 &&
+                    get_frame_time() == 0 &&
+                    get_frame() == 0 &&
+                    get_subseq() == 1 )
             {
                 set_seq(9);
             }
             else
             {
-                if ( viz.get_frame() == 3 && not_charge_attack == 1 &&
-                        viz.get_subseq() == 0 && viz.get_frame_time() == 0)
+                if ( get_frame() == 3 && not_charge_attack == 1 &&
+                        get_subseq() == 0 && get_frame_time() == 0)
                 {
                     next_subseq();
                 }
                 else
                 {
-                    if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 )
+                    if ( get_subseq() == 0 && get_frame_time() == 0 )
                     {
-                        if (viz.get_frame() == 5 )
+                        if (get_frame() == 5 )
                         {
                             play_sfx(1);
                             h_inerc = -8.0;
@@ -913,22 +913,22 @@ void char_marisa::func10()
                             addbullet(this,NULL,848,x + dir*67, y+110, dir, 1, params,3);
                         }
                     }
-                    if ( viz.get_subseq() == 1 )
+                    if ( get_subseq() == 1 )
                     {
-                        if ( viz.get_frame() == 0 )
+                        if ( get_frame() == 0 )
                         {
-                            if ( not_charge_attack == 0 &&  viz.get_elaps_frames() < 5 )
+                            if ( not_charge_attack == 0 &&  get_elaps_frames() < 5 )
                             {
-                                viz.set_subseq(0);
+                                set_subseq(0);
                                 set_frame(3);
                                 return;
                             }
 
-                            if ( viz.get_elaps_frames() == 5 )
+                            if ( get_elaps_frames() == 5 )
                                 scene_add_effect(this, 62, x-70*dir , y+180 , dir,1);
 
                         }
-                        if ( viz.get_frame_time() == 0 && viz.get_frame() == 3 )
+                        if ( get_frame_time() == 0 && get_frame() == 3 )
                         {
 
                             play_sfx(1);
@@ -963,29 +963,29 @@ void char_marisa::func10()
         }
         else
         {
-            if ( viz.process() )
+            if ( process() )
                 set_seq(9);
 
 
-            if ( viz.get_elaps_frames() == 0 &&
-                    viz.get_frame_time() == 0 &&
-                    viz.get_frame() == 0 &&
-                    viz.get_subseq() == 1 )
+            if ( get_elaps_frames() == 0 &&
+                    get_frame_time() == 0 &&
+                    get_frame() == 0 &&
+                    get_subseq() == 1 )
             {
                 set_seq(9);
             }
             else
             {
-                if ( viz.get_frame() == 3 && not_charge_attack == 1 &&
-                        viz.get_subseq() == 0 && viz.get_frame_time() == 0)
+                if ( get_frame() == 3 && not_charge_attack == 1 &&
+                        get_subseq() == 0 && get_frame_time() == 0)
                 {
                     next_subseq();
                 }
                 else
                 {
-                    if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 )
+                    if ( get_subseq() == 0 && get_frame_time() == 0 )
                     {
-                        if (viz.get_frame() == 5 )
+                        if (get_frame() == 5 )
                         {
                             play_sfx(1);
                             h_inerc = -4.0;
@@ -999,23 +999,23 @@ void char_marisa::func10()
                         }
                     }
 
-                    if ( viz.get_subseq() == 1 )
+                    if ( get_subseq() == 1 )
                     {
-                        if ( viz.get_frame() == 0 )
+                        if ( get_frame() == 0 )
                         {
-                            if ( not_charge_attack == 0 &&  viz.get_elaps_frames() < 5 )
+                            if ( not_charge_attack == 0 &&  get_elaps_frames() < 5 )
                             {
-                                viz.set_subseq(0);
+                                set_subseq(0);
                                 set_frame(3);
                                 return;
                             }
 
-                            if ( viz.get_elaps_frames() == 5 )
+                            if ( get_elaps_frames() == 5 )
                                 scene_add_effect(this, 62, x-70*dir , y+180 , dir,1);
 
                         }
 
-                        if ( viz.get_frame_time() == 0 && viz.get_frame() == 3 )
+                        if ( get_frame_time() == 0 && get_frame() == 3 )
                         {
 
                             play_sfx(1);
@@ -1056,12 +1056,12 @@ void char_marisa::func10()
         }
         else
         {
-            if (viz.process())
+            if (process())
                 set_seq(9);
 
-            if ( viz.get_subseq() == 0 && viz.get_frame() == 3 )
+            if ( get_subseq() == 0 && get_frame() == 3 )
             {
-                if (viz.get_frame_time() == 0)
+                if (get_frame_time() == 0)
                 {
                     scene_play_sfx(29);
                     h_inerc = 10.0;
@@ -1069,7 +1069,7 @@ void char_marisa::func10()
                     v_force = 0.85;
                 }
             }
-            if (viz.get_frame_time() == 0 && viz.get_frame() == 4)
+            if (get_frame_time() == 0 && get_frame() == 4)
             {
                 field_194 = 1;
                 field_190 = 0;
@@ -1079,16 +1079,16 @@ void char_marisa::func10()
 
     case 320:
         sub10func(this);
-        if ( viz.get_frame() > 1 )
+        if ( get_frame() > 1 )
         {
             h_inerc -= 2.0;
             if ( h_inerc < 0.0 )
                 h_inerc = 0.0;
         }
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_frame_time() == 0 &&
-                viz.get_frame() == 2 )
+        if ( get_frame_time() == 0 &&
+                get_frame() == 2 )
         {
             scene_play_sfx(28);
             field_49A = 0;
@@ -1096,16 +1096,16 @@ void char_marisa::func10()
         break;
     case 321:
         sub10func(this);
-        if ( viz.get_frame() > 1 )
+        if ( get_frame() > 1 )
         {
             h_inerc -= 0.5;
             if ( h_inerc < 0.0 )
                 h_inerc = 0.0;
         }
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_frame_time() == 0 &&
-                viz.get_frame() == 3 )
+        if ( get_frame_time() == 0 &&
+                get_frame() == 3 )
         {
             scene_play_sfx(28);
             field_49A = 0;
@@ -1116,17 +1116,17 @@ void char_marisa::func10()
     case 322:
         sub10func(this);
 
-        if ( viz.get_frame() > 5 )
+        if ( get_frame() > 5 )
         {
             h_inerc -= 3.0;
             if ( h_inerc < 0.0 )
                 h_inerc = 0.0;
         }
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_frame_time() == 0 )
+        if ( get_frame_time() == 0 )
         {
-            if ( viz.get_frame() == 4 )
+            if ( get_frame() == 4 )
             {
                 h_inerc = 15.0;
 
@@ -1137,8 +1137,8 @@ void char_marisa::func10()
                 addbullet(this, NULL, 848, x, y, dir, 1, t, 3);
             }
 
-            if ( viz.get_frame_time() == 0  &&
-                    viz.get_frame() == 5 )
+            if ( get_frame_time() == 0  &&
+                    get_frame() == 5 )
             {
                 scene_play_sfx(29);
                 field_49A = 0;
@@ -1148,7 +1148,7 @@ void char_marisa::func10()
     case 400:
         sub10func(this);
 
-        if ( viz.get_subseq() == 0 || (viz.get_subseq() == 1 && viz.get_elaps_frames() <= 4))
+        if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
             if ( input->keyDown(INP_B) == 0)
                 not_charge_attack = 0;
 
@@ -1191,21 +1191,21 @@ void char_marisa::func10()
             }
         }
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_subseq() == 1 )
+        if ( get_subseq() == 1 )
         {
-            if ( (not_charge_attack == 0 && viz.get_elaps_frames() >= 2 && viz.get_elaps_frames() < 5)
-                    || viz.get_elaps_frames() > 15)
+            if ( (not_charge_attack == 0 && get_elaps_frames() >= 2 && get_elaps_frames() < 5)
+                    || get_elaps_frames() > 15)
             {
                 next_subseq();
                 break;
             }
 
-            if ( viz.get_elaps_frames() == 5 )
+            if ( get_elaps_frames() == 5 )
                 scene_add_effect(this, 62, x - 12*dir, y+100, dir, 1);
         }
-        if ( viz.get_subseq() == 2 && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2 )
         {
             sub_486FD0(25.0, -25.0);
             field_7D0 = 1;
@@ -1216,7 +1216,7 @@ void char_marisa::func10()
     case 401:
         sub10func(this);
 
-        if ( viz.get_subseq() == 0 || (viz.get_subseq() == 1 && viz.get_elaps_frames() <= 4))
+        if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
             if ( input->keyDown(INP_B) == 0 )
                 not_charge_attack = 0;
 
@@ -1260,21 +1260,21 @@ void char_marisa::func10()
             }
         }
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_subseq() == 1 )
+        if ( get_subseq() == 1 )
         {
-            if ( (not_charge_attack == 0 && viz.get_elaps_frames() >= 2 && viz.get_elaps_frames() < 5)
-                    || viz.get_elaps_frames() > 15)
+            if ( (not_charge_attack == 0 && get_elaps_frames() >= 2 && get_elaps_frames() < 5)
+                    || get_elaps_frames() > 15)
             {
                 next_subseq();
                 break;
             }
-            if ( viz.get_elaps_frames() == 5 )
+            if ( get_elaps_frames() == 5 )
                 scene_add_effect(this, 62, x - 12*dir, y+100, dir, 1);
         }
 
-        if ( viz.get_subseq() == 2 && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2 )
         {
             field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
             if ( field_7D4 < -40 )
@@ -1297,7 +1297,7 @@ void char_marisa::func10()
 
             field_7D0--;
 
-            if (field_7D0 == 0 && viz.get_subseq() < 4)
+            if (field_7D0 == 0 && get_subseq() < 4)
             {
                 field_190 = 1;
                 play_sfx(0);
@@ -1312,14 +1312,14 @@ void char_marisa::func10()
                 field_7D2++;
             }
         }
-        if ( viz.process() )
+        if ( process() )
             set_seq(2);
-        if ( viz.get_subseq() == 3 && (not_charge_attack == 0 || viz.get_elaps_frames() >= 30) )
+        if ( get_subseq() == 3 && (not_charge_attack == 0 || get_elaps_frames() >= 30) )
         {
             next_subseq();
             break;
         }
-        if ( viz.get_subseq() == 2 && viz.get_frame_time() == 0  && viz.get_frame() == 2 )
+        if ( get_subseq() == 2 && get_frame_time() == 0  && get_frame() == 2 )
         {
             field_7D0 = 1;
             //sub_479FF0(v3, 200, 45);
@@ -1328,12 +1328,12 @@ void char_marisa::func10()
         break;
 
     case 404:
-        if ( viz.get_subseq() == 3 )
+        if ( get_subseq() == 3 )
             sub10func(this);
         v_inerc -= v_force;
-        if ( char_on_ground_down(this) && viz.get_subseq() < 3 )
+        if ( char_on_ground_down(this) && get_subseq() < 3 )
         {
-            viz.set_subseq(3);
+            set_subseq(3);
             air_dash_cnt = 0;
             y = getlvl_height(this);
             reset_forces();
@@ -1378,27 +1378,27 @@ void char_marisa::func10()
                     }
                 }
             }
-            if ( viz.process() )
+            if ( process() )
                 set_seq(0);
 
-            if ( viz.get_subseq() == 0 || (viz.get_subseq() == 1 && viz.get_elaps_frames() <= 4))
+            if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
                 if ( input->keyDown(INP_B) == 0 )
                     not_charge_attack = 0;
 
-            if ( viz.get_subseq() == 1 )
+            if ( get_subseq() == 1 )
             {
 
-                if ( (not_charge_attack == 0 && viz.get_elaps_frames() >= 2 && viz.get_elaps_frames() < 5)
-                        || viz.get_elaps_frames() > 15)
+                if ( (not_charge_attack == 0 && get_elaps_frames() >= 2 && get_elaps_frames() < 5)
+                        || get_elaps_frames() > 15)
                 {
                     next_subseq();
                     break;
                 }
 
-                if ( viz.get_elaps_frames() == 5 )
+                if ( get_elaps_frames() == 5 )
                     scene_add_effect(this, 62, x - 25*dir, y+125, dir, 1);
             }
-            if ( viz.get_subseq() == 2  && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
+            if ( get_subseq() == 2  && get_frame_time() == 0 && get_frame() == 2 )
             {
                 h_inerc = -6.0;
                 v_inerc = 6.0;
@@ -1416,18 +1416,18 @@ void char_marisa::func10()
                 //sub_479FF0(v3, 200, 45);
             }
 
-            if ( viz.get_subseq() == 3  && viz.get_frame_time() == 0 && viz.get_frame() == 0 && viz.get_elaps_frames() == 0 )
+            if ( get_subseq() == 3  && get_frame_time() == 0 && get_frame() == 0 && get_elaps_frames() == 0 )
                 set_seq(9);
         }
         break;
 
     case 406:
-        if ( viz.get_subseq() == 3 )
+        if ( get_subseq() == 3 )
             sub10func(this);
         v_inerc -= v_force;
-        if ( char_on_ground_down(this) && viz.get_subseq() < 3 )
+        if ( char_on_ground_down(this) && get_subseq() < 3 )
         {
-            viz.set_subseq(3);
+            set_subseq(3);
             air_dash_cnt = 0;
             y = getlvl_height(this);
             reset_forces();
@@ -1473,25 +1473,25 @@ void char_marisa::func10()
                     }
                 }
             }
-            if ( viz.process() )
+            if ( process() )
                 set_seq(0);
 
-            if ( viz.get_subseq() == 0 || (viz.get_subseq() == 1 && viz.get_elaps_frames() <= 4))
+            if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
                 if ( input->keyDown(INP_B) == 0 )
                     not_charge_attack = 0;
 
-            if ( viz.get_subseq() == 1 )
+            if ( get_subseq() == 1 )
             {
-                if ( (not_charge_attack == 0 && viz.get_elaps_frames() >= 2 && viz.get_elaps_frames() < 5)
-                        || viz.get_elaps_frames() > 15)
+                if ( (not_charge_attack == 0 && get_elaps_frames() >= 2 && get_elaps_frames() < 5)
+                        || get_elaps_frames() > 15)
                 {
                     next_subseq();
                     break;
                 }
-                if ( viz.get_elaps_frames() == 5 && not_charge_attack == 1 )
+                if ( get_elaps_frames() == 5 && not_charge_attack == 1 )
                     scene_add_effect(this, 62, x - 25*dir, y+125, dir, 1);
             }
-            if ( viz.get_subseq() == 2 && viz.get_frame_time() == 0 && viz.get_frame() == 2 )
+            if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2 )
             {
                 h_inerc = -6.0;
                 v_inerc = 6.0;
@@ -1508,7 +1508,7 @@ void char_marisa::func10()
                 field_7D0 = 1;
                 //sub_479FF0(v3, 200, 45);
             }
-            if ( viz.get_subseq() == 3  && viz.get_frame_time() == 0 && viz.get_frame() == 0 && viz.get_elaps_frames() == 0 )
+            if ( get_subseq() == 3  && get_frame_time() == 0 && get_frame() == 0 && get_elaps_frames() == 0 )
                 set_seq(9);
         }
         break;
@@ -1518,9 +1518,9 @@ void char_marisa::func10()
         if ( h_inerc < 0.0 )
             h_inerc = 0.0;
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 6 )
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 6 )
         {
             play_sfx(1);
             float t[3];
@@ -1539,7 +1539,7 @@ void char_marisa::func10()
             reset_forces();
             y = getlvl_height(this);
         }
-        else if ( viz.process() )
+        else if ( process() )
             set_seq(9);
 
         break;
@@ -1548,7 +1548,7 @@ void char_marisa::func10()
 
         if ( input->keyDown(INP_C) == 0)
             not_charge_attack = 0;
-        if ( viz.get_subseq() == 2 && viz.get_frame() == 2 && viz.get_frame_time() == 0 )
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
             field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
             if ( field_7D4 < -20 )
@@ -1577,33 +1577,33 @@ void char_marisa::func10()
                 addbullet(this, NULL, 801, x+dir*44, y+85, dir, 1, t, 3);
             }
         }
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
-        if ( viz.get_subseq() == 1 && viz.get_elaps_frames() > 0)
+        if ( get_subseq() == 1 && get_elaps_frames() > 0)
         {
-            if ( (not_charge_attack == 0 && viz.get_elaps_frames() <= 9) || viz.get_elaps_frames() >= 30 )
+            if ( (not_charge_attack == 0 && get_elaps_frames() <= 9) || get_elaps_frames() >= 30 )
             {
                 next_subseq();
                 break;
             }
-            if ( viz.get_elaps_frames() == 10 )
+            if ( get_elaps_frames() == 10 )
             {
                 scene_add_effect(this, 62, x - 23*dir, y + 93, dir, 1);
                 field_7D8 = 1;
             }
         }
 
-        if ( viz.get_subseq() == 3 && viz.get_elaps_frames() > 20 )
+        if ( get_subseq() == 3 && get_elaps_frames() > 20 )
             next_subseq();
         break;
     case 411:
         sub10func(this);
 
-        if ( viz.get_subseq() < 2 )
+        if ( get_subseq() < 2 )
             if ( input->keyDown(INP_C) == 0)
                 not_charge_attack = 0;
 
-        if ( viz.get_subseq() == 2 && viz.get_frame() == 2 && viz.get_frame_time() == 0 )
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
             //add_card_energy(v3, 50);
             field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
@@ -1623,22 +1623,22 @@ void char_marisa::func10()
             addbullet(this, NULL,803, 44*dir + x, y+85, dir, 1, t, 3);
         }
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
 
-        if ( (viz.get_subseq() == 1 && viz.get_elaps_frames() > 4 && (not_charge_attack == 0  || viz.get_elaps_frames() > 25))
-                || (viz.get_subseq() == 4 && viz.get_elaps_frames() > 12 ))
+        if ( (get_subseq() == 1 && get_elaps_frames() > 4 && (not_charge_attack == 0  || get_elaps_frames() > 25))
+                || (get_subseq() == 4 && get_elaps_frames() > 12 ))
             next_subseq();
 
         break;
     case 412:
         sub10func(this);
 
-        if ( viz.get_subseq() < 2 )
+        if ( get_subseq() < 2 )
             if ( input->keyDown(INP_C) == 0)
                 not_charge_attack = 0;
 
-        if ( viz.get_subseq() == 2 && viz.get_frame() == 1 && viz.get_frame_time() == 0 )
+        if ( get_subseq() == 2 && get_frame() == 1 && get_frame_time() == 0 )
         {
             play_sfx(7);
             float t[3];
@@ -1651,25 +1651,25 @@ void char_marisa::func10()
             addbullet(this, NULL,802, 70*dir + x, y+162, dir, 1, t, 3);
         }
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
 
-        if ( viz.get_subseq() == 1 && viz.get_elaps_frames() > 4)
+        if ( get_subseq() == 1 && get_elaps_frames() > 4)
         {
             field_7DC++;
-            if (viz.get_elaps_frames() > 40 || not_charge_attack == 0)
+            if (get_elaps_frames() > 40 || not_charge_attack == 0)
                 next_subseq();
         }
         break;
     case 414:
-        if ( viz.get_subseq() == 5 )
+        if ( get_subseq() == 5 )
             sub10func(this);
 
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) && viz.get_subseq() < 5 )
+        if ( char_on_ground_down(this) && get_subseq() < 5 )
         {
-            viz.set_subseq(5);
+            set_subseq(5);
             air_dash_cnt = 0;
             y = getlvl_height(this);
             reset_forces();
@@ -1679,7 +1679,7 @@ void char_marisa::func10()
             if ( input->keyDown(INP_C) == 0)
                 not_charge_attack = 0;
 
-            if ( viz.get_subseq() == 2 && viz.get_frame() == 2 && viz.get_frame_time() == 0 )
+            if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
             {
                 //sub_479FF0(v3, 200, 60);
                 field_190 = 1;
@@ -1711,52 +1711,52 @@ void char_marisa::func10()
                 }
             }
 
-            if ( viz.process() )
+            if ( process() )
                 set_seq(0);
 
-            if ( viz.get_subseq() == 5 && viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0 )
+            if ( get_subseq() == 5 && get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 )
                 set_seq(9);
-            else if ( viz.get_subseq() == 1 )
+            else if ( get_subseq() == 1 )
             {
 
                 v_inerc -= 0.01;
-                if ( (not_charge_attack == 0 && viz.get_elaps_frames() <= 9) || viz.get_elaps_frames() > 30 )
+                if ( (not_charge_attack == 0 && get_elaps_frames() <= 9) || get_elaps_frames() > 30 )
                 {
                     next_subseq();
                     break;
                 }
-                if ( viz.get_elaps_frames() == 10 )
+                if ( get_elaps_frames() == 10 )
                 {
                     field_7D8 = 1;
                     scene_add_effect(this, 62, x -23*dir , y + 107, dir, 1);
                 }
             }
-            else if ( viz.get_subseq() == 3 && viz.get_elaps_frames() > 20 )
+            else if ( get_subseq() == 3 && get_elaps_frames() > 20 )
                 next_subseq();
-            else if ( viz.get_subseq() == 4 && viz.get_frame_time() == 0 && viz.get_frame() == 5 )
+            else if ( get_subseq() == 4 && get_frame_time() == 0 && get_frame() == 5 )
                 v_force = 0.6;
         }
         break;
     case 415:
-        if ( viz.get_subseq() == 6 )
+        if ( get_subseq() == 6 )
             sub10func(this);
 
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) && viz.get_subseq() < 6 )
+        if ( char_on_ground_down(this) && get_subseq() < 6 )
         {
-            viz.set_subseq(6);
+            set_subseq(6);
             air_dash_cnt = 0;
             y = getlvl_height(this);
             reset_forces();
         }
         else
         {
-            if ( viz.get_subseq() < 2 )
+            if ( get_subseq() < 2 )
                 if ( input->keyDown(INP_C) == 0)
                     not_charge_attack = 0;
 
-            if ( viz.get_subseq() == 2 && viz.get_frame() == 2 && viz.get_frame_time() == 0 )
+            if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
             {
                 play_sfx(4);
                 field_190 = 1;
@@ -1806,39 +1806,39 @@ void char_marisa::func10()
                 }
             }
 
-            if ( viz.process() )
+            if ( process() )
                 set_seq(0);
 
-            if ( viz.get_subseq() == 6 && viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0 )
+            if ( get_subseq() == 6 && get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 )
                 set_seq(9);
-            else if ((viz.get_subseq() == 1 && viz.get_elaps_frames() > 4 && (not_charge_attack == 0 || viz.get_elaps_frames() > 25)) ||
-                     (viz.get_subseq() == 4 && viz.get_elaps_frames() > 12))
+            else if ((get_subseq() == 1 && get_elaps_frames() > 4 && (not_charge_attack == 0 || get_elaps_frames() > 25)) ||
+                     (get_subseq() == 4 && get_elaps_frames() > 12))
                 next_subseq();
-            else if (viz.get_subseq() == 5 && viz.get_frame_time() == 0 && viz.get_frame() == 5 )
+            else if (get_subseq() == 5 && get_frame_time() == 0 && get_frame() == 5 )
                 v_force = 0.6;
         }
         break;
     case 416:
-        if ( viz.get_subseq() == 1 )
+        if ( get_subseq() == 1 )
             sub10func(this);
-        if ( viz.get_subseq() == 0 )
+        if ( get_subseq() == 0 )
         {
             v_inerc -= v_force;
             if ( char_on_ground_down(this) )
             {
-                viz.next_subseq();
+                next_subseq();
                 y = getlvl_height(this);
                 reset_forces();
                 break;
             }
         }
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
 
-        if (viz.get_subseq() == 1 && viz.get_elaps_frames() == 0 && viz.get_frame_time() == 0 && viz.get_frame() == 0)
+        if (get_subseq() == 1 && get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0)
             set_seq(9);
-        else if ( viz.get_subseq() == 0 && viz.get_frame_time() == 0 &&  viz.get_frame() == 5 )
+        else if ( get_subseq() == 0 && get_frame_time() == 0 &&  get_frame() == 5 )
         {
             play_sfx(2);
             h_inerc = -4.0;
@@ -1863,19 +1863,19 @@ void char_marisa::func10()
         if ( h_inerc < 0.0 )
             h_inerc = 0.0;
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
 
-        if ( viz.get_frame_time() == 0 )
+        if ( get_frame_time() == 0 )
         {
-            if (viz.get_frame() == 4)
+            if (get_frame() == 4)
             {
                 /*v1643 = 0.0;
                 v1644 = 0.0;
                 v1645 = 0.0;
                 sub_46E2F0(v3, 848, v3->rend_cls.x_pos, v3->rend_cls.y_pos, v3->rend_cls.dir, 1, &v1643, 3);*/
             }
-            else if ( viz.get_frame() == 5 )
+            else if ( get_frame() == 5 )
             {
                 scene_play_sfx(29);
                 field_49A = 0;
@@ -1885,7 +1885,7 @@ void char_marisa::func10()
     case 521:
     {
 
-        uint32_t sq = viz.get_subseq();
+        uint32_t sq = get_subseq();
 
         if ( !sq || sq == 4 )
         {
@@ -1894,11 +1894,11 @@ void char_marisa::func10()
         //field_18C = 1;
         if ( sq == 1 )
         {
-            if ( viz.get_elaps_frames() > 20 )
+            if ( get_elaps_frames() > 20 )
             {
-                viz.next_subseq();
+                next_subseq();
             }
-            /*if ( !(viz.get_elaps_frames() % 3) )
+            /*if ( !(get_elaps_frames() % 3) )
             {
               v1802 = (MT_getnext() % 60) + 95.0 - 30.0;
               v512 = get_MT_range(0x64u) * 0.1000000014901161;
@@ -1913,7 +1913,7 @@ void char_marisa::func10()
             }*/
         }
 
-        sq = viz.get_subseq();
+        sq = get_subseq();
 
         if ( sq > 0  && sq < 4 )
         {
@@ -1925,16 +1925,16 @@ void char_marisa::func10()
 
         if ( sq == 3 && char_on_ground_down(this) )
         {
-            viz.next_subseq();
+            next_subseq();
             y = getlvl_height(this);
             reset_forces();
         }
 
-        if ( viz.process() )
+        if ( process() )
             set_seq(0);
 
-        if (viz.get_subseq() == 1 && viz.get_frame_time()   == 0 &&
-                viz.get_frame()  == 0 && viz.get_elaps_frames() == 0)
+        if (get_subseq() == 1 && get_frame_time()   == 0 &&
+                get_frame()  == 0 && get_elaps_frames() == 0)
         {
             //v1661 = -85.0;
             //v1662 = 0.0;
@@ -1956,7 +1956,7 @@ void char_marisa::func10()
 
     break;
     default:
-        viz.process();
+        process();
     }
 }
 
@@ -2197,12 +2197,12 @@ void char_marisa::func20()
       v148 = v2->fflags & FF_CANCELLEABLE;
       v5 = v3 & FF_UNK200000;*/
 
-    uint16_t cprior = viz.get_cprior();
-    uint32_t fflags = viz.get_pframe()->fflags;
+    uint16_t cprior = get_cprior();
+    uint32_t fflags = get_pframe()->fflags;
 
     bool cc = (fflags & FF_CANCELLEABLE) != 0;
     bool cu = (fflags & FF_UNK200000) != 0;
-    int32_t sq = viz.get_seq_id();
+    int32_t sq = get_seq();
 
     if ( /* !sub_4870A0(a1, v2)*/ true ) // !sub_4870A0(a1, v2) - AB input check
     {
@@ -2242,7 +2242,7 @@ void char_marisa::func20()
                 {
                     if ( sq == 200 && input->gY() == 0 &&
                             input->gX(dir) > 0 &&
-                            cprior <= viz.get_prior(305) )  // 66A
+                            cprior <= get_prior(305) )  // 66A
                     {
                         angZ = 0;
                         set_seq(305);
@@ -2254,14 +2254,14 @@ void char_marisa::func20()
                     {
                         if ( input->gY() < 0 )
                         {
-                            if ( input->gX(dir) > 0 && cprior <= viz.get_prior(304) ) // 3A
+                            if ( input->gX(dir) > 0 && cprior <= get_prior(304) ) // 3A
                             {
                                 angZ = 0;
                                 set_seq(304);
                                 input->zero_input();
                                 return;
                             }
-                            else if (cprior <= viz.get_prior(303) ) // 2A
+                            else if (cprior <= get_prior(303) ) // 2A
                             {
                                 angZ = 0;
                                 set_seq(303);
@@ -2271,7 +2271,7 @@ void char_marisa::func20()
                         }
                         else if (input->gY() == 0)
                         {
-                            if ( input->gX(dir) > 0 && cprior <= viz.get_prior(302) ) // 6A
+                            if ( input->gX(dir) > 0 && cprior <= get_prior(302) ) // 6A
                             {
                                 angZ = 0;
                                 set_seq(302);
@@ -2281,14 +2281,14 @@ void char_marisa::func20()
 
                             float dst = fabs(x - enemy->x);
 
-                            if ( dst > 90.0 && cprior <= viz.get_prior(301)) //Far A
+                            if ( dst > 90.0 && cprior <= get_prior(301)) //Far A
                             {
                                 angZ = 0;
                                 set_seq(301);
                                 input->zero_input();
                                 return;
                             }
-                            else if(cprior <= viz.get_prior(300)) //near A
+                            else if(cprior <= get_prior(300)) //near A
                             {
                                 angZ = 0;
                                 set_seq(300);
@@ -2300,7 +2300,7 @@ void char_marisa::func20()
 //                        {
 //                            if ( input->gX(dir) < 0)
 //                            {
-//                                if ( cprior <= viz.get_prior(330) || sq == 330 )
+//                                if ( cprior <= get_prior(330) || sq == 330 )
 //                                {
 //                                    angZ = 0;
 //                                    set_seq(330);
@@ -2338,28 +2338,28 @@ void char_marisa::func20()
                 else if (field_190 != 0 && field_190 != 3) // In Air (Melee)
                 {
 
-                    if ( input->gY() > 0 && input->gX(dir) == 0 && cprior <= viz.get_prior(309) ) //j8A
+                    if ( input->gY() > 0 && input->gX(dir) == 0 && cprior <= get_prior(309) ) //j8A
                     {
                         angZ = 0;
                         set_seq(309);
                         input->zero_input();
                         return;
                     }
-                    else if (input->gY() < 0 && input->gX(dir) >= 0 && cprior <= viz.get_prior(308)) //j2A
+                    else if (input->gY() < 0 && input->gX(dir) >= 0 && cprior <= get_prior(308)) //j2A
                     {
                         angZ = 0;
                         set_seq(308);
                         input->zero_input();
                         return;
                     }
-                    else if ( input->gY() == 0 && input->gX(dir) > 0 && cprior <= viz.get_prior(307)) //j6A
+                    else if ( input->gY() == 0 && input->gX(dir) > 0 && cprior <= get_prior(307)) //j6A
                     {
                         angZ = 0;
                         set_seq(307);
                         input->zero_input();
                         return;
                     }
-                    else if ( cprior <= viz.get_prior(306) ) //j5A
+                    else if ( cprior <= get_prior(306) ) //j5A
                     {
                         angZ = 0;
                         set_seq(306);
@@ -2383,7 +2383,7 @@ void char_marisa::func20()
 
                     if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
                     {
-                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= viz.get_prior(402) ) // 2B
+                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= get_prior(402) ) // 2B
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2400,7 +2400,7 @@ void char_marisa::func20()
                                 return;
                             }
                         }
-                        else if ( input->gY() == 0  && input->gX(dir) > 0 && cprior <= viz.get_prior(401) )
+                        else if ( input->gY() == 0  && input->gX(dir) > 0 && cprior <= get_prior(401) )
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2418,7 +2418,7 @@ void char_marisa::func20()
                             }
 
                         }
-                        else if (cprior <= viz.get_prior(400) )
+                        else if (cprior <= get_prior(400) )
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2439,7 +2439,7 @@ void char_marisa::func20()
                 }
                 else if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200 ) //In AIR
                 {
-                    if ( input->gY() >= 0 && cprior <= viz.get_prior(404))
+                    if ( input->gY() >= 0 && cprior <= get_prior(404))
                     {
                         if ( field_892 > 0 && field_890 != 50 )
                         {
@@ -2456,7 +2456,7 @@ void char_marisa::func20()
                             return;
                         }
                     }
-                    else if (cprior <= viz.get_prior(406))
+                    else if (cprior <= get_prior(406))
                     {
                         if ( field_892 > 0 && field_890 != 50 )
                         {
@@ -2489,7 +2489,7 @@ void char_marisa::func20()
                     }
                     if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
                     {
-                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= viz.get_prior(412) ) // 2C
+                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= get_prior(412) ) // 2C
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2506,7 +2506,7 @@ void char_marisa::func20()
                                 return;
                             }
                         }
-                        else if ( input->gY() == 0  && input->gX(dir) > 0 && cprior <= viz.get_prior(411) ) // 6C
+                        else if ( input->gY() == 0  && input->gX(dir) > 0 && cprior <= get_prior(411) ) // 6C
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2524,7 +2524,7 @@ void char_marisa::func20()
                             }
 
                         }
-                        else if (cprior <= viz.get_prior(410) )
+                        else if (cprior <= get_prior(410) )
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2547,7 +2547,7 @@ void char_marisa::func20()
                 {
                     if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
                     {
-                        if (input->gY() >= 0 && input->gX(dir) > 0 && cprior <= viz.get_prior(415))
+                        if (input->gY() >= 0 && input->gX(dir) > 0 && cprior <= get_prior(415))
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2564,7 +2564,7 @@ void char_marisa::func20()
                                 return;
                             }
                         }
-                        else if (input->gY() < 0 && cprior <= viz.get_prior(416))
+                        else if (input->gY() < 0 && cprior <= get_prior(416))
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -2581,7 +2581,7 @@ void char_marisa::func20()
                                 return;
                             }
                         }
-                        else if (cprior <= viz.get_prior(414))
+                        else if (cprior <= get_prior(414))
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -3629,7 +3629,7 @@ c_bullet *char_marisa::new_bullet()
 void char_marisa::set_seq_params()
 {
 
-    switch(viz.get_seq_id())
+    switch(get_seq())
     {
     case 214:
         reset_ofs();

@@ -156,7 +156,7 @@ typedef map<int32_t, seq *> mapseq;
 
 class char_graph : public moveable
 {
-    private:
+    protected:
 
     vector<gr_tex *> imgs;
 
@@ -171,10 +171,10 @@ class char_graph : public moveable
 
     bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
 
-    void draw(float x, float y, uint8_t plane,int8_t direct);
-    void draw(float x, float y, uint8_t plane, int8_t direct, float rotate);
+    virtual void draw(float x, float y, uint8_t plane,int8_t direct);
+    virtual void draw(float x, float y, uint8_t plane, int8_t direct, float rotate);
 
-    void set_seq(uint32_t idx);
+    virtual void set_seq(uint32_t idx);
     void reset_seq();
     void set_frame(uint32_t frm);
     bool next_frame(bool ignore_loop = false);
@@ -187,7 +187,7 @@ class char_graph : public moveable
     uint32_t get_frame_time();
     uint32_t get_elaps_frames();
     char_frame * get_pframe();
-    uint32_t get_seq_id();
+    uint32_t get_seq();
     uint16_t get_cprior();
     uint16_t get_prior();
     uint16_t get_cprior(uint32_t idx);

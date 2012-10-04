@@ -57,11 +57,9 @@
 
 class c_bullet;
 
-class char_c : public moveable
+class char_c : public char_graph
 {
     protected:
-
-    char_graph   viz;
 
     inp_ab      *input;
 
@@ -201,24 +199,11 @@ class char_c : public moveable
     uint32_t pres_move;
 
 
-    uint32_t get_seq();
-    uint32_t get_subseq();
-    uint32_t get_frame();
-    seq * get_seq(uint32_t idx);
-
 
     void set_seq(uint32_t idx);
-    void reset_seq();
-    void set_frame(uint32_t frm);
-    bool next_frame(bool ignore_loop = false);
-    bool next_subseq();
-    bool process(bool ignore_loop = false);
-    char_frame * get_pframe();
 
     void input_update();
 
-
-    virtual void draw(float x, float y, int8_t dir);
     virtual void draw();
 
     virtual void check_seq_input();
@@ -235,8 +220,6 @@ class char_c : public moveable
     virtual void func16();
     virtual void func18();
     virtual void func20();
-
-    uint16_t get_prior(uint32_t idx);
 
     virtual c_bullet *new_bullet() ;
 

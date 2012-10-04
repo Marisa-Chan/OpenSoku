@@ -73,58 +73,35 @@ char_c::char_c(inp_ab *func)
 void char_c::set_seq(uint32_t idx)
 {
     //printf("%d\n",idx);
-    viz.set_seq(idx);
+    char_graph::set_seq(idx);
     set_seq_params();
-}
-
-
-
-bool char_c::process(bool ignore_loop)
-{
-    return viz.process(ignore_loop);
-}
-
-bool char_c::next_frame(bool ignore_loop)
-{
-    return viz.next_frame(ignore_loop);
-}
-
-bool char_c::next_subseq()
-{
-    return viz.next_subseq();
-}
-
-void char_c::reset_seq()
-{
-    viz.reset_seq();
-}
-
-void char_c::set_frame(uint32_t frm)
-{
-    viz.set_frame(frm);
-}
-
-void char_c::draw(float x, float y, int8_t dir)
-{
-    viz.draw(x,y,1,dir);
 }
 
 void char_c::draw()
 {
-    viz.setOrigin(-x_off,-y_off);
-    viz.draw(x,y+y_off,1,dir,angZ);
+
+            sprite.setRotate(angZ);
+        sprite.setScale(dir*1.0,1);
+   // }
+
+    sprite.setXY(x,y+y_off);
+    sprite.setOrigin(-x_off,-y_off);
+    sprite.draw(1);
+
+    //setOrigin(-x_off,-y_off);
+    //draw(x,y+y_off,1,dir,angZ);
 
     //if (angZ != 0)
-    //    viz.draw(x,y+y_off,1,dir,angZ);
+    //    draw(x,y+y_off,1,dir,angZ);
     //else
-     //   viz.draw(x,y+y_off,1,dir);
+     //   draw(x,y+y_off,1,dir);
 
     // gr_draw_box(x,-y,255,0,0,1);
     // gr_draw_box(x,-y-y_off,0,255,0,1);
 
 
 
-    char_frame *pf = viz.get_pframe();
+    char_frame *pf = get_pframe();
 
     if (pf->box_atk.size() > 0)
     {
@@ -142,7 +119,7 @@ void char_c::draw()
 
 bool char_c::field_sq_check()
 {
-    uint32_t sq = viz.get_seq_id();
+    uint32_t sq = get_seq();
     return (sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300;
 }
 
@@ -207,29 +184,10 @@ void char_c::check_seq_input()
 
 }
 
-char_frame *char_c::get_pframe()
-{
-    return viz.get_pframe();
-}
-
-uint32_t char_c::get_seq()
-{
-    return viz.get_seq_id();
-}
-
-seq *char_c::get_seq(uint32_t idx)
-{
-    return viz.get_seq(idx);
-}
-
-uint32_t char_c::get_subseq()
-{
-    return viz.get_subseq();
-}
 
 void char_c::func10()
 {
-    viz.process(true);
+    process(true);
 }
 
 
@@ -259,9 +217,9 @@ void char_c::func16()
         field_80D = 1;
 
 
-    field_80E = viz.get_seq_id() >= 600 && viz.get_seq_id() <= 689;
+    field_80E = get_seq() >= 600 && get_seq() <= 689;
 
-    if ( viz.get_seq_id() >= 600 && viz.get_seq_id() < 690 )
+    if ( get_seq() >= 600 && get_seq() < 690 )
         field_7F8 = 120;
 
     if ( health <= 0 )
@@ -279,9 +237,9 @@ void char_c::func16()
     {
       if ( LOBYTE(v2->controlling_type) == CHAR_CTRL_PC_STORY )
       {
-        if ( viz.get_seq_id() >= 50 )
+        if ( get_seq() >= 50 )
         {
-          if ( viz.get_seq_id() <= 149 )
+          if ( get_seq() <= 149 )
           {
             sub_4685C0(this, enemy, 0);
             sub_46AB50(this, v12, 0, 0);
@@ -340,15 +298,15 @@ void char_c::func16()
 
     if ( controlling_type == 0 || enemy->controlling_type == 2 )
     {
-        if ( viz.get_seq_id() >= 197 && viz.get_seq_id() <= 199 )
+        if ( get_seq() >= 197 && get_seq() <= 199 )
         {
             field_4C2 = 60;
             field_4BE = 100;
         }
 
-        if (viz.get_subseq() == 0)
-            if ((viz.get_seq_id() == 70 && viz.get_elaps_frames() >= 18) ||
-                    (viz.get_seq_id() >= 180 && viz.get_seq_id() <= 181))
+        if (get_subseq() == 0)
+            if ((get_seq() == 70 && get_elaps_frames() >= 18) ||
+                    (get_seq() >= 180 && get_seq() <= 181))
             {
                 field_4C2 = 60;
                 field_4BE = 100;
@@ -362,7 +320,7 @@ void char_c::func16()
         }
         if ( field_4C4 != 0 )
         {
-            if ( viz.get_seq_id() == 9 )
+            if ( get_seq() == 9 )
                 flip_with_force();
 
             field_572 = 0;
@@ -385,7 +343,7 @@ void char_c::func16()
 
                     if ( y < -600.0 )
                         y = -600.0;
-                    if ( viz.get_elaps_frames() >= 300 )
+                    if ( get_elaps_frames() >= 300 )
                     {
                         set_seq(9);
                         angZ = 0.0;
@@ -402,7 +360,7 @@ void char_c::func16()
                 {
                     if ( y < -600.0 )
                         y = -600.0;
-                    if ( viz.get_elaps_frames() >= 300 )
+                    if ( get_elaps_frames() >= 300 )
                     {
                         set_seq(9);
                         angZ = 0.0;
@@ -438,7 +396,7 @@ void char_c::func16()
                     else
                         y += tmp;
 
-                    if ( (viz.get_seq_id() <= 9 || viz.get_seq_id() >= 200) && viz.get_seq_id() <= 299 )
+                    if ( (get_seq() <= 9 || get_seq() >= 200) && get_seq() <= 299 )
                     {
 
                         if (input->gX(dir) == 0)
@@ -631,7 +589,7 @@ void char_c::func16()
             field_54C += field_54C;
             break;
         case 3:
-            if ( viz.get_seq_id() <= 499 || viz.get_seq_id() >= 600 )
+            if ( get_seq() <= 499 || get_seq() >= 600 )
             {
                 field_800 = 0;
                 field_801 = 0;
@@ -679,7 +637,7 @@ void char_c::func16()
             else
                 field_4D4 = (sin(field_808 * 3.1415926/180.0) * 480.0 + 480.0);
 
-            if ( viz.get_seq_id() < 100 || (viz.get_seq_id() > 111 && viz.get_seq_id() < 500 ))
+            if ( get_seq() < 100 || (get_seq() > 111 && get_seq() < 500 ))
             {
 
                 field_808++;
@@ -868,7 +826,7 @@ LABEL_219:
 
         field_848++;
 
-        if ( viz.get_seq_id() != 691 )
+        if ( get_seq() != 691 )
             field_852--;
 
         if ( field_110 )
@@ -986,7 +944,7 @@ void char_c::func18()
         //// HACK
         field_190 = 1;
     }
-    if ( viz.get_prior() == 0)
+    if ( get_prior() == 0)
         if ( grn /*&& v1->field_4C4 == 0*/ )
         {
             int32_t sq = get_seq();
@@ -1126,15 +1084,6 @@ int8_t char_c::gY()
     return input->gY();
 }
 
-uint32_t char_c::get_frame()
-{
-    return viz.get_frame();
-}
-
-uint16_t char_c::get_prior(uint32_t idx)
-{
-    return viz.get_prior(idx);
-}
 
 void char_c::sub_486FD0(float p1, float p2)
 {
