@@ -1214,3 +1214,273 @@ void char_loadsfx(char_c *chr, const char *name)
 
 
 
+
+
+bool sub_487110(char_c *chr)
+{
+    if ( chr->gY() > 0)
+    {
+        if ( chr->gX(chr->dir) > 0 )
+        {
+            chr->angZ = 0.0;
+            chr->set_seq(209);
+            return true;
+        }
+        else if ( chr->gX(chr->dir) < 0 )
+        {
+            chr->angZ = 0.0;
+            chr->set_seq(210);
+            return true;
+        }
+        else
+        {
+            chr->angZ = 0.0;
+            chr->set_seq(208);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool sub_4871A0(char_c *chr)
+{
+    if ( chr->pres_move & 0x20  && chr->field_80E == 0)
+        if (  chr->get_seq() >= 150  && chr->get_seq() <= 157 && (chr->max_spell_energy >= 200 || chr->weather_var == 0) )
+        {
+            if ( chr->gY() <= 0 )
+            {
+                chr->angZ = 0.0;
+                if ( chr->gX(chr->dir) <= 0 )
+                    chr->set_seq(224);
+                else
+                    chr->set_seq(223);
+                //if ( v1->weather_var? )
+                // sub_463160(v1, 1);
+                return true;
+            }
+            else
+            {
+                chr->angZ = 0.0;
+                if ( chr->gX(chr->dir) >= 0 )
+                    chr->set_seq(220);
+                else
+                    chr->set_seq(222);
+                //if ( chr->weather_var )
+                // sub_463160(v1, 1);
+                return true;
+            }
+        }
+    return false;
+}
+
+bool sub_4896A0(char_c *chr, uint16_t cprior, uint32_t flag_200000)
+{
+    if ( (chr->pres_move & 4) || (chr->gY() > 0 && chr->gX(chr->dir)==0 && (chr->keyDown(INP_D) || cprior >= 40)) )
+        if ( cprior <= chr->get_prior(208) || flag_200000 )
+            if ( chr->field_sq_check() )
+            {
+                chr->angZ = 0.0;
+                chr->set_seq(208);
+                return true;
+            }
+    if ( chr->pres_move & 0x10 || (chr->gY() > 0 && chr->gX(chr->dir) > 0 && (chr->keyDown(INP_D) || cprior >= 40)))
+        if ( cprior <= chr->get_prior(209) || flag_200000 )
+
+            if ( chr->field_sq_check())
+            {
+                chr->angZ = 0.0;
+                chr->set_seq(209);
+                return true;
+            }
+
+
+    if ( chr->pres_move & 0x8 || (chr->gY() > 0 && chr->gX(chr->dir) < 0 && (chr->keyDown(INP_D) || cprior >= 40)))
+        if ( cprior <= chr->get_prior(210) || flag_200000)
+            if ( chr->field_sq_check())
+            {
+                chr->angZ = 0.0;
+                chr->set_seq(210);
+                return true;
+            }
+    return false;
+}
+
+bool sub_489A30(char_c *chr, uint16_t cprior, uint32_t flag_200000)
+{
+    if ( ((chr->pres_move & 1 && chr->dir == 1)
+            || (chr->pres_move & 2 && chr->dir == -1)
+            || (chr->keyDown(INP_D) && chr->gY() == 0 && chr->gX(chr->dir) > 0))
+            && chr->get_seq() != 204
+            && cprior <= chr->get_prior(200)
+            && chr->field_sq_check())
+    {
+        chr->angZ = 0.0;
+        chr->set_seq(200);
+        return true;
+    }
+    else if (((chr->pres_move & 2 && chr->dir == 1)
+              || (chr->pres_move & 1 && chr->dir == -1)
+              || (chr->keyDown(INP_D) && chr->gY() == 0 && chr->gX(chr->dir) < 0))
+             && cprior <= chr->get_prior(201)
+             && chr->field_sq_check())
+    {
+        chr->angZ = 0.0;
+        chr->set_seq(201);
+        return true;
+    }
+    return false;
+}
+
+
+bool sub_4872C0(char_c *chr)
+{
+    if ( (chr->pres_move & 0x20) != 0  && chr->field_80E == 0 && chr->get_seq() == 158 &&
+            (chr->max_spell_energy >= 200 || chr->weather_var==0 ))
+    {
+        chr->angZ = 0.0;
+        if ( chr->gX(chr->dir) > 0 )
+        {
+            chr->set_seq(226);
+            //if ( chr->weather_var == 0 )
+            //sub_463160(v1, 1);
+            return 1;
+        }
+        else
+        {
+            chr->set_seq(225);
+            //if ( v1->weather_var? )
+            //sub_463160(v1, 1);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool sub_489B90(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash, uint16_t subse)
+{
+    if ( (chr->air_dash_cnt < max_dash
+            && (chr->get_seq() != 202 || chr->get_subseq() >= subse)
+            && (chr->pres_move & 1) != 0 && chr->dir == 1)
+            ||
+            ((chr->pres_move & 2) != 0 && chr->dir == -1
+             && (cprior <= chr->get_prior(202) || flag_200000)
+             && (chr->v_inerc <= 0.0 || chr->y > 100.0)
+             && chr->field_sq_check()))
+    {
+        chr->angZ = 0.0;
+        chr->set_seq(202);
+        chr->air_dash_cnt++;
+        return true;
+    }
+    return false;
+}
+
+bool sub_489C80(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash, uint16_t subse)
+{
+    if ( (chr->air_dash_cnt < max_dash
+            && (chr->get_seq() != 202 || chr->get_subseq() >= subse)
+            && (chr->pres_move & 1) != 0 && chr->dir == 1)
+            ||
+            ((chr->pres_move & 2) != 0 && chr->dir == -1
+             && (cprior <= chr->get_prior(202) || flag_200000)
+             && (chr->v_inerc <= 0.0 || chr->y > 100.0)
+             && chr->field_sq_check()))
+    {
+        chr->angZ = 0.0;
+        chr->set_seq(203);
+        chr->air_dash_cnt++;
+        return true;
+    }
+    return false;
+}
+
+bool sub_489D70(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash)
+{
+    if ( chr->air_dash_cnt < max_dash
+            && chr->keyDown(INP_D)
+            && (chr->gX(chr->dir) != 0 || chr->gY() != 0)
+            && (chr->v_inerc <= 0.0 || chr->y > 100.0)
+            && (cprior <= chr->get_prior(214) || flag_200000)
+            && chr->field_sq_check() )
+    {
+        if ( chr->gY() < 0 )
+        {
+            if (chr->gX(chr->dir) > 0)
+                chr->dash_angle = -45.0;
+            else if( chr->gX(chr->dir) < 0 )
+                chr->dash_angle = -135.0;
+            else
+                chr->dash_angle = -90.0;
+        }
+        else if ( chr->gY() > 0 )
+        {
+            if (chr->gX(chr->dir) > 0)
+                chr->dash_angle = 45.0;
+            else if( chr->gX(chr->dir) < 0 )
+                chr->dash_angle = 135.0;
+            else
+                chr->dash_angle = 90.0;
+        }
+        else
+        {
+            if (chr->gX(chr->dir) > 0)
+                chr->dash_angle = 0.0;
+            else if( chr->gX(chr->dir) < 0 )
+                chr->dash_angle = 180.0;
+            else
+                chr->dash_angle = 0.0;
+        }
+        chr->angZ = 0;
+        chr->air_dash_cnt++;
+        chr->set_seq(214);
+        return true;
+    }
+
+    return false;
+}
+
+
+
+void char_c::stopping(float p)
+{
+    if (field_49A)
+    {
+        if (h_inerc > 0)
+        {
+            h_inerc -= p;
+            if (h_inerc < 0)
+            {
+                reset_forces();
+                field_49A = 0;
+            }
+        }
+        if ( h_inerc < 0)
+        {
+            h_inerc += p;
+            if (h_inerc > 0)
+            {
+                reset_forces();
+                field_49A = 0;
+            }
+        }
+    }
+    else
+        reset_forces();
+}
+
+void char_c::stopping_posit(float p)
+{
+    if (field_49A)
+    {
+        h_inerc -= p;
+        if (h_inerc < 0)
+        {
+            reset_forces();
+            field_49A = 0;
+        }
+    }
+    else
+        reset_forces();
+}
+

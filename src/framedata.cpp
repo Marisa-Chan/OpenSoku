@@ -373,14 +373,18 @@ bool char_graph::load_pal_pal(const char *file,uint32_t *pal)
 
 char_graph::char_graph()
 {
-
+    index = -1;
 }
 
 void char_graph::set_seq(uint32_t idx)
 {
     mapseq::iterator tmp = seqs.find(idx);
     if (tmp != seqs.end())
+    {
+        index = idx;
        sprite.set_seq(tmp->second);
+    }
+
 }
 
 seq *char_graph::get_seq(uint32_t idx)
@@ -475,7 +479,7 @@ char_frame * char_graph::get_pframe()
 
 uint32_t char_graph::get_seq()
 {
-    return sprite.get_seq_id();
+    return index;
 }
 
 uint16_t char_graph::get_prior()

@@ -98,8 +98,11 @@ class char_c;
 
 class c_scene_fx
 {
+    private:
+    int32_t index;
+
     public:
-    c_scene_fx(sc_seq *sq, char_c *chr, float x, float y, int8_t dir, int8_t order);
+    c_scene_fx(int32_t idx, sc_seq *sq, char_c *chr, float x, float y, int8_t dir, int8_t order);
     sc_fx_sprite viz;
 
     float x;
@@ -129,14 +132,21 @@ class c_scene_fx
     void func10();
     void set_seq_params(); //func15
     void draw(int8_t plane);
+
+    uint32_t get_subseq();
+    uint32_t get_frame();
+    uint32_t get_frame_time();
+    uint32_t get_elaps_frames();
+    sc_fx_frame * get_pframe();
+    uint32_t get_seq();
+
+    bool process(bool ignore_loop = false);
 };
 
 typedef map<int32_t, sc_seq *> map_c_seq;
 
 class c_scene_sp
 {
-    private:
-
     bool load_pal_pal(const char *file, uint32_t *pal);
     sc_seq *get_seq(uint32_t idx);
 

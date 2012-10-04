@@ -291,7 +291,7 @@ void c_scene_sp::addeffect(char_c *chr, int32_t idx, float x, float y, int8_t di
     sc_seq *sq = get_seq(idx);
     if (sq)
     {
-        c_scene_fx *ff = new c_scene_fx(sq, chr, x,y,dir, order);
+        c_scene_fx *ff = new c_scene_fx(idx, sq, chr, x,y,dir, order);
         fx.push_back(ff);
     }
 }
@@ -324,8 +324,9 @@ void c_scene_sp::draw(int8_t order)
 
 
 
-c_scene_fx::c_scene_fx(sc_seq *sq, char_c *chr, float _x, float _y, int8_t _dir, int8_t _order)
+c_scene_fx::c_scene_fx(int32_t idx, sc_seq *sq, char_c *chr, float _x, float _y, int8_t _dir, int8_t _order)
 {
+    index = idx;
     viz.set_seq(sq);
     x = _x;
     y = _y;
@@ -351,12 +352,40 @@ c_scene_fx::c_scene_fx(sc_seq *sq, char_c *chr, float _x, float _y, int8_t _dir,
     set_seq_params();
 }
 
+uint32_t c_scene_fx::get_subseq()
+{
+    return viz.get_cur_subseq();
+}
+uint32_t c_scene_fx::get_frame()
+{
+    return viz.get_cur_frame();
+}
+uint32_t c_scene_fx::get_frame_time()
+{
+    return viz.get_cur_frame_time();
+}
+uint32_t c_scene_fx::get_elaps_frames()
+{
+    return viz.get_elaps_frames();
+}
+sc_fx_frame * c_scene_fx::get_pframe()
+{
+    return viz.get_pframe();
+}
+uint32_t c_scene_fx::get_seq()
+{
+    return index;
+}
+
+bool c_scene_fx::process(bool ignore_loop)
+{
+    return viz.process(ignore_loop);
+}
+
 
 void c_scene_fx::func10()
 {
-    int32_t sqid = viz.get_seq_id();
-
-    switch(sqid)
+    switch(get_seq())
     {
     case 60:
     case 106:
@@ -368,14 +397,14 @@ void c_scene_fx::func10()
             c_A -= 20;
             c_R -= 20;
             c_G -= 20;
-            if (viz.process())
+            if (process())
                 active = false;
         }
         else
             active = false;
         break;
     case 62:
-        if (viz.get_elaps_frames() == 0)
+        if (get_elaps_frames() == 0)
         {
             scene_play_sfx(45);
             scene_add_effect(parent, 113,x,y,dir,1);
@@ -388,7 +417,7 @@ void c_scene_fx::func10()
             c_A -= 25;
             c_R -= 25;
             c_G -= 25;
-            if (viz.process())
+            if (process())
                 active = false;
         }
         else
@@ -396,14 +425,14 @@ void c_scene_fx::func10()
 
         break;
     case 63:
-        if ( viz.get_elaps_frames() == 0 )
+        if ( get_elaps_frames() == 0 )
         {
             scene_play_sfx(43);
             scene_add_effect(parent,60,x,y,dir,-1);
         }
         scaleX += 0.1;
         scaleY += 0.15;
-        if (viz.process())
+        if (process())
             active = false;
         break;
     case 113:
@@ -415,7 +444,7 @@ void c_scene_fx::func10()
             c_A -= 15;
             c_R -= 15;
             c_G -= 15;
-            if (viz.process())
+            if (process())
                 active = false;
         }
         else
@@ -423,7 +452,7 @@ void c_scene_fx::func10()
 
         break;
     case 124:
-        if ( viz.get_elaps_frames() == 0 )
+        if ( get_elaps_frames() == 0 )
             h_inerc = -10.0;
 
         if ( c_A >= 15 )
@@ -432,7 +461,7 @@ void c_scene_fx::func10()
             c_A -= 15;
             c_R -= 15;
             c_G -= 15;
-            if (viz.process())
+            if (process())
                 active = false;
         }
         else
@@ -448,7 +477,7 @@ void c_scene_fx::func10()
             c_A -= 25;
             c_R -= 25;
             c_G -= 25;
-            if (viz.process())
+            if (process())
                 active = false;
         }
         else
@@ -459,7 +488,7 @@ void c_scene_fx::func10()
     case 128:
     case 129:
     case 138:
-        if (viz.process())
+        if (process())
             active = false;
         break;
     }
@@ -467,9 +496,7 @@ void c_scene_fx::func10()
 
 void c_scene_fx::set_seq_params()
 {
-    int32_t sqid = viz.get_seq_id();
-
-    switch(sqid)
+    switch(get_seq())
     {
     case 62:
         scaleX =0.1;

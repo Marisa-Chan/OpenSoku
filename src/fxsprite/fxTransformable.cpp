@@ -6,16 +6,16 @@ namespace sf
 {
 
 fxTransformable::fxTransformable() :
-m_origin                    (0, 0),
-m_position                  (0, 0),
-m_rotation_x                (0),
-m_rotation_y                (0),
-m_rotation_z                (0),
-m_scale                     (1, 1),
-m_transform                 (),
-m_transformNeedUpdate       (true),
-m_inverseTransform          (),
-m_inverseTransformNeedUpdate(true)
+    m_origin                    (0, 0),
+    m_position                  (0, 0),
+    m_rotation_x                (0),
+    m_rotation_y                (0),
+    m_rotation_z                (0),
+    m_scale                     (1, 1),
+    m_transform                 (),
+    m_transformNeedUpdate       (true),
+    m_inverseTransform          (),
+    m_inverseTransformNeedUpdate(true)
 {
 }
 
@@ -211,19 +211,19 @@ const fxTransform& fxTransformable::getTransform() const
         float sz   = static_cast<float>(std::sin(angle));
 
         m_transform = fxTransform(
-                                  m_scale.x*cy*cz,
-                                  m_scale.x*cy*sz,
-                                  m_scale.x*(-sy),
-                                  m_scale.x*cy*cz*(-m_origin.x) + m_scale.x*cy*sz*(-m_origin.y) + m_position.x,
-                                  sx*sy*cz + m_scale.y*cx*(-sz),
-                                  sx*sy*sz + m_scale.y*cx*cz,
-                                  sx*cy,
-                                  (sx*sy*cz+m_scale.y*cx*-sz)*(-m_origin.x) + (sx*sy*sz+m_scale.y*cx*cz)*(-m_origin.y) + m_position.y,
-                                  cx*sy*cz + sx*sz,
-                                  cx*sy*sz + (-sx)*cz,
-                                  cx*cy,
-                                  (cx*sy*cz+sx*sz)*(-m_origin.x) + (cx*sy*sz+(-sx)*cz)*(-m_origin.y),
-                                   0,0,0,1);
+                          m_scale.x*cy*cz,
+                          m_scale.x*cy*sz,
+                          m_scale.x*(-sy),
+                          m_scale.x*cy*cz*(-m_origin.x) + m_scale.x*cy*sz*(-m_origin.y) + m_position.x,
+                          sx*sy*cz + m_scale.y*cx*(-sz),
+                          sx*sy*sz + m_scale.y*cx*cz,
+                          sx*cy,
+                          (sx*sy*cz+m_scale.y*cx*-sz)*(-m_origin.x) + (sx*sy*sz+m_scale.y*cx*cz)*(-m_origin.y) + m_position.y,
+                          cx*sy*cz + sx*sz,
+                          cx*sy*sz + (-sx)*cz,
+                          cx*cy,
+                          (cx*sy*cz+sx*sz)*(-m_origin.x) + (cx*sy*sz+(-sx)*cz)*(-m_origin.y),
+                          0,0,0,1);
 
 
 

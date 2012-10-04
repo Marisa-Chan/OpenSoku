@@ -7,6 +7,9 @@ class char_alice: public char_c
     char_alice(inp_ab *func);
     char_alice(inp_ab *func,uint8_t pal);
 
+    void func10();
+    void func20();
+    void set_seq_params();
 };
 
 #endif // MARISA_CPP_INCLUDED

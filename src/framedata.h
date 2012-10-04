@@ -156,6 +156,8 @@ typedef map<int32_t, seq *> mapseq;
 
 class char_graph : public moveable
 {
+    private:
+    int32_t index;
     protected:
 
     vector<gr_tex *> imgs;

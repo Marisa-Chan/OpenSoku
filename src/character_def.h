@@ -208,6 +208,9 @@ class char_c : public char_graph
 
     virtual void check_seq_input();
 
+    void stopping(float p);
+    void stopping_posit(float p);
+
     bool flip_to_enemy();
     bool field_sq_check();
     void flip_with_force();
@@ -237,5 +240,16 @@ bool char_is_shock(char_c *chr);
 void char_h_move(char_c *chr, float move);
 bool sub10func(char_c *chr);
 void char_loadsfx(char_c *chr, const char *name);
+
+
+
+bool sub_487110(char_c *chr);
+bool sub_4871A0(char_c *chr);
+bool sub_4896A0(char_c *chr, uint16_t cprior, uint32_t flag_200000);
+bool sub_489A30(char_c *chr, uint16_t cprior, uint32_t flag_200000);
+bool sub_4872C0(char_c *chr);
+bool sub_489B90(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash, uint16_t subse);
+bool sub_489C80(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash, uint16_t subse);
+bool sub_489D70(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash);
 
 #endif // CHARACTER_DEF_H_INCLUDED
