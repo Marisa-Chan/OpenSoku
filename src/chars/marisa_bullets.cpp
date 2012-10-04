@@ -287,7 +287,7 @@ void marisa_bullets::func10()
             }
             c_A -= 20;
             c_R -= 20;
-            c_G -= 20;
+            c_B -= 20;
         }
         else if (viz.get_subseq() == 3)
         {

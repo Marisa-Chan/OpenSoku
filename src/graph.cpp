@@ -139,6 +139,11 @@ void gr_setrotate_sprite(gr_sprite *spr, float angl)
     spr->setRotationZ(angl);
 }
 
+void gr_setrotate_sprite(gr_sprite *spr, float x, float y, float z)
+{
+    spr->setRotation(x,y,z);
+}
+
 void gr_setscale_sprite(gr_sprite *spr, float x, float y)
 {
     spr->setScale(x,y);
@@ -223,9 +228,4 @@ void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B, uint8_t
 void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B)
 {
     spr->setColor(sf::Color(R,G,B));
-}
-
-void gr_rotateX(gr_sprite *spr, float X)
-{
-    spr->setRotationX(X);
 }

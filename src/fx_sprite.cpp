@@ -104,7 +104,7 @@ void sc_fx_sprite::frame_val_set()
                 setBlend(gr_add);
 
         }
-        setRotate(0);
+        setRotate(0,0,0);
         setScale(1.0,1.0);
         setColor(255,255,255,255);
     }
@@ -199,11 +199,6 @@ void sc_fx_sprite::setScale(float x, float y)
 {
     if (pframe)
     {
-        if (pframe->angle_x != 0 || pframe->angle_y != 0)
-        {
-            gr_rotateX(sprite,pframe->angle_x);
-        }
-
         gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_x);
     }
     else
@@ -226,6 +221,18 @@ void sc_fx_sprite::setRotate(float angl)
         gr_setrotate_sprite(sprite,angl+pframe->angle_z);
     else
         gr_setrotate_sprite(sprite,angl);
+}
+
+void sc_fx_sprite::setRotate(float x, float y, float z)
+{
+    if (pframe)
+    {
+        float rx,ry,rz;
+        euler_mult(pframe->angle_x,pframe->angle_y,pframe->angle_z,x,y,z,rx,ry,rz);
+        gr_setrotate_sprite(sprite,rx,ry,rz);
+    }
+    else
+        gr_setrotate_sprite(sprite,x,y,z);
 }
 
 uint32_t sc_fx_sprite::get_seq_id()

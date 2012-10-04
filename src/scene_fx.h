@@ -89,6 +89,7 @@ class sc_fx_sprite
     void setBlend(gr_blend blend);
     void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
     void setRotate(float angl);
+    void setRotate(float x, float y, float z);
 
     void draw(uint8_t plane = 0);
 };

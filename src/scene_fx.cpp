@@ -478,10 +478,10 @@ void c_scene_fx::set_seq_params()
     case 125:
         if ( parent->get_seq() == 214 )
         {
-          //  if ( parent->get_subseq() == 1 || parent->get_subseq() == 2 )
+            if ( parent->get_subseq() == 1 || parent->get_subseq() == 2 )
                 angZ = parent->angZ;
-            //else if ( parent->get_subseq() == 3 || parent->get_subseq() == 4 )
-            //    angZ = parent->angZ + 180.0;
+            else if ( parent->get_subseq() == 3 || parent->get_subseq() == 4 )
+                angZ = -parent->angZ + 180.0;
         }
         break;
     }
@@ -497,16 +497,9 @@ void c_scene_fx::draw(int8_t plane)
         viz.setXY(x,y);
         viz.setColor(c_R,c_G,c_B,c_A);
 
-        if (angZ < -90 || angZ > 90)
-        {
-            viz.setRotate(180-angZ);
-            viz.setScale(-dir*scaleX,scaleY);
-        }
-        else
-        {
-            viz.setRotate(angZ);
-            viz.setScale(dir*scaleX,scaleY);
-        }
+        viz.setRotate(angZ);
+        viz.setScale(dir*scaleX,scaleY);
+
         viz.draw(1);
     }
 }

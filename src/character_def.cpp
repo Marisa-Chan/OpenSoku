@@ -72,7 +72,7 @@ char_c::char_c(inp_ab *func)
 
 void char_c::set_seq(uint32_t idx)
 {
-    printf("%d\n",idx);
+    //printf("%d\n",idx);
     viz.set_seq(idx);
     set_seq_params();
 }
@@ -112,11 +112,12 @@ void char_c::draw(float x, float y, int8_t dir)
 void char_c::draw()
 {
     viz.setOrigin(-x_off,-y_off);
+    viz.draw(x,y+y_off,1,dir,angZ);
 
-    if (angZ != 0)
-        viz.draw(x,y+y_off,1,dir,angZ);
-    else
-        viz.draw(x,y+y_off,1,dir);
+    //if (angZ != 0)
+    //    viz.draw(x,y+y_off,1,dir,angZ);
+    //else
+     //   viz.draw(x,y+y_off,1,dir);
 
     // gr_draw_box(x,-y,255,0,0,1);
     // gr_draw_box(x,-y-y_off,0,255,0,1);

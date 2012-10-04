@@ -434,16 +434,17 @@ void char_graph::draw(float x, float y, uint8_t plane, int8_t direct)
 
 void char_graph::draw(float x, float y, uint8_t plane, int8_t direct, float rotate)
 {
-    if (rotate < -90 || rotate > 90)
-    {
-        sprite.setRotate(180-rotate);
-        sprite.setScale(-direct*1.0,1);
-    }
-    else
-    {
+   // if (rotate < -90 || rotate > 90)
+   // {
+   //     sprite.setRotate(180-rotate);
+   //     sprite.setScale(direct*1.0,1);
+    //}
+   // else
+   // {
+        //sprite.setRotate(rotate);
         sprite.setRotate(rotate);
         sprite.setScale(direct*1.0,1);
-    }
+   // }
 
     sprite.setXY(x,y);
     sprite.setOrigin(x_off,y_off);

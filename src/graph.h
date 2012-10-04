@@ -41,6 +41,7 @@ void gr_setscale_sprite(gr_sprite *spr, float x, float y);
 void gr_setscale_sprite(gr_sprite *spr, float x, float y);
 void gr_setorigin_sprite(gr_sprite *spr, float x, float y);
 void gr_setrotate_sprite(gr_sprite *spr, float angl);
+void gr_setrotate_sprite(gr_sprite *spr, float x, float y, float z);
 
 void gr_draw_sprite(gr_sprite *spr, gr_blend blend = gr_alpha, uint8_t plane = 0);
 
@@ -54,7 +55,5 @@ void gr_draw_box(float x1,float y1,float w, float h, int r, int g, int b,int a,u
 
 void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B, uint8_t A);
 void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B);
-
-void gr_rotateX(gr_sprite *spr, float X);
 
 #endif // GRAPH_H_INCLUDED
