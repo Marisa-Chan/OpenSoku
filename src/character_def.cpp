@@ -72,7 +72,7 @@ char_c::char_c(inp_ab *func)
 
 void char_c::set_seq(uint32_t idx)
 {
-    //printf("%d\n",idx);
+    printf("%d\n",idx);
     char_graph::set_seq(idx);
     set_seq_params();
 }
@@ -80,9 +80,9 @@ void char_c::set_seq(uint32_t idx)
 void char_c::draw()
 {
 
-            sprite.setRotate(angZ);
-        sprite.setScale(dir*1.0,1);
-   // }
+    sprite.setRotate(angZ);
+    sprite.setScale(dir*1.0,1);
+    // }
 
     sprite.setXY(x,y+y_off);
     sprite.setOrigin(-x_off,-y_off);
@@ -94,7 +94,7 @@ void char_c::draw()
     //if (angZ != 0)
     //    draw(x,y+y_off,1,dir,angZ);
     //else
-     //   draw(x,y+y_off,1,dir);
+    //   draw(x,y+y_off,1,dir);
 
     // gr_draw_box(x,-y,255,0,0,1);
     // gr_draw_box(x,-y-y_off,0,255,0,1);
@@ -134,53 +134,53 @@ void char_c::check_seq_input()
     pres_comb = 0;
 
     if (input->check_input_seq("NRNR", 15,dir))
-        pres_move |= 1;
+        pres_move |= PMOVE_NRNR;
     if (input->check_input_seq("NLNL", 15,dir))
-        pres_move |= 2;
+        pres_move |= PMOVE_NLNL;
 
     if (input->check_input_seq("N09", 20,dir))
-        pres_move |= 0x10;
+        pres_move |= PMOVE_N09;
     if (input->check_input_seq("N07", 20,dir))
-        pres_move |= 8;
+        pres_move |= PMOVE_N07;
     if (input->check_input_seq("N08", 20,dir))
-        pres_move |= 4;
+        pres_move |= PMOVE_N08;
 
     if (input->check_input_seq("DD", 15,dir))
-        pres_move |= 0x20;
+        pres_move |= PMOVE_DD;
 
     int8_t t = 0;
 
     t = input->check_input_seq("421X", 15,dir);
     if (t)
-        pres_comb |= 0x1000 << (t - 1);
+        pres_comb |= PCOMB_421A << (t - 1);
 
     t = input->check_input_seq("214X", 15,dir);
     if (t)
-        pres_comb |= 0x10 << (t - 1);
+        pres_comb |= PCOMB_214A << (t - 1);
 
     t = input->check_input_seq("412X", 15,dir);
     if (t)
-        pres_comb |= 0x10000 << (t - 1);
+        pres_comb |= PCOMB_412A << (t - 1);
 
     t = input->check_input_seq("623X", 15,dir);
     if (t)
-        pres_comb |= 0x100 << (t - 1);
+        pres_comb |= PCOMB_623A << (t - 1);
 
     t = input->check_input_seq("236X", 15,dir);
     if (t)
-        pres_comb |= 0x1 << (t - 1);
+        pres_comb |= PCOMB_236A << (t - 1);
 
     t = input->check_input_seq("4136X", 20,dir);
     if (t)
-        pres_comb |= 0x100000 << (t - 1);
+        pres_comb |= PCOMB_4136A << (t - 1);
 
     t = input->check_input_seq("6314X", 20,dir);
     if (t)
-        pres_comb |= 0x1000000 << (t - 1);
+        pres_comb |= PCOMB_6314A << (t - 1);
 
     t = input->check_input_seq("2N2X", 15,dir);
     if (t)
-        pres_comb |= 0x10000000 << (t - 1);
+        pres_comb |= PCOMB_2N2A << (t - 1);
 
 }
 
@@ -1101,7 +1101,7 @@ void char_c::set_seq_params()
     switch(sq)
     {
     case 6:
-        if ( (pres_move & 4) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) != 0 ))
+        if ( (pres_move & PMOVE_N08) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) != 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -1112,7 +1112,7 @@ void char_c::set_seq_params()
 
         break;
     case 7:
-        if ( (pres_move & 0x10) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) <= 0 ))
+        if ( (pres_move & PMOVE_N09) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) <= 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -1123,7 +1123,7 @@ void char_c::set_seq_params()
 
         break;
     case 8:
-        if ( (pres_move & 8) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) >= 0 ))
+        if ( (pres_move & PMOVE_N07) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) >= 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -1216,7 +1216,7 @@ void char_loadsfx(char_c *chr, const char *name)
 
 
 
-bool sub_487110(char_c *chr)
+bool hi_jump_after_move(char_c *chr)
 {
     if ( chr->gY() > 0)
     {
@@ -1243,9 +1243,9 @@ bool sub_487110(char_c *chr)
     return false;
 }
 
-bool sub_4871A0(char_c *chr)
+bool border_escape_ground(char_c *chr)
 {
-    if ( chr->pres_move & 0x20  && chr->field_80E == 0)
+    if ( chr->pres_move & PMOVE_DD  && chr->field_80E == 0)
         if (  chr->get_seq() >= 150  && chr->get_seq() <= 157 && (chr->max_spell_energy >= 200 || chr->weather_var == 0) )
         {
             if ( chr->gY() <= 0 )
@@ -1274,18 +1274,18 @@ bool sub_4871A0(char_c *chr)
     return false;
 }
 
-bool sub_4896A0(char_c *chr, uint16_t cprior, uint32_t flag_200000)
+bool hi_jump(char_c *chr, uint16_t cprior, uint32_t hjc)
 {
-    if ( (chr->pres_move & 4) || (chr->gY() > 0 && chr->gX(chr->dir)==0 && (chr->keyDown(INP_D) || cprior >= 40)) )
-        if ( cprior <= chr->get_prior(208) || flag_200000 )
+    if ( (chr->pres_move & PMOVE_N08) || (chr->gY() > 0 && chr->gX(chr->dir)==0 && (chr->keyDown(INP_D) || cprior >= 40)) )
+        if ( cprior <= chr->get_prior(208) || hjc )
             if ( chr->field_sq_check() )
             {
                 chr->angZ = 0.0;
                 chr->set_seq(208);
                 return true;
             }
-    if ( chr->pres_move & 0x10 || (chr->gY() > 0 && chr->gX(chr->dir) > 0 && (chr->keyDown(INP_D) || cprior >= 40)))
-        if ( cprior <= chr->get_prior(209) || flag_200000 )
+    if ( chr->pres_move & PMOVE_N09 || (chr->gY() > 0 && chr->gX(chr->dir) > 0 && (chr->keyDown(INP_D) || cprior >= 40)))
+        if ( cprior <= chr->get_prior(209) || hjc )
 
             if ( chr->field_sq_check())
             {
@@ -1295,8 +1295,8 @@ bool sub_4896A0(char_c *chr, uint16_t cprior, uint32_t flag_200000)
             }
 
 
-    if ( chr->pres_move & 0x8 || (chr->gY() > 0 && chr->gX(chr->dir) < 0 && (chr->keyDown(INP_D) || cprior >= 40)))
-        if ( cprior <= chr->get_prior(210) || flag_200000)
+    if ( chr->pres_move & PMOVE_N07 || (chr->gY() > 0 && chr->gX(chr->dir) < 0 && (chr->keyDown(INP_D) || cprior >= 40)))
+        if ( cprior <= chr->get_prior(210) || hjc)
             if ( chr->field_sq_check())
             {
                 chr->angZ = 0.0;
@@ -1306,10 +1306,10 @@ bool sub_4896A0(char_c *chr, uint16_t cprior, uint32_t flag_200000)
     return false;
 }
 
-bool sub_489A30(char_c *chr, uint16_t cprior, uint32_t flag_200000)
+bool fw_bk_dash_ground(char_c *chr, uint16_t cprior, uint32_t hjc)
 {
-    if ( ((chr->pres_move & 1 && chr->dir == 1)
-            || (chr->pres_move & 2 && chr->dir == -1)
+    if ( ((chr->pres_move & PMOVE_NRNR && chr->dir == 1)
+            || (chr->pres_move & PMOVE_NLNL && chr->dir == -1)
             || (chr->keyDown(INP_D) && chr->gY() == 0 && chr->gX(chr->dir) > 0))
             && chr->get_seq() != 204
             && cprior <= chr->get_prior(200)
@@ -1319,10 +1319,10 @@ bool sub_489A30(char_c *chr, uint16_t cprior, uint32_t flag_200000)
         chr->set_seq(200);
         return true;
     }
-    else if (((chr->pres_move & 2 && chr->dir == 1)
-              || (chr->pres_move & 1 && chr->dir == -1)
+    else if (((chr->pres_move & PMOVE_NLNL && chr->dir == 1)
+              || (chr->pres_move & PMOVE_NRNR && chr->dir == -1)
               || (chr->keyDown(INP_D) && chr->gY() == 0 && chr->gX(chr->dir) < 0))
-             && cprior <= chr->get_prior(201)
+             && (cprior <= chr->get_prior(201) || hjc)
              && chr->field_sq_check())
     {
         chr->angZ = 0.0;
@@ -1333,9 +1333,9 @@ bool sub_489A30(char_c *chr, uint16_t cprior, uint32_t flag_200000)
 }
 
 
-bool sub_4872C0(char_c *chr)
+bool border_escape_air(char_c *chr)
 {
-    if ( (chr->pres_move & 0x20) != 0  && chr->field_80E == 0 && chr->get_seq() == 158 &&
+    if ( (chr->pres_move & PMOVE_DD) != 0  && chr->field_80E == 0 && chr->get_seq() == 158 &&
             (chr->max_spell_energy >= 200 || chr->weather_var==0 ))
     {
         chr->angZ = 0.0;
@@ -1357,16 +1357,14 @@ bool sub_4872C0(char_c *chr)
     return false;
 }
 
-bool sub_489B90(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash, uint16_t subse)
+bool fwd_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse)
 {
-    if ( (chr->air_dash_cnt < max_dash
+    if ( chr->air_dash_cnt < max_dash
             && (chr->get_seq() != 202 || chr->get_subseq() >= subse)
-            && (chr->pres_move & 1) != 0 && chr->dir == 1)
-            ||
-            ((chr->pres_move & 2) != 0 && chr->dir == -1
-             && (cprior <= chr->get_prior(202) || flag_200000)
-             && (chr->v_inerc <= 0.0 || chr->y > 100.0)
-             && chr->field_sq_check()))
+            && (((chr->pres_move & PMOVE_NRNR) != 0 && chr->dir == 1) || ((chr->pres_move & PMOVE_NLNL) != 0 && chr->dir == -1))
+            && (cprior <= chr->get_prior(202) || hjc)
+            && (chr->v_inerc <= 0.0 || chr->y > 100.0)
+            && chr->field_sq_check())
     {
         chr->angZ = 0.0;
         chr->set_seq(202);
@@ -1376,16 +1374,14 @@ bool sub_489B90(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_d
     return false;
 }
 
-bool sub_489C80(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash, uint16_t subse)
+bool bkg_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse)
 {
-    if ( (chr->air_dash_cnt < max_dash
-            && (chr->get_seq() != 202 || chr->get_subseq() >= subse)
-            && (chr->pres_move & 1) != 0 && chr->dir == 1)
-            ||
-            ((chr->pres_move & 2) != 0 && chr->dir == -1
-             && (cprior <= chr->get_prior(202) || flag_200000)
-             && (chr->v_inerc <= 0.0 || chr->y > 100.0)
-             && chr->field_sq_check()))
+    if ( chr->air_dash_cnt < max_dash
+            && (chr->get_seq() != 203 || chr->get_subseq() >= subse)
+            && (((chr->pres_move & PMOVE_NLNL) != 0 && chr->dir == 1) || ((chr->pres_move & PMOVE_NRNR) != 0 && chr->dir == -1))
+            && (cprior <= chr->get_prior(203) || hjc)
+            && (chr->v_inerc <= 0.0 || chr->y > 100.0)
+            && chr->field_sq_check())
     {
         chr->angZ = 0.0;
         chr->set_seq(203);
@@ -1395,13 +1391,13 @@ bool sub_489C80(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_d
     return false;
 }
 
-bool sub_489D70(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash)
+bool flying_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash)
 {
     if ( chr->air_dash_cnt < max_dash
             && chr->keyDown(INP_D)
             && (chr->gX(chr->dir) != 0 || chr->gY() != 0)
             && (chr->v_inerc <= 0.0 || chr->y > 100.0)
-            && (cprior <= chr->get_prior(214) || flag_200000)
+            && (cprior <= chr->get_prior(214) || hjc)
             && chr->field_sq_check() )
     {
         if ( chr->gY() < 0 )

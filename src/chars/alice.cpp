@@ -219,7 +219,7 @@ void char_alice::func20()
     uint32_t fflags = get_pframe()->fflags;
 
     bool cc = (fflags & FF_CANCELLEABLE) != 0;
-    bool cu = (fflags & FF_UNK200000) != 0;
+    bool cu = (fflags & FF_HJC) != 0;
     //int32_t sq = get_seq();
 
     if ( /* !sub_4870A0(a1, v2)*/ true ) // !sub_4870A0(a1, v2) - AB input check
@@ -235,19 +235,19 @@ void char_alice::func20()
              else*/
             if ( char_on_ground_flag(this) )
             {
-                if ( (cu && cprior >= 10 && sub_487110(this))
-                        || sub_4871A0(this)
-                        || sub_4896A0(this, cprior, cu)
-                        || sub_489A30(this, cprior, cu) )
+                if ( (cu && cprior >= 10 && hi_jump_after_move(this))
+                        || border_escape_ground(this)
+                        || hi_jump(this, cprior, cu)
+                        || fw_bk_dash_ground(this, cprior, cu) )
                     return;
             }
             else
             {
                 int8_t mx = (weather_var == 10) + 2;
-                if ( sub_4872C0(this)
-                        || sub_489B90(this, cprior, cu, mx, 2)
-                        || sub_489C80(this, cprior, cu, mx, 2)
-                        || sub_489D70(this, cprior, cu, mx) )
+                if ( border_escape_air(this)
+                        || fwd_dash_air(this, cprior, cu, mx, 2)
+                        || bkg_dash_air(this, cprior, cu, mx, 2)
+                        || flying_air(this, cprior, cu, mx) )
                     return;
             }
         }

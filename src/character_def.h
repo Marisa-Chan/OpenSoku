@@ -24,7 +24,7 @@
 #define FF_INV_SHOOT    0x40000
 #define FF_UNK80000     0x80000
 #define FF_UNK100000    0x100000
-#define FF_UNK200000    0x200000
+#define FF_HJC          0x200000
 #define FF_UNK400000    0x400000
 #define FF_UNK800000    0x800000
 #define FF_UNK1000000   0x1000000
@@ -54,6 +54,46 @@
 #define AF_UNK400000    0x400000   //TRANSLATE
 #define AF_UNK800000    0x800000   //TRANSLATE
 #define AF_UNK1000000   0x1000000
+
+#define PMOVE_NRNR      0x1
+#define PMOVE_NLNL      0x2
+#define PMOVE_N08       0x4
+#define PMOVE_N07       0x8
+#define PMOVE_N09       0x10
+#define PMOVE_DD        0x20
+
+#define PCOMB_236A      0x1
+#define PCOMB_236B      0x2
+#define PCOMB_236C      0x4
+#define PCOMB_236D      0x8
+#define PCOMB_214A      0x10
+#define PCOMB_214B      0x20
+#define PCOMB_214C      0x40
+#define PCOMB_214D      0x80
+#define PCOMB_623A      0x100
+#define PCOMB_623B      0x200
+#define PCOMB_623C      0x400
+#define PCOMB_623D      0x800
+#define PCOMB_421A      0x1000
+#define PCOMB_421B      0x2000
+#define PCOMB_421C      0x4000
+#define PCOMB_421D      0x8000
+#define PCOMB_412A      0x10000
+#define PCOMB_412B      0x20000
+#define PCOMB_412C      0x40000
+#define PCOMB_412D      0x80000
+#define PCOMB_4136A     0x100000
+#define PCOMB_4136B     0x200000
+#define PCOMB_4136C     0x400000
+#define PCOMB_4136D     0x800000
+#define PCOMB_6314A     0x1000000
+#define PCOMB_6314B     0x2000000
+#define PCOMB_6314C     0x4000000
+#define PCOMB_6314D     0x8000000
+#define PCOMB_2N2A      0x10000000
+#define PCOMB_2N2B      0x20000000
+#define PCOMB_2N2C      0x40000000
+#define PCOMB_2N2D      0x80000000
 
 class c_bullet;
 
@@ -243,13 +283,13 @@ void char_loadsfx(char_c *chr, const char *name);
 
 
 
-bool sub_487110(char_c *chr);
-bool sub_4871A0(char_c *chr);
-bool sub_4896A0(char_c *chr, uint16_t cprior, uint32_t flag_200000);
-bool sub_489A30(char_c *chr, uint16_t cprior, uint32_t flag_200000);
-bool sub_4872C0(char_c *chr);
-bool sub_489B90(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash, uint16_t subse);
-bool sub_489C80(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash, uint16_t subse);
-bool sub_489D70(char_c *chr, uint16_t cprior, uint32_t flag_200000, int8_t max_dash);
+bool hi_jump_after_move(char_c *chr);
+bool border_escape_ground(char_c *chr);
+bool hi_jump(char_c *chr, uint16_t cprior, uint32_t hjc);
+bool fw_bk_dash_ground(char_c *chr, uint16_t cprior, uint32_t hjc);
+bool border_escape_air(char_c *chr);
+bool fwd_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
+bool bkg_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
+bool flying_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash);
 
 #endif // CHARACTER_DEF_H_INCLUDED
