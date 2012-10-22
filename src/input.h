@@ -7,6 +7,7 @@ enum inp_types
 {
     INP_TYPE_KB,
     INP_TYPE_JOY,
+    INP_TYPE_BOTH,
     INP_TYPE_NONE
 };
 
@@ -115,6 +116,18 @@ enum kCode
     kC_Pause
 };
 
+enum inp_axis
+{
+    INP_AX_X  = 1,
+    INP_AX_Y  = 2,
+    INP_AX_Z  = 3,
+    INP_AX_R  = 4,
+    INP_AX_U  = 5,
+    INP_AX_V  = 6,
+    INP_AX_PX = 7,
+    INP_AX_PY = 8
+};
+
 enum inp_keys
 {
     INP_UP   = 0,
@@ -132,6 +145,8 @@ enum inp_keys
 
 #define INP_KEYS  11
 #define INPKEYBUF  40 //1.5 sec
+
+#define INP_AXIS(x,y)   (((x & 0xF) << 1 | (y & 0x1)) << 8)
 
 
 struct kmapper
@@ -175,6 +190,7 @@ public:
     virtual void update() = 0;
     virtual void load_def_profile() = 0;
     virtual void load_profile(kmapper keys) = 0;
+    virtual void set_devid(uint32_t) = 0;
 };
 
 class inp_kb: public inp_ab
@@ -191,14 +207,25 @@ public:
     void load_def_profile();
     bool rawPressed(uint32_t key);
     void update();
+    void set_devid(uint32_t);
 };
 
 class inp_js: public inp_ab
 {
+    private:
+    sf::Joystick js;
+    int32_t joy_id;
+
+    uint32_t map[INP_KEYS];
+
+    bool key_chk(uint32_t key);
 public:
+    inp_js();
+
     void load_profile(kmapper keys);
     void load_def_profile();
     void update();
+    void set_devid(uint32_t);
 };
 
 class inp_none: public inp_ab
@@ -212,8 +239,22 @@ public:
         {return;};
     void update()
         {return;};
+    void set_devid(uint32_t)
+        {return;};
 };
 
+class inp_both: public inp_ab
+{
+    private:
+    inp_js js;
+    inp_kb kb;
+
+    public:
+    void load_profile(kmapper keys);
+    void load_def_profile();
+    void update();
+    void set_devid(uint32_t);
+};
 
 
 inp_ab *inp_createinput(uint8_t type);

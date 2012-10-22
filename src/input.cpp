@@ -266,6 +266,11 @@ inp_kb::inp_kb()
     load_def_profile();
 }
 
+void inp_kb::set_devid(uint32_t)
+{
+    return;
+}
+
 void inp_kb::load_profile(kmapper maps)
 {
 
@@ -287,32 +292,173 @@ void inp_kb::load_def_profile()
 }
 
 
-void inp_js::load_profile(kmapper keys)
+
+inp_js::inp_js()
 {
-    return;
+    joy_id = 1;
+    load_def_profile();
 }
 
-void inp_js::load_def_profile()
+void inp_js::load_profile(kmapper keys)
 {
     return;
 }
 
 void inp_js::update()
 {
-    return;
+    js.update();
+    flush_cur();
+
+    for (uint32_t i=0; i<INP_KEYS; i++)
+        key_dn[i] = key_chk(map[i]);
+
+    x_axis = 0;
+    y_axis = 0;
+
+    if (key_dn[INP_LEFT])
+        x_axis -= 1;
+
+    if (key_dn[INP_RIGHT])
+        x_axis += 1;
+
+    if (key_dn[INP_UP])
+        y_axis += 1;
+
+    if (key_dn[INP_DOWN])
+        y_axis -= 1;
+
+    fill_kframes();
 }
+
+void inp_js::load_def_profile()
+{
+    map[INP_UP]    = INP_AXIS(INP_AX_Y,0);
+    map[INP_DOWN]  = INP_AXIS(INP_AX_Y,1);
+    map[INP_LEFT]  = INP_AXIS(INP_AX_X,0);
+    map[INP_RIGHT] = INP_AXIS(INP_AX_X,1);
+    map[INP_A]     = 0;
+    map[INP_B]     = 1;
+    map[INP_C]     = 2;
+    map[INP_D]     = 3;
+    map[INP_AB]    = 5;
+    map[INP_BC]    = 6;
+    map[INP_ST]    = 4;
+}
+
+void inp_js::set_devid(uint32_t id)
+{
+    joy_id = id;
+}
+
+bool inp_js::key_chk(uint32_t key)
+{
+    if (key & 0xFF00)
+    {
+        key >>= 8;
+
+        sf::Joystick::Axis ax= sf::Joystick::X;
+
+        switch( (key >> 1) & 0xF)
+        {
+        case INP_AX_Y:
+            ax = sf::Joystick::Y;
+            break;
+        case INP_AX_Z:
+            ax = sf::Joystick::Z;
+            break;
+        case INP_AX_R:
+            ax = sf::Joystick::R;
+            break;
+        case INP_AX_U:
+            ax = sf::Joystick::U;
+            break;
+        case INP_AX_V:
+            ax = sf::Joystick::V;
+            break;
+        case INP_AX_PX:
+            ax = sf::Joystick::PovX;
+            break;
+        case INP_AX_PY:
+            ax = sf::Joystick::PovY;
+            break;
+        case INP_AX_X:
+        default:
+            ax = sf::Joystick::X;
+        }
+
+        if (key & 0x1)
+            return js.getAxisPosition(joy_id,ax) >= 50;
+        else
+            return js.getAxisPosition(joy_id,ax) <= -50;
+    }
+    else
+    {
+        return js.isButtonPressed(joy_id, key & 0x1F);
+    }
+}
+
+
+void inp_both::load_def_profile()
+{
+    kb.load_def_profile();
+    js.load_def_profile();
+}
+
+void inp_both::load_profile(kmapper keys)
+{
+    kb.load_profile(keys);
+    js.load_profile(keys);
+}
+
+void inp_both::update()
+{
+    kb.update();
+    js.update();
+
+    flush_cur();
+
+    for (uint32_t i=0; i<INP_KEYS; i++)
+        key_dn[i] = kb.keyDown((inp_keys)i) || js.keyDown((inp_keys)i);
+
+    x_axis = 0;
+    y_axis = 0;
+
+    if (key_dn[INP_LEFT])
+        x_axis -= 1;
+
+    if (key_dn[INP_RIGHT])
+        x_axis += 1;
+
+    if (key_dn[INP_UP])
+        y_axis += 1;
+
+    if (key_dn[INP_DOWN])
+        y_axis -= 1;
+
+    fill_kframes();
+}
+
+void inp_both::set_devid(uint32_t id)
+{
+    kb.set_devid(id);
+    js.set_devid(id);
+}
+
+
 
 
 inp_ab *inp_createinput(uint8_t type)
 {
     switch(type)
     {
-        case INP_TYPE_KB:
-            return new inp_kb;
-        case INP_TYPE_JOY:
-            return new inp_js;
-        case INP_TYPE_NONE:
-        default:
-            return new inp_none;
+    case INP_TYPE_KB:
+        return new inp_kb;
+    case INP_TYPE_JOY:
+        return new inp_js;
+    case INP_TYPE_BOTH:
+        return new inp_both;
+    case INP_TYPE_NONE:
+    default:
+        return new inp_none;
     }
 }
