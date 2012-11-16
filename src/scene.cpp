@@ -158,8 +158,8 @@ void c_scene::draw_scene()
 
 void c_scene::update_char_anims()
 {
-   // for (uint32_t i=0; i < 2; i++)
-      //  chrs[i]->process(true);
+    // for (uint32_t i=0; i < 2; i++)
+    //  chrs[i]->process(true);
 }
 
 void c_scene::players_input()
@@ -225,7 +225,7 @@ bool char_on_ground_flag(char_c *chr)
 bool char_on_ground_down(char_c *chr)
 {
     return getlvl_height(chr) >= chr->y &&
-            chr->v_inerc < 0 /*&&
+           chr->v_inerc < 0 /*&&
             !chr->field_4C4*/;
 }
 
@@ -316,10 +316,335 @@ void scene_subfunc1(c_scene *scn)
 
 }
 
+void frame_box_fullflip(char_c *chr, frame_box *src, frame_box *dst)
+{
+    if (chr->dir == 1)
+    {
+        dst->x1 = src->x1 + ceil(chr->x);
+        dst->x2 = src->x2 + ceil(chr->x);
+        dst->y1 = src->y1 - ceil(chr->y);
+        dst->y2 = src->y2 - ceil(chr->y);
+    }
+    else
+    {
+        dst->x1 = ceil(chr->x) - src->x2;
+        dst->x2 = ceil(chr->x) - src->x1;
+        dst->y1 = src->y2 - ceil(chr->y);
+        dst->y2 = src->y1 - ceil(chr->y);
+    }
+}
+
+void frame_box_move_rotate(frame_box *src, int16_t angle, int16_t x_c, int16_t y_c, frame_box *dst1, frame_box *dst2)
+{
+    float sin_ = sin_deg(angle);
+    float cos_ = cos_deg(angle);
+
+    if ( cos_ < 0.0 )
+    {
+        if ( sin_ < 0.0 )
+        {
+            dst1->x1 = x_c + ((src->x2 - x_c) * sin_) - ((src->y1 - y_c) * cos_);
+            dst1->y1 = y_c + ((src->x2 - x_c) * cos_) + ((src->y1 - y_c) * sin_);
+            dst1->x2 = x_c + ((src->x1 - x_c) * sin_) - ((src->y2 - y_c) * cos_);
+            dst1->y2 = y_c + ((src->x1 - x_c) * cos_) + ((src->y2 - y_c) * sin_);
+            dst2->x1 = -((src->y2 - src->y1) * cos_);
+            dst2->y1 = (src->y2 - src->y1) * sin_;
+            dst2->x2 = -(sin_ * (src->x2 - src->x1));
+            dst2->y2 = -(cos_ * (src->x2 - src->x1));
+        }
+        else
+        {
+            dst1->x1 = x_c + ((src->x1 - x_c) * sin_) - ((src->y1 - y_c) * cos_);
+            dst1->y1 = y_c + ((src->x1 - x_c) * cos_) + ((src->y1 - y_c) * sin_);
+            dst1->x2 = x_c + ((src->x2 - x_c) * sin_) - ((src->y2 - y_c) * cos_);
+            dst1->y2 = y_c + ((src->x2 - x_c) * cos_) + ((src->y2 - y_c) * sin_);
+            dst2->x1 = (src->x2 - src->x1) * sin_;
+            dst2->y1 = (src->x2 - src->x1) * cos_;
+            dst2->x2 = -(cos_ * (src->y2 - src->y1));
+            dst2->y2 = sin_ * (src->y2 - src->y1);
+        }
+    }
+    else
+    {
+        if ( sin_ < 0.0 )
+        {
+            dst1->x1 = x_c + ((src->x2 - x_c) * sin_) - ((src->y2 - y_c) * cos_);
+            dst1->y1 = y_c + ((src->y2 - y_c) * sin_) + ((src->x2 - x_c) * cos_);
+            dst1->x2 = x_c + ((src->x1 - x_c) * sin_) - ((src->y1 - y_c) * cos_);
+            dst1->y2 = y_c + ((src->y1 - y_c) * sin_) + ((src->x1 - x_c) * cos_);
+            dst2->x1 = -((src->x2 - src->x1) * sin_);
+            dst2->y1 = -((src->x2 - src->x1) * cos_);
+            dst2->x2 = cos_ * (src->y2 - src->y1);
+            dst2->y2 = -(sin_ * (src->y2 - src->y1));
+        }
+        else
+        {
+            dst1->x1 = x_c + ((src->x1 - x_c) * sin_) - ((src->y2 - y_c) * cos_);
+            dst1->y1 = y_c + ((src->y2 - y_c) * sin_) + ((src->x1 - x_c) * cos_);
+            dst1->x2 = x_c + ((src->x2 - x_c) * sin_) - ((src->y1 - y_c) * cos_);
+            dst1->y2 = y_c + ((src->y1 - y_c) * sin_) + ((src->x2 - x_c) * cos_);
+            dst2->x1 = (src->y2 - src->y1) * cos_;
+            dst2->y1 = -((src->y2 - src->y1) * sin_);
+            dst2->x2 = sin_ * (src->x2 - src->x1);
+            dst2->y2 = cos_ * (src->x2 - src->x1);
+        }
+    }
+}
+
+void frame_box_flip(char_c *chr, frame_box *src, frame_box *dst)
+{
+    if ( chr->dir == 1 )
+    {
+        dst->x1 = ceil(chr->x) + src->x1;
+        dst->x2 = ceil(chr->x) + src->x2;
+    }
+    else
+    {
+        dst->x1 = ceil(chr->x) - src->x2;
+        dst->x2 = ceil(chr->x) - src->x1;
+    }
+    dst->y1 = src->y1 - ceil(chr->y);
+    dst->y2 = src->y2 - ceil(chr->y);
+}
+
+void scn_char_ss2(char_c *chr)
+{
+//    v1 = this;
+//    v2 = this->health;
+//    v3 = this->field_190;
+//    v4 = v1->field_194;
+//    LOWORD(v1->field_1B4) = v2;
+//    v1->field_1C8 = v1->playing_seq;
+//    v5 = v1->current_frame_params;
+//    v6 = v1->current_frame_params2? == v5;
+//    v1->field_1B8 = v3;
+//    LOBYTE(v3) = v1->rend_cls.dir;
+//    LOBYTE(v1->field_1BC) = v4;
+//    v7 = v1->current_seq_frames_vector;
+//    v1->field_1CA = v3;
+//    v1->field_1C4 = v7;
+
+    char_frame *frm = chr->get_pframe();
+
+    for(uint32_t i=0; i<frm->box_unk_atk.size(); i++)
+    {
+        if (frm->box_unk_atk[i] != NULL || frm->fflags & FF_UNK400000)
+            chr->atk_area_of[i] = &chr->atk_area_2o[5 + i];
+        else
+            chr->atk_area_of[i] = NULL;
+    }
+
+    for(uint32_t i=0; i<frm->box_hit.size(); i++)
+    {
+        if (frm->fflags & FF_UNK800000)
+            chr->hit_area_flags[i] = &chr->atk_area_2o[10 + i];
+        else
+            chr->hit_area_flags[i] = NULL;
+    }
+
+    for(uint32_t i=0; i<frm->box_atk.size(); i++)
+    {
+        if (frm->box_unk_atk[i] != NULL)
+        {
+            frame_box_fullflip(chr,&frm->box_atk[i],&chr->atk_area_2o[i]);
+            frame_box *bx = chr->atk_area_of[i];
+            if (chr->dir < 0)
+            {
+                bx->x1 = frm->box_unk_atk[i]->x2;
+                bx->y1 = -frm->box_unk_atk[i]->y2;
+                bx->x2 = frm->box_unk_atk[i]->x1;
+                bx->y2 = -frm->box_unk_atk[i]->y1;
+            }
+            else
+            {
+                bx->x1 = frm->box_unk_atk[i]->x1;
+                bx->y1 = frm->box_unk_atk[i]->y1;
+                bx->x2 = frm->box_unk_atk[i]->x2;
+                bx->y2 = frm->box_unk_atk[i]->y2;
+            }
+        }
+        else if (frm->fflags & FF_UNK400000)
+        {
+            frame_box tmp,tmp2;
+            frame_box_move_rotate(&frm->box_atk[i],chr->angZ,chr->x_off,-chr->y_off,&tmp,&tmp2);
+            frame_box_fullflip(chr,&tmp,&chr->atk_area_2o[i]);
+
+            frame_box *bx = chr->atk_area_of[i];
+            if ( chr->dir < 0 )
+            {
+                bx->x1 = tmp2.x2;
+                bx->y1 = -tmp2.y2;
+                bx->x2 = tmp2.x1;
+                bx->y2 = -tmp2.y1;
+            }
+            else
+            {
+                bx->x1 = tmp2.x1;
+                bx->y1 = tmp2.y1;
+                bx->x2 = tmp2.x2;
+                bx->y2 = tmp2.y2;
+            }
+        }
+        else
+        {
+            frame_box_flip(chr,&frm->box_atk[i],&chr->atk_area_2o[i]);
+        }
+    }
+
+    if ( frm->fflags & FF_UNK800000 )
+    {
+        for(uint32_t i=0; i<frm->box_hit.size(); i++)
+        {
+            frame_box tmp,tmp2;
+            frame_box_move_rotate(&frm->box_hit[i],chr->angZ,chr->x_off,-chr->y_off,&tmp,&tmp2);
+            frame_box_fullflip(chr,&tmp,&chr->hit_area_2o[i]);
+
+            frame_box *bx = chr->hit_area_flags[i];
+            if ( chr->dir < 0 )
+            {
+                bx->x1 = tmp2.x2;
+                bx->y1 = -tmp2.y2;
+                bx->x2 = tmp2.x1;
+                bx->y2 = -tmp2.y1;
+            }
+            else
+            {
+                bx->x1 = tmp2.x1;
+                bx->y1 = tmp2.y1;
+                bx->x2 = tmp2.x2;
+                bx->y2 = tmp2.y2;
+            }
+        }
+    }
+    else
+    {
+        for(uint32_t i=0; i<frm->box_hit.size(); i++)
+        {
+            frame_box_flip(chr,&frm->box_hit[i],&chr->hit_area_2o[i]);
+        }
+    }
+    /*
+    v76 = v1->field_1B0;
+    if ( v76 )
+    {
+      v77 = v1->current_frame_params;
+      v78 = v77->boxes_atk.simvector_start;
+      v79 = &v77->boxes_atk;
+      if ( v78 )
+          v80 = (*(v79 + 8) - v78) >> 4;
+      else
+          LOBYTE(v80) = 0;
+      v81 = v80 + 1;
+      v1->atk_area_cnt = v80 + 1;
+      if ( *(v76 + 16) )
+      {
+          v82 = v80;
+          *(&v1->atk_area_of + v80) = (v1 + 16 * (v80 + 39));
+          v83 = (&v1->atk_area_of + v80);
+          sub_463B20(v1->field_1B0, *(v1->field_1B0 + 16), *(v1->field_1B0 + 18), *(v1->field_1B0 + 20), &v108, &v107);
+          v84 = v1 + 16 * (v82 + 34);
+          sub_463960(v1, &v108, v84);
+          v85 = *v83;
+          if ( v1->rend_cls.dir <= 0 )
+          {
+              v89 = v107.y2;
+              *v85 = v107.x2;
+              *(*v83 + 4) = -v89;
+              v90 = v107.y1;
+              *(*v83 + 8) = v107.x1;
+              *(*v83 + 12) = -v90;
+          }
+          else
+          {
+              v86 = v107.y1;
+              *v85 = v107.x1;
+              v87 = v107.x2;
+              *(v85 + 4) = v86;
+              v88 = v107.y2;
+              *(v85 + 8) = v87;
+              *(v85 + 12) = v88;
+          }
+      }
+      else
+      {
+          v83 = (&v1->atk_area_of + v80);
+          v91 = 16 * (v80 + 34);
+          v84 = v1 + v91;
+          *v83 = 0;
+          sub_463810(v1, v1->field_1B0, (v1 + v91));
+      }
+      result = v1->current_frame_params;
+      if ( result->fflags & 0x1000000 )
+      {
+          v92 = result->boxes_hit.simvector_start;
+          if ( v92 )
+              v93 = (result->boxes_hit.simvector_end - v92) >> 4;
+          else
+              v93 = 0;
+          v1->hit_area_cnt = v81;
+          v94 = 16 * (v93 + 29);
+          *(&v1->class + v94) = *v84;
+          v95 = v1 + v94;
+          *(v95 + 1) = *(v84 + 1);
+          *(v95 + 2) = *(v84 + 2);
+          *(v95 + 3) = *(v84 + 3);
+          result = *v83;
+          *(&v1->hit_area_flags + v93) = *v83;
+      }
+    }
+    v96 = v1->current_frame_params;
+    if ( v96->field_54 )
+    {
+      v1->field_348 = &v1->atk_area_2o[15];
+      result = sub_463810(v1, v96->field_54, &v1->atk_area_2o[15]);
+    }
+    else
+    {
+      v1->field_348 = 0;
+    }
+    return result;
+    */
+}
+
+
+bool sub_479D50(c_scene *scn, char_c *p1, char_c *p2);
+void  sub_47BE70(c_scene *scn, char_c *plr, char_c *enm);
 
 void scene_subfunc2(c_scene *scn)
 {
+    for(int32_t i=0; i < 2; i++)
+    {
+        scn_char_ss2(scn->chrs[i]);
+    }
 
+    for(int32_t i=0; i < 2; i++)
+    {
+        sub_47BE70(scn,scn->chrs[i],scn->chrs[i]->enemy);
+    }
+    //sub_47C180(scn);
+    //sub_47C430(a1);
+    /*v55 = v73;
+    v56 = &a1->field_2C[0].list;
+    for(int32_t i=0; i < 2; i++)
+    {
+        v57 = *v55;
+        v58 = (*v55)->enemy;
+        v59 = **v56;
+        v77 = *v56;
+        while ( v59 != v77 )
+        {
+            sub_47BE70(a1, v59->bullet, v58);
+            v57 = v59->bullet->field_1C0;
+            if ( v57->aflags & AF_HITSALL )
+            {
+                sub_47BE70(a1, v59->bullet, *v55);
+            }
+            v59 = v59->next_bullet;
+        }
+        ++v55;
+        v56 += 3;
+        --v75;
+    }*/
 }
 
 
@@ -417,7 +742,7 @@ void scene_check_collisions(c_scene *scn)
         p2->x -= (p2_box.x2 - p1_box.x1 - 1.0);
 
         if ( p2->dir * p2_frc + p1->dir * p1_frc >= 0.0 &&
-             p2->dir * p2_frc >= 0.0 )
+                p2->dir * p2_frc >= 0.0 )
         {
             p1->field_744 = -p1_frc;
             p2->field_744 = -p2_frc;
@@ -428,7 +753,7 @@ void scene_check_collisions(c_scene *scn)
         p2->x += (p1_box.x2 - p2_box.x1 - 1.0);
 
         if ( p2->dir * p2_frc + p1->dir * p1_frc <= 0.0 &&
-             p2->dir * p2_frc <= 0.0 )
+                p2->dir * p2_frc <= 0.0 )
         {
             p1->field_744 = -p1_frc;
             p2->field_744 = -p2_frc;
@@ -439,7 +764,7 @@ void scene_check_collisions(c_scene *scn)
         p1->x -= (p1_box.x2 - p2_box.x1 - 1.0);
 
         if ( p1->dir * p1_frc + p2->dir * p2_frc > 0.0 &&
-             p1->dir * p1_frc > 0.0 )
+                p1->dir * p1_frc > 0.0 )
         {
             p1->field_744 = -p1_frc;
             p2->field_744 = -p2_frc;
@@ -450,7 +775,7 @@ void scene_check_collisions(c_scene *scn)
         p1->x += (p2_box.x2 - p1_box.x1 - 1.0);
 
         if ( p1->dir * p1_frc + p2->dir * p2_frc <= 0.0 &&
-             p1->dir * p1_frc <= 0.0 )
+                p1->dir * p1_frc <= 0.0 )
         {
             p1->field_744 = -p1_frc;
             p2->field_744 = -p2_frc;
@@ -479,7 +804,7 @@ void scene_check_collisions(c_scene *scn)
                 p2->x -= mv_dist;
 
             if ( p2->dir * p2->field_564 * p2->h_inerc >=
-                 p1->dir * p1->field_564 * p1->h_inerc )
+                    p1->dir * p1->field_564 * p1->h_inerc )
             {
                 float force = (p1_frc * p1->dir + p2_frc * p2->dir) / 2.0;
                 p1->field_744 = p1->dir * force - p1->h_inerc;
@@ -503,7 +828,7 @@ void scene_check_collisions(c_scene *scn)
 
 
             if ( p2->dir * p2->field_564 * p2->h_inerc <=
-                 p1->dir * p1->field_564 * p1->h_inerc )
+                    p1->dir * p1->field_564 * p1->h_inerc )
             {
                 float force = (p1_frc * p1->dir + p2_frc * p2->dir) / 2.0;
                 p1->field_744 = p1->dir * force - p1->field_564 * p1->h_inerc;

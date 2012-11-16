@@ -55,6 +55,7 @@ int main()
 
     while(!kb.rawPressed(kC_Escape))
     {
+
         kb.update();
 
         gr_clear();

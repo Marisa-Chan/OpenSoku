@@ -49,7 +49,7 @@
 #define AF_UNK20000     0x20000
 #define AF_UNK40000     0x40000
 #define AF_GUARDCRUSH   0x80000
-#define AF_UNK100000    0x100000   //TRANSLATE
+#define AF_HITSALL      0x100000   //TRANSLATE
 #define AF_STAGGER      0x200000
 #define AF_UNK400000    0x400000   //TRANSLATE
 #define AF_UNK800000    0x800000   //TRANSLATE
@@ -133,6 +133,7 @@ class char_c : public char_graph
     int16_t current_card_energy;
     int16_t spell_energy;
     int16_t max_spell_energy;
+    int16_t spell_energy_stop;
 
     int32_t field_110;
     int8_t  field_114;
@@ -215,6 +216,26 @@ class char_c : public char_graph
     int8_t  player_index;
     float  dash_angle;
 
+
+
+
+    //boxes
+
+    frame_box hit_area_2o[5];
+    frame_box atk_area_2o[16];
+
+    frame_box *atk_area_of[5];
+    frame_box *hit_area_flags[6];
+
+    frame_box *field_348;
+
+    //////////
+
+    int16_t field_1BC;
+    int16_t field_4C6;
+    int16_t field_51E;
+    int16_t field_575;
+    int16_t field_180;
 
 
 

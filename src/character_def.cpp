@@ -56,9 +56,17 @@ char_c::char_c(inp_ab *func)
     speed_mult = 1.0;
     tengu_fan  = 0;
 
+    field_1BC = 1;
+    field_51E = 0;
+    field_575 = 0;
+    field_180 = 0;
+    field_51C = 0;
+
     h_inerc = 0;
     v_inerc = 0;
     v_force = 0;
+
+    field_348 = NULL;
 
     not_charge_attack = 1;
     air_dash_cnt = 0;
@@ -68,11 +76,13 @@ char_c::char_c(inp_ab *func)
     for (uint32_t i=0; i<MAX_CHR_SFX; i++)
         sfx[i] = NULL;
 
+    memset(atk_area_2o,0,sizeof(frame_box) * 15);
+    memset(hit_area_2o,0,sizeof(frame_box) * 5);
 }
 
 void char_c::set_seq(uint32_t idx)
 {
-    printf("%d\n",idx);
+   // printf("%d\n",idx);
     char_graph::set_seq(idx);
     set_seq_params();
 }
@@ -100,10 +110,17 @@ void char_c::draw()
     // gr_draw_box(x,-y-y_off,0,255,0,1);
 
 
-
-    char_frame *pf = get_pframe();
-
-    if (pf->box_atk.size() > 0)
+    for (int32_t i = 0; i<5; i++)
+    //if (atk_area_2o[i])
+    {
+        frame_box *bx = &hit_area_2o[i];
+        gr_draw_box(bx->x1,
+                        bx->y1,
+                        bx->x2-bx->x1,
+                        bx->y2-bx->y1,
+                        0,255,0,128,1);
+    }
+    /*if (pf->box_atk.size() > 0)
     {
         for (uint32_t i=0; i<pf->box_atk.size(); i++)
         {
@@ -113,7 +130,7 @@ void char_c::draw()
                         pf->box_atk[i].y2-pf->box_atk[i].y1,
                         0,255,0,128,1);
         }
-    }
+    }*/
 
 }
 

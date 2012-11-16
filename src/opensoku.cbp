@@ -89,6 +89,7 @@
 		<Unit filename="sfx.h" />
 		<Unit filename="utils.cpp" />
 		<Unit filename="utils.h" />
+		<Unit filename="unknown.cpp" />
 		<Extensions>
 			<envvars />
 			<code_completion />

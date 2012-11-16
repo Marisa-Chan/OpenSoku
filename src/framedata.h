@@ -71,6 +71,7 @@ struct char_frame
 	vector<frame_box> box_coll;
 	vector<frame_box> box_hit;
 	vector<frame_box> box_atk;
+	vector<frame_box *> box_unk_atk;
 
     uint16_t unk21[12];
     uint16_t unk22[3];

@@ -265,6 +265,9 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 uint8_t nb = 0;
                 f->read(1, &nb);
 
+                /*if (frm->aflags & 0x80000000)
+                    printf("!!!!\n");*/
+
                 for (uint32_t k = 0; k < nb; k++)
                 {
                     frame_box box;
@@ -307,11 +310,16 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                     f->read(1 , &s);
                     if (s) // not found in files
                     {
-                        f->read(4, &box.x1);
-                        f->read(4, &box.y1);
-                        f->read(4, &box.x2);
-                        f->read(4, &box.y2);
+                        frame_box *bx = new frame_box;
+                        f->read(4, &bx->x1);
+                        f->read(4, &bx->y1);
+                        f->read(4, &bx->x2);
+                        f->read(4, &bx->y2);
+                        frm->box_unk_atk.push_back(bx);
                     }
+                    else
+                        frm->box_unk_atk.push_back(NULL);
+
                 }
 
                 if (pat_version == 5)

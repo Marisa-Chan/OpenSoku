@@ -44,6 +44,7 @@ class c_scene
 
     char_c      *chrs[2];
     background  *bkg;
+    frame_box   ibox;  //box
 
     //c_scene();
 
