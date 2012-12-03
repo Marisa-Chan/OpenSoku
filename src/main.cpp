@@ -16,23 +16,65 @@
 
 
 
-int main()
+int main(int argc, char *argv[])
 {
     // Create the main window
 
-	// Start the game loop
-    arc_add_dat("th105a.dat");
-    arc_add_dat("th105b.dat");
-    arc_add_dat("th105c.dat");
-    arc_add_dat("th123a.dat");
-    arc_add_dat("th123b.dat");
-    arc_add_dat("th123c.dat");
+    //Nyan Shinki, nyan
+
+    FILE *dats = NULL;
+    const char *path = ".";
+    char buf[256];
+
+    if (argc == 2)
+    {
+        path = argv[1];
+        sprintf(buf,"%s/%s",path,"dat_files.txt");
+        dats = fopen(buf,"rb");
+    }
+
+    if (argc != 2 || !dats )
+        dats = fopen("dat_files.txt","rb");
+
+    if (!dats)
+    {
+        printf("No dat_files.txt found!\n");
+        exit(-1);
+    }
+
+
+    while(!feof(dats))
+    {
+        char rbuf[256];
+        fgets(rbuf,255,dats);
+
+        char *trimed = TrimRight(TrimLeft(rbuf));
+        if (strlen(trimed) > 0)
+        {
+            sprintf(buf,"%s/%s",path,trimed);
+
+            if (!arc_add_dat(buf))
+                if (!arc_add_dat(trimed))
+                    printf("Can't load %s, ignore.\n",trimed);
+        }
+    }
+
+    fclose(dats);
+
+
+    // Start the game loop
+    //arc_add_dat("th105a.dat");
+    //arc_add_dat("th105b.dat");
+    //arc_add_dat("th105c.dat");
+    //arc_add_dat("th123a.dat");
+    //arc_add_dat("th123b.dat");
+    //arc_add_dat("th123c.dat");
 
     gr_init(640,480,"OpenSoku");
     sfx_init();
     scene_load_sounds();
 
-   // playmusic();
+    // playmusic();
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
 

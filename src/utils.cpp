@@ -1,4 +1,6 @@
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 float atan2_deg(float h, float w)
@@ -211,5 +213,40 @@ void euler_mult(float x1, float y1, float z1, float x2, float y2, float z2, floa
         ry = y2;
         rz = z2;
     }
+}
+
+
+char * TrimLeft(char *buf)
+{
+    if (buf == NULL)
+        return NULL;
+
+    int len = strlen(buf);
+
+    char *str=buf;
+
+    for (int i=0; i<len; i++)
+        if (buf[i]!=0x20 && buf[i]!=0x09)
+        {
+            str=buf + i;
+            break;
+        }
+    return str;
+}
+
+char * TrimRight(char *buf)
+{
+    if (buf == NULL)
+        return NULL;
+    int len = strlen(buf);
+
+    char *str=buf;
+
+    for (int i=len-1; i>=0; i--)
+        if (buf[i]==0x20 || buf[i]==0x09 || buf[i]==0x0A || buf[i]==0x0D)
+            buf[i] = 0x0;
+        else
+            break;
+    return str;
 }
 

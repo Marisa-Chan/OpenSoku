@@ -1,0 +1,6 @@
+th105a.dat
+th105b.dat
+th105c.dat
+th123a.dat
+th123b.dat
+th123c.dat
