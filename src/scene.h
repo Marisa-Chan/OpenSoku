@@ -79,7 +79,7 @@ void char_xy_pos_calculation(char_c *chr);
 void scene_load_sounds();
 void scene_play_sfx(uint32_t idx);
 
-void scene_add_effect(char_c *chr, int32_t idx, float x, float y, int8_t dir, int8_t order);
+void scene_add_effect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order);
 c_scene_sp *scene_get_sp();
 
 

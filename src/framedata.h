@@ -155,10 +155,10 @@ class char_sprite
 
 typedef map<int32_t, seq *> mapseq;
 
-class char_graph : public moveable
+class char_graph
 {
     private:
-    int32_t index;
+
     protected:
 
     vector<gr_tex *> imgs;
@@ -168,37 +168,23 @@ class char_graph : public moveable
     bool load_pal_pal(const char *file, uint32_t *pal);
     //bool load_pal_bmp(const char *file, uint32_t *pal);
 
-    char_sprite sprite;
+
 
     public:
 
     bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
 
-    virtual void draw(float x, float y, uint8_t plane,int8_t direct);
-    virtual void draw(float x, float y, uint8_t plane, int8_t direct, float rotate);
+//    virtual void set_seq(uint32_t idx);
 
-    virtual void set_seq(uint32_t idx);
-    void reset_seq();
-    void set_frame(uint32_t frm);
-    bool next_frame(bool ignore_loop = false);
-    bool next_subseq();
-    bool set_subseq(uint32_t idx);
-    bool process(bool ignore_loop = false);
 
-    uint32_t get_subseq();
-    uint32_t get_frame();
-    uint32_t get_frame_time();
-    uint32_t get_elaps_frames();
-    char_frame * get_pframe();
-    uint32_t get_seq();
-    uint16_t get_cprior();
-    uint16_t get_prior();
+
+
     uint16_t get_cprior(uint32_t idx);
     uint16_t get_prior(uint32_t idx);
 
     seq *get_seq(uint32_t idx);
 
-    char_graph();
+    //char_graph();
   //  ~char_graph();
 };
 

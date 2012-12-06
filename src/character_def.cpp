@@ -9,6 +9,11 @@
 
 char_c::char_c(inp_ab *func)
 {
+    if (!pgp)
+        pgp = new char_graph;
+
+    chrt = this;
+
     input = func;
     x = 0;
     y = 0;
@@ -30,6 +35,8 @@ char_c::char_c(inp_ab *func)
     field_572 = 1;
     field_744 = 0;
     field_74C = 0;
+    field_4C2 = 0;
+    field_852 = 0;
 
     field_19C = 0;
     field_838 = 0;
@@ -47,6 +54,9 @@ char_c::char_c(inp_ab *func)
     field_7DC = 0;
     field_7F0 = 0;
 
+
+    field_180 = 1;
+
     field_190 = 1;
     //field_49A = 0;
     field_84C = 0;
@@ -57,10 +67,12 @@ char_c::char_c(inp_ab *func)
     tengu_fan  = 0;
 
     field_1BC = 1;
+    field_4BE = 0;
     field_51E = 0;
     field_575 = 0;
-    field_180 = 0;
     field_51C = 0;
+    field_520 = 0;
+    field_522 = 0;
 
     h_inerc = 0;
     v_inerc = 0;
@@ -82,8 +94,7 @@ char_c::char_c(inp_ab *func)
 
 void char_c::set_seq(uint32_t idx)
 {
-   // printf("%d\n",idx);
-    char_graph::set_seq(idx);
+    c_meta::set_seq(idx);
     set_seq_params();
 }
 
@@ -118,7 +129,7 @@ void char_c::draw()
                         bx->y1,
                         bx->x2-bx->x1,
                         bx->y2-bx->y1,
-                        0,255,0,128,1);
+                        0,255,0,60,1);
     }
     /*if (pf->box_atk.size() > 0)
     {

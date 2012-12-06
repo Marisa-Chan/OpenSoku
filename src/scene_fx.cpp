@@ -286,7 +286,7 @@ sc_seq * c_scene_sp::get_seq(uint32_t idx)
     return NULL;
 }
 
-void c_scene_sp::addeffect(char_c *chr, int32_t idx, float x, float y, int8_t dir, int8_t order)
+void c_scene_sp::addeffect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
     sc_seq *sq = get_seq(idx);
     if (sq)
@@ -324,7 +324,7 @@ void c_scene_sp::draw(int8_t order)
 
 
 
-c_scene_fx::c_scene_fx(int32_t idx, sc_seq *sq, char_c *chr, float _x, float _y, int8_t _dir, int8_t _order)
+c_scene_fx::c_scene_fx(int32_t idx, sc_seq *sq, c_meta *chr, float _x, float _y, int8_t _dir, int8_t _order)
 {
     index = idx;
     viz.set_seq(sq);

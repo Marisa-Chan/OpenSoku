@@ -9,14 +9,14 @@
 char_alice::char_alice(inp_ab *func):
     char_c::char_c(func)
 {
-    load_dat("alice",0);
+    pgp->load_dat("alice",0);
     char_loadsfx(this,"alice");
 };
 
 char_alice::char_alice(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
-    load_dat("alice",pal);
+    pgp->load_dat("alice",pal);
     char_loadsfx(this,"alice");
 };
 

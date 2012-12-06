@@ -159,7 +159,7 @@ bool sub_479420(c_scene *scn, frame_box *a1, frame_box *a2, frame_box *a3)
 }
 
 
-bool sub_479D50(c_scene *scn, char_c *p1, char_c *p2)
+bool sub_479D50(c_scene *scn, c_meta *p1, c_meta *p2)
 {
 
     char_frame *frm = p1->get_pframe();
@@ -190,9 +190,9 @@ bool sub_479D50(c_scene *scn, char_c *p1, char_c *p2)
                     frame_box *fb1 = &p1->hit_area_2o[i];
                     frame_box *fb2 = &p2->hit_area_2o[j];
 
-                    if ((fb2->x1 - fb1->x2) < 0 ||
-                            (fb1->x1 - fb2->x2) < 0 ||
-                            (fb1->y1 - fb2->y2) < 0 ||
+                    if ((fb2->x1 - fb1->x2) < 0 &&
+                            (fb1->x1 - fb2->x2) < 0 &&
+                            (fb1->y1 - fb2->y2) < 0 &&
                             (fb2->y1 - fb1->y2) < 0)
                     {
                         scene_set_ibox(scn, fb1, fb2);
@@ -305,7 +305,7 @@ bool sub_4699E0(char_c *chr)
     return chr->y > 0.0 /*&& !chr->field_4BA*/ && chr->get_seq() >= 50 && chr->get_seq() < 150;
 }
 
-bool sub_479650(c_scene *scn, char_c *p1, char_c *p2)
+bool sub_479650(c_scene *scn, c_meta *p1, c_meta *p2)
 {
     bool hit = false;
 
@@ -324,9 +324,9 @@ bool sub_479650(c_scene *scn, char_c *p1, char_c *p2)
                 frame_box *fb1 = &p1->atk_area_2o[i];
                 frame_box *fb2 = p2->field_348;
 
-                if ((fb2->x1 - fb1->x2) < 0 ||
-                        (fb1->x1 - fb2->x2) < 0 ||
-                        (fb1->y1 - fb2->y2) < 0 ||
+                if ((fb2->x1 - fb1->x2) < 0 &&
+                        (fb1->x1 - fb2->x2) < 0 &&
+                        (fb1->y1 - fb2->y2) < 0 &&
                         (fb2->y1 - fb1->y2) < 0)
                 {
                     scene_set_ibox(scn, fb1, fb2);
@@ -338,7 +338,7 @@ bool sub_479650(c_scene *scn, char_c *p1, char_c *p2)
     return hit;
 }
 
-bool sub_479BC0(c_scene *scn, char_c *p1, char_c *p2)
+bool sub_479BC0(c_scene *scn, c_meta *p1, c_meta *p2)
 {
 
     char_frame *frm = p1->get_pframe();
@@ -369,9 +369,9 @@ bool sub_479BC0(c_scene *scn, char_c *p1, char_c *p2)
                     frame_box *fb1 = &p1->atk_area_2o[i];
                     frame_box *fb2 = &p2->hit_area_2o[j];
 
-                    if ((fb2->x1 - fb1->x2) < 0 ||
-                            (fb1->x1 - fb2->x2) < 0 ||
-                            (fb1->y1 - fb2->y2) < 0 ||
+                    if ((fb2->x1 - fb1->x2) < 0 &&
+                            (fb1->x1 - fb2->x2) < 0 &&
+                            (fb1->y1 - fb2->y2) < 0 &&
                             (fb2->y1 - fb1->y2) < 0)
                     {
                         scene_set_ibox(scn, fb1, fb2);
@@ -394,7 +394,7 @@ void sub_479330(c_scene *scn)
 }
 
 
-bool sub_47ABE0(c_scene *scn, char_c *plr, char_c *enm)
+bool sub_47ABE0(c_scene *scn, c_meta *plr, c_meta *enm)
 {
     char_frame *frm = plr->get_pframe();
     char_frame *frm2 = enm->get_pframe();
@@ -428,12 +428,12 @@ void sub_479FF0(char_c *chr, int32_t a1, int32_t a2)
 }
 
 
-bool sub_47AAA0(c_scene *scn, char_c *plr, char_c *enm)
+bool sub_47AAA0(c_scene *scn, c_meta *plr, char_c *enm)
 {
     char_frame *frm = plr->get_pframe();
     char_frame *frm2 = enm->get_pframe();
 
-    if ( ((frm2->fflags & FF_GRAZE) == 0 && enm->field_522 == 0 ) || (frm->aflags & AF_UNK800000) == 0 )
+    if ( ((frm2->fflags & FF_GRAZE) == 0 && enm->field_522 == 0 ) || (frm->aflags & AF_UNK800000) != 0 )
         return false;
 
     if ( enm->field_56C == 0 )
@@ -441,7 +441,7 @@ bool sub_47AAA0(c_scene *scn, char_c *plr, char_c *enm)
         if ( (frm->aflags & AF_UNK400000) == 0 )
             return false;
 
-        if (frm->aflags & AF_UNK1000000)
+        if ((frm->aflags & AF_UNK1000000) == 0 )
         {
             if (enm->spell_energy > 4 )
                 sub_479FF0(enm, 4, 30);
@@ -743,7 +743,7 @@ bool sub_47AAA0(c_scene *scn, char_c *plr, char_c *enm)
 //}
 
 
-bool sub_47BD80(c_scene *scn, char_c *plr, char_c *enm)
+bool sub_47BD80(c_scene *scn, c_meta *plr, char_c *enm)
 {
     char_frame *frm = plr->get_pframe();
     char_frame *frm2 = enm->get_pframe();
@@ -778,6 +778,7 @@ bool sub_47BD80(c_scene *scn, char_c *plr, char_c *enm)
         if ( !sub_47AAA0(scn, plr, enm) )
         {
             printf("Hit\n");
+            plr->field_190 = 1;
 //            if ( !sub_47BBA0(scn, plr, enm) )
 //                sub_47A060(scn, plr, enm);
         }
@@ -788,10 +789,10 @@ bool sub_47BD80(c_scene *scn, char_c *plr, char_c *enm)
 
 
 
-void  sub_47BE70(c_scene *scn, char_c *plr, char_c *enm)
+void  sub_47BE70(c_scene *scn, c_meta *plr, char_c *enm)
 {
 
-    if ( plr->field_575 == 0 && enm->field_575 != 2 )
+    if ( plr->chrt->field_575 == 0 && enm->field_575 != 2 )
     {
         if ( !sub_4699E0(enm) && enm->field_4BE < 100 )
         {

@@ -9,7 +9,7 @@
 #include <math.h>
 
 
-vector<c_bullet *> bullst;
+bul_vec bullst;
 
 void addbullet(char_c *chr, c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num)
 {
@@ -44,14 +44,19 @@ void drawbullet(int8_t order)
             bullst[i]->draw(1);
 }
 
+bul_vec *getbulllist()
+{
+    return &bullst;
+}
 
 
 c_bullet::c_bullet()
 {
     field_194 = 0;
     active = true;
-    parent = NULL;
     bul_parent = NULL;
+    parent = NULL;
+    //pgp = _pgp;
 }
 
 c_bullet::~c_bullet()
@@ -62,8 +67,16 @@ c_bullet::~c_bullet()
 void c_bullet::init(char_c *_parent, c_bullet *bul, seq *sq, float _x, float _y, int8_t _dir, int8_t _order, float *addit, int8_t num)
 {
     parent = _parent;
+    chrt = parent;
+
     bul_parent = bul;
-    viz.set_seq(sq);
+
+    if (parent)
+        pgp = parent->pgp;
+    else if (bul_parent)
+        pgp = bul_parent->pgp;
+
+    sprite.set_seq(sq);
     x = _x;
     y = _y;
     dir = _dir;
@@ -87,21 +100,32 @@ void c_bullet::draw(int8_t plane)
 {
     if (active)
     {
-        viz.setXY(x,y);
-        viz.setColor(c_R,c_G,c_B,c_A);
+        sprite.setXY(x,y);
+        sprite.setColor(c_R,c_G,c_B,c_A);
 
 
-        viz.setRotate(angX,angY,angZ);
+        sprite.setRotate(angX,angY,angZ);
         if (scale_real)
-            viz.setAScale(dir*rs_w*scaleX,rs_h*scaleY);
+            sprite.setAScale(dir*rs_w*scaleX,rs_h*scaleY);
         else
-            viz.setScale(dir*scaleX,scaleY);
+            sprite.setScale(dir*scaleX,scaleY);
 
         // scale_real = false;
 
-        viz.draw(plane);
+        sprite.draw(plane);
+
+            for (int32_t i = 0; i<5; i++)
+    //if (atk_area_2o[i])
+    {
+        frame_box *bx = &atk_area_2o[i];
+        gr_draw_box(bx->x1,
+                        bx->y1,
+                        bx->x2-bx->x1,
+                        bx->y2-bx->y1,
+                        255,0,0,60,1);
+    }
         /*
-        char_frame *pf = viz.get_pframe();
+        char_frame *pf = sprite.get_pframe();
 
         if (pf->box_atk.size() > 0)
         {
@@ -159,7 +183,7 @@ bool c_bullet::sub_48C6A0(int32_t p1, int32_t p2, int32_t p3)
 
 void c_bullet::sub_48C4B0(float p1, float p2, float p3)
 {
-    moveable *enemy = parent->enemy;
+    c_meta *enemy = parent->enemy;
 
     float tmp = p1 - atan2(enemy->getY() + p3 - y, (enemy->getX() - x) * dir) * 180.0/3.1415926;
     int angl = (int)(tmp - addition[0]) % 360;

@@ -316,7 +316,7 @@ void scene_subfunc1(c_scene *scn)
 
 }
 
-void frame_box_fullflip(char_c *chr, frame_box *src, frame_box *dst)
+void frame_box_fullflip(c_meta *chr, frame_box *src, frame_box *dst)
 {
     if (chr->dir == 1)
     {
@@ -391,7 +391,7 @@ void frame_box_move_rotate(frame_box *src, int16_t angle, int16_t x_c, int16_t y
     }
 }
 
-void frame_box_flip(char_c *chr, frame_box *src, frame_box *dst)
+void frame_box_flip(c_meta *chr, frame_box *src, frame_box *dst)
 {
     if ( chr->dir == 1 )
     {
@@ -407,7 +407,7 @@ void frame_box_flip(char_c *chr, frame_box *src, frame_box *dst)
     dst->y2 = src->y2 - ceil(chr->y);
 }
 
-void scn_char_ss2(char_c *chr)
+void scn_char_ss2(c_meta *chr)
 {
 //    v1 = this;
 //    v2 = this->health;
@@ -608,7 +608,7 @@ void scn_char_ss2(char_c *chr)
 
 
 bool sub_479D50(c_scene *scn, char_c *p1, char_c *p2);
-void  sub_47BE70(c_scene *scn, char_c *plr, char_c *enm);
+void  sub_47BE70(c_scene *scn, c_meta *plr, char_c *enm);
 
 void scene_subfunc2(c_scene *scn)
 {
@@ -621,6 +621,15 @@ void scene_subfunc2(c_scene *scn)
     {
         sub_47BE70(scn,scn->chrs[i],scn->chrs[i]->enemy);
     }
+
+    bul_vec * blst = getbulllist();
+    for(int32_t i=blst->size()-1; i>=0; i--)
+    {
+        scn_char_ss2((*blst)[i]);
+        sub_47BE70(scn,(*blst)[i],scn->chrs[1]);
+    }
+
+    //sub_47BE70(scn,scn->chrs[0],scn->chrs[0]->enemy);
     //sub_47C180(scn);
     //sub_47C430(a1);
     /*v55 = v73;
@@ -893,7 +902,7 @@ c_scene_sp *scene_get_sp()
     return &img_sp;
 }
 
-void scene_add_effect(char_c *chr, int32_t idx, float x, float y, int8_t dir, int8_t order)
+void scene_add_effect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
     img_sp.addeffect(chr, idx,x,y,dir, order);
 }

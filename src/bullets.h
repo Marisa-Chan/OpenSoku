@@ -3,15 +3,14 @@
 
 class char_c;
 
-class c_bullet : public moveable
+class c_bullet : public c_meta
 {
     friend void updatebullet();
     friend void drawbullet(int8_t order);
 
     protected:
-    char_sprite viz;
-    char_c  *parent;
     c_bullet *bul_parent;
+    char_c *parent;
 
     int8_t order;
 
@@ -27,8 +26,7 @@ class c_bullet : public moveable
     void sub_48C4B0(float p1, float p2, float p3);
 
 
-    int8_t field_194;
-    int32_t field_190;
+
     int16_t field_36C;
     int16_t field_370;
     int16_t field_378;
@@ -52,6 +50,9 @@ class c_bullet : public moveable
 void addbullet(char_c *chr,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num);
 void updatebullet();
 void drawbullet(int8_t order);
+
+typedef vector<c_bullet *> bul_vec;
+bul_vec *getbulllist();
 
 #include "chars/marisa_bullets.h"
 

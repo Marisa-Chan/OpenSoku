@@ -10,14 +10,14 @@
 char_marisa::char_marisa(inp_ab *func):
     char_c::char_c(func)
 {
-    load_dat("marisa",0);
+    pgp->load_dat("marisa",0);
     char_loadsfx(this,"marisa");
 };
 
 char_marisa::char_marisa(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
-    load_dat("marisa",pal);
+    pgp->load_dat("marisa",pal);
     char_loadsfx(this,"marisa");
 };
 

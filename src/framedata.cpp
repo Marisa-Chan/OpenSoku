@@ -379,21 +379,21 @@ bool char_graph::load_pal_pal(const char *file,uint32_t *pal)
     return false;
 }
 
-char_graph::char_graph()
-{
-    index = -1;
-}
+//char_graph::char_graph()
+//{
+//    index = -1;
+//}
 
-void char_graph::set_seq(uint32_t idx)
-{
-    mapseq::iterator tmp = seqs.find(idx);
-    if (tmp != seqs.end())
-    {
-        index = idx;
-       sprite.set_seq(tmp->second);
-    }
-
-}
+//void char_graph::set_seq(uint32_t idx)
+//{
+//    mapseq::iterator tmp = seqs.find(idx);
+//    if (tmp != seqs.end())
+//    {
+//        index = idx;
+//       sprite.set_seq(tmp->second);
+//    }
+//
+//}
 
 seq *char_graph::get_seq(uint32_t idx)
 {
@@ -402,101 +402,6 @@ seq *char_graph::get_seq(uint32_t idx)
        return(tmp->second);
 
     return NULL;
-}
-
-bool char_graph::process(bool ignore_loop)
-{
-    return sprite.process(ignore_loop);
-}
-
-bool char_graph::next_frame(bool ignore_loop)
-{
-    return sprite.next_frame(ignore_loop);
-}
-
-bool char_graph::next_subseq()
-{
-    return sprite.next_subseq();
-}
-
-bool char_graph::set_subseq(uint32_t idx)
-{
-    return sprite.set_subseq(idx);
-}
-
-void char_graph::reset_seq()
-{
-    sprite.reset_seq();
-}
-
-void char_graph::set_frame(uint32_t frm)
-{
-    sprite.set_frame(frm);
-}
-
-
-
-void char_graph::draw(float x, float y, uint8_t plane, int8_t direct)
-{
-    sprite.setScale(direct*1.0,1);
-    sprite.setXY(x,y);
-    sprite.setOrigin(x_off,y_off);
-    sprite.draw(plane);
-}
-
-void char_graph::draw(float x, float y, uint8_t plane, int8_t direct, float rotate)
-{
-   // if (rotate < -90 || rotate > 90)
-   // {
-   //     sprite.setRotate(180-rotate);
-   //     sprite.setScale(direct*1.0,1);
-    //}
-   // else
-   // {
-        //sprite.setRotate(rotate);
-        sprite.setRotate(rotate);
-        sprite.setScale(direct*1.0,1);
-   // }
-
-    sprite.setXY(x,y);
-    sprite.setOrigin(x_off,y_off);
-    sprite.draw(plane);
-}
-
-uint32_t char_graph::get_subseq()
-{
-    return sprite.get_subseq();
-}
-uint32_t char_graph::get_frame()
-{
-    return sprite.get_frame();
-}
-uint32_t char_graph::get_frame_time()
-{
-    return sprite.get_frame_time();
-}
-uint32_t char_graph::get_elaps_frames()
-{
-    return sprite.get_elaps_frames();
-}
-
-char_frame * char_graph::get_pframe()
-{
-    return sprite.get_pframe();
-}
-
-uint32_t char_graph::get_seq()
-{
-    return index;
-}
-
-uint16_t char_graph::get_prior()
-{
-    return sprite.get_prior();
-}
-uint16_t char_graph::get_cprior()
-{
-    return sprite.get_cprior();
 }
 
 uint16_t char_graph::get_prior(uint32_t idx)

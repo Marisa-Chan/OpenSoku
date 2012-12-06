@@ -11,6 +11,7 @@
 #include "graph.h"
 #include "sfx.h"
 #include "moveable.h"
+#include "meta.h"
 
 #define CHRBUF 256
 
