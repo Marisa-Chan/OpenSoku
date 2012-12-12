@@ -59,8 +59,8 @@ struct char_frame
 	uint16_t card_energy2;
 	uint16_t fall_seq;
 	uint16_t fall_seq2;
-	int16_t  velocity_x;
-	int16_t  velocity_y;
+	float  velocity_x;
+	float  velocity_y;
 	uint16_t hit_sfx;
 	uint16_t unk19;
 	int16_t  attack_type;

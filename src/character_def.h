@@ -22,8 +22,9 @@ class char_c : public c_meta
     float   field_1A4;
     float   field_1A8;
 
-    int16_t hit_stop;
     int16_t field_4A8;
+    int16_t field_4BA;
+    int16_t field_4BC;
     int16_t field_4BE;
     int16_t field_4C0;
     int8_t  field_4C4;
@@ -50,6 +51,7 @@ class char_c : public c_meta
     int8_t  field_18C;
     int32_t field_198;
     float   field_19C;
+    int16_t field_4A6;
     int16_t field_4AA;
     int16_t field_4AC;
     int16_t field_4C2;
@@ -83,6 +85,7 @@ class char_c : public c_meta
     int8_t  field_570;
     int8_t  field_574;
     int8_t  field_577;
+    int32_t field_710;
     int16_t field_7D0;
     int16_t field_7D2;
     int16_t field_7D4;
@@ -113,6 +116,7 @@ class char_c : public c_meta
     int16_t field_84E;
     int16_t field_850;
     int16_t field_852;
+    int16_t field_882;
     int16_t field_892;
     int16_t field_890;
     int16_t weather;        //Must be global var
@@ -127,7 +131,19 @@ class char_c : public c_meta
 
     int16_t field_4C6;
     int16_t field_51E;
-    int16_t field_575;
+    int8_t field_575;
+    int8_t field_576;
+    int8_t field_880;
+
+    int16_t x_delta; //x_offset
+    int16_t y_delta; //y_offset
+
+    int16_t health_prev;
+    int16_t combo_count;
+    float combo_rate;
+    int16_t combo_damage;
+    int16_t combo_limit;
+    int16_t correction;
 
 
 
@@ -140,8 +156,7 @@ class char_c : public c_meta
     int8_t  air_dash_cnt;
 
 
-    int16_t health;
-    int16_t max_health;
+
     int16_t SP;
 
     float   speed_mult;

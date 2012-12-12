@@ -253,8 +253,15 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 f->read(2, &frm->card_energy2);
                 f->read(2, &frm->fall_seq);
                 f->read(2, &frm->fall_seq2);
-                f->read(2, &frm->velocity_x);
-                f->read(2, &frm->velocity_y);
+
+                int16_t tvel = 0;
+
+                f->read(2, &tvel);
+                frm->velocity_x = tvel/ 100.0;
+
+                f->read(2, &tvel);
+                frm->velocity_y = tvel / 100.0;
+
                 f->read(2, &frm->hit_sfx); //global sound, played then hit
                 f->read(2, &frm->unk19);
                 f->read(2, &frm->attack_type);

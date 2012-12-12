@@ -22,10 +22,13 @@ char_marisa::char_marisa(inp_ab *func, uint8_t pal):
 };
 
 
-
-
 void char_marisa::func10()
 {
+    x_delta = 0;
+    y_delta = 106;
+
+    if ( hit_stop != 0 /*|| enemy->time_stop != 0 */)
+    return;
 
     int32_t sq = get_seq();
 
@@ -501,9 +504,9 @@ void char_marisa::func10()
                     angZ = -dash_angle;
 
 
-                      if ( h_inerc < 0.0 )
-                       // angZ = 180 -angZ;
-                       angZ = 180.0 + dash_angle;
+                    if ( h_inerc < 0.0 )
+                        // angZ = 180 -angZ;
+                        angZ = 180.0 + dash_angle;
 
                     if ( h_inerc < 0.0 )
                         if ( get_subseq() == 1 )
@@ -617,6 +620,7 @@ void char_marisa::func10()
 
         if ( process())
             set_seq(0);
+
         if ( get_frame_time() == 0 && get_frame() == 4 )
         {
             scene_play_sfx(27);
@@ -1922,7 +1926,7 @@ void char_marisa::func10()
 
     break;
     default:
-        process();
+        char_c::func10();
     }
 }
 
@@ -1975,6 +1979,7 @@ void char_marisa::func20()
                     return;
             }
         }
+
         if ( field_84C == 0 && cc )
         {
 
@@ -2077,7 +2082,7 @@ void char_marisa::func20()
                         }
                     }
                 }
-                else if (field_190 != 0 && field_190 != 3) // In Air (Melee)
+                else if ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) // In Air (Melee)
                 {
 
                     if ( input->gY() > 0 && input->gX(dir) == 0 && cprior <= get_prior(309) ) //j8A
@@ -3384,8 +3389,19 @@ void char_marisa::set_seq_params()
         x_off = 0;
         y_off = 95;
         break;
+    case 300:
+    case 301:
+    case 303:
+    case 321:
+    case 322:
+    case 330:
+        if ( field_49A == 0)
+            reset_forces();
+        field_190 = 0;
+        field_194 = 1;
+        break;
     case 302:
-        if ( !field_49A )
+        if ( field_49A == 0)
             reset_forces();
         field_190 = 0;
         field_49A = 0;
@@ -3421,7 +3437,7 @@ void char_marisa::set_seq_params()
         break;
     case 320:
         field_49A = 0;
-        //field_190 = 0;
+        field_190 = 0;
         field_194 = 1;
         break;
     case 400:

@@ -7,6 +7,19 @@
 #include "marisa_bullets.h"
 #include <math.h>
 
+bool sub_48C5F0(c_bullet *blt, int32_t a2)
+{
+  if ( blt->field_190 == 6 )
+  {
+      blt->field_394++;
+      if (a2 > 0 && blt->field_394 >= a2)
+        return true;
+
+        blt->field_194++;
+        blt->field_190 = 0;
+  }
+  return false;
+}
 
 void marisa_bullets::func10()
 {
@@ -191,7 +204,7 @@ void marisa_bullets::func10()
                 break;
             }
 
-            //sub_48C5F0(v1, 0);
+            sub_48C5F0(this, 0);
             if ( sprite.get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
                 parent->play_sfx(3);
@@ -249,7 +262,7 @@ void marisa_bullets::func10()
                 break;
             }
 
-            //sub_48C5F0(v1, 0);
+            sub_48C5F0(this, 0);
             if ( sprite.get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
                 parent->play_sfx(3);
@@ -276,7 +289,7 @@ void marisa_bullets::func10()
             x += h_inerc*dir;
             y += v_inerc;
         }
-        else if (sprite.get_subseq() == 2)
+        else if (sprite.get_subseq() == 2) //tail
         {
             scaleX += 0.1;
             scaleY += 0.1;
@@ -312,7 +325,7 @@ void marisa_bullets::func10()
             }
             else
             {
-                //sub_48C5F0(a1, 0);
+                sub_48C5F0(this, 0);
 
                 if ( field_190 != 0 )
                 {
@@ -355,7 +368,7 @@ void marisa_bullets::func10()
             }
             else
             {
-                //sub_48C5F0(a1, 0);
+                sub_48C5F0(this, 0);
 
                 if ( field_190 != 0 )
                 {

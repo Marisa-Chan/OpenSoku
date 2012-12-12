@@ -153,7 +153,6 @@ void c_scene::draw_scene()
 
     img_sp.draw(1);
     drawbullet(1);
-
 }
 
 void c_scene::update_char_anims()
@@ -226,7 +225,7 @@ bool char_on_ground_down(char_c *chr)
 {
     return getlvl_height(chr) >= chr->y &&
            chr->v_inerc < 0 /*&&
-            !chr->field_4C4*/;
+            chr->field_4C4 == 0*/;
 }
 
 
@@ -288,8 +287,9 @@ void scene_subfunc1(c_scene *scn)
 
     for (uint32_t i=0; i < 2; i++)
     {
-        if ( !scn->chrs[i]->hit_stop )
+        if ( scn->chrs[i]->hit_stop == 0 )
         {
+
             if ( !scn->chrs[i]->enemy->field_4A8 )
             {
                 if ( char_idle_or_move(scn->chrs[i]) )
@@ -423,6 +423,14 @@ void scn_char_ss2(c_meta *chr)
 //    v7 = v1->current_seq_frames_vector;
 //    v1->field_1CA = v3;
 //    v1->field_1C4 = v7;
+
+    //chr->field_1B8 = chr->
+
+    chr->field_1B4 = chr->health;
+    chr->field_1B8 = chr->field_190;
+    chr->field_1BC = chr->field_194;
+    chr->field_1C8 = chr->get_seq();
+    chr->field_1CA = chr->dir;
 
     char_frame *frm = chr->get_pframe();
 
@@ -619,6 +627,7 @@ void scene_subfunc2(c_scene *scn)
 
     for(int32_t i=0; i < 2; i++)
     {
+        if (scn->chrs[i]->field_190 == 0 && scn->chrs[i]->field_194 > 0)
         sub_47BE70(scn,scn->chrs[i],scn->chrs[i]->enemy);
     }
 
@@ -626,6 +635,7 @@ void scene_subfunc2(c_scene *scn)
     for(int32_t i=blst->size()-1; i>=0; i--)
     {
         scn_char_ss2((*blst)[i]);
+        if ((*blst)[i]->field_190 == 0 && (*blst)[i]->field_194 > 0)
         sub_47BE70(scn,(*blst)[i],scn->chrs[1]);
     }
 
@@ -847,10 +857,101 @@ void scene_check_collisions(c_scene *scn)
     }
 }
 
+void sub_469A20(char_c *chr)
+{
+  if ( chr->time_stop )
+    chr->time_stop--;
+
+  if ( chr->field_4A6 )
+  {
+    chr->time_stop = chr->field_4A6;
+    chr->field_4A6 = 0;
+  }
+
+  chr->field_74C = 0.0;
+  chr->field_564 = 1.0;
+  chr->field_568 = 1.0;
+
+  if ( chr->health < 0 )
+    chr->health = 0;
+
+  if ( chr->health_prev < 0 )
+    chr->health_prev = 0;
+
+  if ( chr->health > chr->max_health )
+    chr->health = chr->max_health;
+
+  if ( !char_is_shock(chr) )
+    chr->health_prev = chr->health;
+
+  //sub_46E450((int)&v6->field_3EC);
+
+  if ( chr->field_710 > 0 )
+    chr->field_710--;
+
+  if ( chr->field_526 )
+  {
+    chr->weather_var = 21;
+  }
+  else
+  {
+   // chr->weather_var = weather;
+  }
+  /*result = (int)&v13->field_6A4;
+  if ( v13->field_56E )
+  {
+    v2 = 32;
+    do
+    {
+      v3 = (*(_BYTE *)(result++ + 32) < 0) - 1;
+      --v2;
+      *(_BYTE *)(result - 1) = v3 & 4;
+    }
+    while ( v2 );
+  }
+  else
+  {
+    v4 = 32;
+    do
+    {
+      v5 = *(_BYTE *)(result + 32);
+      LOBYTE(v11) = ((char)v5 < 0) - 1;
+      ++result;
+      v11 &= v5;
+      --v4;
+      *(_BYTE *)(result - 1) = v11;
+    }
+    while ( v4 );
+  }*/
+}
+
+void char_stats_check(char_c *chr)
+{
+    //sub_469B10
+
+    char_c *enm = chr->enemy;
+
+       if ( enm->time_stop == 0 )
+  {
+    if ( chr->hit_stop != 0 )
+    {
+      chr->hit_stop--;
+      return;
+    }
+  }
+}
+
+
 void scene_subfunc4(c_scene *scn)
 {
     for (uint32_t i=0; i < 2; i++)
         char_xy_pos_calculation(scn->chrs[i]);
+
+    for (uint32_t i=0; i < 2; i++)
+        sub_469A20(scn->chrs[i]);
+
+    for (uint32_t i=0; i < 2; i++)
+        char_stats_check(scn->chrs[i]);
 }
 
 void scene_subfunc5(c_scene *scn)

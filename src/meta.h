@@ -113,7 +113,18 @@ class c_meta : public moveable
     int16_t field_180;
     int32_t field_190;
     int8_t  field_194;
+    int16_t hit_stop;
+    int16_t field_1A2;
+    int16_t field_1B4;
+    int8_t  field_1B8;
     int16_t field_1BC;
+    int16_t field_394;
+
+    int16_t field_1C8;
+    int8_t  field_1CA;
+
+    int16_t health;
+    int16_t max_health;
 
     char_c *enemy;
     char_c *chrt;  //for char classes - it's self, for bullets - char caster

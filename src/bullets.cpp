@@ -68,6 +68,7 @@ void c_bullet::init(char_c *_parent, c_bullet *bul, seq *sq, float _x, float _y,
 {
     parent = _parent;
     chrt = parent;
+    enemy = chrt->enemy;
 
     bul_parent = bul;
 

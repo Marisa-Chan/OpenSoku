@@ -23,6 +23,12 @@ char_alice::char_alice(inp_ab *func, uint8_t pal):
 
 void char_alice::func10()
 {
+    x_delta = 0;
+    y_delta = 100;
+
+
+    if ( hit_stop != 0 /*|| enemy->time_stop != 0 */)
+        return;
 
     int32_t sq = get_seq();
 
@@ -186,8 +192,36 @@ void char_alice::func10()
                 set_seq(0);
         }
         break;
+    case 199:
+        sub10func(this);
+        if ( process() )
+        {
+
+            /*if ( LOBYTE(v2->controlling_type) == 2 )
+            {
+                set_seq(700);
+
+                field_51C = 3;
+                field_520 = 3;
+            }
+            else*/
+            {
+                set_seq(0);
+                if ( gY() < 0)
+                    set_seq(1);
+            }
+        }
+        else if ( get_frame_time() == 0  && get_frame() == 5)
+            {
+                if (enemy->x < x)
+                    dir = -1;
+                else
+                    dir = 1;
+            }
+        break;
+
     default:
-        process();
+        char_c::func10();
     }
 }
 
