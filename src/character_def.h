@@ -3,6 +3,8 @@
 
 #define MAX_CHR_SFX     0x100
 
+#include "bullets.h"
+
 class c_bullet;
 
 class char_c : public c_meta
@@ -10,8 +12,11 @@ class char_c : public c_meta
     protected:
 
     inp_ab      *input;
+    bullist     bullets;
 
     public:
+
+        int8_t input_function;//HACK
 
 
 
@@ -19,10 +24,6 @@ class char_c : public c_meta
 
     char_c(inp_ab *func);
 
-    float   field_1A4;
-    float   field_1A8;
-
-    int16_t field_4A8;
     int16_t field_4BA;
     int16_t field_4BC;
     int16_t field_4BE;
@@ -51,6 +52,8 @@ class char_c : public c_meta
     int8_t  field_18C;
     int32_t field_198;
     float   field_19C;
+    int8_t  field_49D;
+    int16_t field_4A4;
     int16_t field_4A6;
     int16_t field_4AA;
     int16_t field_4AC;
@@ -76,8 +79,9 @@ class char_c : public c_meta
     int32_t field_548;
     int32_t field_54C;
     int32_t field_550;
-    int32_t field_554;
+    float   field_554;
     int32_t field_558;
+    int16_t field_560;
     int8_t  field_56C;
     int8_t  field_56D;
     int8_t  field_56E;
@@ -85,7 +89,11 @@ class char_c : public c_meta
     int8_t  field_570;
     int8_t  field_574;
     int8_t  field_577;
+    int8_t  field_578;
+    int32_t field_6EC;
+    int8_t  cards_added;    // 0x5E6
     int32_t field_710;
+    int16_t field_740;
     int16_t field_7D0;
     int16_t field_7D2;
     int16_t field_7D4;
@@ -167,6 +175,7 @@ class char_c : public c_meta
     uint32_t pres_move;
 
 
+    bullist *get_bullets();
 
     void set_seq(uint32_t idx);
 
@@ -199,12 +208,18 @@ class char_c : public c_meta
     bool keyHit(inp_keys key);
     int8_t gX(int8_t dir);
     int8_t gY();
+    void   setgX(int8_t dir);
+    void   setgY(int8_t dir);
 };
+
+typedef list<char_c *> charlist;
+typedef list<char_c *>::iterator charlist_iter;
 
 
 
 bool char_idle_or_move(char_c *chr);
 bool char_is_shock(char_c *chr);
+bool char_is_block_knock(char_c *chr);
 void char_h_move(char_c *chr, float move);
 bool sub10func(char_c *chr);
 void char_loadsfx(char_c *chr, const char *name);

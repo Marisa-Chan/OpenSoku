@@ -133,6 +133,8 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     chrs[0]->player_index = 0;
     chrs[1]->player_index = 1;
 
+    chrs[1]->controlling_type = 3;
+
     set_camera(chrs[0],chrs[1]);
     init_scene_height();
 
@@ -152,7 +154,9 @@ void c_scene::draw_scene()
         chrs[i]->draw();
 
     img_sp.draw(1);
-    drawbullet(1);
+
+    for (uint32_t i=0; i < 2; i++)
+        drawbullet(chrs[i],1);
 }
 
 void c_scene::update_char_anims()
@@ -236,7 +240,7 @@ void char_xy_pos_calculation(char_c *chr)
 
     if ( !chr->hit_stop )
     {
-        if ( !enemy->field_4A8 )
+        if ( !enemy->time_stop )
         {
             if ( chr->field_571 )
             {
@@ -277,20 +281,22 @@ void scene_subfunc1(c_scene *scn)
     for (uint32_t i=0; i < 2; i++)
         scn->chrs[i]->func16();
 
+    //HACK NOT NEEDED
     //for (uint32_t i=0; i < 2; i++)
-    //scn->chrs[i]->smclass2->func3();
-
-    updatebullet();
+    //scn->chrs[i]->bullets_func16;
 
     for (uint32_t i=0; i < 2; i++)
+    {
         scn->chrs[i]->func10();
+    }
+
 
     for (uint32_t i=0; i < 2; i++)
     {
         if ( scn->chrs[i]->hit_stop == 0 )
         {
 
-            if ( !scn->chrs[i]->enemy->field_4A8 )
+            if ( !scn->chrs[i]->enemy->time_stop )
             {
                 if ( char_idle_or_move(scn->chrs[i]) )
                 {
@@ -300,20 +306,50 @@ void scene_subfunc1(c_scene *scn)
                 }
                 /*if (char_is_shock(scn->chrs[i]))
                     if ( scn->chrs[i]->y > 0.0 )
-                        sub_462FF0(scn->chrs[i]);*/
+                        sub_462FF0(scn->chrs[i]);*/ //HACK
             }
             if ( scn->chrs[i]->get_seq() < 300 )
             {
                 //if ( v1->some_input_var <= 6 )
-                //zero_input_charclass_ispressed_vars(v1);
+                //zero_input_charclass_ispressed_vars(v1); //HACK
             }
             scn->chrs[i]->func20();
         }
     }
 
-    //for (uint32_t i=0; i < 2; i++)
-    //scn->chrs[i]->smclass2->func4();
+    for (uint32_t i=0; i < 2; i++)
+    {
+        if (!scn->chrs[i]->enemy->time_stop)
+        {
+            bullist *lst = scn->chrs[i]->get_bullets();
+            bullist_iter iter = lst->begin();
 
+            while(iter != lst->end())
+            {
+                c_bullet *blt = *iter;
+
+                if ( !blt->chrt->time_stop || blt->field_360)
+                {
+                    if (blt->hit_stop)
+                        blt->hit_stop--;
+                    else
+                    {
+                        blt->func10();
+                        /*if (blt->field_354)
+                          sub_4335A0(blt->field_354);*/ //HACK
+                    }
+                }
+
+                if (blt->active)
+                    iter++;
+                else
+                {
+                    delete blt;
+                    iter = lst->erase(iter);
+                }
+            }
+        }
+    }
 }
 
 void frame_box_fullflip(c_meta *chr, frame_box *src, frame_box *dst)
@@ -433,6 +469,9 @@ void scn_char_ss2(c_meta *chr)
     chr->field_1CA = chr->dir;
 
     char_frame *frm = chr->get_pframe();
+
+    chr->atk_box_cnt = frm->box_atk.size();
+    chr->hit_box_cnt = frm->box_hit.size();
 
     for(uint32_t i=0; i<frm->box_unk_atk.size(); i++)
     {
@@ -615,55 +654,120 @@ void scn_char_ss2(c_meta *chr)
 }
 
 
-bool sub_479D50(c_scene *scn, char_c *p1, char_c *p2);
 void  sub_47BE70(c_scene *scn, c_meta *plr, char_c *enm);
+
+void sub_47C180(c_scene *scn);
+void sub_47C430(c_scene *scn);
+void sub_4689D0(char_c *, int32_t)
+{
+    //HACK
+}
 
 void scene_subfunc2(c_scene *scn)
 {
     for(int32_t i=0; i < 2; i++)
     {
+        scn->list1[i].clear();
+        scn->list2[i].clear();
+        scn->list3[i].clear();
+    }
+
+    for(int32_t i=0; i < 2; i++)
+    {
         scn_char_ss2(scn->chrs[i]);
-    }
+        scn->chrs[i]->field_575 = scn->chrs[i]->field_574;
 
-    for(int32_t i=0; i < 2; i++)
-    {
-        if (scn->chrs[i]->field_190 == 0 && scn->chrs[i]->field_194 > 0)
-        sub_47BE70(scn,scn->chrs[i],scn->chrs[i]->enemy);
-    }
-
-    bul_vec * blst = getbulllist();
-    for(int32_t i=blst->size()-1; i>=0; i--)
-    {
-        scn_char_ss2((*blst)[i]);
-        if ((*blst)[i]->field_190 == 0 && (*blst)[i]->field_194 > 0)
-        sub_47BE70(scn,(*blst)[i],scn->chrs[1]);
-    }
-
-    //sub_47BE70(scn,scn->chrs[0],scn->chrs[0]->enemy);
-    //sub_47C180(scn);
-    //sub_47C430(a1);
-    /*v55 = v73;
-    v56 = &a1->field_2C[0].list;
-    for(int32_t i=0; i < 2; i++)
-    {
-        v57 = *v55;
-        v58 = (*v55)->enemy;
-        v59 = **v56;
-        v77 = *v56;
-        while ( v59 != v77 )
+        bullist *blst = scn->chrs[i]->get_bullets();
+        for(bullist_iter i = blst->begin(); i != blst->end(); i++)
         {
-            sub_47BE70(a1, v59->bullet, v58);
-            v57 = v59->bullet->field_1C0;
-            if ( v57->aflags & AF_HITSALL )
+            c_bullet *bul = *i;
+
+            int32_t plindex = bul->chrt->player_index;
+
+            char_frame *frm = bul->get_pframe();
+
+            int32_t atk_sz = frm->box_atk.size();
+            int32_t hit_sz = frm->box_hit.size();
+
+            if (bul->cust_box)
             {
-                sub_47BE70(a1, v59->bullet, *v55);
+                atk_sz++;
+                if (frm->fflags & FF_ATK_AS_HIT)
+                    hit_sz++;
             }
-            v59 = v59->next_bullet;
+
+            if (!bul->parent_mlist)
+            {
+                if (atk_sz && bul->field_190 == 0 && bul->field_194 > 0)
+                {
+                    scn_char_ss2(bul);
+
+                    scn->list1[plindex].push_back(bul);
+
+                    if (hit_sz)
+                        scn->list2[plindex].push_back(bul);
+
+                    scn->list3[plindex].push_back(bul);
+                }
+                else if (hit_sz)
+                {
+                    scn_char_ss2(bul);
+
+                    scn->list2[plindex].push_back(bul);
+
+                    scn->list3[plindex].push_back(bul);
+                }
+            }
+            else if ( hit_sz )
+            {
+                scn->list2[plindex].push_back(bul);
+            }
         }
-        ++v55;
-        v56 += 3;
-        --v75;
-    }*/
+    }
+
+    for(int32_t i=0; i < 2; i++)
+    {
+        if (scn->chrs[i]->atk_box_cnt)
+            if (scn->chrs[i]->field_190 == 0 && scn->chrs[i]->field_194 > 0)
+            {
+                scn->list1[i].push_back(scn->chrs[i]);
+                scn->list3[i].push_back(scn->chrs[i]);
+            }
+    }
+
+    sub_47C180(scn);
+    sub_47C430(scn);
+
+    for(int32_t i=0; i < 2; i++)
+    {
+        char_c *enm = scn->chrs[i]->enemy;
+
+        metalst *lst = &scn->list1[i];
+
+        for(metalst_iter mt = lst->begin(); mt != lst->end(); mt++)
+        {
+            c_meta *meta = *mt;
+
+            sub_47BE70(scn,meta,enm);
+
+            if (meta->get_pframe()->aflags & AF_HITSALL)
+                sub_47BE70(scn,meta,enm);
+        }
+    }
+
+    for(int32_t i=0; i < 2; i++)
+    {
+        if (!scn->chrs[i]->field_574)
+        {
+            scn->chrs[i]->health += scn->scn_p1[i];
+            if (scn->chrs[i]->health >= scn->chrs[i]->max_health)
+                scn->chrs[i]->health = scn->chrs[i]->max_health;
+            else if (scn->chrs[i]->health <= 1)
+                scn->chrs[i]->health = 1;
+        }
+        if (scn->scn_p2[i] < 0)
+            sub_4689D0(scn->chrs[i], -scn->scn_p2[i]);
+    }
 }
 
 
@@ -749,7 +853,7 @@ void scene_check_collisions(c_scene *scn)
 
     if ( !scene_collid(scn, &p1_box, &p2_box) )
         return;
-//    sub_479330(v1);
+//    reset_ibox(v1);
 
 
 
@@ -859,86 +963,248 @@ void scene_check_collisions(c_scene *scn)
 
 void sub_469A20(char_c *chr)
 {
-  if ( chr->time_stop )
-    chr->time_stop--;
+    if ( chr->time_stop )
+        chr->time_stop--;
 
-  if ( chr->field_4A6 )
-  {
-    chr->time_stop = chr->field_4A6;
-    chr->field_4A6 = 0;
-  }
-
-  chr->field_74C = 0.0;
-  chr->field_564 = 1.0;
-  chr->field_568 = 1.0;
-
-  if ( chr->health < 0 )
-    chr->health = 0;
-
-  if ( chr->health_prev < 0 )
-    chr->health_prev = 0;
-
-  if ( chr->health > chr->max_health )
-    chr->health = chr->max_health;
-
-  if ( !char_is_shock(chr) )
-    chr->health_prev = chr->health;
-
-  //sub_46E450((int)&v6->field_3EC);
-
-  if ( chr->field_710 > 0 )
-    chr->field_710--;
-
-  if ( chr->field_526 )
-  {
-    chr->weather_var = 21;
-  }
-  else
-  {
-   // chr->weather_var = weather;
-  }
-  /*result = (int)&v13->field_6A4;
-  if ( v13->field_56E )
-  {
-    v2 = 32;
-    do
+    if ( chr->field_4A6 )
     {
-      v3 = (*(_BYTE *)(result++ + 32) < 0) - 1;
-      --v2;
-      *(_BYTE *)(result - 1) = v3 & 4;
+        chr->time_stop = chr->field_4A6;
+        chr->field_4A6 = 0;
     }
-    while ( v2 );
-  }
-  else
-  {
-    v4 = 32;
-    do
+
+    chr->field_74C = 0.0;
+    chr->field_564 = 1.0;
+    chr->field_568 = 1.0;
+
+    if ( chr->health < 0 )
+        chr->health = 0;
+
+    if ( chr->health_prev < 0 )
+        chr->health_prev = 0;
+
+    if ( chr->health > chr->max_health )
+        chr->health = chr->max_health;
+
+    if ( !char_is_shock(chr) )
+        chr->health_prev = chr->health;
+
+    //sub_46E450((int)&v6->field_3EC);
+
+    if ( chr->field_710 > 0 )
+        chr->field_710--;
+
+    if ( chr->field_526 )
     {
-      v5 = *(_BYTE *)(result + 32);
-      LOBYTE(v11) = ((char)v5 < 0) - 1;
-      ++result;
-      v11 &= v5;
-      --v4;
-      *(_BYTE *)(result - 1) = v11;
+        chr->weather_var = 21;
     }
-    while ( v4 );
-  }*/
+    else
+    {
+        // chr->weather_var = weather;
+    }
+    /*result = (int)&v13->field_6A4;
+    if ( v13->field_56E )
+    {
+      v2 = 32;
+      do
+      {
+        v3 = (*(_BYTE *)(result++ + 32) < 0) - 1;
+        --v2;
+        *(_BYTE *)(result - 1) = v3 & 4;
+      }
+      while ( v2 );
+    }
+    else
+    {
+      v4 = 32;
+      do
+      {
+        v5 = *(_BYTE *)(result + 32);
+        LOBYTE(v11) = ((char)v5 < 0) - 1;
+        ++result;
+        v11 &= v5;
+        --v4;
+        *(_BYTE *)(result - 1) = v11;
+      }
+      while ( v4 );
+    }*/
+}
+
+int32_t time_count = 0; //HACK
+
+void sub_463200(char_c *chr)
+{
+  if ( !chr->time_stop )
+  {
+    if ( chr->max_spell_energy < 1000 )
+    {
+      if ( chr->field_4A4 < 4800 )
+      {
+        if ( chr->weather_var == 8 )
+        {
+          chr->field_4A4 += 50;
+        }
+        else
+        {
+          if ( chr->max_spell_energy <= 800 )
+            chr->field_4A4 +=  5;
+          if ( chr->max_spell_energy <= 600 )
+            chr->field_4A4 +=  2;
+          if ( chr->max_spell_energy <= 400 )
+            chr->field_4A4 +=  3;
+          if ( chr->max_spell_energy <= 200 )
+            chr->field_4A4 +=  8;
+          if ( chr->max_spell_energy <= 0 )
+            chr->field_4A4 +=  10;
+        }
+        if ( chr->field_4A4 >= 4800 )
+        {//HACK
+          /*(*(void (__stdcall **)(_DWORD, _DWORD, _DWORD))(*(_DWORD *)battle_manager + 24))(
+            2,
+            v1->player_index,
+            v2 / 200);*/
+          chr->max_spell_energy += 200;
+          chr->field_4A4 = 0;
+        }
+      }
+    }
+
+    if ( chr->spell_energy_stop )
+    {
+      chr->spell_energy_stop--;
+    }
+    else
+    {
+      if ( chr->weather_var == 4 )
+        chr->spell_energy += 12;
+      else
+        chr->spell_energy += 6;
+
+      if ( chr->field_560 >= 1 )
+        if ( !(time_count & 1) )
+          chr->spell_energy++;
+
+      if ( chr->field_560 >= 2 )
+      {
+        if ( !(time_count & 1) )
+          chr->spell_energy++;
+
+        if ( !(time_count & 3) )
+          chr->spell_energy++;
+      }
+
+      if ( chr->field_560 >= 3 )
+      {
+        if ( !(time_count & 1) )
+          chr->spell_energy++;
+
+        if ( !(time_count & 3) )
+          chr->spell_energy++;
+
+        if ( !(time_count % 6u) )
+          chr->spell_energy++;
+      }
+
+      if ( chr->field_560 >= 4 )
+      {
+        if ( !(time_count & 1) )
+          chr->spell_energy++;
+
+        if ( !(time_count & 3) )
+          chr->spell_energy++;
+
+        if ( !(time_count % 6u) )
+          chr->spell_energy++;
+
+        if ( time_count % 6u == 3 )
+          chr->spell_energy++;
+      }
+
+      if (chr->max_spell_energy < chr->spell_energy)
+        chr->spell_energy = chr->max_spell_energy;
+    }
+  }
 }
 
 void char_stats_check(char_c *chr)
 {
-    //sub_469B10
-
     char_c *enm = chr->enemy;
 
-       if ( enm->time_stop == 0 )
-  {
-    if ( chr->hit_stop != 0 )
+    if ( !enm->time_stop )
     {
-      chr->hit_stop--;
-      return;
+        if ( chr->hit_stop )
+        {
+            chr->hit_stop--;
+        }
+        else
+        {
+            if ( chr->field_740 > 0 )
+                chr->field_740--;
+
+            if ( chr->field_4BC )
+                chr->field_4BC--;
+
+            if (chr->field_4BE)
+            {
+                if ( (chr->get_seq() >= 197 && chr->get_seq() <= 199) || (chr->field_4C0 && !char_is_shock(chr)) )
+                {
+                    chr->field_4BE = 0;
+                    chr->field_4C0 = 0;
+                }
+            }
+
+            if (chr->field_4C0)
+            {
+                if (char_is_shock(chr))
+                    chr->field_4C0 = 0;
+                else
+                    chr->field_4C0--;
+            }
+
+
+            if ( chr->field_51C )
+                chr->field_51C--;
+
+            if ( chr->field_51E )
+                chr->field_51E--;
+
+            char_frame *frm = chr->get_pframe();
+
+            if ( frm->fflags & FF_UNK800)
+                chr->field_51E = 10;
+
+            if ( chr->field_520 )
+                chr->field_520--;
+
+            if ( chr->field_4AA )
+                chr->field_4AA--;
+
+            if ( chr->field_522 )
+                chr->field_522--;
+
+            if ( chr->field_6EC > 0 )
+                chr->field_6EC--;
+
+            if ( chr->field_524 > 0)
+                chr->field_524--;
+
+            if ( chr->field_526 > 0 )
+                chr->field_526--;
+
+
+            if (chr->cards_added >= 5)
+            {
+                chr->current_card_energy = 0;
+            }
+            else if (chr->current_card_energy >= 500 && chr->controlling_type != 2 )
+            {
+                //add_card(chr); //HACK
+                scene_play_sfx(36);
+                chr->current_card_energy = 0;
+            }
+
+            sub_463200(chr);
+        }
     }
-  }
 }
 
 

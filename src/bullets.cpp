@@ -9,8 +9,6 @@
 #include <math.h>
 
 
-bul_vec bullst;
-
 void addbullet(char_c *chr, c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num)
 {
     seq *sq = chr->get_seq(idx);
@@ -19,36 +17,52 @@ void addbullet(char_c *chr, c_bullet *bul, int32_t idx, float x, float y, int8_t
         c_bullet *tmp = chr->new_bullet();
         if (tmp)
         {
-            bullst.push_back(tmp);
             tmp->init(chr,bul,sq,x,y,dir,order,addit,num);
+            if (chr)
+                chr->get_bullets()->push_back(tmp);
         }
     }
 }
 
-void updatebullet()
+void updatebullet(char_c *chr)
 {
-    for(int32_t i=bullst.size()-1; i>=0; i--)
-        if (bullst[i]->active)
-            bullst[i]->func10();
+    bullist *lst = chr->get_bullets();
+    bullist_iter iter = lst->begin();
+
+    while(iter != lst->end())
+    {
+        c_bullet *blt = *iter;
+
+        if ( !blt->chrt->time_stop || blt->field_360)
+        {
+            if (blt->hit_stop)
+                blt->hit_stop--;
+            else
+            {
+                blt->func10();
+                /*if (blt->field_354)
+                  sub_4335A0(blt->field_354);*/ //HACK
+            }
+        }
+
+        if (blt->active)
+            iter++;
         else
         {
-            delete bullst[i];
-            bullst.erase(bullst.begin() + i);
+            delete blt;
+            iter = lst->erase(iter);
         }
+    }
 }
 
-void drawbullet(int8_t order)
+void drawbullet(char_c *chr, int8_t order)
 {
-    for(uint32_t i=0; i<bullst.size(); i++)
-        if (bullst[i]->order == order)
-            bullst[i]->draw(1);
-}
+    bullist *lst = chr->get_bullets();
 
-bul_vec *getbulllist()
-{
-    return &bullst;
+    for(bullist_iter i=lst->begin(); i != lst->end(); i++)
+        if ((*i)->order == order)
+            (*i)->draw(1);
 }
-
 
 c_bullet::c_bullet()
 {
@@ -115,16 +129,16 @@ void c_bullet::draw(int8_t plane)
 
         sprite.draw(plane);
 
-            for (int32_t i = 0; i<5; i++)
-    //if (atk_area_2o[i])
-    {
-        frame_box *bx = &atk_area_2o[i];
-        gr_draw_box(bx->x1,
+        for (int32_t i = 0; i<5; i++)
+            //if (atk_area_2o[i])
+        {
+            frame_box *bx = &atk_area_2o[i];
+            gr_draw_box(bx->x1,
                         bx->y1,
                         bx->x2-bx->x1,
                         bx->y2-bx->y1,
                         255,0,0,60,1);
-    }
+        }
         /*
         char_frame *pf = sprite.get_pframe();
 

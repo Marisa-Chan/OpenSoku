@@ -9,12 +9,19 @@ c_meta::c_meta(char_graph *_pgp)
 {
     pgp  = _pgp;
     chrt = NULL;
+
+    cust_box  = NULL;
+    parent_mlist = NULL;
+    atk_box_cnt = 0;
+    hit_box_cnt = 0;
+    field_1A0 = 0;
+    field_1A1 = 0;
+    field_1A2 = 0;
 }
 
 c_meta::c_meta():
 c_meta(NULL)
 {
-
 }
 
 void c_meta::set_seq(uint32_t idx)

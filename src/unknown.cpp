@@ -206,100 +206,97 @@ bool sub_479D50(c_scene *scn, c_meta *p1, c_meta *p2)
     return hit;
 }
 
-
-
-/*
-bool sub_47AD60(c_scene *scn, char_c *p1, char_c *p2)
+void set_mlist_hitflag(c_meta *plr, int8_t flag )
 {
-  scene_class_vars *v3; // ebx@1
-  num_of_seqs *v4; // edx@1
-  num_of_seqs *v6; // ecx@3
-  __int16 v7; // ax@3
-  __int16 v8; // cx@4
-  num_of_seqs *v9; // eax@14
-  __int16 v10; // cx@17
-  __int16 v11; // ax@17
-  int v12; // [sp-4h] [bp-10h]@6
-  int v13; // [sp-4h] [bp-10h]@8
+    c_meta *mt = plr;
+    while (mt->parent_mlist)
+        mt = mt->parent_mlist;
 
-  v3 = scn;
+    mt->field_190 = flag;
+    mt->field_194 = mt->field_1BC - 1;
 
-  if ( !sub_479D50(scn, p1, p2) )
-    return false;
+    metalst *lst = &mt->childs;
 
-    char_frame *frm1 = p1->get_pframe();
-
-    p1->get_cprior();
-
-  v6 = p1->field_1C4;
-  v7 = v6->cprior;
-  if ( !p1->get_cprior() )
-  {
-      if (p2->get_cprior())
-      {
-          if (p2->get_prior() < 0)
-      }
-    v9 = p2->field_1C4;
-    if ( v9->cprior )
+    for (metalst_iter i= lst->begin(); i != lst->end(); i++)
     {
-      if ( v9->prior < 0 )
-        goto LABEL_6;
-      v13 = 5;
+        c_meta *obj = *i;
+        obj->field_190 = flag;
+        obj->field_194 = obj->field_1BC - 1;
     }
-    else
+}
+
+void reset_ibox(c_scene *);
+
+bool sub_47AD60(c_scene *scn, c_meta *plr, c_meta *enm)
+{
+
+    if ( !sub_479D50(scn, plr, enm) )
+        return false;
+
+    if ( plr->get_cprior() == 0 )
     {
-      v10 = v6->prior;
-      v11 = v9->prior;
-      if ( v10 > v11 )
-        goto LABEL_6;
-      if ( v10 < v11 )
-      {
-        sub_464700(p1, v4, 4);
-        sub_479330(v3);
-        return 1;
-      }
-      v13 = 8;
-    }
-LABEL_21:
-    sub_464700(p1, v4, v13);
-    v12 = 8;
-    goto LABEL_22;
-  }
-  v4 = p2->field_1C4;
-  v8 = v4->cprior;
-  if ( v7 != v8 )
-  {
-    if ( v7 >= v8 )
-    {
-      if ( v8 )
-      {
-        sub_464700(p1, v4, 8);
-        v12 = 4;
-      }
-      else
-      {
-        if ( v7 < v4->prior )
+        if ( enm->get_cprior() != 0 )
         {
-          sub_464700(p1, v4, 4);
-          sub_479330(v3);
-          return 1;
+            if ( enm->get_cprior() < 0 )
+            {
+                set_mlist_hitflag(plr, 4);
+            }
+            else if ( enm->get_cprior() > 0 )
+            {
+                set_mlist_hitflag(plr, 5);
+                set_mlist_hitflag(enm, 8);
+            }
         }
-        sub_464700(p1, v4, 8);
-        v12 = 5;
-      }
-      goto LABEL_22;
+        else
+        {
+            if (plr->get_prior() > enm->get_prior())
+            {
+                set_mlist_hitflag(plr, 4);
+            }
+            else if (plr->get_prior() < enm->get_prior())
+            {
+                set_mlist_hitflag(plr, 4);
+            }
+            else
+            {
+                set_mlist_hitflag(plr, 8);
+                set_mlist_hitflag(enm, 8);
+            }
+        }
     }
-    v13 = 4;
-    goto LABEL_21;
-  }
-  sub_464700(p1, v4, 4);
-LABEL_6:
-  v12 = 4;
-LABEL_22:
-  sub_464700(p2, v4, v12);
-  sub_479330(v3);
-  return 1;
-}*/
+    else if ( plr->get_cprior() > enm->get_cprior() )
+    {
+        if ( enm->get_cprior() != 0 )
+        {
+            set_mlist_hitflag(plr, 8);
+            set_mlist_hitflag(enm, 4);
+        }
+        else
+        {
+            if ( plr->get_cprior() < enm->get_prior() )
+            {
+                set_mlist_hitflag(plr, 4);
+            }
+            else
+            {
+                set_mlist_hitflag(plr, 8);
+                set_mlist_hitflag(enm, 5);
+            }
+        }
+    }
+    else if (plr->get_cprior() < enm->get_cprior())
+    {
+        set_mlist_hitflag(plr, 4);
+        set_mlist_hitflag(enm, 8);
+    }
+    else //plr->get_cprior() == enm->get_cprior()
+    {
+        set_mlist_hitflag(plr, 4);
+        set_mlist_hitflag(enm, 4);
+    }
+    reset_ibox(scn);
+    return true;
+}
 
 bool sub_4699E0(char_c *chr)
 {
@@ -386,7 +383,7 @@ bool sub_479BC0(c_scene *scn, c_meta *p1, c_meta *p2)
 }
 
 
-void sub_479330(c_scene *scn)
+void reset_ibox(c_scene *scn)
 {
     scn->ibox.x1 = -10000;
     scn->ibox.y1 = -10000;
@@ -407,7 +404,7 @@ bool sub_47ABE0(c_scene *scn, c_meta *plr, c_meta *enm)
     {
         plr->field_190 = 3;
         enm->field_190 = 3;
-        sub_479330(scn);
+        reset_ibox(scn);
         return true;
     }
     return false;
@@ -477,271 +474,120 @@ bool sub_47AAA0(c_scene *scn, c_meta *plr, char_c *enm)
 
     enm->field_4C6++;
     //  call_effects_func3_2(scn, 52, enm->dir);
-    sub_479330(scn);
+    reset_ibox(scn);
     return true;
 }
-//
-//int8_t sub_469750(char_c *chr, uint32_t aflags)
-//{
-//  char_class_vars *v2; // esi@1
-//  unsigned int result; // eax@2
-//  FFFLAGS v4; // eax@4
-//  int v5; // eax@10
-//  int v6; // eax@32
-//
-//  v2 = this;
-//
-//  char_frame *frm = chr->get_pframe();
-//
-//  if ( (aflags & AF_U_HIT) || chr->field_4AA)
-//    return 0;
-//
-//  v4 = this->current_frame_params->fflags;
-//
-//  if ( frm->fflags & FF_GUARD2 )
-//    return 6;
-//  if ( !(frm->fflags & FF_GUARDCANC) )
-//    return 0;
-//
-//  if ( chr->get_seq() < 150 && chr->get_seq() > 168 )
-//  {
-//    /*if ( v2->input_function )
-//      goto LABEL_38;
-//    if ( LOBYTE(v2->controlling_type) == 3 )
-//    {
-//      v2->pressed_y_axis = 0;
-//      v2->pressed_x_axis = 0;
-//      if ( practice_params->field_C <= 0 )
-//        goto LABEL_38;
-//    }
-//    else
-//    {
-//      if ( dword_8841B4 )
-//      {
-//        if ( dword_8841B4 == 1 && get_MT_range(0x64u) >= 0x5F )
-//        {
-//LABEL_38:*/
-//    if ( chr->field_578 || ((chr->enemy->x - chr->x) * chr->gX(1) <= 0 && chr->gX(1) != 0 ))
-//    {
-//        if ( !char_on_ground_flag(chr) || (frm->fflags & FF_AIRBORNE) )
-//            return  (aflags & AF_AIR_HIT) != 0 ? 5 : 0;
-//        else
-//        {
-//            if ( chr->gY() > 0)
-//            {
-//                if ( aflags & AF_MID_HIT )
-//                    return 1;
-//                else if (aflags & AF_UNK40)
-//                    return 0;
-//
-//                return 2;
-//            }
-//            else
-//            {
-//            if ( aflags & AF_LOW_HIT )
-//                return 3;
-//            else if (aflags & AF_UNK40)
-//                return 0;
-//
-//                return 4;
-//            }
-//        }
-//    }
-//    return 0;
-//        /*}
-//      }
-//      else
-//      {
-//        if ( get_MT_range(0x64u) >= 0x46 )
-//          goto LABEL_38;
-//      }*/
-//    }
-//    if ( v2->enemy->rend_cls.x_pos - v2->rend_cls.x_pos <= 0.0 )
-//      v2->pressed_x_axis = 1;
-//    else
-//      v2->pressed_x_axis = -1;
-//   /* if ( LOBYTE(v2->controlling_type) == 3 )
-//    {
-//      v6 = practice_params->dummy_block_type;
-//      if ( v6 == 2 )
-//      {
-//        v2->pressed_y_axis = 0;
-//      }
-//      else
-//      {
-//        if ( v6 == 3 )
-//          v2->pressed_y_axis = 1;
-//        else
-//          v2->pressed_y_axis = (~enemu_aflags >> 1) & 1;
-//      }
-//    }
-//    else
-//    {*/
-//      v2->pressed_y_axis = (~enemu_aflags >> 1) & 1;
-//    }
-//    goto LABEL_38;
-//  }
-//  if ( v2->input_function )
-//  {
-//    if ( v2->pressed_x_axis || !(enemu_aflags & 0x80000) )
-//      goto LABEL_41;
-//    return 0;
-//  }
-//  if ( LOBYTE(v2->controlling_type) == 3 )
-//  {
-//    v5 = practice_params->dummy_block_type;
-//    if ( v5 == 2 )
-//    {
-//      v2->pressed_y_axis = 0;
-//    }
-//    else
-//    {
-//      if ( v5 == 3 )
-//        v2->pressed_y_axis = 1;
-//      else
-//        v2->pressed_y_axis = (~enemu_aflags >> 1) & 1;
-//    }
-//  }
-//  else
-//  {
-//    v2->pressed_y_axis = (~enemu_aflags >> 1) & 1;
-//  }
-//LABEL_41:
-//  if ( !char_on_ground_flag(v2) || v2->current_frame_params->fflags & 4 )
-//  {
-//    result = (enemu_aflags & 8) != 0 ? 5 : 0;
-//  }
-//  else
-//  {
-//    if ( v2->pressed_y_axis <= 0 )
-//    {
-//      if ( enemu_aflags & 2 )
-//        result = 1;
-//      else
-//        result = (~enemu_aflags >> 5) & 2;
-//    }
-//    else
-//    {
-//      if ( enemu_aflags & 4 )
-//        result = 3;
-//      else
-//        result = (~enemu_aflags >> 4) & 4;
-//    }
-//  }
-//  return result;
-//}
-//
-//char __thiscall sub_47BBA0(scene_class_vars *this, char_class_vars *a2, char_class_vars *a3)
-//{
-//  scene_class_vars *v3; // ebx@1
-//  char result; // al@2
-//  char v5; // al@3
-//  int v6; // ecx@3
-//  char_class *v7; // edx@3
-//  char v8; // zf@9
-//  int v9; // edx@9
-//  char_class *v10; // eax@9
-//  void (__thiscall *v11)(char_class_vars *, _DWORD); // eax@12
-//  char v12; // al@15
-//  int v13; // edx@17
-//  void (__thiscall *v14)(char_class_vars *, _DWORD); // eax@20
-//
-//  v3 = this;
-//  switch ( sub_469750(a3, a2->current_frame_params2?->aflags) )
-//  {
-//    case 0u:
-//      return 0;
-//    case 1u:
-//      v5 = sub_47B5A0(v3, a2, a3);
-//      v7 = a3->class;
-//      if ( v5 )
-//        goto LABEL_4;
-//      LOWORD(v6) = a2->current_frame_params2?->attack_type + 150;
-//      goto LABEL_6;
-//    case 3u:
-//      v8 = sub_47B5A0(v3, a2, a3) == 0;
-//      v10 = a3->class;
-//      if ( !v8 )
-//        goto LABEL_10;
-//      LOWORD(v9) = a2->current_frame_params2?->attack_type + 154;
-//      v10->func2_set_seq(a3, v9);
-//      initclass_rendercharclass(&a3->rend_cls);
-//      return 1;
-//    case 5u:
-//      v8 = sub_47B5A0(v3, a2, a3) == 0;
-//      v11 = a3->class->func2_set_seq;
-//      if ( v8 )
-//      {
-//        v11(a3, 158);
-//        initclass_rendercharclass(&a3->rend_cls);
-//        result = 1;
-//      }
-//      else
-//      {
-//        v11(a3, 145);
-//        initclass_rendercharclass(&a3->rend_cls);
-//        result = 1;
-//      }
-//      return result;
-//    case 2u:
-//      v12 = sub_47B8F0(v3, a2, a3);
-//      v7 = a3->class;
-//      if ( v12 )
-//      {
-//LABEL_4:
-//        v7->func2_set_seq(a3, 143);
-//        initclass_rendercharclass(&a3->rend_cls);
-//        result = 1;
-//      }
-//      else
-//      {
-//        LOWORD(v6) = a2->current_frame_params2?->attack_type + 159;
-//LABEL_6:
-//        v7->func2_set_seq(a3, v6);
-//LABEL_7:
-//        initclass_rendercharclass(&a3->rend_cls);
-//LABEL_8:
-//        result = 1;
-//      }
-//      return result;
-//    case 4u:
-//      v8 = sub_47B8F0(v3, a2, a3) == 0;
-//      v10 = a3->class;
-//      if ( v8 )
-//      {
-//        LOWORD(v13) = a2->current_frame_params2?->attack_type + 163;
-//        v10->func2_set_seq(a3, v13);
-//        initclass_rendercharclass(&a3->rend_cls);
-//        result = 1;
-//      }
-//      else
-//      {
-//LABEL_10:
-//        v10->func2_set_seq(a3, 143);
-//        initclass_rendercharclass(&a3->rend_cls);
-//        result = 1;
-//      }
-//      return result;
-//    case 6u:
-//      if ( !sub_47B5A0(v3, a2, a3) )
-//        goto LABEL_8;
-//      v8 = char_on_ground_flag(a3) == 0;
-//      v14 = a3->class->func2_set_seq;
-//      if ( v8 )
-//      {
-//        v14(a3, 145);
-//        result = 1;
-//      }
-//      else
-//      {
-//        v14(a3, 143);
-//        result = 1;
-//      }
-//      return result;
-//    default:
-//      goto LABEL_7;
-//  }
-//}
+
+int32_t dword_8841B4 = 3; //HACK
+int8_t dummy_block_type = 3;
+
+int8_t sub_469750(char_c *plr, uint32_t enemu_aflags)
+{
+    if ( enemu_aflags & AF_U_HIT )
+        return 0;
+    if ( plr->field_4AA )
+        return 0;
+
+    char_frame *frm = plr->get_pframe();
+
+    if ( frm->fflags & FF_GUARD2 )
+        return 6;
+    if ( !(frm->fflags & FF_GUARDCANC) )
+        return 0;
+
+    if ( !char_is_block_knock(plr) )
+    {
+        if ( plr->input_function )
+        {
+            if ( plr->field_578 == 0  && ((plr->enemy->x - plr->x) * plr->gX(1) > 0  || plr->gX(1) == 0))
+                return 0;
+        }
+        else if ( plr->controlling_type == 3 ) //CHAR_CTRL_TRAIN_DUMMY
+        {
+            plr->setgY(0);
+            plr->setgX(0);
+            /*if ( practice_params->field_C <= 0 ) //HACK
+            {
+                if ( plr->field_578 == 0  && ((plr->enemy->x - plr->x) * plr->gX(1) > 0  || plr->gX(1) == 0))
+                    return 0;
+            }*/
+        }
+        else if ( dword_8841B4 == 1 && scene_rand_rng(100) >= 95 )
+        {
+            if ( plr->field_578 == 0  && ((plr->enemy->x - plr->x) * plr->gX(1) > 0  || plr->gX(1) == 0))
+                return 0;
+        }
+        else if ( dword_8841B4 == 0 && scene_rand_rng(100) >= 70 )
+        {
+            if ( plr->field_578 == 0  && ((plr->enemy->x - plr->x) * plr->gX(1) > 0  || plr->gX(1) == 0))
+                return 0;
+        }
+        else
+        {
+            if ( plr->enemy->x - plr->x <= 0.0 )
+                plr->setgX(1);
+            else
+                plr->setgX(-1);
+
+            if ( plr->controlling_type == 3 )
+            {
+                if ( /*practice_params->dummy_block_type*/ dummy_block_type == 2 ) // HACK
+                    plr->setgY(0);
+                else if ( dummy_block_type == 3 )
+                    plr->setgY(1);
+                else
+                    plr->setgY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
+            }
+            else
+                plr->setgY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
+
+            if ( plr->field_578 == 0  && ((plr->enemy->x - plr->x) * plr->gX(1) > 0  || plr->gX(1) == 0))
+                return 0;
+        }
+    }
+    else
+    {
+        if ( plr->input_function )
+        {
+            if ( plr->gX(1) == 0 && (enemu_aflags & AF_GUARDCRUSH) )
+                return 0;
+        }
+        else if ( plr->controlling_type == 3 )
+        {
+            if ( dummy_block_type == 2 )
+                plr->setgY(0);
+            else if ( dummy_block_type == 3 )
+                plr->setgY(1);
+            else
+                plr->setgY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
+        }
+        else
+            plr->setgY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
+    }
+
+    if ( !char_on_ground_flag(plr) || frm->fflags & FF_AIRBORNE )
+    {
+        return (enemu_aflags & AF_AIR_HIT) == 0 ? 0 : 5;
+    }
+    else
+    {
+        if ( plr->gY() <= 0 )
+        {
+            if ( enemu_aflags & AF_MID_HIT )
+                return 1;
+            else
+                return  (enemu_aflags & AF_UNK40) == 0 ? 2 : 0;
+        }
+        else
+        {
+            if ( enemu_aflags & AF_LOW_HIT )
+                return 3;
+            else
+                return (enemu_aflags & AF_UNK40) == 0 ? 4 : 0;
+        }
+    }
+    return 0;
+}
 
 void sub_478FC0(char_c *plr, char_c *enm)
 {
@@ -752,58 +598,340 @@ void sub_478FC0(char_c *plr, char_c *enm)
     plr->combo_damage = 0;
     plr->combo_limit = 0;
     plr->correction = 0;
-    //sub_478540((battle_manager + 52 * (character->player_index + 7)));
+    //sub_478540((battle_manager + 52 * (character->player_index + 7))); //HACK
 }
 
 double sub_4636B0(c_meta *plr)
 {
 
-  float dmg = 0;
+    float dmg = 0;
 
-  char_c * chr = plr->chrt;
-  char_c * enm = plr->enemy;
+    char_c * chr = plr->chrt;
+    char_c * enm = plr->enemy;
 
-  dmg = chr->field_530 * enm->field_534 * chr->combo_rate;
+    dmg = chr->field_530 * enm->field_534 * chr->combo_rate;
 
-  if ( enm->field_1B4 >= 0 )
-  {
-    if ( enm->max_health > enm->field_1B4 )
-      dmg *= (enm->field_1B4 / enm->max_health * 0.3 + 0.7);
-  }
-  else
-  {
-    dmg *= 0.7;
-  }
+    if ( enm->field_1B4 >= 0 )
+    {
+        if ( enm->max_health > enm->field_1B4 )
+            dmg *= (enm->field_1B4 / enm->max_health * 0.3 + 0.7);
+    }
+    else
+    {
+        dmg *= 0.7;
+    }
 
-  /*if ( plr->field_18C >= 0 )
-  {
-    if ( plr->field_18C < 32 )
-      dmg *= (*(&chr->field_6A4 + plr->field_18C) / 10.0 + 1.0);
-  }*/
+    /*if ( plr->field_18C >= 0 ) //Hack
+    {
+      if ( plr->field_18C < 32 )
+        dmg *= (*(&chr->field_6A4 + plr->field_18C) / 10.0 + 1.0);
+    }*/
 
-  uint32_t aflgs = plr->get_pframe()->aflags;
+    uint32_t aflgs = plr->get_pframe()->aflags;
 
-  if ( aflgs & AF_UNK1000 )
-    dmg *= chr->field_544;
-  if ( aflgs & AF_UNK800 )
-    dmg *= chr->field_548;
+    if ( aflgs & AF_UNK1000 )
+        dmg *= chr->field_544;
+    if ( aflgs & AF_UNK800 )
+        dmg *= chr->field_548;
 
-  if ( chr->correction & 1 )
-    dmg *= 0.8;
-  if ( chr->correction & 2 )
-    dmg *= 0.8;
-  if ( chr->correction & 4 )
-    dmg *= 0.8;
-  if ( chr->correction & 8 )
-    dmg *= 0.85;
-  if ( chr->correction & 0x10 )
-    dmg *= 0.925;
-  return dmg;
+    if ( chr->correction & 1 )
+        dmg *= 0.8;
+    if ( chr->correction & 2 )
+        dmg *= 0.8;
+    if ( chr->correction & 4 )
+        dmg *= 0.8;
+    if ( chr->correction & 8 )
+        dmg *= 0.85;
+    if ( chr->correction & 0x10 )
+        dmg *= 0.925;
+    return dmg;
 }
+
+
+float sub_464270(c_meta *plr)
+{
+    return plr->get_pframe()->health_smval * sub_4636B0(plr);
+}
+
+void sub_47A980(c_scene *scn, c_meta *plr, char_c *enm)
+{
+    char_frame *frm = plr->get_pframe();
+
+    //if ( !plr->chrt->field_56D ) //HACK
+    //  sub_463160(enm, 1);
+    sub_478FC0(plr->chrt, enm);
+
+    plr->field_190 = 2;
+    plr->field_194 = plr->field_1BC - 1;
+
+    plr->hit_stop = frm->flag196_char2;
+    plr->chrt->correction |= 4;
+
+    enm->hit_stop = frm->flag196_enemy2;
+    enm->field_1A4 = frm->velocity_x;
+    enm->field_1A8 = frm->velocity_y;
+    enm->field_4BA = 0x4000;
+
+    //card_energy_add(plr->chr, frm->card_energy2); // HACK
+
+    if ( plr->chrt->field_554 > 0.0 )
+        scn->scn_p2[enm->player_index] -= (frm->card_energy2 / 2) * plr->chrt->field_554;
+
+
+    enm->flip_to_enemy();
+    scene_play_sfx(20);
+    //call_effects_func3_2(v4, 53, enm->meta.rend_cls.dir); //HACK
+    reset_ibox(scn);
+}
+
+bool sub_47B5A0(c_scene *scn, c_meta *plr, char_c *enm)
+{
+    char_frame *frm = plr->get_pframe();
+    if ( !char_is_shock(enm) )
+    {
+        if ( !enm->field_4C0 )
+            sub_478FC0(plr->chrt, enm);
+    }
+    if ( !enm->field_575 )
+    {
+        double tmp = sub_464270(plr);
+
+        enm->health -= tmp;
+        if ( enm->health < 1 )
+            enm->health = 1;
+
+        char_c * plr_c = plr->chrt;
+        if ( plr_c->field_550 > 0.0 )
+            scn->scn_p1[plr_c->player_index] += tmp * plr_c->field_550;
+
+        char_c * enm_c = enm->chrt;
+        if ( enm_c->field_558 > 0.0 )
+            scn->scn_p1[enm_c->player_index] -= tmp * plr_c->field_558;
+    }
+    if ( frm->sp_smval )
+    {
+
+        int16_t old_spe = enm->spell_energy;
+
+        if ( frm->aflags & AF_UNK400000 )
+        {
+            if ( sub_469750(enm, frm->aflags) == 5 )
+            {
+                enm->spell_energy -= frm->sp_smval;
+
+                if ( frm->attack_type == 0 )
+                    enm->spell_energy_stop = 60;
+                else if ( frm->attack_type == 1 )
+                    enm->spell_energy_stop = 60;
+                else if ( frm->attack_type >= 2 )
+                    enm->spell_energy_stop = 75;
+            }
+            else
+            {
+                enm->spell_energy -= frm->sp_smval;
+
+                if ( frm->attack_type == 0 )
+                    enm->spell_energy_stop = 60;
+                else if ( frm->attack_type == 1 )
+                    enm->spell_energy_stop = 60;
+                else if ( frm->attack_type >= 2 )
+                    enm->spell_energy_stop = 60;
+            }
+        }
+        else
+        {
+            if ( sub_469750(enm, frm->aflags) == 5 )
+            {
+                enm->spell_energy -= frm->sp_smval/2;
+
+                if ( frm->attack_type == 0 )
+                    enm->spell_energy_stop = 60;
+                else if ( frm->attack_type == 1 )
+                    enm->spell_energy_stop = 75;
+                else if ( frm->attack_type >= 2 )
+                    enm->spell_energy_stop = 90;
+            }
+        }
+
+        if ( enm->spell_energy <= 0 && enm->spell_energy < old_spe )
+        {
+            sub_47A980(scn, plr, enm);
+            return true;
+        }
+    }
+    plr->field_190 = 2;
+    plr->field_194 = plr->field_1BC - 1;
+    plr->hit_stop = frm->flag196_char2;
+
+    enm->hit_stop = frm->flag196_enemy2;
+    enm->field_1A4 = frm->velocity_x;
+    enm->field_1A8 = frm->velocity_y;
+
+    enm->field_49D = 1;
+
+    char_c * plr_c = plr->chrt;
+
+    //plr_c->card_energy_add(plr_c->field_54C * frm->card_energy2); // HACK
+
+    if ( plr_c->field_554 > 0.0 )
+        scn->scn_p2[enm->player_index] -= (plr_c->field_54C * frm->card_energy2 / 2) * plr_c->field_554;
+
+    enm->flip_to_enemy();
+    scene_play_sfx(20);
+    //call_effects_func3_2(scn, 50, enm_->meta.rend_cls.dir); // HACK
+    reset_ibox(scn);
+    return false;
+}
+
+bool sub_47B8F0(c_scene *scn, c_meta *plr, char_c *enm)
+{
+    char_frame *frm = plr->get_pframe();
+    char_c *plr_c = plr->chrt;
+
+    if ( !char_is_shock(enm) )
+        if ( !enm->field_4C0 )
+            sub_478FC0(plr_c, enm);
+
+    if ( !enm->field_575 )
+    {
+        float tmp = sub_464270(plr);
+        enm->health -= tmp;
+
+        if ( enm->health < 1 )
+            enm->health = 1;
+
+        if ( plr_c->field_550 > 0.0 )
+            scn->scn_p1[plr_c->player_index] += tmp * plr_c->field_550;
+
+        if ( enm->field_558 > 0.0 )
+            scn->scn_p1[enm->player_index] -= tmp * enm->field_558;
+    }
+
+    if ( (frm->aflags & AF_GUARDCRUSH)  || plr->chrt->field_56D )
+    {
+        sub_47A980(scn, plr, enm);
+        return true;
+    }
+
+    if ( frm->sp_smval)
+    {
+        int16_t old_sp = enm->spell_energy;
+
+        if ( frm->aflags & AF_UNK400000 )
+            enm->spell_energy -= 2 * frm->sp_smval;
+        else
+            enm->spell_energy -= frm->sp_smval;
+
+                        if ( frm->attack_type == 0 )
+                    enm->spell_energy_stop = 60;
+                else if ( frm->attack_type == 1 )
+                    enm->spell_energy_stop = 60;
+                else if ( frm->attack_type >= 2 )
+                    enm->spell_energy_stop = 90;
+
+        if ( enm->spell_energy <= 0 && enm->spell_energy < old_sp )
+        {
+            sub_47A980(scn, plr, enm);
+            return true;
+        }
+    }
+
+    plr->field_190 = 2;
+    plr->field_194 = plr->field_1BC - 1;
+    plr->hit_stop = frm->flag196_char2;
+
+    enm->hit_stop = frm->flag196_enemy2;
+    enm->field_1A4 = frm->velocity_x;
+    enm->field_1A8 = frm->velocity_y;
+    //card_energy_add(plr_c, plr_c->field_54C * frm->card_energy2); //HACK
+
+    if ( plr_c->field_554 > 0.0 )
+        scn->scn_p2[enm->player_index] -= (frm->card_energy2 / 2.0) * plr_c->field_554;
+
+    enm->flip_to_enemy();
+    scene_play_sfx(21);
+
+    //call_effects_func3_2(v18, 51, v3->meta.rend_cls.dir); //HACK
+    reset_ibox(scn);
+    return false;
+}
+
+bool sub_47BBA0(c_scene *scn, c_meta *plr, char_c *enm)
+{
+    char_frame *frm = plr->get_pframe();
+
+    switch ( sub_469750(enm, frm->aflags) )
+    {
+    case 0:
+        return false;
+
+    case 1:
+        if ( sub_47B5A0(scn, plr, enm) )
+            enm->set_seq(143);
+        else
+            enm->set_seq(150 + frm->attack_type);
+
+        enm->reset_ofs();
+        break;
+
+    case 2:
+        if ( sub_47B8F0(scn, plr, enm))
+            enm->set_seq(143);
+        else
+            enm->set_seq(159 + frm->attack_type);
+
+        enm->reset_ofs();
+        break;
+
+    case 3:
+        if ( sub_47B5A0(scn, plr, enm) )
+            enm->set_seq(143);
+        else
+            enm->set_seq(154 + frm->attack_type);
+
+        enm->reset_ofs();
+        break;
+
+    case 4:
+        if ( sub_47B8F0(scn, plr, enm))
+            enm->set_seq(143);
+        else
+            enm->set_seq(163 + frm->attack_type);
+
+        enm->reset_ofs();
+        break;
+
+    case 5:
+        if ( sub_47B5A0(scn, plr, enm) )
+            enm->set_seq(145);
+        else
+            enm->set_seq(158);
+
+        enm->reset_ofs();
+        break;
+
+    case 6:
+        if ( sub_47B5A0(scn, plr, enm) )
+        {
+            if (char_on_ground_flag(enm))
+                enm->set_seq(143);
+            else
+                enm->set_seq(145);
+
+            enm->reset_ofs();
+        }
+        break;
+
+    default:
+        enm->reset_ofs();
+    }
+    return true;
+}
+
 
 int32_t sub_464240(c_meta *plr)
 {
-  return (sub_4636B0(plr) * plr->get_pframe()->damage);
+    return (sub_4636B0(plr) * plr->get_pframe()->damage);
 }
 
 void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
@@ -966,32 +1094,32 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
 
                 }
             }
-                else if ( frm2->fflags & FF_STAND )
+            else if ( frm2->fflags & FF_STAND )
+            {
+                if ( frm->aflags & AF_UNK1 )
                 {
-                    if ( frm->aflags & AF_UNK1 )
-                    {
-                        fallseq = atype + 56;
-                    }
-                    else
-                        fallseq = atype + 50;
+                    fallseq = atype + 56;
                 }
-                else if ( frm2->fflags & FF_CROUCH )
-                    fallseq = atype + 62;
+                else
+                    fallseq = atype + 50;
             }
+            else if ( frm2->fflags & FF_CROUCH )
+                fallseq = atype + 62;
+        }
     }
 
 
- /*   if ( !playing_seq_is_in_50___150(enm) )
-    {
-        for ( i = 0; i <= a2a; ++i )
-        {
-            if ( i >= 3 )
-                break;
-            call_effects_func3_2(thisa, 201, enm->rend_cls.dir);
-        }
-        if ( a2a >= 2 )
-            call_effects_func3_2(thisa, 201, enm->rend_cls.dir);
-    }*/
+    /*   if ( !playing_seq_is_in_50___150(enm) )
+       {
+           for ( i = 0; i <= a2a; ++i )
+           {
+               if ( i >= 3 )
+                   break;
+               call_effects_func3_2(thisa, 201, enm->rend_cls.dir);
+           }
+           if ( a2a >= 2 )
+               call_effects_func3_2(thisa, 201, enm->rend_cls.dir);
+       }*/
 
     plr->field_194 = plr->field_1BC - 1;
     plr->hit_stop = frm->flag196_char;
@@ -1047,14 +1175,14 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
 
     if ( plr->chrt->field_550 > 0 )
     {
-       // v30 = (&thisa->field_74 + plr->chrt->player_index);
-       // *v30 += (plr->chrt->field_550 * dmg);
+        // v30 = (&thisa->field_74 + plr->chrt->player_index);
+        // *v30 += (plr->chrt->field_550 * dmg);
     }
 
     if ( plr->chrt->field_558 > 0 )
     {
-       // v32 = (&thisa->field_74 + plr->selft_pointer1?->player_index);
-       // *v32 -= (dmg * plr->chrt->field_558);
+        // v32 = (&thisa->field_74 + plr->selft_pointer1?->player_index);
+        // *v32 -= (dmg * plr->chrt->field_558);
     }
 
     //*&enm->field_188 += (enm->field_55C * dmg);
@@ -1078,7 +1206,7 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
         enm->set_seq(fallseq);
 
     //call_effects_func3_2(thisa, v5->props_unk16, plr->rend_cls.dir);
-    sub_479330(scn);
+    reset_ibox(scn);
     scene_play_sfx(frm->hit_sfx);
 }
 
@@ -1088,11 +1216,9 @@ bool sub_47BD80(c_scene *scn, c_meta *plr, char_c *enm)
     char_frame *frm = plr->get_pframe();
     char_frame *frm2 = enm->get_pframe();
 
-//    printf("%d %d %d %d\n",frm->aflags & AF_UNK400000 != 0,frm->aflags & AF_UNK40000 != 0,enm->field_520,frm2->fflags & FF_INV_FIRE != 0);
-
     if ( frm->aflags & AF_UNK400000 )
     {
-        if ( !(frm->aflags & AF_UNK40000) && (enm->field_520 != 0 || frm2->fflags & FF_INV_FIRE) )
+        if ( !(frm->aflags & AF_UNK40000)  && (enm->field_520 != 0 || frm2->fflags & FF_INV_FIRE) )
             return false;
     }
     else
@@ -1119,15 +1245,30 @@ bool sub_47BD80(c_scene *scn, c_meta *plr, char_c *enm)
     {
         if ( !sub_47AAA0(scn, plr, enm) )
         {
-            printf("Hit\n");
-//            if ( !sub_47BBA0(scn, plr, enm) )
+            if ( !sub_47BBA0(scn, plr, enm) )
                 sub_47A060(scn, plr, enm);
         }
     }
     return true;
 }
 
+void sub_4647B0(c_meta *plr, c_meta *enm)
+{
+    plr->field_190 = enm->field_190;
+    plr->hit_stop = enm->hit_stop;
+    plr->field_194 = plr->field_1BC - (enm->field_1BC - enm->field_194);
 
+    metalst *lst = &plr->childs;
+
+    for (metalst_iter i = lst->begin(); i != lst->end(); i++)
+    {
+        c_meta *mt = *i;
+
+        mt->field_190 = enm->field_190;
+        mt->hit_stop = enm->hit_stop;
+        mt->field_194 = mt->field_1BC - (enm->field_1BC - enm->field_194);
+    }
+}
 
 
 void  sub_47BE70(c_scene *scn, c_meta *plr, char_c *enm)
@@ -1139,34 +1280,16 @@ void  sub_47BE70(c_scene *scn, c_meta *plr, char_c *enm)
             char_frame *frm = plr->get_pframe();
             if (plr != enm || (frm->aflags & AF_HITSALL) == 0 || plr->enemy->field_575 == 0)
             {
-                if (plr->field_180 != 0)
+                if (!plr->childs.empty())
                 {
                     if (sub_47BD80(scn, plr, enm))
-                    {
-                        //sub_4647B0(plr, plr);
-                    }
+                        sub_4647B0(plr, plr);
                     else
                     {
-                        /*v5 = a2->psomelist1?;
-                        v6 = *v5;
-                        v12 = *v5;
-                        v11 = &a2->field_178;
-                        v13 = &a2->field_178;
-                        while ( 1 )
-                        {
-                            v14 = a2->psomelist1?;
-                            if ( !sub_44CF50(&v11, v6, &v13) )
-                                break;
-                            v8 = sub_464590(&v11, v7);
-                            if ( sub_47BD80(v3, *v8, a3) )
-                            {
-                                v10 = sub_464590(&v11, v9);
-                                sub_4647B0(a2, *v10);
-                                return;
-                            }
-                            sub_4645C0(&v11, v6, &v15, 0);
-                        }
-                        */
+                        metalst *lst = &plr->childs;
+                        for(metalst_iter i = lst->begin(); i != lst->end(); i++)
+                            if (sub_47BD80(scn, *i, enm))
+                                sub_4647B0(plr, *i);
                     }
                 }
                 else
@@ -1178,201 +1301,201 @@ void  sub_47BE70(c_scene *scn, c_meta *plr, char_c *enm)
     }
 }
 
-
-/*bool char __thiscall sub_47C080(void *this, bullet_class *a2, bullet_class *a3)
+void sub_464890(c_meta *plr, c_meta *enm)
 {
-  int v4; // eax@8
-  int v5; // ebx@8
-  char *v6; // esi@8
-  int v7; // ecx@9
-  int v8; // edx@17
-  void *v9; // [sp+Ch] [bp-1Ch]@1
-  int *i; // [sp+10h] [bp-18h]@8
-  int v11; // [sp+14h] [bp-14h]@8
-  int v12; // [sp+1Ch] [bp-Ch]@9
-  char v13; // [sp+20h] [bp-8h]@18
 
-  v9 = this;
-  if ( !(a3->current_frame_params->aflags & 0x20000)
-    && !HIBYTE(a3->field_1A0)
-    && a3->current_frame_params2->aflags & 0x400000 )
-  {
-    if ( !a2->field_180 )
-      return sub_47AD00(this, a2, a3);
-    if ( sub_47AD00(this, a2, a3) )
-      return 1;
-    v4 = a2->psomelist1;
-    v5 = *(_DWORD *)v4;
-    v6 = (char *)&a2->field_178;
-    v11 = *(_DWORD *)v4;
-    for ( i = &a2->field_178; ; v6 = (char *)i )
+    c_meta *mt = plr;
+    while (mt->parent_mlist)
+        mt = mt->parent_mlist;
+
+    plr->dir *= -1;
+    plr->chrt = enm->chrt;
+    plr->field_1A0++;
+    plr->enemy = enm->enemy;
+
+    metalst *lst = &plr->childs;
+
+    for ( metalst_iter i = lst->begin(); i != lst->end(); i++)
     {
-      v7 = a2->psomelist1;
-      v12 = a2->psomelist1;
-      if ( !v6 || (int *)v6 != &a2->field_178 )
-        _invalid_parameter_noinfo(v7);
-      if ( v5 == v12 )
-        break;
-      if ( !v6 )
-        _invalid_parameter_noinfo(v7);
-      if ( v5 == *((_DWORD *)v6 + 1) )
-        _invalid_parameter_noinfo(v7);
-      if ( sub_47AD00(v9, *(bullet_class **)(v5 + 8), a3) )
-        return 1;
-      sub_4645C0((int)&i, v8, (int)&v13, 0);
-      v5 = v11;
+        c_meta *mt = *i;
+
+        mt->dir *= -1;
+        mt->chrt = enm->chrt;
+        mt->enemy = enm->enemy;
+        mt->field_1A0++;
     }
-  }
-  return 0;
-}*/
+}
+
+bool sub_47AD00(c_scene *scn, c_meta *plr, c_meta *enm)
+{
+    if (plr->chrt != enm->chrt)
+    {
+        if ( !(plr->get_pframe()->fflags & FF_UNK80000) || !sub_479D50(scn, plr, enm))
+            return false;
+        sub_464890(enm, plr);
+        plr->field_1A0++;
+        reset_ibox(scn);
+    }
+    return true;
+}
+
+bool sub_47C080(c_scene *scn, c_meta *plr, c_meta *enm)
+{
+    char_frame *frm2 = enm->get_pframe();
+
+    if ( !(frm2->aflags & AF_UNK20000) && !enm->field_1A1 && (frm2->aflags & AF_UNK400000))
+    {
+        if (plr->childs.empty())
+        {
+            return sub_47AD00(scn, plr, enm);
+        }
+        else
+        {
+            if (sub_47AD00(scn, plr, enm))
+                return true;
+
+            metalst *lst = &plr->childs;
+
+            for (metalst_iter bl = lst->begin(); bl != lst->end(); bl++)
+            {
+                if (sub_47AD00(scn, *bl, enm))
+                    return true;
+            }
+        }
+    }
+    return false;
+}
 
 void scn_char_ss2(c_meta *chr);
 
+char sub_47AC70(c_scene *scn, c_meta *plr, c_meta *enm)
+{
+    if ( sub_479BC0(scn, plr, enm) )
+    {
+        char_frame *frm = plr->get_pframe();
+        plr->field_194 = plr->field_1BC - 1;
+        plr->field_190 = 9;
+        plr->hit_stop = frm->flag196_char;
+        enm->health -= frm->damage;
+        scene_play_sfx(frm->hit_sfx);
+        //scene_add_effect(frm->call_effects_func3_2(scn, frm->unk19, plr->dir); HACK
+        reset_ibox(scn);
+        return true;
+    }
+
+    return false;
+}
+
+void sub_47BFA0(c_scene *scn, c_meta *plr, c_meta *enm)
+{
+    if ( (enm->get_pframe()->fflags & FF_CH_ON_HIT) && enm->field_1AC )
+    {
+        if ( !plr->childs.empty() )
+        {
+            if ( sub_47AC70(scn, plr, enm) )
+                sub_4647B0(plr, plr);
+            else
+            {
+                metalst *lst = &plr->childs;
+
+                for (metalst_iter i = lst->begin(); i != lst->end(); i++)
+                    if ( sub_47AC70(scn, *i, enm) )
+                    {
+                        sub_4647B0(plr, *i);
+                        break;
+                    }
+            }
+        }
+        else
+            sub_47AC70(scn,plr,enm);
+    }
+}
+
 void sub_47C430(c_scene *scn)
 {
-  /*scene_class_vars *v1; // ebx@1
-  char_class_vars **current_char; // edi@1
-  bullet_class *v3; // ecx@2
-  scene_class_vars *v4; // ebp@2
-  bullets_list *v5; // edx@2
-  bullets_list *v6; // esi@2
-  list_iterator *list; // ebp@2
-  bullet_class *v8; // eax@2
-  int v9; // edx@10
-  bullets_list **v10; // eax@10
-  bullets_list *v11; // edi@10
-  list_iterator *v12; // ebx@10
-  bullets_list **v13; // ecx@10
-  list_node *v14; // edi@28
-  char v15; // zf@52
-  scene_class_vars *v17; // [sp+10h] [bp-28h]@1
-  char_class_vars **v18; // [sp+14h] [bp-24h]@1
-  signed int v19; // [sp+18h] [bp-20h]@1
-  scene_class_vars *v20; // [sp+1Ch] [bp-1Ch]@2
-  bullets_list *v21; // [sp+24h] [bp-14h]@2
-  bullets_list *v22; // [sp+2Ch] [bp-Ch]@10
-  list_node *v23; // [sp+34h] [bp-4h]@28
-
-  for (int8_t i=0; i<2; i++)
-  {
-      char_c *chr = scn->chrs[i];
-      if ()
-
-  }
-
-  v1 = this;
-  current_char = this->chars;
-  v17 = this;
-  v18 = this->chars;
-  v19 = 2;
-  do
-  {
-    v3 = (bullet_class *)(3 * (*current_char)->player_index);
-    v4 = (scene_class_vars *)((char *)v1 + 12 * (*current_char)->player_index);
-    v5 = (bullets_list *)v4->field_5C[0].list;  // field_5C[player_index]
-    v6 = v5->next_bullet;
-    v20 = (scene_class_vars *)((char *)v1 + 12 * (*current_char)->player_index);
-    list = v4->field_5C;
-    LOBYTE(v8) = (_BYTE)v5;
-    v21 = v5;
-    while ( v6 != v21 )
+    for (int8_t i=0; i<2; i++)
     {
-      if ( (list_node *)v6 == list->list )
-        LOBYTE(v8) = _invalid_parameter_noinfo(v3);
-      v3 = v6->bullet;                          // v3 = v6->bullet
-      if ( !v3->field_190 )                     // !v3->field_190
-      {
-        if ( (list_node *)v6 == list->list )
-          LOBYTE(v8) = _invalid_parameter_noinfo(v3);
-        if ( v6->bullet->field_194 > 0 )
+        char_c *chr = scn->chrs[i];
+
+        metalst *lst1 = &scn->list3[chr->player_index];
+
+        for(metalst_iter m1 = lst1->begin(); m1 != lst1->end(); m1++)
         {
-          v9 = 3 * (*current_char)->enemy->player_index;
-          v10 = (bullets_list **)v1->field_44[(*current_char)->enemy->player_index].list;
-          v11 = *v10;
-          v12 = &v1->field_44[4 * v9 / 0xCu];
-          v13 = v10;
-          v22 = (bullets_list *)v10;
-          while ( v11 != v22 )
-          {
-            if ( (list_node *)v11 == v12->list )
-              _invalid_parameter_noinfo(v13);
-            if ( (list_node *)v6 == list->list )
-              _invalid_parameter_noinfo(v13);
-            if ( !sub_47C080(v17, v6->bullet, v11->bullet) )
+            c_meta *mt1 = *m1;
+
+            if (mt1->field_190 ==0 && mt1->field_194 > 0)
             {
-              if ( (list_node *)v11 == v12->list )
-                _invalid_parameter_noinfo(v13);
-              if ( (list_node *)v6 == list->list )
-                _invalid_parameter_noinfo(v13);
-              sub_47BFA0(v17, v6->bullet, v11->bullet);
-            }
-            if ( (list_node *)v11 == v12->list )
-              _invalid_parameter_noinfo(v13);
-            v11 = v11->next_bullet;
-          }
-          if ( (list_node *)v6 == list->list )
-            _invalid_parameter_noinfo(v13);
-          v8 = v6->bullet;
-          v3 = (bullet_class *)v8->current_frame_params2;
-          if ( LODWORD(v3->rend_cls.v[2].rhw) & 0x100000 )// v3->aflags & 0x100000
-          {
-            v14 = v20->field_44[0].list->next_node;
-            v8 = (bullet_class *)v20->field_44[0].list;
-            v23 = v20->field_44[0].list;
-            while ( v14 != v23 )
-            {
-              if ( (list_node *)v6 == list->list )
-                LOBYTE(v8) = _invalid_parameter_noinfo(v3);
-              if ( v14 == v20->field_44[0].list )
-                LOBYTE(v8) = _invalid_parameter_noinfo(v3);
-              v3 = v6->bullet;
-              if ( v3 != (bullet_class *)v14->value )
-              {
-                if ( v14 == v20->field_44[0].list )
-                  _invalid_parameter_noinfo(v3);
-                if ( (list_node *)v6 == list->list )
-                  _invalid_parameter_noinfo(v3);
-                LOBYTE(v8) = sub_47C080(v17, v6->bullet, (bullet_class *)v14->value);
-                if ( !(_BYTE)v8 )
+                metalst *lst2 = &scn->list2[chr->enemy->player_index];
+                for(metalst_iter m2 = lst2->begin(); m2 != lst2->end(); m2++)
                 {
-                  if ( v14 == v20->field_44[0].list )
-                    _invalid_parameter_noinfo(v3);
-                  if ( (list_node *)v6 == list->list )
-                    _invalid_parameter_noinfo(v3);
-                  LOBYTE(v8) = sub_47BFA0(v17, v6->bullet, (bullet_class *)v14->value);
+                    c_meta *mt2 = *m2;
+
+                    if ( !sub_47C080(scn, mt1, mt2))
+                        sub_47BFA0(scn, mt1, mt2);
                 }
-              }
-              if ( v14 == v20->field_44[0].list )
-                LOBYTE(v8) = _invalid_parameter_noinfo(v3);
-              v14 = v14->next_node;
+
+                if (mt1->get_pframe()->aflags & AF_HITSALL)
+                {
+                    metalst *lst2 = &scn->list2[chr->player_index];
+                    for(metalst_iter m2 = lst2->begin(); m2 != lst2->end(); m2++)
+                    {
+                        c_meta *mt2 = *m2;
+
+                        if ( !sub_47C080(scn, mt1, mt2))
+                            sub_47BFA0(scn, mt1, mt2);
+                    }
+                }
             }
-          }
-          v1 = v17;
-          current_char = v18;
         }
-      }
-      if ( (list_node *)v6 == list->list )
-        LOBYTE(v8) = _invalid_parameter_noinfo(v3);
-      v6 = v6->next_bullet;
     }
-    ++current_char;
-    v15 = v19-- == 1;
-    v18 = current_char;
-  }
-  while ( !v15 );
-  return (char)v8;
-  */
+}
 
 
-      bul_vec * blst = getbulllist();
-    for(int32_t i=blst->size()-1; i>=0; i--)
+void sub_47C180(c_scene *scn)
+{
+    for (int8_t c=0; c < 2; c++) //Bullets to own bullets hit, if AF_HITSALL
     {
-        if ( !(*blst)[i]->field_190 && (*blst)[i]->field_194)
+        metalst *lst = &scn->list2[c];
+
+        for(metalst_iter i=lst->begin(); i != lst->end(); i++)
         {
-            scn_char_ss2((*blst)[i]);
-//            if ( !sub_47C080(scn, (*blst)[i], scn->chrs[1]) )
-//              sub_47BFA0(scn, (*blst)[i], scn->chrs[1]);
+            c_meta *mt =  *i;
+            char_frame *frm = mt->get_pframe();
+
+            if ((frm->aflags & AF_HITSALL) && !(frm->fflags & (FF_CH_ON_HIT | FF_INV_AIRBORNE)) && mt->field_1BC > 0)
+            {
+                for(metalst_iter j=lst->begin(); j != lst->end(); j++)
+                {
+                    c_meta *mt2 =  *j;
+                    char_frame *frm2 = mt2->get_pframe();
+
+                    if (mt2 != mt)
+                        if (!(frm2->fflags & (FF_CH_ON_HIT | FF_INV_AIRBORNE)) && mt2->field_1BC > 0)
+                            sub_47AD60(scn,mt,mt2);
+                }
+
+            }
         }
     }
 
+    metalst *lst1 = &scn->list2[0];
+    metalst *lst2 = &scn->list2[1];
+
+    for(metalst_iter i=lst1->begin(); i != lst1->end(); i++)
+    {
+        c_meta *mt =  *i;
+        char_frame *frm = mt->get_pframe();
+
+        if (!(frm->fflags & (FF_CH_ON_HIT | FF_INV_AIRBORNE)) && mt->field_1BC > 0)
+        {
+            for(metalst_iter j=lst2->begin(); j != lst2->end(); j++)
+            {
+                c_meta *mt2 =  *j;
+                char_frame *frm2 = mt2->get_pframe();
+
+                if (!(frm2->fflags & (FF_CH_ON_HIT | FF_INV_AIRBORNE)) && mt2->field_1BC > 0)
+                    sub_47AD60(scn,mt,mt2);
+            }
+        }
+    }
 }

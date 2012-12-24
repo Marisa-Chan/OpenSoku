@@ -329,6 +329,9 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 
                 }
 
+                if ( frm->fflags & FF_ATK_AS_HIT )
+                    frm->box_hit = frm->box_atk;
+
                 if (pat_version == 5)
                 {
                     f->read(24, frm->unk21);

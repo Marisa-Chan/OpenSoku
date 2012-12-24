@@ -5,8 +5,8 @@ class char_c;
 
 class c_bullet : public c_meta
 {
-    friend void updatebullet();
-    friend void drawbullet(int8_t order);
+    friend void updatebullet(char_c *chr);
+    friend void drawbullet(char_c *chr, int8_t order);
 
     protected:
     c_bullet *bul_parent;
@@ -16,17 +16,16 @@ class c_bullet : public c_meta
 
     float addition[12];
 
-    bool  active;
-
-
     public:
+
+    bool  active;
 
     bool sub_48C640(int32_t p);
     bool sub_48C6A0(int32_t p1, int32_t p2, int32_t p3);
     void sub_48C4B0(float p1, float p2, float p3);
 
 
-
+    int16_t field_360;
     int16_t field_36C;
     int16_t field_370;
     int16_t field_378;
@@ -47,12 +46,12 @@ class c_bullet : public c_meta
     virtual ~c_bullet();
 };
 
-void addbullet(char_c *chr,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num);
-void updatebullet();
-void drawbullet(int8_t order);
+typedef list<c_bullet *> bullist;
+typedef list<c_bullet *>::iterator bullist_iter;
 
-typedef vector<c_bullet *> bul_vec;
-bul_vec *getbulllist();
+void addbullet(char_c *chr,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num);
+void updatebullet(char_c *chr);
+void drawbullet(char_c *chr, int8_t order);
 
 #include "chars/marisa_bullets.h"
 

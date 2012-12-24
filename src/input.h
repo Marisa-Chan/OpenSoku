@@ -182,6 +182,8 @@ public:
     uint8_t keyFramed(inp_keys key);
     int8_t gX(int8_t dir);
     int8_t gY();
+    void   setgX(int8_t dir);
+    void   setgY(int8_t dir);
 
     void zero_input();
 

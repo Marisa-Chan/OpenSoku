@@ -46,6 +46,12 @@ class c_scene
     background  *bkg;
     frame_box   ibox;  //box
 
+    metalst     list1[2];
+    metalst     list2[2];
+    metalst     list3[2];
+    int32_t     scn_p1[2];
+    int32_t     scn_p2[2];
+
     //c_scene();
 
 

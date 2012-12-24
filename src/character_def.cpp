@@ -9,6 +9,10 @@
 
 char_c::char_c(inp_ab *func)
 {
+
+    input_function = 0; //HACK
+    field_578 = 0;
+
     if (!pgp)
         pgp = new char_graph;
 
@@ -28,7 +32,6 @@ char_c::char_c(inp_ab *func)
 
     hit_stop = 0;
     field_4A6 = 0;
-    field_4A8 = 0;
     field_4C4 = 0;
     field_564 = 1.0;
     field_568 = 1.0;
@@ -60,8 +63,6 @@ char_c::char_c(inp_ab *func)
 
     time_stop = 0;
 
-
-    field_180 = 1;
     field_1A4 = 0;
     field_1A8 = 0;
 
@@ -75,13 +76,15 @@ char_c::char_c(inp_ab *func)
     tengu_fan  = 0;
 
     field_1BC = 1;
+    field_4A4 = 0;
+    field_560 = 0;
     field_4BE = 0;
     field_51E = 0;
     field_575 = 0;
     field_51C = 0;
     field_520 = 0;
     field_522 = 0;
-    field_538 = 0;
+    field_538 = 1.0;
     field_4BE = 0;
     field_4BC = 0;
     field_4BA = 0;
@@ -92,6 +95,7 @@ char_c::char_c(inp_ab *func)
     field_574 = 0;
     field_576 = 0;
     field_880 = 0;
+    field_84E = 0;
 
     h_inerc = 0;
     v_inerc = 0;
@@ -106,6 +110,8 @@ char_c::char_c(inp_ab *func)
     max_health = 10000;
 
     enemy = NULL;
+
+    cards_added = 0;
 
     for (uint32_t i=0; i<MAX_CHR_SFX; i++)
         sfx[i] = NULL;
@@ -875,7 +881,7 @@ void char_c::func16()
             air_dash_cnt = 0;
 
 
-    if ( controlling_type == 0 || enemy->controlling_type == 2 )
+    if ( controlling_type == 0 && enemy->controlling_type == 2 )
     {
         if ( get_seq() >= 197 && get_seq() <= 199 )
         {
@@ -1661,6 +1667,15 @@ int8_t char_c::gY()
     return input->gY();
 }
 
+void char_c::setgX(int8_t dir)
+{
+    input->setgX(dir);
+}
+void char_c::setgY(int8_t dir)
+{
+    input->setgY(dir);
+}
+
 
 void char_c::sub_486FD0(float p1, float p2)
 {
@@ -1909,6 +1924,11 @@ bool char_is_shock(char_c *chr)
     return s >= 50 && s < 150;
 }
 
+bool char_is_block_knock(char_c *chr)
+{
+    uint32_t s = chr->get_seq();
+    return s >= 150 && s < 168;
+}
 
 void char_h_move(char_c *chr, float move)
 {
@@ -1976,7 +1996,7 @@ bool hi_jump_after_move(char_c *chr)
 bool border_escape_ground(char_c *chr)
 {
     if ( chr->pres_move & PMOVE_DD  && chr->field_80E == 0)
-        if (  chr->get_seq() >= 150  && chr->get_seq() <= 157 && (chr->max_spell_energy >= 200 || chr->weather_var == 0) )
+        if (  char_is_block_knock(chr) && (chr->max_spell_energy >= 200 || chr->weather_var == 0) )
         {
             if ( chr->gY() <= 0 )
             {
@@ -2210,4 +2230,7 @@ void char_c::stopping_posit(float p)
         reset_forces();
 }
 
-
+bullist *char_c::get_bullets()
+{
+    return &bullets;
+}

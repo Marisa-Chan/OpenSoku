@@ -80,7 +80,6 @@ int main(int argc, char *argv[])
 
     char_c *alice = new char_alice(inp_createinput(INP_TYPE_NONE));
 
-
 //    uint32_t i = 0;
 //
 

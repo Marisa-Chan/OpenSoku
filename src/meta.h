@@ -26,7 +26,7 @@
 #define FF_HJC          0x200000
 #define FF_UNK400000    0x400000
 #define FF_UNK800000    0x800000
-#define FF_UNK1000000   0x1000000
+#define FF_ATK_AS_HIT   0x1000000
 
 #define AF_UNK1         0x1
 #define AF_MID_HIT      0x2
@@ -100,6 +100,11 @@
 
 class char_c;
 
+class c_meta;
+
+typedef list<c_meta *> metalst;
+typedef list<c_meta *>::iterator metalst_iter;
+
 class c_meta : public moveable
 {
     private:
@@ -110,11 +115,17 @@ class c_meta : public moveable
     c_meta(char_graph *pgp);
     c_meta();
 
-    int16_t field_180;
+    c_meta  *parent_mlist;
+    metalst childs;
     int32_t field_190;
     int8_t  field_194;
     int16_t hit_stop;
+    int8_t  field_1A0;
+    int8_t  field_1A1;
     int16_t field_1A2;
+    float   field_1A4;
+    float   field_1A8;
+    int8_t  field_1AC;
     int16_t field_1B4;
     int8_t  field_1B8;
     int16_t field_1BC;
@@ -122,6 +133,8 @@ class c_meta : public moveable
 
     int16_t field_1C8;
     int8_t  field_1CA;
+    int8_t  atk_box_cnt; //0x1CB
+    int8_t  hit_box_cnt; //0x1CC
 
     int16_t health;
     int16_t max_health;
@@ -140,6 +153,8 @@ class c_meta : public moveable
     frame_box *hit_area_flags[6];
 
     frame_box *field_348;
+
+    custom_box *cust_box;
 
     //////////
 

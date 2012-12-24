@@ -227,6 +227,15 @@ int8_t inp_ab::gY()
     return y_axis;
 }
 
+void inp_ab::setgX(int8_t dir)
+{
+    x_axis = dir;
+}
+
+void inp_ab::setgY(int8_t dir)
+{
+    y_axis = dir;
+}
 
 
 

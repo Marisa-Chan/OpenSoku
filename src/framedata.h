@@ -12,6 +12,15 @@ struct frame_box
 	int32_t     y2;
 };
 
+struct custom_box
+{
+    frame_box box;
+    int16_t angle;
+    int16_t c_x;
+    int16_t c_y;
+    //int16_t unk1;
+};
+
 struct box_box
 {
 	float		x1;
