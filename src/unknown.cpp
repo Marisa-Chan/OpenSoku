@@ -225,8 +225,6 @@ void set_mlist_hitflag(c_meta *plr, int8_t flag )
     }
 }
 
-void reset_ibox(c_scene *);
-
 bool sub_47AD60(c_scene *scn, c_meta *plr, c_meta *enm)
 {
 
@@ -294,7 +292,7 @@ bool sub_47AD60(c_scene *scn, c_meta *plr, c_meta *enm)
         set_mlist_hitflag(plr, 4);
         set_mlist_hitflag(enm, 4);
     }
-    reset_ibox(scn);
+    scn->reset_ibox();
     return true;
 }
 
@@ -383,15 +381,6 @@ bool sub_479BC0(c_scene *scn, c_meta *p1, c_meta *p2)
 }
 
 
-void reset_ibox(c_scene *scn)
-{
-    scn->ibox.x1 = -10000;
-    scn->ibox.y1 = -10000;
-    scn->ibox.x2 = 10000;
-    scn->ibox.y2 = 10000;
-}
-
-
 bool sub_47ABE0(c_scene *scn, c_meta *plr, c_meta *enm)
 {
     char_frame *frm = plr->get_pframe();
@@ -404,7 +393,7 @@ bool sub_47ABE0(c_scene *scn, c_meta *plr, c_meta *enm)
     {
         plr->field_190 = 3;
         enm->field_190 = 3;
-        reset_ibox(scn);
+        scn->reset_ibox();
         return true;
     }
     return false;
@@ -452,7 +441,7 @@ bool sub_47AAA0(c_scene *scn, c_meta *plr, char_c *enm)
     }
     else
     {
-//        call_effects_func3_2(scn, 201, enm->dir);
+        scene_add_effect_ibox(scn,201,enm->dir);
 
         if (frm->aflags & AF_UNK400000 )
         {
@@ -473,13 +462,13 @@ bool sub_47AAA0(c_scene *scn, c_meta *plr, char_c *enm)
     }
 
     enm->field_4C6++;
-    //  call_effects_func3_2(scn, 52, enm->dir);
-    reset_ibox(scn);
+    scene_add_effect_ibox(scn, 52, enm->dir);
+    scn->reset_ibox();
     return true;
 }
 
 int32_t dword_8841B4 = 3; //HACK
-int8_t dummy_block_type = 3;
+int8_t dummy_block_type = 0;
 
 int8_t sub_469750(char_c *plr, uint32_t enemu_aflags)
 {
@@ -680,8 +669,8 @@ void sub_47A980(c_scene *scn, c_meta *plr, char_c *enm)
 
     enm->flip_to_enemy();
     scene_play_sfx(20);
-    //call_effects_func3_2(v4, 53, enm->meta.rend_cls.dir); //HACK
-    reset_ibox(scn);
+    scene_add_effect_ibox(scn, 53, enm->dir);
+    scn->reset_ibox();
 }
 
 bool sub_47B5A0(c_scene *scn, c_meta *plr, char_c *enm)
@@ -778,8 +767,8 @@ bool sub_47B5A0(c_scene *scn, c_meta *plr, char_c *enm)
 
     enm->flip_to_enemy();
     scene_play_sfx(20);
-    //call_effects_func3_2(scn, 50, enm_->meta.rend_cls.dir); // HACK
-    reset_ibox(scn);
+    scene_add_effect_ibox(scn, 50, enm->dir);
+    scn->reset_ibox();
     return false;
 }
 
@@ -851,8 +840,8 @@ bool sub_47B8F0(c_scene *scn, c_meta *plr, char_c *enm)
     enm->flip_to_enemy();
     scene_play_sfx(21);
 
-    //call_effects_func3_2(v18, 51, v3->meta.rend_cls.dir); //HACK
-    reset_ibox(scn);
+    scene_add_effect_ibox(scn, 51, enm->dir);
+    scn->reset_ibox();
     return false;
 }
 
@@ -1109,17 +1098,14 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
     }
 
 
-    /*   if ( !playing_seq_is_in_50___150(enm) )
+       if ( !char_is_shock(enm) )
        {
-           for ( i = 0; i <= a2a; ++i )
-           {
-               if ( i >= 3 )
-                   break;
-               call_effects_func3_2(thisa, 201, enm->rend_cls.dir);
-           }
-           if ( a2a >= 2 )
-               call_effects_func3_2(thisa, 201, enm->rend_cls.dir);
-       }*/
+           for (int8_t i = 0; i <= atype && i < 3; ++i )
+               scene_add_effect_ibox(scn, 201, enm->dir);
+
+           if ( atype >= 2 )
+               scene_add_effect_ibox(scn, 201, enm->dir);
+       }
 
     plr->field_194 = plr->field_1BC - 1;
     plr->hit_stop = frm->flag196_char;
@@ -1141,7 +1127,7 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
         //v22 = sub_464240(plr);
         //v23 = (plr->field_198 * (((5726623064i64 * v22) >> 32) + (((5726623064i64 * v22) >> 32) >> 31)));
         dmg = sub_464240(plr);
-        //call_effects_func3_2(thisa, 54, plr->rend_cls.dir);
+        scene_add_effect_ibox(scn, 54, plr->dir);
     }
     else
     {
@@ -1205,8 +1191,8 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
     if ( fallseq >= 0 )
         enm->set_seq(fallseq);
 
-    //call_effects_func3_2(thisa, v5->props_unk16, plr->rend_cls.dir);
-    reset_ibox(scn);
+    scene_add_effect_ibox(scn,frm->unk19, plr->dir);
+    scn->reset_ibox();
     scene_play_sfx(frm->hit_sfx);
 }
 
@@ -1334,7 +1320,7 @@ bool sub_47AD00(c_scene *scn, c_meta *plr, c_meta *enm)
             return false;
         sub_464890(enm, plr);
         plr->field_1A0++;
-        reset_ibox(scn);
+        scn->reset_ibox();
     }
     return true;
 }
@@ -1378,8 +1364,8 @@ char sub_47AC70(c_scene *scn, c_meta *plr, c_meta *enm)
         plr->hit_stop = frm->flag196_char;
         enm->health -= frm->damage;
         scene_play_sfx(frm->hit_sfx);
-        //scene_add_effect(frm->call_effects_func3_2(scn, frm->unk19, plr->dir); HACK
-        reset_ibox(scn);
+        scene_add_effect_ibox(scn, frm->unk19, plr->dir);
+        scn->reset_ibox();
         return true;
     }
 

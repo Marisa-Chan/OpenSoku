@@ -78,6 +78,7 @@ class sc_fx_sprite
     bool set_seq(sc_seq *sq);
     void reset_seq();
     void set_frame(uint32_t frm);
+    void set_elaps_frames(uint32_t frm);
     bool next_frame(bool ignore_loop = false);
     bool next_subseq();
     bool set_subseq(uint32_t idx);
@@ -96,7 +97,7 @@ class sc_fx_sprite
 
 class c_meta;
 
-class c_scene_fx
+class c_scene_fx: moveable
 {
     private:
     int32_t index;
@@ -105,27 +106,12 @@ class c_scene_fx
     c_scene_fx(int32_t idx, sc_seq *sq, c_meta *chr, float x, float y, int8_t dir, int8_t order);
     sc_fx_sprite viz;
 
-    float x;
-    float y;
-    int8_t dir;
     int8_t order;
-    float h_inerc;
-    float v_inerc;
-    float v_force;
-
-    float angX;
-    float angY;
-    float angZ;
-
-    float scaleX;
-    float scaleY;
 
     bool  active;
 
-	uint8_t  c_A;
-	uint8_t  c_R;
-	uint8_t  c_G;
-	uint8_t  c_B;
+    float par1;
+    float par2;
 
 	c_meta *parent;
 
@@ -135,6 +121,8 @@ class c_scene_fx
 
     uint32_t get_subseq();
     uint32_t get_frame();
+    void set_frame(uint32_t frm);
+    void set_elaps_frames(uint32_t frm);
     uint32_t get_frame_time();
     uint32_t get_elaps_frames();
     sc_fx_frame * get_pframe();

@@ -42,6 +42,9 @@ class moveable
 	void setOrigin(float x, float y);
 	void reset_ofs();
 
+	void set_vec_speed(float angle, float speed);
+	void set_vec_speed_2(float angle, float speed);
+
 	void set_real_size(int16_t w, int16_t h);
 
 };

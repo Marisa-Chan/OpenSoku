@@ -10,7 +10,7 @@
 char_c::char_c(inp_ab *func)
 {
 
-    input_function = 0; //HACK
+    input_function = 1; //HACK
     field_578 = 0;
 
     if (!pgp)
@@ -150,10 +150,10 @@ void char_c::draw()
     // gr_draw_box(x,-y,255,0,0,1);
     // gr_draw_box(x,-y-y_off,0,255,0,1);
 
-    for (uint32_t i = 0; i<get_pframe()->box_hit.size(); i++)
+    for (uint32_t i = 0; i<get_pframe()->box_atk.size(); i++)
         //if (atk_area_2o[i])
     {
-        frame_box *bx = &hit_area_2o[i];
+        frame_box *bx = &atk_area_2o[i];
         gr_draw_box(bx->x1,
                     bx->y1,
                     bx->x2-bx->x1,
@@ -1788,14 +1788,8 @@ void char_c::set_seq_params()
         field_571 = 1;
         field_572 = 1;
         //sub_4835C0();
-        /*v13 = 5;
-        do
-        {
-          v14 = v1->rend_cls.y_pos + 100.0;
-          scene_add_effect(v1, 201, v1->rend_cls.x_pos, v14, v1->rend_cls.dir, 1);
-          --v13;
-        }
-        while ( v13 );*/
+        for (int8_t i = 0; i < 5; i++)
+            scene_add_effect(this,201,x,y+100,dir,1);
 
         field_7D0++;
         x_off = x_delta;
@@ -1803,14 +1797,8 @@ void char_c::set_seq_params()
 
         hit_stop = 5;
 
-
-        /*v21 = v1->rend_cls.y_pos + 100.0;
-        v22 = v1->rend_cls.x_pos - (double)(50 * (signed int)(char)dir);
-        scene_add_effect(v1, 38, v22, v21, dir, 1);
-
-        v23 = v1->rend_cls.y_pos + 100.0;
-        v25 = v1->rend_cls.x_pos - (double)(50 * (signed int)v1->rend_cls.dir);
-        scene_add_effect(v1, 59, v25, v23, v1->rend_cls.dir, 1);*/
+        scene_add_effect(this,38, x - dir*50, y+100, dir, 1);
+        scene_add_effect(this,59, x - dir*50, y+100, dir, 1);
 
         h_inerc = 0.0;
         v_inerc = 0.0;
@@ -1836,43 +1824,28 @@ void char_c::set_seq_params()
         field_572 = 1;
         field_7D0++;
         //sub_4835C0();
-        /*v28 = 5;
-        do
-        {
-          scene_add_effect(v1, 201, v1->rend_cls.x_pos, v1->rend_cls.y_pos, v1->rend_cls.dir, 1);
-          --v28;
-        }
-        while ( v28 );*/
 
+        for (int8_t i=0; i < 5; i++)
+            scene_add_effect(this,201, x, y, dir, 1);
 
         h_inerc = 0.0;
         v_inerc = 0.0;
         v_force = 0.0;
         //shake_camera(4.0);
         scene_play_sfx(22);
-        /*v29 = v1->rend_cls.dir;
-        v30 = v1->rend_cls.y_pos + 100.0;
-        v31 = v30;
-        v32 = v1->rend_cls.x_pos - (50 * v29);
-        scene_add_effect(v1, 38, v32, v31, v29, 1);
-        v33 = v1->rend_cls.y_pos + 100.0;
-        v34 = v33;
-        v35 = v1->rend_cls.x_pos - (50 * v1->rend_cls.dir);
-        scene_add_effect(v1, 59, v35, v34, v1->rend_cls.dir, 1);*/
+
+        scene_add_effect(this, 38, x - 50*dir, y+100, dir, 1);
+        scene_add_effect(this, 59, x - 50*dir, y+100, dir, 1);
 
         angZ = 0;
         break;
 
     case 97:
         //sub_4835C0();
-        /*scene_add_effect(v1, 58, v1->rend_cls.x_pos, v1->rend_cls.y_pos, v1->rend_cls.dir, -1);
-        v38 = 5;
-        do
-        {
-          scene_add_effect(v1, 201, v1->rend_cls.x_pos, v1->rend_cls.y_pos, v1->rend_cls.dir, 1);
-          --v38;
-        }
-        while ( v38 );*/
+        scene_add_effect(this, 58, x, y, dir, -1);
+
+        for (int8_t i=0; i < 5; i++)
+            scene_add_effect(this, 201, x, y, dir, 1);
         angZ = 0;
         if ( field_882 > 0 )
             set_seq(96);

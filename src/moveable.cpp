@@ -72,3 +72,15 @@ void moveable::set_real_size(int16_t w, int16_t h)
     rs_h = h;
     scale_real = true;
 }
+
+void moveable::set_vec_speed(float angle, float speed)
+{
+    h_inerc = cos_deg(angle) * speed;
+    v_inerc = -sin_deg(angle) * speed;
+}
+
+void moveable::set_vec_speed_2(float angle, float speed)
+{
+    h_inerc = cos_deg(angle) * speed;
+    v_inerc = sin_deg(angle) * speed;
+}

@@ -133,13 +133,14 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     chrs[0]->player_index = 0;
     chrs[1]->player_index = 1;
 
-    chrs[1]->controlling_type = 3;
+   // chrs[1]->controlling_type = 3;
 
     set_camera(chrs[0],chrs[1]);
     init_scene_height();
 
     img_sp.load_dat();
     randomm.set_seed(time(NULL));
+    reset_ibox();
 }
 
 void c_scene::draw_scene()
@@ -157,6 +158,7 @@ void c_scene::draw_scene()
 
     for (uint32_t i=0; i < 2; i++)
         drawbullet(chrs[i],1);
+
 }
 
 void c_scene::update_char_anims()
@@ -274,6 +276,14 @@ void c_scene::func16()
 void c_scene::func12()
 {
 
+}
+
+void c_scene::reset_ibox()
+{
+    ibox.x1 = -10000;
+    ibox.y1 = -10000;
+    ibox.x2 = 10000;
+    ibox.y2 = 10000;
 }
 
 void scene_subfunc1(c_scene *scn)
@@ -853,9 +863,8 @@ void scene_check_collisions(c_scene *scn)
 
     if ( !scene_collid(scn, &p1_box, &p2_box) )
         return;
-//    reset_ibox(v1);
 
-
+    scn->reset_ibox();
 
     float p1_frc = (p2->field_74C + p1->h_inerc) * p1->field_564;
     float p2_frc = (p1->field_74C + p2->h_inerc) * p2->field_564;
@@ -1272,6 +1281,13 @@ c_scene_sp *scene_get_sp()
 void scene_add_effect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
     img_sp.addeffect(chr, idx,x,y,dir, order);
+}
+
+void scene_add_effect_ibox(c_scene *scn, int32_t idx, int8_t dir)
+{
+    float x = (scn->ibox.x1 + scn->ibox.x2) / 2.0;
+    float y = -(scn->ibox.y1 + scn->ibox.y2) / 2.0;
+    img_sp.addeffect(NULL,idx,x,y,dir,1);
 }
 
 

@@ -93,7 +93,6 @@ int main(int argc, char *argv[])
 
     c_scene *scn = new c_scene(bkg,marisa,alice);
 
-
     while(!kb.rawPressed(kC_Escape))
     {
 

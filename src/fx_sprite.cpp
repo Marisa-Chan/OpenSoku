@@ -119,6 +119,11 @@ void sc_fx_sprite::set_frame(uint32_t frm)
     frame_val_set();
 }
 
+void sc_fx_sprite::set_elaps_frames(uint32_t frm)
+{
+    elaps_frames = frm;
+}
+
 bool sc_fx_sprite::next_frame(bool ignore_loop)
 {
     cur_frame = (cur_frame + 1) % _num_frames;

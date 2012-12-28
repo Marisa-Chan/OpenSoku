@@ -61,6 +61,8 @@ class c_scene
     void upd_camera(char_c *p1,char_c *p2);
     void apply_camera();
 
+    void reset_ibox();
+
     void draw_scene();
     void update_char_anims();
     void players_input();
@@ -86,6 +88,7 @@ void scene_load_sounds();
 void scene_play_sfx(uint32_t idx);
 
 void scene_add_effect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order);
+void scene_add_effect_ibox(c_scene *scn, int32_t idx, int8_t dir);
 c_scene_sp *scene_get_sp();
 
 
