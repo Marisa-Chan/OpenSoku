@@ -14,3 +14,9 @@ First steps: http://www.youtube.com/watch?v=GgN6UvbIjVc (old)
 2012-12-31: http://www.youtube.com/watch?v=9ZnOTxD1FHI
 
 License: GPLv2
+
+For build you need sfml-2.0 or above
+
+ cd src
+ make         //for linux
+ make win32   //for windows building by mingw crosscompile
