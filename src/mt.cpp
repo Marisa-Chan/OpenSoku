@@ -51,8 +51,8 @@ uint32_t mtwist::get_next()
 
 uint32_t mtwist::get_next_ranged(uint32_t range)
 {
-    //return get_next() / (0xFFFFFFFF / range);
-    return get_next() % range;
+    return get_next() / (0xFFFFFFFF / range);
+    //return get_next() % (range+1);
 }
 
 mtwist::mtwist()

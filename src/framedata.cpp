@@ -334,7 +334,7 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 
                 if (pat_version == 5)
                 {
-                    f->read(24, frm->unk21);
+                    f->read(24, frm->extra1);
                     f->read(6, frm->unk22);
                 }
 

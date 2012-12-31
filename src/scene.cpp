@@ -286,6 +286,77 @@ void c_scene::reset_ibox()
     ibox.y2 = 10000;
 }
 
+void sub_462FF0(char_c *chr)
+{
+  char_frame *frm = chr->get_pframe();
+  if ( !(frm->fflags & FF_UNK100000) )
+  {
+    if ( chr->field_4BE < 100 )
+    {
+      if ( chr->health > 0 )
+      {
+        if ( !(char_on_ground(chr) && chr->field_4C4 == 0) )
+        {
+          if ( chr->field_4BA )
+          {
+            chr->field_4BA--;
+          }
+          else
+          {
+            if ( chr->input_function || chr->controlling_type != 3 )
+            {
+              if ( chr->gX(1) )
+              {
+                if ( chr->keyDown(INP_A) || chr->keyDown(INP_B) || chr->keyDown(INP_C) || chr->keyDown(INP_D) )
+                {
+                  chr->field_4BE = 0;
+                  chr->flip_to_enemy();
+                  if (chr->gX(chr->dir) <= 0)
+                    chr->set_seq(181);
+                  else
+                    chr->set_seq(180);
+                }
+              }
+            }
+            else
+            {//HACK
+              /*v3 = practice_params->dummy_tek;
+              if ( v3 )
+              {
+                v4 = v3 - 1;
+                if ( v4 )
+                {
+                  if ( v4 == 1 )
+                  {
+                    v1->field_4BE = 0;
+                    flip_to_enemy(v1);
+                    v5 = v1->meta.vtbl;
+                    v6 = get_MT_range(2u);
+                    v5->func2_set_seq(v1, v6 + 180);// random air tek
+                  }
+                }
+                else
+                {
+                  v1->field_4BE = 0;
+                  flip_to_enemy(v1);
+                  v1->meta.vtbl->func2_set_seq(v1, 181);
+                }
+              }
+              else
+              {
+                v1->field_4BE = 0;
+                flip_to_enemy(v1);
+                v1->meta.vtbl->func2_set_seq(v1, 180);
+              }
+              */
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 void scene_subfunc1(c_scene *scn)
 {
     for (uint32_t i=0; i < 2; i++)
@@ -314,9 +385,9 @@ void scene_subfunc1(c_scene *scn)
                     if ( !scn->chrs[i]->field_4C0 )
                         scn->chrs[i]->field_4BE = 0;
                 }
-                /*if (char_is_shock(scn->chrs[i]))
+                if (char_is_shock(scn->chrs[i]))
                     if ( scn->chrs[i]->y > 0.0 )
-                        sub_462FF0(scn->chrs[i]);*/ //HACK
+                        sub_462FF0(scn->chrs[i]);
             }
             if ( scn->chrs[i]->get_seq() < 300 )
             {
@@ -668,10 +739,7 @@ void  sub_47BE70(c_scene *scn, c_meta *plr, char_c *enm);
 
 void sub_47C180(c_scene *scn);
 void sub_47C430(c_scene *scn);
-void sub_4689D0(char_c *, int32_t)
-{
-    //HACK
-}
+
 
 void scene_subfunc2(c_scene *scn)
 {

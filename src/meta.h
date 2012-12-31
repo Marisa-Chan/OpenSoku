@@ -117,6 +117,7 @@ class c_meta : public moveable
 
     c_meta  *parent_mlist;
     metalst childs;
+    int8_t  field_135;
     int32_t field_190;
     int8_t  field_194;
     int16_t hit_stop;

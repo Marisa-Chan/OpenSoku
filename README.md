@@ -10,3 +10,7 @@ First steps: http://www.youtube.com/watch?v=GgN6UvbIjVc (old)
 2012-12-06: http://www.youtube.com/watch?v=gTxDvd64Ktg
 
 2012-12-12: http://www.youtube.com/watch?v=TESh097e_ms
+
+2012-12-31: http://www.youtube.com/watch?v=9ZnOTxD1FHI
+
+License: GPLv2

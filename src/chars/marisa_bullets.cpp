@@ -876,6 +876,46 @@ void marisa_bullets::func10()
             }
         }
         break;
+    case 998:
+      angZ += 5.0;
+      if ( get_subseq() == 0)
+      {
+          if (parent->get_seq() >= 150 && parent->get_seq() < 154)
+          {
+              x = parent->x + 57 * parent->dir;
+            y = parent->y + 94;
+            dir = parent->dir;
+          }
+          else if (parent->get_seq() >= 154 && parent->get_seq() < 158)
+          {
+            x = parent->x + 57 * parent->dir;
+            y = parent->y + 60;
+            dir = parent->dir;
+          }
+          else if (parent->get_seq() == 158)
+          {
+              x = parent->x + 57 * parent->dir;
+            y = parent->y + 100;
+            dir = parent->dir;
+          }
+          else
+          {
+              next_subseq();
+              parent->bbarrier_show = false;
+          }
+      }
+      else if ( get_subseq() == 1)
+      {
+          if (c_A >= 10)
+            c_A -= 10;
+          else
+            active = false;
+
+      }
+
+        if (active && process())
+            active = false;
+        break;
     default:
         if (sprite.process())
             active = false;
@@ -990,7 +1030,11 @@ void marisa_bullets::set_seq_params()
             else
                 field_37C = 1.0;
         }
-        return;
+        break;
+    case 998:
+      angZ = 0;
+      angY = 60;
+      break;
     }
 }
 

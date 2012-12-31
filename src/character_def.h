@@ -26,7 +26,6 @@ class char_c : public c_meta
 
     int16_t field_4BA;
     int16_t field_4BC;
-    int16_t field_4BE;
     int16_t field_4C0;
     int8_t  field_4C4;
     int8_t  field_571;
@@ -57,6 +56,7 @@ class char_c : public c_meta
     int16_t field_4A6;
     int16_t field_4AA;
     int16_t field_4AC;
+    int16_t field_4BE;
     int16_t field_4C2;
     int32_t field_4C8;
     int8_t  field_4CC;
@@ -101,7 +101,10 @@ class char_c : public c_meta
     int16_t field_7D8;
     float   field_7DC;
     float   field_7E4;
+    float   field_7E8;
+    float   field_7EC;
     float   field_7F0;
+    bool    bbarrier_show;  //if true - block barrier showing  0x7F5
     int8_t  field_7F7;
     int16_t field_7F8;
     int8_t  field_800;
@@ -115,8 +118,10 @@ class char_c : public c_meta
     int8_t  field_80E;
     int32_t field_810;
     int32_t field_814;
+    int16_t field_82A;
     int16_t field_836;
     int32_t field_838;
+    int8_t  field_83C;
     int32_t field_840;
     int32_t field_844;
     int32_t field_848;
@@ -124,9 +129,17 @@ class char_c : public c_meta
     int16_t field_84E;
     int16_t field_850;
     int16_t field_852;
+    float   field_854;
+    float   field_858;
+    float   field_85C;
+    float   field_860;
+    float   field_864;
     int16_t field_882;
     int16_t field_892;
     int16_t field_890;
+    int16_t field_894;
+    float   field_898;
+    float   field_89C;
     int16_t weather;        //Must be global var
     int16_t weather_time;   //Must be global var
     int16_t weather_var;    //Must be global var???
@@ -192,6 +205,7 @@ class char_c : public c_meta
     bool field_sq_check();
     void flip_with_force();
     void reset_forces();
+    void health_to_max();
 
     void play_sfx(uint32_t idx);
 
@@ -234,5 +248,7 @@ bool border_escape_air(char_c *chr);
 bool fwd_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
 bool bkg_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
 bool flying_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash);
+
+void sub_4689D0(char_c *, int32_t);
 
 #endif // CHARACTER_DEF_H_INCLUDED

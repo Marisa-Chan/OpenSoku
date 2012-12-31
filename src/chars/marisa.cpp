@@ -27,8 +27,123 @@ void char_marisa::func10()
     x_delta = 0;
     y_delta = 106;
 
-    if ( hit_stop != 0 /*|| enemy->time_stop != 0 */)
-    return;
+    if ( field_892 <= 0 )
+    {
+        field_892 = 0;
+        field_894 = 0;
+        field_890 = 0;
+        field_898 = 0.0;
+        field_89C = 0.0;
+    }
+    else
+    {
+        if ( get_seq() >= 600 && get_seq() != 615)
+        {
+            field_892 = 0;
+            field_894 = 0;
+            field_890 = 0;
+            field_898 = 0.0;
+            field_89C = 0.0;
+        }
+
+        if ( get_seq() != 615 && field_890 != 50 )
+        {
+            field_892--;
+            field_894--;
+        }
+
+        if ( health <= 0 || enemy->health <= 0 )
+        {
+            field_892 = 0;
+            field_894 = 0;
+            field_890 = 0;
+        }
+
+        if ( field_890 != 50 && (char_is_shock(this) || field_894 <= 0))
+        {
+            field_894 = 0;
+            field_890 = 0;
+        }
+
+        if ( field_890 == 0 )
+        {
+            if ( field_89C > 3.0 )
+            {
+                field_89C -= 0.1;
+                if ( field_89C < 3.0 )
+                    field_89C = 3.0;
+            }
+            else if ( field_89C < 3.0 )
+            {
+                field_89C += 0.1;
+                if ( field_89C > 3.0 )
+                    field_89C = 3.0;
+            }
+        }
+        else if ( field_890 >= 1 && field_890 <= 7 )
+        {
+            if ( field_89C > 12.0 )
+            {
+                field_89C -= 0.1;
+                if ( field_89C < 12.0 )
+                    field_89C = 12.0;
+            }
+            else if ( field_89C < 12.0 )
+            {
+                field_89C += 0.1;
+                if ( field_89C > 12.0 )
+                    field_89C = 12.0;
+            }
+
+            if (field_894 % 5 == 0 && field_890 == 1 && field_894 > 0)
+                field_890 = scene_rand_rng(4) + 2;
+        }
+        else if ( field_890 == 8 )
+        {
+            if ( field_89C > 0.5 )
+            {
+                field_89C -= 0.1;
+                if ( field_89C < 0.5 )
+                    field_89C = 0.5;
+            }
+            else if ( field_89C < 0.5 )
+            {
+                field_89C += 0.1;
+                if ( field_89C > 0.5 )
+                    field_89C = 0.5;
+            }
+        }
+        else if (field_890 == 50)
+        {
+            if ( field_89C > 12.0 ) //HACK MAY BE 3
+            {
+                field_89C -= 0.1;
+                if ( field_89C < 3.0 )
+                    field_89C = 12.0;
+            }
+            else if ( field_89C < 12.0 )
+            {
+                field_89C += 0.1;
+                if ( field_89C > 3.0 )
+                    field_89C = 12.0;
+            }
+        }
+        field_898 -= field_89C;
+    }
+
+    if ( get_seq() >= 150 && get_seq() < 159 && bbarrier_show == false)
+    {
+        bbarrier_show = true;
+        if ( get_seq() >= 150 && get_seq() < 154)
+            addbullet(this,NULL,998, x + dir*57, y + 94, dir, 1, NULL, 0);
+        else if ( get_seq() >= 154 && get_seq() < 158)
+            addbullet(this,NULL,998, x + dir*57, y + 60, dir, 1, NULL, 0);
+        else if ( get_seq() == 158)
+            addbullet(this,NULL,998, x + dir*57, y + 100, dir, 1, NULL, 0);
+    }
+
+    if ( hit_stop != 0 || enemy->time_stop != 0 )
+        return;
 
     int32_t sq = get_seq();
 
@@ -192,6 +307,127 @@ void char_marisa::func10()
                 set_seq(2);
             else
                 set_seq(0);
+        }
+        break;
+    case 197:
+        if ( (get_seq() == 0 && get_frame() <= 4) || get_subseq() == 2 )
+            sub10func(this);
+        if ( get_subseq() < 2 )
+            v_inerc -= v_force;
+        if ( char_on_ground_down(this) && get_subseq() < 2 )
+        {
+            y = getlvl_height(this);
+            reset_forces();
+            set_subseq(2);
+        }
+        else
+        {
+            if (process())
+            {
+                if ( controlling_type == 2)
+                {
+                    set_seq(700);
+                    field_51C = 3;
+                    field_520 = 3;
+                }
+                else
+                {
+                    set_seq(0);
+                    if ( gY() < 0 )
+                        set_seq(1);
+                }
+            }
+            else
+            {
+                if ( get_subseq() == 2 && get_frame() == 3 && get_frame_time() == 0)
+                {
+                    if ( enemy->x < x )
+                        dir = -1;
+                    if ( enemy->x > x )
+                        dir = 1;
+                }
+                if ( get_subseq() == 0 && get_frame() == 5 && get_frame_time() == 0)
+                {
+                    v_inerc = 6.0;
+                    h_inerc = 14.5;
+                    v_force = 0.5;
+                }
+            }
+        }
+        break;
+
+    case 198:
+        if ( (get_subseq() == 0 && get_frame() <= 3) || get_subseq() == 2 )
+            sub10func(this);
+        if ( get_subseq() < 2 )
+            v_inerc -= v_force;
+        if ( char_on_ground_down(this) && get_subseq() < 2 )
+        {
+            y = getlvl_height(this);
+            reset_forces();
+            set_subseq(2);
+        }
+        else
+        {
+            if (process())
+            {
+
+                if ( controlling_type == 2)
+                {
+                    set_seq(700);
+                    field_51C = 3;
+                    field_520 = 3;
+                }
+                else
+                {
+                    set_seq(0);
+                    if ( gY() < 0 )
+                        set_seq(1);
+                }
+            }
+            else
+            {
+                if ( get_subseq() == 2 && get_frame() == 3 && get_frame_time() == 0)
+                {
+                    if ( enemy->x < x )
+                        dir = -1;
+                    if ( enemy->x > x )
+                        dir = 1;
+                }
+                if ( get_subseq() == 0 && get_frame() == 4 && get_frame_time() == 0)
+                {
+                    v_inerc = 6.0;
+                    h_inerc = 14.5;
+                    v_force = 0.5;
+                }
+            }
+        }
+        break;
+    case 199:
+        sub10func(this);
+        if ( process() )
+        {
+
+            if ( controlling_type == 2 )
+            {
+                set_seq(700);
+
+                field_51C = 3;
+                field_520 = 3;
+            }
+            else
+            {
+                set_seq(0);
+                if ( gY() < 0)
+                    set_seq(1);
+            }
+        }
+        else if ( get_frame_time() == 0  && get_frame() == 12)
+        {
+            if (enemy->x < x)
+                dir = -1;
+            else
+                dir = 1;
         }
         break;
     case 200:
@@ -3385,7 +3621,7 @@ void char_marisa::set_seq_params()
         h_inerc = 0.0;
         v_force = 0.60000002;
         field_7DC = 12.0;
-//        field_7EC = 0.0;
+        field_7EC = 0.0;
         x_off = 0;
         y_off = 95;
         break;
