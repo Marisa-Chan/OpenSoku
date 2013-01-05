@@ -4,8 +4,7 @@
 class char_alice: public char_c
 {
     public:
-    char_alice(inp_ab *func);
-    char_alice(inp_ab *func,uint8_t pal);
+    char_alice(inp_ab *func,uint8_t pal = 0);
 
     void func10();
     void func20();

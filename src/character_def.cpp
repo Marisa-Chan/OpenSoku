@@ -129,7 +129,7 @@ void char_c::set_seq(uint32_t idx)
         printf("%d\n",idx);
 }
 
-void char_c::draw()
+void char_c::draw(gr_shader *shader)
 {
 
     sprite.setRotate(angZ);
@@ -138,7 +138,7 @@ void char_c::draw()
 
     sprite.setXY(x,y+y_off);
     sprite.setOrigin(-x_off,-y_off);
-    sprite.draw(1);
+    sprite.draw(1,shader);
 
     //setOrigin(-x_off,-y_off);
     //draw(x,y+y_off,1,dir,angZ);
@@ -151,15 +151,15 @@ void char_c::draw()
     // gr_draw_box(x,-y,255,0,0,1);
     // gr_draw_box(x,-y-y_off,0,255,0,1);
 
-    for (uint32_t i = 0; i<get_pframe()->box_atk.size(); i++)
+    //for (uint32_t i = 0; i<get_pframe()->box_hit.size(); i++)
         //if (atk_area_2o[i])
     {
-        frame_box *bx = &atk_area_2o[i];
-        gr_draw_box(bx->x1,
-                    bx->y1,
-                    bx->x2-bx->x1,
-                    bx->y2-bx->y1,
-                    0,255,0,60,1);
+//        frame_box *bx = &hit_area_2o[i];
+        //gr_draw_box(bx->x1,
+        //            bx->y1,
+          //          bx->x2-bx->x1,
+            //        bx->y2-bx->y1,
+              //      0,255,0,60,1);
     }
     /*if (pf->box_atk.size() > 0)
     {

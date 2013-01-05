@@ -16,8 +16,6 @@
 #define SCR_WIDTH     640.0
 #define VERT_ZERO_PNT 100.0
 #define CHAR_VERT_POS 420.0
-#define BKG_VERT_POS  946.0
-#define BKG_HOR_PAD   60.0
 
 #define CAM_SPEED     0.3
 

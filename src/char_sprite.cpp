@@ -184,9 +184,9 @@ bool char_sprite::process(bool ignore_loop)
     return false;
 }
 
-void char_sprite::draw(uint8_t plane)
+void char_sprite::draw(uint8_t plane, gr_shader *shader)
 {
-    gr_draw_sprite(sprite,blend,plane);
+    gr_draw_sprite(sprite,blend,plane,shader);
 }
 
 
@@ -279,4 +279,9 @@ void char_sprite::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
                            (a*pframe->c_A) / 255);
     else
         gr_setcolor_sprite(sprite, r,g,b,a);
+}
+
+gr_info char_sprite::getInfo()
+{
+    return gr_get_info(sprite);
 }

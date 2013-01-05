@@ -13,6 +13,8 @@ First steps: http://www.youtube.com/watch?v=GgN6UvbIjVc (old)
 
 2012-12-31: http://www.youtube.com/watch?v=9ZnOTxD1FHI
 
+utsuho shader: http://www.youtube.com/watch?v=uj0uL9JWvT8
+
 
 
 License: GPLv2

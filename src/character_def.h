@@ -194,7 +194,7 @@ class char_c : public c_meta
 
     void input_update();
 
-    virtual void draw();
+    virtual void draw(gr_shader *shader = NULL);
 
     virtual void check_seq_input();
 

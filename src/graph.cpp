@@ -5,13 +5,13 @@
 
 static sf::RenderWindow *window = NULL;
 
-
 static gr_state zerostate;
 static gr_state states[MAX_STATES];
 
 void gr_init(uint32_t width, uint32_t height, const char *caption)
 {
     window = new sf::RenderWindow(sf::VideoMode(width,height), caption);
+
     window->setFramerateLimit(60);
 }
 
@@ -149,11 +149,12 @@ void gr_setscale_sprite(gr_sprite *spr, float x, float y)
     spr->setScale(x,y);
 }
 
-void gr_draw_sprite(gr_sprite *spr,gr_blend blend,uint8_t plane)
+void gr_draw_sprite(gr_sprite *spr,gr_blend blend,uint8_t plane, gr_shader *shader)
 {
     if (plane < MAX_STATES)
     {
         sf::BlendMode tmp = states[plane].blendMode;
+
         switch(blend)
         {
             case gr_add:
@@ -170,8 +171,10 @@ void gr_draw_sprite(gr_sprite *spr,gr_blend blend,uint8_t plane)
                 break;
         };
 
+        states[plane].shader = shader;
         window->draw(*spr,states[plane]);
         states[plane].blendMode = tmp;
+        states[plane].shader = NULL;
     }
 }
 
@@ -228,4 +231,68 @@ void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B, uint8_t
 void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B)
 {
     spr->setColor(sf::Color(R,G,B));
+}
+
+void gr_load_shader(gr_shader *shd, const char *vertex, const char *pixel)
+{
+    if (vertex != NULL && pixel != NULL)
+    shd->loadFromFile(vertex,pixel);
+    else if (vertex == NULL && pixel)
+        shd->loadFromFile(pixel,sf::Shader::Fragment);
+    else if (pixel == NULL && vertex)
+        shd->loadFromFile(vertex,sf::Shader::Vertex);
+}
+
+void gr_load_shader_from_mem(gr_shader *shd, const char *vertex,const char *pixel)
+{
+    if (vertex != NULL && pixel != NULL)
+    shd->loadFromMemory(vertex,pixel);
+    else if (vertex == NULL && pixel)
+        shd->loadFromMemory(pixel,sf::Shader::Fragment);
+    else if (pixel == NULL && vertex)
+        shd->loadFromMemory(vertex,sf::Shader::Vertex);
+}
+
+void gr_shader_set_texture(gr_shader *shd, const char *param, gr_tex *tex)
+{
+    if (tex == NULL)
+        shd->setParameter(param,sf::Shader::CurrentTexture);
+    else
+        shd->setParameter(param,*tex);
+}
+
+void gr_shader_set(gr_shader *shd, const char *param, float x)
+{
+    shd->setParameter(param,x);
+}
+
+void gr_shader_set(gr_shader *shd, const char *param, float x, float y)
+{
+    shd->setParameter(param,x,y);
+}
+
+void gr_shader_set(gr_shader *shd, const char *param, float x, float y, float z)
+{
+    shd->setParameter(param,x,y,z);
+}
+
+void gr_shader_set(gr_shader *shd, const char *param, float x, float y, float z, float w)
+{
+    shd->setParameter(param,x,y,z,w);
+}
+
+gr_info gr_get_info(gr_sprite *spr)
+{
+    gr_info tmp;
+    sf::FloatRect v = spr->getGlobalBounds();
+    tmp.x = v.left;
+    tmp.y = v.top;
+    tmp.w = v.width;
+    tmp.h = v.height;
+    return tmp;
+}
+
+void gr_set_repeate(gr_tex *tex, bool rpt)
+{
+    tex->setRepeated(rpt);
 }

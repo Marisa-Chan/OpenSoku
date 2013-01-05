@@ -6,13 +6,6 @@
 #include "../bullets.h"
 #include "alice.h"
 
-char_alice::char_alice(inp_ab *func):
-    char_c::char_c(func)
-{
-    pgp->load_dat("alice",0);
-    char_loadsfx(this,"alice");
-};
-
 char_alice::char_alice(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {

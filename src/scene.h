@@ -9,6 +9,8 @@ using namespace std;
 
 #define CHAR_PADDING  40
 #define BKG_WIDTH     1280
+#define BKG_HOR_PAD   60.0
+#define BKG_VERT_POS  946.0
 
 enum s_border
 {

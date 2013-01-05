@@ -7,13 +7,6 @@
 #include "marisa.h"
 #include <math.h>
 
-char_marisa::char_marisa(inp_ab *func):
-    char_c::char_c(func)
-{
-    pgp->load_dat("marisa",0);
-    char_loadsfx(this,"marisa");
-};
-
 char_marisa::char_marisa(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
@@ -678,7 +671,10 @@ void char_marisa::func10()
                 scene_play_sfx(31);
 
             if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 6)
+            {
                 set_seq(9);
+                break;
+            }
             else
             {
 
@@ -3619,7 +3615,7 @@ void char_marisa::set_seq_params()
         field_7D6 = 0;
         v_inerc = 0.0;
         h_inerc = 0.0;
-        v_force = 0.60000002;
+        v_force = 0.6;
         field_7DC = 12.0;
         field_7EC = 0.0;
         x_off = 0;

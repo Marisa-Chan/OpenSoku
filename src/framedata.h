@@ -108,8 +108,7 @@ struct seq
 class char_sprite
 {
     protected:
-
-    gr_sprite  *sprite;
+        //gr_sprite  *sprite;
     gr_blend    blend;
 
     seq        *cur_seq;
@@ -127,6 +126,8 @@ class char_sprite
     void frame_val_set();
 
     public:
+
+    gr_sprite  *sprite; //HACK
 
     char_sprite();
     ~char_sprite();
@@ -157,7 +158,8 @@ class char_sprite
     void setRotate(float x, float y, float z);
     void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-    void draw(uint8_t plane = 0);
+    gr_info getInfo();
+    void draw(uint8_t plane = 0, gr_shader *shader = NULL);
 };
 
 

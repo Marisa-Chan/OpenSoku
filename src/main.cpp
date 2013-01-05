@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
 
-    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),1);
+    char_c *alice = new char_utsuho(inp_createinput(INP_TYPE_BOTH));
 
 //    uint32_t i = 0;
 //
@@ -87,14 +87,19 @@ int main(int argc, char *argv[])
 
     marisa->set_seq(0);
     alice->set_seq(0);
-    background  *bkg = new background_11;
+    background  *bkg = new background_12;
 
 
 
     c_scene *scn = new c_scene(bkg,marisa,alice);
 
+    int32_t ii = 0;
     while(!kb.rawPressed(kC_Escape))
     {
+        if (kb.rawPressed(kC_Q))
+            ii++;
+        if (kb.keyHit(INP_AB))
+            scene_add_effect(NULL,ii,600,200,1,1);
 
         kb.update();
 
