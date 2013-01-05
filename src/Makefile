@@ -26,6 +26,7 @@ OBJS =  \
 	chars/alice.cpp\
  	chars/marisa.cpp\
 	chars/marisa_bullets.cpp\
+	chars/utsuho.cpp\
 	main.cpp\
 	sfx.cpp\
 	scene_fx.cpp\

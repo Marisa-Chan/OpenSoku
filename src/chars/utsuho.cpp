@@ -13,11 +13,11 @@ uniform sampler2D base;\
 uniform sampler2D tex;\
 void main()\
 {\
-            vec4 color = texture2D(base, gl_TexCoord[0]);\
+            vec4 color = texture2D(base, gl_TexCoord[0].xy);\
             if (color.xyz == vec3(1,0,1))\
-                gl_FragColor = texture2D(tex, gl_TexCoord[1]);\
+                gl_FragColor = texture2D(tex, gl_TexCoord[1].xy);\
             else\
-                gl_FragColor = texture2D(base, gl_TexCoord[0]);\
+                gl_FragColor = texture2D(base, gl_TexCoord[0].xy);\
 }";
 
 const char *utsuho_vs = "\
