@@ -105,6 +105,24 @@ class c_meta;
 typedef list<c_meta *> metalst;
 typedef list<c_meta *>::iterator metalst_iter;
 
+struct shd_trans
+{
+    float x;
+    float y;
+
+    float ax;
+    float ay;
+    float az;
+
+    float sx;
+    float sy;
+
+    uint8_t a;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+};
+
 class c_meta : public moveable
 {
     private:
@@ -117,7 +135,7 @@ class c_meta : public moveable
 
     c_meta  *parent_mlist;
     metalst childs;
-    int8_t  field_135;
+    int8_t  has_shadow;
     int32_t field_190;
     int8_t  field_194;
     int16_t hit_stop;
@@ -160,6 +178,9 @@ class c_meta : public moveable
     //////////
 
     virtual void set_seq(uint32_t idx);
+
+    virtual void draw_shadow(shd_trans *trans, gr_shader *shader = NULL);
+    virtual void draw(gr_shader *shader = NULL);
 
     bool process(bool ignore_loop = false);
     void reset_seq();

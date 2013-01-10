@@ -737,8 +737,8 @@ void char_marisa::func10()
 
 
                     if ( h_inerc < 0.0 )
-                        // angZ = 180 -angZ;
-                        angZ = 180.0 + dash_angle;
+                         angZ = 180 -angZ;
+                        //angZ = 180.0 + dash_angle;
 
                     if ( h_inerc < 0.0 )
                         if ( get_subseq() == 1 )

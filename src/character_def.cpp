@@ -9,7 +9,6 @@
 
 char_c::char_c(inp_ab *func)
 {
-
     input_function = 1; //HACK
     field_578 = 0;
 
@@ -129,10 +128,23 @@ void char_c::set_seq(uint32_t idx)
         printf("%d\n",idx);
 }
 
+void char_c::draw_shadow(shd_trans *trans, gr_shader *shader)
+{
+    float rx,ry,rz;
+    euler_mult(0,0,-angZ,trans->ax,trans->ay,trans->az,rx,ry,rz);
+    sprite.setRotate(rx,ry,rz);
+    sprite.setScale(trans->sx*dir,trans->sy);
+    sprite.setXY(trans->x,trans->y);
+    sprite.setOrigin(-x_off ,-y_off);
+    sprite.setColor(trans->r,trans->g,trans->b,trans->a);
+    sprite.draw(1,shader);
+}
+
 void char_c::draw(gr_shader *shader)
 {
 
     sprite.setRotate(angZ);
+    sprite.setColor(255,255,255,255);
     sprite.setScale(dir*1.0,1);
     // }
 
@@ -980,7 +992,7 @@ void char_c::func10()
             else
                 c_A -= 3;
 
-            field_135 = 0;
+            has_shadow = 0;
         }
         process();
 

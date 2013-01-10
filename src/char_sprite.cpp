@@ -231,9 +231,13 @@ void char_sprite::setBlend(gr_blend _blend)
 void char_sprite::setRotate(float angl)
 {
     if (pframe)
-        gr_setrotate_sprite(sprite,angl+pframe->angle_z);
+    {
+        float rx,ry,rz;
+        euler_mult(pframe->angle_x,pframe->angle_y,pframe->angle_z,0,0,angl,rx,ry,rz);
+        gr_setrotate_sprite(sprite,rx,ry,rz);
+    }
     else
-        gr_setrotate_sprite(sprite,angl);
+        gr_setrotate_sprite(sprite,0,0,angl);
 }
 
 void char_sprite::setRotate(float x, float y, float z)

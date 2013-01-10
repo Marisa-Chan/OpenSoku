@@ -31,7 +31,7 @@ struct gr_info
 
 void gr_init(uint32_t width, uint32_t height, const char *caption);
 
-void gr_clear();
+void gr_clear(uint8_t r = 128, uint8_t g = 128, uint8_t b = 128);
 
 void gr_flip();
 
@@ -75,5 +75,7 @@ void gr_shader_set(gr_shader *shd, const char *param, float x, float y, float z,
 
 gr_info gr_get_info(gr_sprite *spr);
 void gr_set_repeate(gr_tex *tex, bool rpt);
+void gr_set_smoth(gr_tex *tex, bool smoth);
+void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2);
 
 #endif // GRAPH_H_INCLUDED

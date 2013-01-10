@@ -145,12 +145,19 @@ void c_scene::draw_scene()
 {
     upd_camera(chrs[0],chrs[1]);
 
-    bkg->draw();
+    bkg->draw_back();
+
+    for (uint32_t i=0; i < 2; i++)
+        bkg->draw_shadow(chrs[i]);
+
+    bkg->draw_mid();
 
     img_sp.draw(-1);
 
     for (uint32_t i=0; i < 2; i++)
         chrs[i]->draw();
+
+    bkg->draw_near();
 
     img_sp.draw(1);
 
@@ -1366,3 +1373,4 @@ uint32_t scene_rand_rng(uint32_t rng)
 {
     return randomm.get_next_ranged(rng);
 }
+

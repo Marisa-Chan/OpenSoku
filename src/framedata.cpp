@@ -231,6 +231,14 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                     f->read(2, &frm->angle_x);
                     f->read(2, &frm->angle_y);
                     f->read(2, &frm->angle_z);
+
+                    if (frm->angle_x == 0 && frm->angle_y == 180 && frm->angle_z == 0)
+                    {
+                        frm->angle_x = 0;
+                        frm->angle_y = 0;
+                        frm->angle_z = 0;
+                        frm->scale_x *= -1;
+                    }
                 }
                 else
                 {

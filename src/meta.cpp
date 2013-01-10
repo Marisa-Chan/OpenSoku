@@ -17,6 +17,7 @@ c_meta::c_meta(char_graph *_pgp)
     field_1A0 = 0;
     field_1A1 = 0;
     field_1A2 = 0;
+    has_shadow = 1;
 }
 
 c_meta::c_meta():
@@ -121,4 +122,12 @@ uint16_t c_meta::get_prior(uint32_t idx)
         return pgp->get_prior(idx);
     else
         return 0xFFFF;
+}
+
+void c_meta::draw_shadow(shd_trans *trans, gr_shader *shader)
+{
+}
+
+void c_meta::draw(gr_shader *shader)
+{
 }

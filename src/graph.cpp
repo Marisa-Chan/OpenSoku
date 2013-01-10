@@ -15,9 +15,9 @@ void gr_init(uint32_t width, uint32_t height, const char *caption)
     window->setFramerateLimit(60);
 }
 
-void gr_clear()
+void gr_clear(uint8_t r, uint8_t g, uint8_t b)
 {
-    window->clear(sf::Color(128,128,128, 255));
+    window->clear(sf::Color(r,g,b, 255));
 }
 
 void gr_flip()
@@ -295,4 +295,14 @@ gr_info gr_get_info(gr_sprite *spr)
 void gr_set_repeate(gr_tex *tex, bool rpt)
 {
     tex->setRepeated(rpt);
+}
+void gr_set_smoth(gr_tex *tex, bool smoth)
+{
+    tex->setSmooth(smoth);
+}
+
+void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2)
+{
+    sf::Vector2u sz = spr->getTexture()->getSize();
+    spr->setTextureRect(sf::IntRect(x1*sz.x,y1*sz.y, x2*sz.x, y2*sz.y));
 }

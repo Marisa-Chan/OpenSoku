@@ -87,7 +87,8 @@ int main(int argc, char *argv[])
 
     marisa->set_seq(0);
     alice->set_seq(0);
-    background  *bkg = new background_12;
+    srand(time(NULL));
+    background  *bkg = bkg_create(16);
 
 
 
@@ -103,9 +104,11 @@ int main(int argc, char *argv[])
 
         kb.update();
 
-        gr_clear();
+        gr_clear(126,206,244);
 
         scn->players_input();
+
+        bkg->update();
 
         //scn.players_collisions();
         scn->update();
@@ -118,6 +121,7 @@ int main(int argc, char *argv[])
 
     }
 
+    delete bkg;
 
 
     return EXIT_SUCCESS;

@@ -9,11 +9,13 @@ class c_bullet;
 
 class char_c : public c_meta
 {
+private:
+
     protected:
 
     inp_ab      *input;
     bullist     bullets;
-
+    virtual void set_seq_params(); //func15
     public:
 
         int8_t input_function;//HACK
@@ -193,7 +195,7 @@ class char_c : public c_meta
     void set_seq(uint32_t idx);
 
     void input_update();
-
+    virtual void draw_shadow(shd_trans *trans, gr_shader *shader = NULL);
     virtual void draw(gr_shader *shader = NULL);
 
     virtual void check_seq_input();
@@ -210,7 +212,6 @@ class char_c : public c_meta
     void play_sfx(uint32_t idx);
 
     virtual void func10();
-    virtual void set_seq_params(); //func15
     virtual void func16();
     virtual void func18();
     virtual void func20();

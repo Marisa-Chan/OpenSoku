@@ -10,7 +10,7 @@ using namespace std;
 #define CHAR_PADDING  40
 #define BKG_WIDTH     1280
 #define BKG_HOR_PAD   60.0
-#define BKG_VERT_POS  946.0
+#define BKG_VERT_POS  860.0
 
 enum s_border
 {
@@ -96,4 +96,5 @@ c_scene_sp *scene_get_sp();
 
 uint32_t scene_rand();
 uint32_t scene_rand_rng(uint32_t rng);
+
 #endif // SCENE_H_INCLUDED

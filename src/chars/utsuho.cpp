@@ -13,11 +13,11 @@ uniform sampler2D base;\
 uniform sampler2D tex;\
 void main()\
 {\
-            vec4 color = texture2D(base, gl_TexCoord[0].xy);\
-            if (color.xyz == vec3(1,0,1))\
-                gl_FragColor = texture2D(tex, gl_TexCoord[1].xy);\
-            else\
-                gl_FragColor = texture2D(base, gl_TexCoord[0].xy);\
+    vec4 color = texture2D(base, gl_TexCoord[0].xy);\
+    if (color.xyz == vec3(1,0,1))\
+        gl_FragColor = texture2D(tex, gl_TexCoord[1].xy) * gl_Color;\
+    else\
+        gl_FragColor = texture2D(base, gl_TexCoord[0].xy) * gl_Color;\
 }";
 
 const char *utsuho_vs = "\
@@ -61,6 +61,13 @@ void char_utsuho::draw(gr_shader *_shader)
     char_c::draw(shader);
 }
 
+void char_utsuho::draw_shadow(shd_trans *trans, gr_shader *_shader)
+{
+    gr_shader_set_texture(shader,"base",NULL);
+    gr_shader_set(shader,"pos",(x-shd_p)/512.0,(y-shd_p)/512.0);
+
+    char_c::draw_shadow(trans,shader);
+}
 
 void char_utsuho::func10()
 {
