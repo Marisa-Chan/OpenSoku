@@ -30,7 +30,7 @@ OBJS =  \
 	main.cpp\
 	sfx.cpp\
 	scene_fx.cpp\
-	fx_sprite.cpp\
+	graph_efx.cpp\
 	bullets.cpp\
 	moveable.cpp\
 	fxsprite/fxSprite.cpp\

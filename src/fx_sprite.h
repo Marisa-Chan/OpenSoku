@@ -1,6 +1,0 @@
-#ifndef FX_SPRITE_H_INCLUDED
-#define FX_SPRITE_H_INCLUDED
-
-
-
-#endif // FX_SPRITE_H_INCLUDED

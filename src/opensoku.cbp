@@ -40,63 +40,75 @@
 			<Add library="sfml-system" />
 			<Add library="sfml-window" />
 		</Linker>
-		<Unit filename="./archive.cpp" />
+		<Unit filename="archive.cpp" />
 		<Unit filename="archive.h" />
-		<Unit filename="./background.cpp" />
-		<Unit filename="./background.h" />
-		<Unit filename="./bullets.cpp" />
-		<Unit filename="./bullets.h" />
-		<Unit filename="./char_sprite.cpp" />
-		<Unit filename="./character_def.cpp" />
-		<Unit filename="./character_def.h" />
-		<Unit filename="./chars.h" />
+		<Unit filename="background.cpp" />
+		<Unit filename="background.h" />
+		<Unit filename="bullets.cpp" />
+		<Unit filename="bullets.h" />
+		<Unit filename="char_sprite.cpp" />
+		<Unit filename="character_def.cpp" />
+		<Unit filename="character_def.h" />
+		<Unit filename="chars.h" />
 		<Unit filename="chars/alice.cpp" />
 		<Unit filename="chars/alice.h" />
-		<Unit filename="./chars/marisa.cpp" />
+		<Unit filename="chars/marisa.cpp" />
 		<Unit filename="chars/marisa.h" />
 		<Unit filename="chars/marisa_bullets.cpp" />
 		<Unit filename="chars/marisa_bullets.h" />
-		<Unit filename="./crc32.cpp" />
-		<Unit filename="./crc32.h" />
-		<Unit filename="./file_read.cpp" />
-		<Unit filename="./file_read.h" />
-		<Unit filename="./framedata.cpp" />
-		<Unit filename="./framedata.h" />
-		<Unit filename="./fx_sprite.cpp" />
+		<Unit filename="chars/utsuho.cpp" />
+		<Unit filename="chars/utsuho.h" />
+		<Unit filename="crc32.cpp" />
+		<Unit filename="crc32.h" />
+		<Unit filename="file_read.cpp" />
+		<Unit filename="file_read.h" />
+		<Unit filename="framedata.cpp" />
+		<Unit filename="framedata.h" />
 		<Unit filename="fxsprite/fxSprite.cpp" />
 		<Unit filename="fxsprite/fxSprite.hpp" />
 		<Unit filename="fxsprite/fxTransform.cpp" />
 		<Unit filename="fxsprite/fxTransform.hpp" />
 		<Unit filename="fxsprite/fxTransformable.cpp" />
 		<Unit filename="fxsprite/fxTransformable.hpp" />
-		<Unit filename="./global_types.h" />
-		<Unit filename="./graph.cpp" />
-		<Unit filename="./graph.h" />
-		<Unit filename="./input.cpp" />
-		<Unit filename="./input.h" />
+		<Unit filename="global_types.h" />
+		<Unit filename="graph.cpp" />
+		<Unit filename="graph.h" />
+		<Unit filename="graph_efx.cpp" />
+		<Unit filename="graph_efx.h" />
+		<Unit filename="input.cpp" />
+		<Unit filename="input.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="./moveable.cpp" />
-		<Unit filename="./moveable.h" />
-		<Unit filename="./mt.cpp" />
-		<Unit filename="./mt.h" />
-		<Unit filename="./music.cpp" />
-		<Unit filename="./music.h" />
-		<Unit filename="./scene.cpp" />
-		<Unit filename="./scene.h" />
-		<Unit filename="./scene_fx.cpp" />
-		<Unit filename="./scene_fx.h" />
-		<Unit filename="sfx.cpp" />
-		<Unit filename="sfx.h" />
-		<Unit filename="utils.cpp" />
-		<Unit filename="utils.h" />
-		<Unit filename="unknown.cpp" />
 		<Unit filename="meta.cpp" />
 		<Unit filename="meta.h" />
+		<Unit filename="moveable.cpp" />
+		<Unit filename="moveable.h" />
+		<Unit filename="mt.cpp" />
+		<Unit filename="mt.h" />
+		<Unit filename="music.cpp" />
+		<Unit filename="music.h" />
+		<Unit filename="scene.cpp" />
+		<Unit filename="scene.h" />
+		<Unit filename="scene_fx.cpp" />
+		<Unit filename="scene_fx.h" />
+		<Unit filename="sfx.cpp" />
+		<Unit filename="sfx.h" />
+		<Unit filename="unknown.cpp" />
+		<Unit filename="utils.cpp" />
+		<Unit filename="utils.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />
 			<debugger />
 			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

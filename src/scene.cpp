@@ -21,7 +21,7 @@
 
 #define MAX_GLB_SFX     0x100
 
-c_scene_sp img_sp;
+c_scene_sp *img_sp = NULL;
 
 static sfxc *snds[MAX_GLB_SFX];
 
@@ -136,9 +136,11 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     set_camera(chrs[0],chrs[1]);
     init_scene_height();
 
-    img_sp.load_dat();
     randomm.set_seed(time(NULL));
     reset_ibox();
+
+    if (!img_sp)
+        img_sp = new c_scene_sp;
 }
 
 void c_scene::draw_scene()
@@ -152,14 +154,14 @@ void c_scene::draw_scene()
 
     bkg->draw_mid();
 
-    img_sp.draw(-1);
+    img_sp->draw(-1);
 
     for (uint32_t i=0; i < 2; i++)
         chrs[i]->draw();
 
     bkg->draw_near();
 
-    img_sp.draw(1);
+    img_sp->draw(1);
 
     for (uint32_t i=0; i < 2; i++)
         drawbullet(chrs[i],1);
@@ -1316,7 +1318,7 @@ void c_scene::update()
     scene_subfunc4(this);
     scene_subfunc5(this);
     func12();
-    img_sp.update();
+    img_sp->update();
 }
 
 
@@ -1348,19 +1350,19 @@ void scene_play_sfx(uint32_t idx)
 
 c_scene_sp *scene_get_sp()
 {
-    return &img_sp;
+    return img_sp;
 }
 
 void scene_add_effect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
-    img_sp.addeffect(chr, idx,x,y,dir, order);
+    img_sp->addeffect(chr, idx,x,y,dir, order);
 }
 
 void scene_add_effect_ibox(c_scene *scn, int32_t idx, int8_t dir)
 {
     float x = (scn->ibox.x1 + scn->ibox.x2) / 2.0;
     float y = -(scn->ibox.y1 + scn->ibox.y2) / 2.0;
-    img_sp.addeffect(NULL,idx,x,y,dir,1);
+    img_sp->addeffect(NULL,idx,x,y,dir,1);
 }
 
 
