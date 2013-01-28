@@ -13,6 +13,7 @@
 #include "scene.h"
 #include <math.h>
 #include <unistd.h>
+#include "gui.h"
 
 
 
@@ -74,7 +75,7 @@ int main(int argc, char *argv[])
     sfx_init();
     scene_load_sounds();
 
-    // playmusic();
+     //playmusic();
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
 
@@ -88,19 +89,31 @@ int main(int argc, char *argv[])
     marisa->set_seq(0);
     alice->set_seq(0);
     srand(time(NULL));
-    background  *bkg = bkg_create(16);
+    background  *bkg = bkg_create(0);
 
 
 
     c_scene *scn = new c_scene(bkg,marisa,alice);
 
     int32_t ii = 0;
+
+
+    gui_holder gui;
+
+    gui.load_dat("data/battle","battleUnder.dat");
+
+    gui_holder gui2;
+
+    gui2.load_dat("data/battle","battleUpper.dat");
+
+    gui_holder gui3;
+
+    gui3.load_dat("data/battle","combo.dat");
+
     while(!kb.rawPressed(kC_Escape))
     {
         if (kb.rawPressed(kC_Q))
             ii++;
-        if (kb.keyHit(INP_AB))
-            scene_add_effect(NULL,ii,600,200,1,1);
 
         kb.update();
 
@@ -116,6 +129,10 @@ int main(int argc, char *argv[])
         scn->draw_scene();
 
         scn->update_char_anims();
+
+        gui.draw_all(0);
+        gui2.draw_all(0);
+        gui3.draw_all(0);
 
         gr_flip();
 

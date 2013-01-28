@@ -324,7 +324,7 @@ void gfx_meta::draw(int8_t plane)
         sprite.setRotate(angZ);
         sprite.setScale(dir*scaleX,scaleY);
 
-        sprite.draw(1);
+        sprite.draw(plane);
     }
 }
 

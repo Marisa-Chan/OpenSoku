@@ -120,6 +120,15 @@ void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex)
         spr->setTexture(*tex, true);
 }
 
+void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex,int32_t x, int32_t y, int32_t w, int32_t h)
+{
+    if (tex != NULL)
+    {
+        spr->setTexture(*tex, false);
+        spr->setTextureRect(sf::IntRect(x,y,w,h));
+    }
+}
+
 void gr_draw_sprite(gr_sprite *spr, float x, float y)
 {
     if (spr->getTexture() != NULL)

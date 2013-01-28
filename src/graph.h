@@ -44,6 +44,7 @@ gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal);
 gr_sprite * gr_create_sprite();
 
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex);
+void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex,int32_t x, int32_t y, int32_t w, int32_t h);
 
 void gr_setxy_sprite(gr_sprite *spr, float x, float y);
 void gr_setscale_sprite(gr_sprite *spr, float x, float y);

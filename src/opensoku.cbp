@@ -95,6 +95,16 @@
 		<Unit filename="unknown.cpp" />
 		<Unit filename="utils.cpp" />
 		<Unit filename="utils.h" />
+		<Unit filename="text.cpp" />
+		<Unit filename="text.h" />
+		<Unit filename="gui.cpp" />
+		<Unit filename="gui.h" />
+		<Unit filename="effects.cpp" />
+		<Unit filename="effects.h" />
+		<Unit filename="weather.cpp" />
+		<Unit filename="weather.h" />
+		<Unit filename="infoeffect.cpp" />
+		<Unit filename="infoeffect.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />

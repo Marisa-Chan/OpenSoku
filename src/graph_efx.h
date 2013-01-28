@@ -1,6 +1,8 @@
 #ifndef GRAPH_EFX_H_INCLUDED
 #define GRAPH_EFX_H_INCLUDED
 
+#include "moveable.h"
+
 using namespace std;
 
 struct gfx_frame

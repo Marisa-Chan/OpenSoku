@@ -38,7 +38,12 @@ OBJS =  \
 	fxsprite/fxTransformable.cpp\
 	utils.cpp\
 	unknown.cpp\
-	meta.cpp
+	meta.cpp\
+	gui.cpp\
+	text.cpp\
+	effects.cpp\
+	weather.cpp\
+	infoeffect.cpp
 
 linux: $(OBJS)
 	$(CXX) -O3 -Os --std=c++11 -o $(TARGET) $(OBJS) $(LIBS) -I /usr/include/ 

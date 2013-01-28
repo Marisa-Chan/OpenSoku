@@ -10,7 +10,9 @@
 #include "archive.h"
 #include "file_read.h"
 #include "mt.h"
-#include "./bullets.h"
+#include "bullets.h"
+#include "weather.h"
+#include "effects.h"
 
 #define VERT_SCALE    2.0
 #define SCR_WIDTH     640.0
@@ -22,6 +24,7 @@
 #define MAX_GLB_SFX     0x100
 
 c_scene_sp *img_sp = NULL;
+c_weather_sp *weather_sp = NULL;
 
 static sfxc *snds[MAX_GLB_SFX];
 
@@ -141,6 +144,14 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
 
     if (!img_sp)
         img_sp = new c_scene_sp;
+
+    if (!weather_sp)
+        weather_sp = new c_weather_sp;
+
+    init_effects();
+
+    add_infoeffect(2,1);
+    weather_sp->addeffect(1,1);
 }
 
 void c_scene::draw_scene()
@@ -163,9 +174,12 @@ void c_scene::draw_scene()
 
     img_sp->draw(1);
 
+    weather_sp->draw(1);
+
     for (uint32_t i=0; i < 2; i++)
         drawbullet(chrs[i],1);
 
+    draw_infoeffect(1);
 }
 
 void c_scene::update_char_anims()
@@ -1311,6 +1325,7 @@ void scene_subfunc5(c_scene *scn)
 
 void c_scene::update()
 {
+    draw_weather_bkg(3);
     func16();
     scene_subfunc1(this);
     scene_subfunc2(this);
@@ -1319,6 +1334,8 @@ void c_scene::update()
     scene_subfunc5(this);
     func12();
     img_sp->update();
+    weather_sp->update();
+    update_infoeffect();
 }
 
 
