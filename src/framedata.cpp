@@ -280,10 +280,8 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 uint8_t nb = 0;
                 f->read(1, &nb);
 
-                /*if (frm->aflags & 0x80000000)
-                    printf("!!!!\n");*/
-
-                for (uint32_t k = 0; k < nb; k++)
+                frm->box_coll = NULL;
+                if (nb > 0)
                 {
                     frame_box box;
                     f->read(4, &box.x1);
@@ -291,8 +289,10 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                     f->read(4, &box.x2);
                     f->read(4, &box.y2);
 
-                    frm->box_coll.push_back(box);
+                    frm->box_coll = new frame_box;
+                    *frm->box_coll = box;
                 }
+
 
                 nb = 0;
                 f->read(1, &nb);

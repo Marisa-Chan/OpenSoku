@@ -162,17 +162,13 @@ bool sub_479420(c_scene *scn, frame_box *a1, frame_box *a2, frame_box *a3)
 
 bool sub_479D50(c_scene *scn, c_meta *p1, c_meta *p2)
 {
-
-    char_frame *frm = p1->get_pframe();
-    char_frame *frm2 = p2->get_pframe();
-
     bool hit = false;
 
-    for (uint32_t i=0; i< frm->box_hit.size(); i++)
+    for (int32_t i=0; i< p1->hit_box_cnt; i++)
     {
         if (p1->hit_area_flags[i] != NULL)
         {
-            for (uint32_t j=0; j< frm2->box_hit.size(); j++)
+            for (int32_t j=0; j< p2->hit_box_cnt; j++)
             {
                 if (p2->hit_area_flags[j] != NULL)
                     hit |= sub_479720(scn, &p1->hit_area_2o[i], p1->hit_area_flags[i], &p2->hit_area_2o[j], p2->hit_area_flags[j]);
@@ -182,7 +178,7 @@ bool sub_479D50(c_scene *scn, c_meta *p1, c_meta *p2)
         }
         else
         {
-            for (uint32_t j=0; j< frm2->box_hit.size(); j++)
+            for (int32_t j=0; j< p2->hit_box_cnt; j++)
             {
                 if (p2->hit_area_flags[j] != NULL)
                     hit |= sub_479420(scn, &p2->hit_area_2o[j], p2->hit_area_flags[j], &p1->hit_area_2o[i]);
@@ -305,20 +301,18 @@ bool sub_479650(c_scene *scn, c_meta *p1, c_meta *p2)
 {
     bool hit = false;
 
-    if ( p2->field_348 != NULL )
+    if ( p2->pcoll_box != NULL )
     {
-        char_frame *frm = p1->get_pframe();
-
-        for (uint32_t i = 0; i < frm->box_atk.size(); i++)
+        for (int32_t i = 0; i < p1->atk_box_cnt; i++)
         {
             if (p1->atk_area_of[i] != NULL)
             {
-                hit |= sub_479420(scn, &p1->atk_area_2o[i], p1->atk_area_of[i], p2->field_348);
+                hit |= sub_479420(scn, &p1->atk_area_2o[i], p1->atk_area_of[i], p2->pcoll_box);
             }
             else
             {
                 frame_box *fb1 = &p1->atk_area_2o[i];
-                frame_box *fb2 = p2->field_348;
+                frame_box *fb2 = p2->pcoll_box;
 
                 if ((fb2->x1 - fb1->x2) < 0 &&
                         (fb1->x1 - fb2->x2) < 0 &&
@@ -336,17 +330,13 @@ bool sub_479650(c_scene *scn, c_meta *p1, c_meta *p2)
 
 bool sub_479BC0(c_scene *scn, c_meta *p1, c_meta *p2)
 {
-
-    char_frame *frm = p1->get_pframe();
-    char_frame *frm2 = p2->get_pframe();
-
     bool hit = false;
-//    printf("%d\n",frm->box_atk.size());
-    for (uint32_t i=0; i< frm->box_atk.size(); i++)
+
+    for (int32_t i=0; i< p1->atk_box_cnt; i++)
     {
         if (p1->atk_area_of[i] != NULL)
         {
-            for (uint32_t j=0; j< frm2->box_atk.size(); j++)
+            for (int32_t j=0; j< p2->atk_box_cnt; j++)
             {
                 if (p2->hit_area_flags[j] != NULL)
                     hit |= sub_479720(scn, &p1->atk_area_2o[i], p1->atk_area_of[i], &p2->hit_area_2o[j], p2->hit_area_flags[j]);
@@ -356,7 +346,7 @@ bool sub_479BC0(c_scene *scn, c_meta *p1, c_meta *p2)
         }
         else
         {
-            for (uint32_t j=0; j< frm2->box_hit.size(); j++)
+            for (int32_t j=0; j< p2->hit_box_cnt; j++)
             {
                 if (p2->hit_area_flags[j] != NULL)
                     hit |= sub_479420(scn, &p2->hit_area_2o[j], p2->hit_area_flags[j], &p1->atk_area_2o[i]);

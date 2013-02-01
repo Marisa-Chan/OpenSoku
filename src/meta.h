@@ -171,7 +171,7 @@ class c_meta : public moveable
     frame_box *atk_area_of[5];
     frame_box *hit_area_flags[6];
 
-    frame_box *field_348;
+    frame_box *pcoll_box;
 
     custom_box *cust_box;
 
@@ -203,5 +203,8 @@ class c_meta : public moveable
     seq *get_seq(uint32_t idx);
 
 };
+
+
+void set_custom_box(c_meta *met, int32_t x1, int32_t y1, int32_t x2, int32_t y2, float angl, int32_t dx, int32_t dy);
 
 #endif // META_H_INCLUDED

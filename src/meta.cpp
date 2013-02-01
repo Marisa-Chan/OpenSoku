@@ -131,3 +131,37 @@ void c_meta::draw_shadow(shd_trans *trans, gr_shader *shader)
 void c_meta::draw(gr_shader *shader)
 {
 }
+
+
+void set_custom_box(c_meta *met, int32_t x1, int32_t y1, int32_t x2, int32_t y2, float angl, int32_t dx, int32_t dy)
+{
+  if (!met->cust_box)
+    met->cust_box = new custom_box;
+
+  if (x1 <= x2)
+  {
+      met->cust_box->box.x1 = x1;
+      met->cust_box->box.x2 = x2;
+  }
+  else
+  {
+      met->cust_box->box.x1 = x2;
+      met->cust_box->box.x2 = x1;
+  }
+
+  if (y1 <= y2)
+  {
+      met->cust_box->box.y1 = y1;
+      met->cust_box->box.y2 = y2;
+  }
+  else
+  {
+      met->cust_box->box.y1 = y2;
+      met->cust_box->box.y2 = y1;
+  }
+
+  met->cust_box->angle = angl;
+  met->cust_box->c_x = dx;
+  met->cust_box->c_y = dy;
+}
+

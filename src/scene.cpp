@@ -575,7 +575,7 @@ void scn_char_ss2(c_meta *chr)
     chr->atk_box_cnt = frm->box_atk.size();
     chr->hit_box_cnt = frm->box_hit.size();
 
-    for(uint32_t i=0; i<frm->box_unk_atk.size(); i++)
+    for(int32_t i=0; i<chr->atk_box_cnt; i++)
     {
         if (frm->box_unk_atk[i] != NULL || frm->fflags & FF_UNK400000)
             chr->atk_area_of[i] = &chr->atk_area_2o[5 + i];
@@ -583,7 +583,7 @@ void scn_char_ss2(c_meta *chr)
             chr->atk_area_of[i] = NULL;
     }
 
-    for(uint32_t i=0; i<frm->box_hit.size(); i++)
+    for(int32_t i=0; i<chr->hit_box_cnt; i++)
     {
         if (frm->fflags & FF_UNK800000)
             chr->hit_area_flags[i] = &chr->atk_area_2o[10 + i];
@@ -591,7 +591,7 @@ void scn_char_ss2(c_meta *chr)
             chr->hit_area_flags[i] = NULL;
     }
 
-    for(uint32_t i=0; i<frm->box_atk.size(); i++)
+    for(int32_t i=0; i<chr->atk_box_cnt; i++)
     {
         if (frm->box_unk_atk[i] != NULL)
         {
@@ -642,7 +642,7 @@ void scn_char_ss2(c_meta *chr)
 
     if ( frm->fflags & FF_UNK800000 )
     {
-        for(uint32_t i=0; i<frm->box_hit.size(); i++)
+        for(int32_t i=0; i<chr->hit_box_cnt; i++)
         {
             frame_box tmp,tmp2;
             frame_box_move_rotate(&frm->box_hit[i],chr->angZ,chr->x_off,-chr->y_off,&tmp,&tmp2);
@@ -667,92 +667,59 @@ void scn_char_ss2(c_meta *chr)
     }
     else
     {
-        for(uint32_t i=0; i<frm->box_hit.size(); i++)
+        for(int32_t i=0; i<chr->hit_box_cnt; i++)
         {
             frame_box_flip(chr,&frm->box_hit[i],&chr->hit_area_2o[i]);
         }
     }
-    /*
-    v76 = v1->field_1B0;
-    if ( v76 )
-    {
-      v77 = v1->current_frame_params;
-      v78 = v77->boxes_atk.simvector_start;
-      v79 = &v77->boxes_atk;
-      if ( v78 )
-          v80 = (*(v79 + 8) - v78) >> 4;
-      else
-          LOBYTE(v80) = 0;
-      v81 = v80 + 1;
-      v1->atk_area_cnt = v80 + 1;
-      if ( *(v76 + 16) )
+
+  if ( chr->cust_box )
+  {
+      if (chr->cust_box->angle != 0)
       {
-          v82 = v80;
-          *(&v1->atk_area_of + v80) = (v1 + 16 * (v80 + 39));
-          v83 = (&v1->atk_area_of + v80);
-          sub_463B20(v1->field_1B0, *(v1->field_1B0 + 16), *(v1->field_1B0 + 18), *(v1->field_1B0 + 20), &v108, &v107);
-          v84 = v1 + 16 * (v82 + 34);
-          sub_463960(v1, &v108, v84);
-          v85 = *v83;
-          if ( v1->rend_cls.dir <= 0 )
-          {
-              v89 = v107.y2;
-              *v85 = v107.x2;
-              *(*v83 + 4) = -v89;
-              v90 = v107.y1;
-              *(*v83 + 8) = v107.x1;
-              *(*v83 + 12) = -v90;
-          }
-          else
-          {
-              v86 = v107.y1;
-              *v85 = v107.x1;
-              v87 = v107.x2;
-              *(v85 + 4) = v86;
-              v88 = v107.y2;
-              *(v85 + 8) = v87;
-              *(v85 + 12) = v88;
-          }
+          frame_box tmp,tmp2;
+          chr->atk_area_of[chr->atk_box_cnt] = &chr->atk_area_2o[5 + chr->atk_box_cnt];
+          frame_box_move_rotate(&chr->cust_box->box, chr->cust_box->angle, chr->cust_box->c_x, chr->cust_box->c_y, &tmp,&tmp2);
+          frame_box_fullflip(chr,&tmp,&chr->atk_area_2o[chr->atk_box_cnt]);
+
+          frame_box *bx = chr->atk_area_of[chr->atk_box_cnt];
+            if ( chr->dir < 0 )
+            {
+                bx->x1 = tmp2.x2;
+                bx->y1 = -tmp2.y2;
+                bx->x2 = tmp2.x1;
+                bx->y2 = -tmp2.y1;
+            }
+            else
+            {
+                bx->x1 = tmp2.x1;
+                bx->y1 = tmp2.y1;
+                bx->x2 = tmp2.x2;
+                bx->y2 = tmp2.y2;
+            }
       }
       else
       {
-          v83 = (&v1->atk_area_of + v80);
-          v91 = 16 * (v80 + 34);
-          v84 = v1 + v91;
-          *v83 = 0;
-          sub_463810(v1, v1->field_1B0, (v1 + v91));
+          chr->atk_area_of[chr->atk_box_cnt] = NULL;
+          frame_box_flip(chr,&chr->cust_box->box ,&chr->atk_area_2o[chr->atk_box_cnt]);
       }
-      result = v1->current_frame_params;
-      if ( result->fflags & 0x1000000 )
-      {
-          v92 = result->boxes_hit.simvector_start;
-          if ( v92 )
-              v93 = (result->boxes_hit.simvector_end - v92) >> 4;
-          else
-              v93 = 0;
-          v1->hit_area_cnt = v81;
-          v94 = 16 * (v93 + 29);
-          *(&v1->class + v94) = *v84;
-          v95 = v1 + v94;
-          *(v95 + 1) = *(v84 + 1);
-          *(v95 + 2) = *(v84 + 2);
-          *(v95 + 3) = *(v84 + 3);
-          result = *v83;
-          *(&v1->hit_area_flags + v93) = *v83;
-      }
-    }
-    v96 = v1->current_frame_params;
-    if ( v96->field_54 )
-    {
-      v1->field_348 = &v1->atk_area_2o[15];
-      result = sub_463810(v1, v96->field_54, &v1->atk_area_2o[15]);
-    }
-    else
-    {
-      v1->field_348 = 0;
-    }
-    return result;
-    */
+
+     if ( frm->fflags & FF_ATK_AS_HIT )
+     {
+         chr->hit_area_2o[chr->hit_box_cnt] = chr->atk_area_2o[chr->atk_box_cnt];
+         chr->hit_area_flags[chr->hit_box_cnt] = chr->atk_area_of[chr->atk_box_cnt];
+         chr->hit_box_cnt++;
+     }
+     chr->atk_box_cnt++;
+  }
+
+  if (frm->box_coll)
+  {
+    chr->pcoll_box = &chr->atk_area_2o[15];
+    frame_box_flip(chr, frm->box_coll, &chr->atk_area_2o[15]);
+  }
+  else
+    chr->pcoll_box = NULL;
 }
 
 
@@ -873,19 +840,19 @@ void scene_subfunc2(c_scene *scn)
 
 void box_coll_get(char_c *chr, box_box *box)
 {
+    frame_box *bx = chr->get_pframe()->box_coll;
     if (chr->dir == 1)
     {
-        box->x1 = chr->x + chr->get_pframe()->box_coll[0].x1;
-        box->x2 = chr->x + chr->get_pframe()->box_coll[0].x2;
+        box->x1 = chr->x + bx->x1;
+        box->x2 = chr->x + bx->x2;
     }
     else
     {
-        box->x1 = chr->x - chr->get_pframe()->box_coll[0].x2;
-        box->x2 = chr->x - chr->get_pframe()->box_coll[0].x1;
+        box->x1 = chr->x - bx->x2;
+        box->x2 = chr->x - bx->x1;
     }
-    box->y1 = chr->get_pframe()->box_coll[0].y1 - chr->y;
-    box->y2 = chr->get_pframe()->box_coll[0].y2 - chr->y;
-
+    box->y1 = bx->y1 - chr->y;
+    box->y2 = bx->y2 - chr->y;
 }
 
 bool scene_collid(c_scene *scn, box_box *b1, box_box *b2)
@@ -917,7 +884,7 @@ void scene_check_collisions(c_scene *scn)
     p1->field_744 = 0.0;
     p2->field_744 = 0.0;
 
-    if ( !p1->get_pframe()->box_coll.size() || !p2->get_pframe()->box_coll.size() )
+    if ( !p1->get_pframe()->box_coll || !p2->get_pframe()->box_coll )
         return;
 
     //Detecting who firstly take border

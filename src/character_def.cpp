@@ -100,7 +100,7 @@ char_c::char_c(inp_ab *func)
     v_inerc = 0;
     v_force = 0;
 
-    field_348 = NULL;
+    pcoll_box = NULL;
 
     not_charge_attack = 1;
     air_dash_cnt = 0;
@@ -3444,3 +3444,4 @@ void sub_4689D0(char_c *, int32_t)
 {
     //HACK
 }
+

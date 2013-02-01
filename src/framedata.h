@@ -77,7 +77,7 @@ struct char_frame
     uint32_t fflags;
     uint32_t aflags;
 
-	vector<frame_box> box_coll;
+	frame_box *box_coll;
 	vector<frame_box> box_hit;
 	vector<frame_box> box_atk;
 	vector<frame_box *> box_unk_atk;

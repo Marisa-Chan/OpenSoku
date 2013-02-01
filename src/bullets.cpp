@@ -166,6 +166,7 @@ bool c_bullet::sub_48C640(int32_t p)
         {
             field_194++;
             field_190 = 0;
+            return false;
         }
     }
     else if (field_190 == 4)

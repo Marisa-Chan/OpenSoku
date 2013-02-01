@@ -590,7 +590,7 @@ void marisa_bullets::func10()
         break;
     case 803:
 
-        if (sprite.get_subseq() == 1)
+        if (sprite.get_subseq() <= 1)
         {
             if ( field_36C % 3 == 0 )
                 field_190 = 0;
@@ -673,10 +673,9 @@ void marisa_bullets::func10()
             }
             else
             {
-                // v70 = addition;
                 field_380 += 3.0;
-                //sub_4B0670(v1, 0, (v1->rend_cls.scale_y * 35.0), v1->field_37C, (v1->rend_cls.scale_y * -35.0), addition[0], 0, 0);
-                //sub_48C5F0(v1, 0);
+                set_custom_box(this, 0, scaleY * 35, field_37C, scaleY * (-35), addition[0],0,0);
+                sub_48C5F0(this, 0);
                 if ( field_190 != 0)
                 {
                     field_36E++;
@@ -722,6 +721,8 @@ void marisa_bullets::func10()
                             break;
                         }
                     }
+                    else
+                        field_36C = 1;
                 }
             }
         }
