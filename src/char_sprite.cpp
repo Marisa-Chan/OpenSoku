@@ -233,6 +233,8 @@ void char_sprite::setRotate(float angl)
     if (pframe)
     {
         float rx,ry,rz;
+        if (pframe->scale_x < 0)
+            angl*=-1;
         euler_mult(pframe->angle_x,pframe->angle_y,pframe->angle_z,0,0,angl,rx,ry,rz);
         gr_setrotate_sprite(sprite,rx,ry,rz);
     }
@@ -245,6 +247,8 @@ void char_sprite::setRotate(float x, float y, float z)
     if (pframe)
     {
         float rx,ry,rz;
+        if (pframe->scale_x < 0)
+            z*=-1;
         euler_mult(pframe->angle_x,pframe->angle_y,pframe->angle_z,x,y,z,rx,ry,rz);
         gr_setrotate_sprite(sprite,rx,ry,rz);
     }

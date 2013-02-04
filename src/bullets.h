@@ -2,6 +2,10 @@
 #define BULLETS_H_INCLUDED
 
 class char_c;
+class c_bullet;
+
+typedef list<c_bullet *> bullist;
+typedef list<c_bullet *>::iterator bullist_iter;
 
 class c_bullet : public c_meta
 {
@@ -9,14 +13,16 @@ class c_bullet : public c_meta
     friend void drawbullet(char_c *chr, int8_t order);
 
     protected:
-    c_bullet *bul_parent;
-    char_c *parent;
+
 
     int8_t order;
 
     float addition[12];
 
     public:
+
+    c_bullet *bul_parent;
+    bullist   bul_childs;
 
     bool  active;
 
@@ -28,14 +34,14 @@ class c_bullet : public c_meta
     int16_t field_360;
     int16_t field_36C;
     int16_t field_370;
-    int16_t field_378;
-    int16_t field_37C;
+    float   field_378;
+    float   field_37C;
     float   field_380;
     int16_t field_396;
     int16_t field_36E;
 
     c_bullet();
-    void init(char_c *parent,c_bullet *bul, seq *sq, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num); //call this after creation
+    void init(char_c *parent,c_bullet *bul, seq *sq,int32_t idx, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num); //call this after creation
 
     virtual void func10();
     virtual void set_seq_params(); //func15
@@ -46,13 +52,13 @@ class c_bullet : public c_meta
     virtual ~c_bullet();
 };
 
-typedef list<c_bullet *> bullist;
-typedef list<c_bullet *>::iterator bullist_iter;
+
 
 void addbullet(char_c *chr,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num);
 void updatebullet(char_c *chr);
 void drawbullet(char_c *chr, int8_t order);
 
 #include "chars/marisa_bullets.h"
+#include "chars/alice_bullets.h"
 
 #endif // BULLETS_H_INCLUDED

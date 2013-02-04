@@ -13,6 +13,12 @@ char_alice::char_alice(inp_ab *func, uint8_t pal):
     char_loadsfx(this,"alice");
 };
 
+c_bullet *char_alice::new_bullet()
+{
+    c_bullet *tmp = new alice_bullets();
+    return tmp;
+}
+
 
 void char_alice::func10()
 {
@@ -205,14 +211,40 @@ void char_alice::func10()
             }
         }
         else if ( get_frame_time() == 0  && get_frame() == 5)
-            {
-                if (enemy->x < x)
-                    dir = -1;
-                else
-                    dir = 1;
-            }
+        {
+            if (enemy->x < x)
+                dir = -1;
+            else
+                dir = 1;
+        }
         break;
+    case 401:
+        sub10func(this);
+        if ( !keyDown(INP_B) )
+            not_charge_attack = 0;
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0  && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            float tmp[3];
+            tmp[0] = -74;
+            tmp[1] = 40;
+            tmp[2] = 0;
 
+            addbullet(this, NULL, 803,x - 74*dir, y + 104, dir, 1,tmp,3 );
+            play_sfx(2);
+            field_190 = 1;
+            //sub_479FF0(this, 200, 45);
+            //add_card_energy(v2, 30);
+        }
+
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 4 )
+            set_seq(0);
+        else if ((get_subseq() == 2 && get_elaps_frames() >= 30) ||
+                 (get_subseq() == 4 && get_elaps_frames() >= 25) ||
+                 (get_subseq() == 6 && get_elaps_frames() >= 45))
+            next_subseq();
+        break;
     default:
         char_c::func10();
     }
@@ -223,6 +255,26 @@ void char_alice::set_seq_params()
     uint32_t sq = get_seq();
     switch(sq)
     {
+    case 400:
+    case 401:
+    case 410:
+    case 411:
+    case 412:
+    case 419:
+    case 520:
+    case 521:
+    case 522:
+    case 523:
+    case 525:
+    case 526:
+        field_190 = 0;
+        reset_forces();
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_7D8 = 0;
+        not_charge_attack = 1;
+        break;
     default:
         char_c::set_seq_params();
         break;
@@ -280,6 +332,21 @@ void char_alice::func20()
         }
         if ( field_84C == 0 && cc )
         {
+            if (input->keyHit(INP_B))
+            {
+                if (char_on_ground_flag(this)) // On Ground
+                {
+                    if (gX(dir) > 0 && gY() == 0)
+                    {
+                        if ( cprior <= get_prior(401) )
+                        {
+                            angZ = 0;
+                            set_seq(401);
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
 }

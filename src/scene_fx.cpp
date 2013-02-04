@@ -553,8 +553,8 @@ void c_scene_fx::func10()
 
         if (c_A > 10)
         {
-            scaleX *= 0.98;
-            scaleY += 0.05;
+            scaleY *= 0.98;
+            scaleX += 0.05;
             c_A -= 10;
             if (process())
                 active = false;

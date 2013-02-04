@@ -132,7 +132,12 @@ void char_c::draw_shadow(shd_trans *trans, gr_shader *shader)
 {
     float rx,ry,rz;
     euler_mult(0,0,-angZ,trans->ax,trans->ay,trans->az,rx,ry,rz);
-    sprite.setRotate(rx,ry,rz);
+
+    if (trans->sx < 0)
+        sprite.setRotate(rx,ry,-rz*dir);
+    else
+        sprite.setRotate(rx,ry,rz*dir);
+
     sprite.setScale(trans->sx*dir,trans->sy);
     sprite.setXY(trans->x,trans->y);
     sprite.setOrigin(-x_off ,-y_off);
@@ -142,10 +147,13 @@ void char_c::draw_shadow(shd_trans *trans, gr_shader *shader)
 
 void char_c::draw(gr_shader *shader)
 {
+    if (scaleX < 0)
+        sprite.setRotate(-angZ*dir);
+    else
+        sprite.setRotate(angZ*dir);
 
-    sprite.setRotate(angZ);
     sprite.setColor(255,255,255,255);
-    sprite.setScale(dir*1.0,1);
+    sprite.setScale(dir*scaleX,scaleY);
     // }
 
     sprite.setXY(x,y+y_off);

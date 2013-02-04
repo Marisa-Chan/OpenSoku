@@ -17,7 +17,7 @@ void addbullet(char_c *chr, c_bullet *bul, int32_t idx, float x, float y, int8_t
         c_bullet *tmp = chr->new_bullet();
         if (tmp)
         {
-            tmp->init(chr,bul,sq,x,y,dir,order,addit,num);
+            tmp->init(chr,bul,sq,idx,x,y,dir,order,addit,num);
             if (chr)
                 chr->get_bullets()->push_back(tmp);
         }
@@ -69,25 +69,39 @@ c_bullet::c_bullet()
     field_194 = 0;
     active = true;
     bul_parent = NULL;
-    parent = NULL;
+    //  parent = NULL;
     //pgp = _pgp;
 }
 
 c_bullet::~c_bullet()
 {
+    if (bul_parent)
+        bul_parent->bul_childs.remove(this);
 
+
+    bullist_iter it = bul_childs.begin();
+    while(it != bul_childs.end())
+    {
+        (*it)->bul_parent = NULL;
+        it++;
+    }
 }
 
-void c_bullet::init(char_c *_parent, c_bullet *bul, seq *sq, float _x, float _y, int8_t _dir, int8_t _order, float *addit, int8_t num)
+void c_bullet::init(char_c *_parent, c_bullet *bul, seq *sq, int32_t idx, float _x, float _y, int8_t _dir, int8_t _order, float *addit, int8_t num)
 {
-    parent = _parent;
-    chrt = parent;
+//    parent = _parent;
+    chrt = _parent;
     enemy = chrt->enemy;
 
     bul_parent = bul;
 
-    if (parent)
-        pgp = parent->pgp;
+    if (bul_parent)
+    {
+        bul_parent->bul_childs.push_back(this);
+    }
+
+    if (chrt)
+        pgp = chrt->pgp;
     else if (bul_parent)
         pgp = bul_parent->pgp;
 
@@ -98,6 +112,7 @@ void c_bullet::init(char_c *_parent, c_bullet *bul, seq *sq, float _x, float _y,
     order = _order;
     for (int8_t i=0; i< num; i++)
         addition[i] = addit[i];
+
     set_seq_params();
 }
 
@@ -118,8 +133,11 @@ void c_bullet::draw(int8_t plane)
         sprite.setXY(x,y);
         sprite.setColor(c_R,c_G,c_B,c_A);
 
+        if (scaleX < 0)
+            sprite.setRotate(angX,angY,-angZ * dir);
+        else
+            sprite.setRotate(angX,angY,angZ * dir);
 
-        sprite.setRotate(angX,angY,angZ);
         if (scale_real)
             sprite.setAScale(dir*rs_w*scaleX,rs_h*scaleY);
         else
@@ -179,19 +197,19 @@ bool c_bullet::sub_48C640(int32_t p)
 
 bool c_bullet::sub_48C6A0(int32_t p1, int32_t p2, int32_t p3)
 {
-    if (p1 == 0 && (parent->get_seq() <= 49 || parent->get_seq() >= 150))
+    if (p1 == 0 && (chrt->get_seq() <= 49 || chrt->get_seq() >= 150))
         return false;
-    else if (p1 != 1 || parent->get_seq() <= 70 || parent->get_seq() >= 150)
+    else if (p1 != 1 || chrt->get_seq() <= 70 || chrt->get_seq() >= 150)
         return false;
 
     for (int32_t i=0; i < p2; i++)
     {
-        scene_add_effect(parent,200,x,y,dir,1);
+        scene_add_effect(chrt,200,x,y,dir,1);
     }
 
     for (int32_t i=0; i < p3; i++)
     {
-        scene_add_effect(parent,201,x,y,dir,1);
+        scene_add_effect(chrt,201,x,y,dir,1);
     }
 
     return true;
@@ -199,7 +217,7 @@ bool c_bullet::sub_48C6A0(int32_t p1, int32_t p2, int32_t p3)
 
 void c_bullet::sub_48C4B0(float p1, float p2, float p3)
 {
-    c_meta *enemy = parent->enemy;
+    c_meta *enemy = chrt->enemy;
 
     float tmp = p1 - atan2(enemy->getY() + p3 - y, (enemy->getX() - x) * dir) * 180.0/3.1415926;
     int angl = (int)(tmp - addition[0]) % 360;

@@ -54,6 +54,8 @@
 		<Unit filename="chars/alice.h" />
 		<Unit filename="chars/marisa.cpp" />
 		<Unit filename="chars/marisa.h" />
+		<Unit filename="chars/alice_bullets.cpp" />
+		<Unit filename="chars/alice_bullets.h" />
 		<Unit filename="chars/marisa_bullets.cpp" />
 		<Unit filename="chars/marisa_bullets.h" />
 		<Unit filename="chars/utsuho.cpp" />

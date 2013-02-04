@@ -61,7 +61,7 @@ void marisa_bullets::func10()
 
             if ( sprite.get_frame_time() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
-                parent->play_sfx(41);
+                chrt->play_sfx(41);
                 active = false;
 
                 float t[3];
@@ -73,11 +73,11 @@ void marisa_bullets::func10()
                 {
                     t[0] = scene_rand_rng(360);
                     t[2] = 7;
-                    addbullet(parent,NULL,800,x,y,dir,1,t,3);
+                    addbullet(chrt,NULL,800,x,y,dir,1,t,3);
                 }
 
                 t[2] = 8;
-                addbullet(parent,NULL,800,x,y,dir,1,t,3);
+                addbullet(chrt,NULL,800,x,y,dir,1,t,3);
 
             }
         }
@@ -96,13 +96,13 @@ void marisa_bullets::func10()
                 t[0] = 0;
                 t[1] = 0;
                 t[2] = 8;
-                addbullet(parent,NULL,800,x,y,dir,1,t,3);
+                addbullet(chrt,NULL,800,x,y,dir,1,t,3);
 
                 for(int32_t i=0; i<4; i++)
                 {
                     t[0] = scene_rand_rng(360);
                     t[2] = 7;
-                    addbullet(parent,NULL, 800, x,y,dir,1,t,3);
+                    addbullet(chrt,NULL, 800, x,y,dir,1,t,3);
                 }
                 active = false;
                 break;
@@ -195,7 +195,7 @@ void marisa_bullets::func10()
                 t[0] = addition[0];
                 t[1] = 0;
                 t[2] = 2;
-                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                addbullet(chrt, NULL, 801, x,y,dir,1,t,3);
             }
 
             if (x > 1380 || x < -100 || y > 1000 || y < -100)
@@ -207,25 +207,25 @@ void marisa_bullets::func10()
             sub_48C5F0(this, 0);
             if ( sprite.get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
-                parent->play_sfx(3);
+                chrt->play_sfx(3);
                 active = false;
 
                 float t[3];
                 t[0] = 0;
                 t[1] = 0;
                 t[2] = 3;
-                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                addbullet(chrt, NULL, 801, x,y,dir,1,t,3);
 
                 for (int32_t i=0; i<12; i++)
                 {
                     t[0] = scene_rand_rng(360);
                     t[1] = scene_rand_rng(10) + 5.0;
                     t[2] = 5.0;
-                    addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                    addbullet(chrt, NULL, 801, x,y,dir,1,t,3);
                 }
 
                 t[2] = 6.0;
-                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                addbullet(chrt, NULL, 801, x,y,dir,1,t,3);
             }
             x += h_inerc*dir;
             y += v_inerc;
@@ -253,7 +253,7 @@ void marisa_bullets::func10()
                 t[0] = addition[0];
                 t[1] = 0;
                 t[2] = 2;
-                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                addbullet(chrt, NULL, 801, x,y,dir,1,t,3);
             }
 
             if (x > 1380 || x < -100 || y > 1000 || y < -100)
@@ -265,25 +265,25 @@ void marisa_bullets::func10()
             sub_48C5F0(this, 0);
             if ( sprite.get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
-                parent->play_sfx(3);
+                chrt->play_sfx(3);
                 active = false;
 
                 float t[3];
                 t[0] = 0;
                 t[1] = 0;
                 t[2] = 4;
-                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                addbullet(chrt, NULL, 801, x,y,dir,1,t,3);
 
                 for (int32_t i=0; i<12; i++)
                 {
                     t[0] = scene_rand_rng(360);
                     t[1] = scene_rand_rng(15) + 5.0;
                     t[2] = 5.0;
-                    addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                    addbullet(chrt, NULL, 801, x,y,dir,1,t,3);
                 }
 
                 t[2] = 7.0;
-                addbullet(parent, NULL, 801, x,y,dir,1,t,3);
+                addbullet(chrt, NULL, 801, x,y,dir,1,t,3);
             }
 
             x += h_inerc*dir;
@@ -452,25 +452,25 @@ void marisa_bullets::func10()
                 t[0] = 0.0;
                 t[1] = 0.0;
                 t[2] = 1.0;
-                parent->play_sfx(3);
+                chrt->play_sfx(3);
 
-                addbullet(parent, NULL, 802, x,y,dir, 1,t,3);
+                addbullet(chrt, NULL, 802, x,y,dir, 1,t,3);
 
                 for(int32_t i =0; i<8; i++)
                 {
                     t[0] = scene_rand_rng(360);
                     t[2] = 2;
-                    addbullet(parent,NULL,802,x,y,dir,1,t,3);
+                    addbullet(chrt,NULL,802,x,y,dir,1,t,3);
                 }
 
                 for(int32_t i =0; i<8; i++)
                 {
                     t[0] = scene_rand_rng(360);
                     t[2] = 3;
-                    addbullet(parent,NULL,802,x,y,dir,1,t,3);
+                    addbullet(chrt,NULL,802,x,y,dir,1,t,3);
                 }
                 t[2] = 4;
-                addbullet(parent,NULL,802,x,y,dir,1,t,3);
+                addbullet(chrt,NULL,802,x,y,dir,1,t,3);
             }
         }
         else if (sprite.get_subseq() == 1)
@@ -588,33 +588,33 @@ void marisa_bullets::func10()
             break;
         }
         break;
-    case 803:
+    case 803: //6C Beam
 
         if (sprite.get_subseq() <= 1)
         {
             if ( field_36C % 3 == 0 )
                 field_190 = 0;
 
-            if ( char_is_shock(parent))
+            if ( char_is_shock(chrt))
             {
                 for (int32_t i = 0; i< 40; i++)
                 {
-                    scene_add_effect(parent,201,scene_rand_rng(15)+30*i*dir+x, y,dir,1);
+                    scene_add_effect(chrt,201,scene_rand_rng(15)+30*i*dir+x, y,dir,1);
                 }
                 active = false;
                 break;
             }
 
-            if (parent->get_subseq() < 5 && parent->get_seq() == 411)
+            if (chrt->get_subseq() < 5 && chrt->get_seq() == 411)
             {
 
-                x = parent->getX() + dir*44;
-                y = parent->getY() + 85;
+                x = chrt->getX() + dir*44;
+                y = chrt->getY() + 85;
             }
-            else if (parent->get_subseq() < 5 && parent->get_seq() == 415)
+            else if (chrt->get_subseq() < 5 && chrt->get_seq() == 415)
             {
-                x = parent->getX() + dir*48;
-                y = parent->getY() + 104;
+                x = chrt->getX() + dir*48;
+                y = chrt->getY() + 104;
             }
             else
                 sprite.set_subseq(2);
@@ -695,15 +695,15 @@ void marisa_bullets::func10()
                 {
                     if ( field_194 > 0 )
                     {
-                        if ( parent->get_seq() == 411 && parent->get_subseq() < 5)
+                        if ( chrt->get_seq() == 411 && chrt->get_subseq() < 5)
                         {
-                            x = dir * 44 + parent->getX();
-                            y = parent->getY() + 85;
+                            x = dir * 44 + chrt->getX();
+                            y = chrt->getY() + 85;
                         }
-                        else if ( parent->get_seq() == 415 && parent->get_subseq() < 5)
+                        else if ( chrt->get_seq() == 415 && chrt->get_subseq() < 5)
                         {
-                            x = dir * 48 + parent->getX();
-                            y = parent->getY() + 104;
+                            x = dir * 48 + chrt->getX();
+                            y = chrt->getY() + 104;
                         }
                         else
                         {
@@ -711,11 +711,11 @@ void marisa_bullets::func10()
                             break;
                         }
 
-                        if ( char_is_shock(parent))
+                        if ( char_is_shock(chrt))
                         {
                             for (int32_t i = 0; i< 40; i++)
                             {
-                                scene_add_effect(parent,201,scene_rand_rng(15)+30*i*dir+x, y,dir,1);
+                                scene_add_effect(chrt,201,scene_rand_rng(15)+30*i*dir+x, y,dir,1);
                             }
                             active = false;
                             break;
@@ -804,20 +804,20 @@ void marisa_bullets::func10()
         {
             if ( sprite.get_subseq() == 1 )
             {
-                if ( addition[1] == 0 && parent->get_seq() == 307 && parent->get_frame() > 4 )
+                if ( addition[1] == 0 && chrt->get_seq() == 307 && chrt->get_frame() > 4 )
                 {
-                    x = parent->getX() + dir * 67;
-                    y = parent->getY() +  110;
+                    x = chrt->getX() + dir * 67;
+                    y = chrt->getY() +  110;
                 }
-                else if (addition[1] == 1 && parent->get_seq() == 308 && parent->get_frame() > 4 )
+                else if (addition[1] == 1 && chrt->get_seq() == 308 && chrt->get_frame() > 4 )
                 {
-                    x = parent->getX() + dir * 30;
-                    y = parent->getY() + 30;
+                    x = chrt->getX() + dir * 30;
+                    y = chrt->getY() + 30;
                 }
-                else if (addition[1] == 2 && parent->get_seq() == 408 && parent->get_subseq() > 0)
+                else if (addition[1] == 2 && chrt->get_seq() == 408 && chrt->get_subseq() > 0)
                 {
-                    x = parent->getX() + dir*106;
-                    y = parent->getY() + 103;
+                    x = chrt->getX() + dir*106;
+                    y = chrt->getY() + 103;
                 }
             }
             else if (sprite.get_subseq() == 2)
@@ -850,15 +850,15 @@ void marisa_bullets::func10()
         }
         else
         {
-            x = parent->getX();
-            y = parent->getY();
-            if ( parent->get_seq() != 322 && parent->get_seq() != 418 && parent->get_seq() != 696 )
+            x = chrt->getX();
+            y = chrt->getY();
+            if ( chrt->get_seq() != 322 && chrt->get_seq() != 418 && chrt->get_seq() != 696 )
             {
                 active = false;
                 break;
             }
         }
-        if ( parent->hit_stop == 0)
+        if ( chrt->hit_stop == 0)
         {
             if ( sprite.process() )
                 active = false;
@@ -873,7 +873,7 @@ void marisa_bullets::func10()
                 t[0] = scene_rand_rng(360);
                 t[1] = scene_rand_rng(10) * 0.1;
                 t[2] = 2;
-                addbullet(parent,NULL,848,x,y,dir,1,t,3);
+                addbullet(chrt,NULL,848,x,y,dir,1,t,3);
             }
         }
         break;
@@ -881,28 +881,28 @@ void marisa_bullets::func10()
       angZ += 5.0;
       if ( get_subseq() == 0)
       {
-          if (parent->get_seq() >= 150 && parent->get_seq() < 154)
+          if (chrt->get_seq() >= 150 && chrt->get_seq() < 154)
           {
-              x = parent->x + 57 * parent->dir;
-            y = parent->y + 94;
-            dir = parent->dir;
+              x = chrt->x + 57 * chrt->dir;
+            y = chrt->y + 94;
+            dir = chrt->dir;
           }
-          else if (parent->get_seq() >= 154 && parent->get_seq() < 158)
+          else if (chrt->get_seq() >= 154 && chrt->get_seq() < 158)
           {
-            x = parent->x + 57 * parent->dir;
-            y = parent->y + 60;
-            dir = parent->dir;
+            x = chrt->x + 57 * chrt->dir;
+            y = chrt->y + 60;
+            dir = chrt->dir;
           }
-          else if (parent->get_seq() == 158)
+          else if (chrt->get_seq() == 158)
           {
-              x = parent->x + 57 * parent->dir;
-            y = parent->y + 100;
-            dir = parent->dir;
+              x = chrt->x + 57 * chrt->dir;
+            y = chrt->y + 100;
+            dir = chrt->dir;
           }
           else
           {
               next_subseq();
-              parent->bbarrier_show = false;
+              chrt->bbarrier_show = false;
           }
       }
       else if ( get_subseq() == 1)
@@ -1010,9 +1010,9 @@ void marisa_bullets::set_seq_params()
             t[0] = 0;
             t[1] = 0;
             t[2] = 3;
-            addbullet(parent,this,803,x,y,dir,1,t,3);
+            addbullet(chrt,this,803,x,y,dir,1,t,3);
             t[2] = 5;
-            addbullet(parent,this,803,x,y,dir,1,t,3);
+            addbullet(chrt,this,803,x,y,dir,1,t,3);
             set_real_size(0,0);
             //sub_438450(v2, 0.0, 0.0, 0.0, 256.0);
             field_380 = 35.0;

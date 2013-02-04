@@ -150,8 +150,8 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
 
     init_effects();
 
-    add_infoeffect(2,1);
-    weather_sp->addeffect(1,1);
+    //add_infoeffect(2,1);
+    //weather_sp->addeffect(1,1);
 }
 
 void c_scene::draw_scene()
@@ -166,6 +166,9 @@ void c_scene::draw_scene()
     bkg->draw_mid();
 
     img_sp->draw(-1);
+
+    for (uint32_t i=0; i < 2; i++)
+        drawbullet(chrs[i],-1);
 
     for (uint32_t i=0; i < 2; i++)
         chrs[i]->draw();
@@ -1292,7 +1295,7 @@ void scene_subfunc5(c_scene *scn)
 
 void c_scene::update()
 {
-    draw_weather_bkg(3);
+    //draw_weather_bkg(3);
     func16();
     scene_subfunc1(this);
     scene_subfunc2(this);

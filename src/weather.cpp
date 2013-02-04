@@ -88,7 +88,7 @@ void c_weather_bg::draw(int8_t weather, int8_t plane)
         cur_weather = weather;
     }
 
-    gr_setxy_sprite(&sprite,BKG_WIDTH / 2,0);
+    //gr_setxy_sprite(&sprite,-BKG_WIDTH / 2,0);
     //gr_setorigin_sprite(&sprite,,0);
     gr_setscale_sprite(&sprite,3.0,3.0);
 

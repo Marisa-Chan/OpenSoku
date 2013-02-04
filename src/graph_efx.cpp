@@ -93,7 +93,7 @@ void gfx_sprite::frame_val_set()
         cur_frame_time = 0;
         cur_duration   = pframe->durate;
 
-        setOrigin(pframe->x_offset,pframe->y_offset);
+        setOrigin(0,0);
         if (pframe->type == 2)
         {
             if (pframe->blend_mode == 1)
@@ -204,7 +204,7 @@ void gfx_sprite::setScale(float x, float y)
 {
     if (pframe)
     {
-        gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_x);
+        gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_y);
     }
     else
         gr_setscale_sprite(sprite,x,y);
@@ -212,7 +212,12 @@ void gfx_sprite::setScale(float x, float y)
 
 void gfx_sprite::setOrigin(float x, float y)
 {
-    gr_setorigin_sprite(sprite,x,y);
+    if (pframe)
+    {
+        gr_setorigin_sprite(sprite,pframe->x_offset+x/pframe->scale_x,pframe->y_offset+y/pframe->scale_y);
+    }
+    else
+        gr_setorigin_sprite(sprite,x,y);
 }
 
 void gfx_sprite::setBlend(gr_blend _blend)
@@ -223,7 +228,11 @@ void gfx_sprite::setBlend(gr_blend _blend)
 void gfx_sprite::setRotate(float angl)
 {
     if (pframe)
+    {
+        if (pframe->scale_x < 0)
+            angl*=-1;
         gr_setrotate_sprite(sprite,angl+pframe->angle_z);
+    }
     else
         gr_setrotate_sprite(sprite,angl);
 }
@@ -233,6 +242,8 @@ void gfx_sprite::setRotate(float x, float y, float z)
     if (pframe)
     {
         float rx,ry,rz;
+        if (pframe->scale_x < 0)
+            z*=-1;
         euler_mult(pframe->angle_x,pframe->angle_y,pframe->angle_z,x,y,z,rx,ry,rz);
         gr_setrotate_sprite(sprite,rx,ry,rz);
     }
@@ -321,8 +332,13 @@ void gfx_meta::draw(int8_t plane)
         sprite.setXY(x,y);
         sprite.setColor(c_R,c_G,c_B,c_A);
 
-        sprite.setRotate(angZ);
+        sprite.setOrigin(x_off,y_off);
         sprite.setScale(dir*scaleX,scaleY);
+
+        if (scaleX < 0)
+            sprite.setRotate(angX,angY,-angZ*dir);
+        else
+            sprite.setRotate(angX,angY,angZ*dir);
 
         sprite.draw(plane);
     }

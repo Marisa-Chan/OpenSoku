@@ -52,6 +52,8 @@ char_utsuho::char_utsuho(inp_ab *func, uint8_t pal):
 
 void char_utsuho::draw(gr_shader *_shader)
 {
+    if (!_shader)
+    {
     shd_p+=0.5;
     if (shd_p >= 512)
         shd_p = 0;
@@ -59,6 +61,10 @@ void char_utsuho::draw(gr_shader *_shader)
     gr_shader_set(shader,"pos",(x-shd_p)/512.0,(y-shd_p)/512.0);
 
     char_c::draw(shader);
+    }
+    else
+    char_c::draw(_shader);
+
 }
 
 void char_utsuho::draw_shadow(shd_trans *trans, gr_shader *_shader)

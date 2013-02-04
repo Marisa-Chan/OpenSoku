@@ -77,9 +77,9 @@ int main(int argc, char *argv[])
 
      //playmusic();
 
-    char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
+    char_c *marisa = new char_alice(inp_createinput(INP_TYPE_BOTH));
 
-    char_c *alice = new char_utsuho(inp_createinput(INP_TYPE_BOTH));
+    char_c *alice = new char_alice(inp_createinput(INP_TYPE_NONE));
 
 //    uint32_t i = 0;
 //
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     marisa->set_seq(0);
     alice->set_seq(0);
     srand(time(NULL));
-    background  *bkg = bkg_create(0);
+    background  *bkg = bkg_create(38);
 
 
 
@@ -130,11 +130,13 @@ int main(int argc, char *argv[])
 
         scn->update_char_anims();
 
-        gui.draw_all(0);
-        gui2.draw_all(0);
-        gui3.draw_all(0);
+        //gui.draw_all(0);
+        //gui2.draw_all(0);
+        //gui3.draw_all(0);
 
         gr_flip();
+
+        //scene_add_effect(marisa,103,marisa->x,marisa->y,marisa->dir,1);
 
     }
 

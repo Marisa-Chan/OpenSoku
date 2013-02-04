@@ -168,10 +168,10 @@ const fxTransform& fxTransformable::getTransform() const
         float cosine = static_cast<float>(std::cos(angle));
         float sine   = static_cast<float>(std::sin(angle));
 
-        m_transform = fxTransform(m_scale.x,              0.f,    0.f, m_position.x,
-                                        0.f, m_scale.y*cosine,   sine, m_position.y,
-                                        0.f,            -sine, cosine,            0,
-                                        0.f,              0.f,    0.f,          1.f);
+        m_transform = fxTransform(1.f,    0.f,    0.f, m_position.x,
+                                  0.f, cosine,   sine, m_position.y,
+                                  0.f,  -sine, cosine,            0,
+                                  0.f,    0.f,    0.f,          1.f);
 
 
         angle  = -m_rotation_y * 3.141592654f / 180.f;
@@ -187,16 +187,16 @@ const fxTransform& fxTransformable::getTransform() const
         cosine = static_cast<float>(std::cos(angle));
         sine   = static_cast<float>(std::sin(angle));
 
-        m_transform.combine(fxTransform( cosine, sine, 0.f, 0,
-                                        -sine, cosine, 0.f, 0,
-                                         0.f, 0.f, 1.f, 0,
-                                         0.f, 0.f, 0.f, 1.f));
+        m_transform.combine(fxTransform( cosine *m_scale.x,   sine*m_scale.y, 0.f, 0,
+                                        -sine   *m_scale.x, cosine*m_scale.y, 0.f, 0,
+                                                       0.f,              0.f, 1.f, 0,
+                                                       0.f,              0.f, 0.f, 1.f));
 
         m_transform.combine(fxTransform( 1.f, 0.f, 0.f, -m_origin.x,
-                                   0.f, 1.f, 0.f, -m_origin.y,
-                                   0.f, 0.f, 1.f, 0,
-                                   0.f, 0.f, 0.f, 1.f));
-        */
+                                         0.f, 1.f, 0.f, -m_origin.y,
+                                         0.f, 0.f, 1.f, 0,
+                                         0.f, 0.f, 0.f, 1.f));*/
+
 
         float angle  = -m_rotation_x * 3.141592654f / 180.f;
         float cx = static_cast<float>(std::cos(angle));
@@ -212,17 +212,17 @@ const fxTransform& fxTransformable::getTransform() const
 
         m_transform = fxTransform(
                           m_scale.x*cy*cz,
-                          m_scale.x*cy*sz,
-                          m_scale.x*(-sy),
-                          m_scale.x*cy*cz*(-m_origin.x) + m_scale.x*cy*sz*(-m_origin.y) + m_position.x,
-                          sx*sy*cz + m_scale.y*cx*(-sz),
-                          sx*sy*sz + m_scale.y*cx*cz,
-                          sx*cy,
-                          (sx*sy*cz+m_scale.y*cx*-sz)*(-m_origin.x) + (sx*sy*sz+m_scale.y*cx*cz)*(-m_origin.y) + m_position.y,
-                          cx*sy*cz + sx*sz,
-                          cx*sy*sz + (-sx)*cz,
+                          m_scale.y*cy*sz,
+                          -sy,
+                          m_position.x - cy*cz*m_scale.x*m_origin.x - cy*sz*m_scale.y*m_origin.y,
+                          cz*m_scale.x*sx*sy - cx*sz*m_scale.x,
+                          cx*cz*m_scale.y + sx*sy*sz*m_scale.y,
+                          cy*sx,
+                          m_position.y + m_origin.x*(cx*sz*m_scale.x -cz*m_scale.x*sx*sy) - m_origin.y*(cx*cz*m_scale.y + sx*sy*sz*m_scale.y),
+                          sx*sz*m_scale.x+cx*cz*sy*m_scale.x,
+                          cx*sy*sz*m_scale.y - cz*sx*m_scale.y,
                           cx*cy,
-                          (cx*sy*cz+sx*sz)*(-m_origin.x) + (cx*sy*sz+(-sx)*cz)*(-m_origin.y),
+                          m_origin.y*(cz*m_scale.y*sx -cx*sy*sz*m_scale.y) - m_origin.x*(sx*sz*m_scale.x + cx*cz*sy * m_scale.x),
                           0,0,0,1);
 
 

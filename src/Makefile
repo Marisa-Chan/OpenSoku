@@ -24,6 +24,7 @@ OBJS =  \
 	music.cpp\
 	scene.cpp\
 	chars/alice.cpp\
+	chars/alice_bullets.cpp\
  	chars/marisa.cpp\
 	chars/marisa_bullets.cpp\
 	chars/utsuho.cpp\
