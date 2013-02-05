@@ -83,6 +83,7 @@ char_c::char_c(inp_ab *func)
     field_51C = 0;
     field_520 = 0;
     field_522 = 0;
+    field_524 = 0;
     field_538 = 1.0;
     field_4BE = 0;
     field_4BC = 0;
@@ -3136,6 +3137,11 @@ bool char_is_block_knock(char_c *chr)
 {
     uint32_t s = chr->get_seq();
     return s >= 150 && s < 168;
+}
+
+bool spell200_seq299_300_field190_0_3(char_c *chr)
+{
+    return ((chr->get_seq() > 299 && chr->field_190 != 0 && chr->field_190 != 3) || chr->get_seq() < 300 ) && chr->spell_energy >= 200;
 }
 
 void char_h_move(char_c *chr, float move)

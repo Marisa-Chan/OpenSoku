@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
      //playmusic();
 
-    char_c *marisa = new char_alice(inp_createinput(INP_TYPE_BOTH));
+    char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
 
     char_c *alice = new char_alice(inp_createinput(INP_TYPE_NONE));
 

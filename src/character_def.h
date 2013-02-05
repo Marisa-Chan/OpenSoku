@@ -92,6 +92,14 @@ private:
     int8_t  field_574;
     int8_t  field_577;
     int8_t  field_578;
+    int8_t  field_6A8;
+    int8_t  field_6A9;
+    int8_t  field_6AA;
+    int8_t  field_6AB;
+    int8_t  field_6AC;
+    int8_t  field_6AD;
+    int8_t  field_6AE;
+    int8_t  field_6AF;
     int32_t field_6EC;
     int8_t  cards_added;    // 0x5E6
     int32_t field_710;
@@ -249,6 +257,8 @@ bool border_escape_air(char_c *chr);
 bool fwd_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
 bool bkg_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
 bool flying_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash);
+
+bool spell200_seq299_300_field190_0_3(char_c *chr);
 
 void sub_4689D0(char_c *, int32_t);
 
