@@ -9,21 +9,21 @@
 
 bool sub_48C5F0(c_bullet *blt, int32_t a2)
 {
-  if ( blt->field_190 == 6 )
-  {
-      blt->field_394++;
-      if (a2 > 0 && blt->field_394 >= a2)
-        return true;
+    if ( blt->field_190 == 6 )
+    {
+        blt->field_394++;
+        if (a2 > 0 && blt->field_394 >= a2)
+            return true;
 
         blt->field_194++;
         blt->field_190 = 0;
-  }
-  return false;
+    }
+    return false;
 }
 
 void marisa_bullets::func10()
 {
-    switch(sprite.get_seq_id())
+    switch(get_seq())
     {
     case 800:
         if ( field_190 == 5 )
@@ -31,7 +31,7 @@ void marisa_bullets::func10()
             active = false;
             break;
         }
-        if ( sprite.get_elaps_frames() == 0 && sprite.get_frame_time() == 0 && sprite.get_frame() == 0 && sprite.get_subseq() == 0 )
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 0 )
         {
             field_194 = 1;
             field_36C = 0;
@@ -47,7 +47,7 @@ void marisa_bullets::func10()
             break;
         }
 
-        if (sprite.get_subseq() == 0 || sprite.get_subseq() == 1)
+        if (get_subseq() == 0 || get_subseq() == 1)
         {
             if (sub_48C6A0(0, 0, 4))
             {
@@ -59,7 +59,7 @@ void marisa_bullets::func10()
 
             sub_48C4B0(0.0, addition[3], 100.0);
 
-            if ( sprite.get_frame_time() > 180 || field_190 != 0 || getlvl_height(this) >= y )
+            if ( get_frame_time() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
                 chrt->play_sfx(41);
                 active = false;
@@ -81,7 +81,7 @@ void marisa_bullets::func10()
 
             }
         }
-        else if (sprite.get_subseq() >= 2 && sprite.get_subseq() <= 5)
+        else if (get_subseq() >= 2 && get_subseq() <= 5)
         {
             if ( sub_48C6A0(0, 0, 3) )
             {
@@ -90,7 +90,7 @@ void marisa_bullets::func10()
             }
             angZ += 30;
 
-            if ( sprite.get_elaps_frames() == 10 )
+            if ( get_elaps_frames() == 10 )
             {
                 float t[3];
                 t[0] = 0;
@@ -108,11 +108,11 @@ void marisa_bullets::func10()
                 break;
             }
         }
-        else if (sprite.get_subseq() == 6 )
+        else if (get_subseq() == 6 )
         {
-            if ( sprite.get_elaps_frames() <= 20 )
+            if ( get_elaps_frames() <= 20 )
             {
-                scaleY = scaleX = (sprite.get_elaps_frames() % 2) * 0.1 + 2.0;
+                scaleY = scaleX = (get_elaps_frames() % 2) * 0.1 + 2.0;
             }
             else
             {
@@ -124,11 +124,11 @@ void marisa_bullets::func10()
                     active = false;
                     break;
                 }
-                if ( sprite.get_elaps_frames() > 10 )
+                if ( get_elaps_frames() > 10 )
                     c_A -= 10;
             }
         }
-        else if (sprite.get_subseq() == 7 )
+        else if (get_subseq() == 7 )
         {
             h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
             v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
@@ -150,7 +150,7 @@ void marisa_bullets::func10()
             c_R -= 5;
             c_G -= 5;
         }
-        else if (sprite.get_subseq() == 8 )
+        else if (get_subseq() == 8 )
         {
             scaleX += 0.3;
             scaleY += 0.3;
@@ -166,13 +166,13 @@ void marisa_bullets::func10()
         }
         x += dir * h_inerc;
         y += v_inerc;
-        if ( sprite.process() )
+        if ( process() )
             active = false;
         break;
 
         break;
     case 801:
-        if (sprite.get_subseq() == 0)
+        if (get_subseq() == 0)
         {
             if ( field_190 == 5 || sub_48C6A0(0, 3, 5) )
             {
@@ -187,9 +187,9 @@ void marisa_bullets::func10()
 
             angZ += 10.0;
 
-            scaleX = scaleY = sin_deg(sprite.get_elaps_frames() * 10) * 0.5 + 1.0;
+            scaleX = scaleY = sin_deg(get_elaps_frames() * 10) * 0.5 + 1.0;
 
-            if ( (sprite.get_elaps_frames() % 7) == 0 )
+            if ( (get_elaps_frames() % 7) == 0 )
             {
                 float t[3];
                 t[0] = addition[0];
@@ -205,7 +205,7 @@ void marisa_bullets::func10()
             }
 
             sub_48C5F0(this, 0);
-            if ( sprite.get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
+            if ( get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
                 chrt->play_sfx(3);
                 active = false;
@@ -230,7 +230,7 @@ void marisa_bullets::func10()
             x += h_inerc*dir;
             y += v_inerc;
         }
-        else if (sprite.get_subseq() == 1)
+        else if (get_subseq() == 1)
         {
             if ( field_190 == 5 || sub_48C6A0(0, 3, 5) )
             {
@@ -245,9 +245,9 @@ void marisa_bullets::func10()
 
             angZ += 10.0;
 
-            scaleX = scaleY = sin_deg(sprite.get_elaps_frames() * 10) * 0.5 + 1.0;
+            scaleX = scaleY = sin_deg(get_elaps_frames() * 10) * 0.5 + 1.0;
 
-            if ( (sprite.get_elaps_frames() % 3) == 0 )
+            if ( (get_elaps_frames() % 3) == 0 )
             {
                 float t[3];
                 t[0] = addition[0];
@@ -263,7 +263,7 @@ void marisa_bullets::func10()
             }
 
             sub_48C5F0(this, 0);
-            if ( sprite.get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
+            if ( get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
             {
                 chrt->play_sfx(3);
                 active = false;
@@ -289,7 +289,7 @@ void marisa_bullets::func10()
             x += h_inerc*dir;
             y += v_inerc;
         }
-        else if (sprite.get_subseq() == 2) //tail
+        else if (get_subseq() == 2) //tail
         {
             scaleX += 0.1;
             scaleY += 0.1;
@@ -303,9 +303,9 @@ void marisa_bullets::func10()
             c_R -= 20;
             c_B -= 20;
         }
-        else if (sprite.get_subseq() == 3)
+        else if (get_subseq() == 3)
         {
-            if ( sprite.get_frame() == 1 )
+            if ( get_frame() == 1 )
             {
                 scaleX *= 0.85;
                 scaleY *= 0.85;
@@ -339,16 +339,16 @@ void marisa_bullets::func10()
                         field_190 = 0;
                     }
                 }
-                scaleY = scaleX = (sprite.get_elaps_frames() % 2) * 0.1 + 1.0;
+                scaleY = scaleX = (get_elaps_frames() % 2) * 0.1 + 1.0;
 
                 if ( field_194 == 0 )
-                    sprite.next_frame();
+                    next_frame();
 
             }
         }
-        else if (sprite.get_subseq() == 4)
+        else if (get_subseq() == 4)
         {
-            if ( sprite.get_frame() == 1 )
+            if ( get_frame() == 1 )
             {
                 scaleX *= 0.85;
                 scaleY *= 0.85;
@@ -383,13 +383,13 @@ void marisa_bullets::func10()
                     }
                 }
 
-                scaleY = scaleX = (sprite.get_elaps_frames() % 2) * 0.1 + 1.0;
+                scaleY = scaleX = (get_elaps_frames() % 2) * 0.1 + 1.0;
 
                 if ( field_194 == 0 )
-                    sprite.set_frame(1);
+                    set_frame(1);
             }
         }
-        else if (sprite.get_subseq() == 5)
+        else if (get_subseq() == 5)
         {
             h_inerc = cos_deg(addition[0]) * addition[1];
             v_inerc = -sin_deg(addition[0] ) * addition[1];
@@ -412,7 +412,7 @@ void marisa_bullets::func10()
             c_R -= 5;
             c_G -= 5;
         }
-        else if (sprite.get_subseq() == 6 || sprite.get_subseq() == 7)
+        else if (get_subseq() == 6 || get_subseq() == 7)
         {
             scaleX += 0.3;
             scaleY += 0.3;
@@ -424,7 +424,7 @@ void marisa_bullets::func10()
             }
             c_A -= 20;
         }
-        if ( sprite.process() )
+        if ( process() )
             active = false;
         break;
     case 802:
@@ -434,7 +434,7 @@ void marisa_bullets::func10()
             break;
         }
 
-        if ( sprite.get_subseq() == 0 )
+        if ( get_subseq() == 0 )
         {
             if ( sub_48C6A0(0, 4, 5) || x > 1380 || x < -100)
             {
@@ -473,9 +473,9 @@ void marisa_bullets::func10()
                 addbullet(chrt,NULL,802,x,y,dir,1,t,3);
             }
         }
-        else if (sprite.get_subseq() == 1)
+        else if (get_subseq() == 1)
         {
-            if ( sprite.get_frame() == 0 )
+            if ( get_frame() == 0 )
             {
                 if ( field_190 == 6 )
                 {
@@ -492,10 +492,10 @@ void marisa_bullets::func10()
                     }
                 }
 
-                scaleY = scaleX = (sprite.get_elaps_frames() % 2) * 0.1 + 1.0;
+                scaleY = scaleX = (get_elaps_frames() % 2) * 0.1 + 1.0;
 
                 if ( field_194 == 0)
-                    sprite.set_frame(1);
+                    set_frame(1);
             }
             else
             {
@@ -507,11 +507,11 @@ void marisa_bullets::func10()
                     active = false;
                     break;
                 }
-                if ( sprite.get_elaps_frames() > 10 )
+                if ( get_elaps_frames() > 10 )
                     c_A -= 10;
             }
         }
-        else if (sprite.get_subseq() == 2)
+        else if (get_subseq() == 2)
         {
             h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
             v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
@@ -538,7 +538,7 @@ void marisa_bullets::func10()
                 c_G -= 10;
             }
         }
-        else if (sprite.get_subseq() == 3)
+        else if (get_subseq() == 3)
         {
             h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
             v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
@@ -566,7 +566,7 @@ void marisa_bullets::func10()
             }
 
         }
-        else if (sprite.get_subseq() == 4)
+        else if (get_subseq() == 4)
         {
             scaleX += 0.5;
             scaleY += 0.5;
@@ -582,7 +582,7 @@ void marisa_bullets::func10()
         x += h_inerc*dir;
         y += v_inerc;
 
-        if ( sprite.process() )
+        if ( process() )
         {
             active = false;
             break;
@@ -590,7 +590,7 @@ void marisa_bullets::func10()
         break;
     case 803: //6C Beam
 
-        if (sprite.get_subseq() <= 1)
+        if (get_subseq() <= 1)
         {
             if ( field_36C % 3 == 0 )
                 field_190 = 0;
@@ -617,23 +617,23 @@ void marisa_bullets::func10()
                 y = chrt->getY() + 104;
             }
             else
-                sprite.set_subseq(2);
+                set_subseq(2);
 
             field_36C++;
         }
-        if ( sprite.get_subseq() == 2 )
+        if ( get_subseq() == 2 )
         {
             field_194 = 0;
             scaleY *= 0.8;
             scaleX += 0.1;
 
-            if ( sprite.get_elaps_frames() == 40 )
+            if ( get_elaps_frames() == 40 )
             {
                 active = false;
                 break;
             }
         }
-        if (sprite.get_subseq() == 5)
+        if (get_subseq() == 5)
         {
             if ( bul_parent == NULL )
             {
@@ -655,7 +655,7 @@ void marisa_bullets::func10()
                 }
             }
         }
-        else if (sprite.get_subseq() == 4)
+        else if (get_subseq() == 4)
         {
             field_378 -= 20;
             field_37C += field_380;
@@ -726,7 +726,7 @@ void marisa_bullets::func10()
                 }
             }
         }
-        else if ( sprite.get_subseq() == 3 )
+        else if ( get_subseq() == 3 )
         {
             angZ = scene_rand_rng(360);
             if ( !sub_48C6A0(0, 0, 0) )
@@ -757,17 +757,17 @@ void marisa_bullets::func10()
                 }
             }
         }
-        if ( sprite.process() )
+        if ( process() )
             active=false;
 
-        if ( sprite.get_subseq() == 4 )
+        if ( get_subseq() == 4 )
             set_real_size(field_37C,256);
         //   sub_438450(v1, v1->field_378, 0.0, v1->field_37C, 256.0);
 
         break;
 
     case 804:
-        if ( sprite.get_subseq() == 0 )
+        if ( get_subseq() == 0 )
         {
             h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
             v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
@@ -782,13 +782,13 @@ void marisa_bullets::func10()
             }
             if ( field_190 != 0 || getlvl_height(this) >= y + v_inerc )
             {
-                sprite.next_subseq();
+                next_subseq();
                 scaleX = 2.0;
                 scaleY = 2.0;
                 break;
             }
         }
-        else if (sprite.get_subseq() == 1)
+        else if (get_subseq() == 1)
         {
             field_36C++;
             scaleX *= 0.85;
@@ -796,13 +796,550 @@ void marisa_bullets::func10()
             if ( c_A >= 10 )
                 c_A -=10;
         }
-        if (c_A < 10 || x > 1380 || x < -100 || y > 1000 || y < -100 || sprite.process())
+        if (c_A < 10 || x > 1380 || x < -100 || y > 1000 || y < -100 || process())
             active = false;
         break;
-    case 848:
-        if ( sprite.get_subseq() != 0 )
+    case 810:
+        set_vec_speed(addition[0],addition[1]);
+
+        addition[1] -= 0.5;
+        if ( addition[1] < 0.0 )
+            addition[1] = 0.0;
+
+        angZ += 8.0;
+        if ( c_A <= 10 || x > 1380 || x < -100 || y > 1000 || y < -100)
+            active = false;
+        else
         {
-            if ( sprite.get_subseq() == 1 )
+            c_A -= 10;
+            x += h_inerc * dir;
+            y += v_inerc;
+            if (process())
+                active = false;
+        }
+        break;
+    case 820:
+        if ( field_190 == 5 )
+            active = false;
+        else
+        {
+            uint32_t ssq = get_subseq();
+            switch ( ssq )
+            {
+            case 0:
+            case 1:
+                if ( char_is_shock(chrt) && ssq == 0)
+                {
+                    for (int8_t i=0; i<10; i++)
+                        scene_add_effect(this,201,x,y,dir,1);
+                    for (int8_t i=0; i<5; i++)
+                        scene_add_effect(this,200,x,y,dir,1);
+                    active = false;
+                    break;
+                }
+                angZ += 8;
+                if ( get_subseq() == 0 )
+                    v_inerc -= 0.75;
+                if ( x > 1380 || x < -100 )
+                {
+                    active = false;
+                    break;
+                }
+                if (get_elaps_frames() % 3 == 0)
+                {
+                    float tmp[3];
+                    tmp[0] = scene_rand_rng(360);
+                    tmp[1] = 5;
+                    tmp[2] = scene_rand() & 3;
+                    addbullet(chrt, NULL, 810, x, y,dir,1 , tmp, 3);
+                }
+                if ( getlvl_height(this) < y )
+                {
+                    x += dir * h_inerc;
+                    y += v_inerc;
+                }
+                else
+                {
+                    h_inerc = 0;
+                    v_inerc = 0;
+
+                    scene_add_effect(this, 127,x,y,dir,-1);
+                    scene_add_effect(this, 127,x,y,-dir,-1);
+
+                    float tmp[3];
+                    tmp[0] = 0;
+                    tmp[1] = 0;
+                    tmp[2] = 8;
+                    if (chrt->skills_1[2] >= 1)
+                        tmp[2] = 9;
+                    if (chrt->skills_1[2] >= 3)
+                        tmp[2] = 10;
+
+                    addbullet(chrt,NULL, 820,x,y,dir,1,tmp,3);
+                    tmp[2] = 6;
+                    addbullet(chrt,NULL, 820,x,y,dir,1,tmp,3);
+                    chrt->play_sfx(8);
+
+                    for (int8_t i=0; i< 12; i++)
+                    {
+                        tmp[0] = scene_rand_rng(30) + i * 30;
+                        tmp[1] = scene_rand_rng(50) * 0.1 + 15;
+                        tmp[2] = 5.0;
+                        int8_t pos = sin_deg(-tmp[0]) > 0 ? -1 : 1;
+                        addbullet(chrt, NULL, 820, x, y, dir, pos, tmp, 3);
+                    }
+
+                    active = false;
+                }
+                break;
+            case 2:
+                if ( get_elaps_frames() == 5 && chrt->skills_1[2] >= 1 )
+                {
+                    float tmp[3];
+                    tmp[0] = 0;
+                    tmp[1] = 0;
+                    tmp[2] = 4;
+                    addbullet(chrt, NULL, 820, x -100, y, dir, 1, tmp, 3);
+                    tmp[2] = 6;
+                    addbullet(chrt, NULL, 820, x -100, y, dir, 1, tmp, 3);
+                    chrt->play_sfx(8);
+
+                    for (int8_t i=0; i< 12; i++)
+                    {
+                        tmp[0] = scene_rand_rng(30) + i * 30;
+                        tmp[1] = scene_rand_rng(50) * 0.1 + 15;
+                        tmp[2] = 5.0;
+                        int8_t pos = sin_deg(-tmp[0]) > 0 ? -1 : 1;
+                        addbullet(chrt, NULL, 820, x + get_elaps_frames() * 20 * dir, y, dir, pos, tmp, 3);
+                    }
+
+                    tmp[0] = 0;
+                    tmp[1] = 0;
+                    tmp[2] = 4;
+                    addbullet(chrt, NULL, 820, x + 100, y, dir, 1, tmp, 3);
+                    tmp[2] = 6;
+                    addbullet(chrt, NULL, 820, x + 100, y, dir, 1, tmp, 3);
+
+                    chrt->play_sfx(8);
+
+                    for (int8_t i=0; i< 12; i++)
+                    {
+                        tmp[0] = scene_rand_rng(30) + i * 30;
+                        tmp[1] = scene_rand_rng(50) * 0.1 + 15;
+                        tmp[2] = 5.0;
+                        int8_t pos = sin_deg(-tmp[0]) > 0 ? -1 : 1;
+                        addbullet(chrt, NULL, 820, x + get_elaps_frames() * 20 * dir, y, dir, pos, tmp, 3);
+                    }
+                }
+                else if( get_elaps_frames() == 10 && chrt->skills_1[2] >= 4 )
+                {
+                    float tmp[3];
+                    tmp[0] = 0;
+                    tmp[1] = 0;
+                    tmp[2] = 4;
+                    addbullet(chrt, NULL, 820, x -200, y, dir, 1, tmp, 3);
+                    tmp[2] = 6;
+                    addbullet(chrt, NULL, 820, x -200, y, dir, 1, tmp, 3);
+                    chrt->play_sfx(8);
+
+                    for (int8_t i=0; i< 12; i++)
+                    {
+                        tmp[0] = scene_rand_rng(30) + i * 30;
+                        tmp[1] = scene_rand_rng(50) * 0.1 + 15;
+                        tmp[2] = 5.0;
+                        int8_t pos = sin_deg(-tmp[0]) > 0 ? -1 : 1;
+                        addbullet(chrt, NULL, 820, x + get_elaps_frames() * 20 * dir, y, dir, pos, tmp, 3);
+                    }
+
+                    tmp[0] = 0;
+                    tmp[1] = 0;
+                    tmp[2] = 4;
+                    addbullet(chrt, NULL, 820, x +200, y, dir, 1, tmp, 3);
+                    tmp[2] = 6;
+                    addbullet(chrt, NULL, 820, x +200, y, dir, 1, tmp, 3);
+                    chrt->play_sfx(8);
+
+                    for (int8_t i=0; i< 12; i++)
+                    {
+                        tmp[0] = scene_rand_rng(30) + i * 30;
+                        tmp[1] = scene_rand_rng(50) * 0.1 + 15;
+                        tmp[2] = 5.0;
+                        int8_t pos = sin_deg(-tmp[0]) > 0 ? -1 : 1;
+                        addbullet(chrt, NULL, 820, x + get_elaps_frames() * 20 * dir, y, dir, pos, tmp, 3);
+                    }
+                }
+                else
+                    active = false;
+                break;
+            case 3:
+                if ( get_elaps_frames() > 0 && (get_elaps_frames() % 5 == 0) && get_elaps_frames() <= 60 )
+                {
+                    float tmp[3];
+                    tmp[0] = 0;
+                    tmp[1] = 0;
+                    tmp[2] = 4;
+                    addbullet(chrt, NULL, 820, x + get_elaps_frames() * 20 * dir, y, dir, 1, tmp, 3);
+                    tmp[2] = 6;
+                    addbullet(chrt, NULL, 820, x + get_elaps_frames() * 20 * dir, y, dir, 1, tmp, 3);
+
+                    chrt->play_sfx(8);
+                    for (int8_t i=0; i< 12; i++)
+                    {
+                        tmp[0] = scene_rand_rng(30) + i * 30;
+                        tmp[1] = scene_rand_rng(50) * 0.1 + 15;
+                        tmp[2] = 5.0;
+                        int8_t pos = sin_deg(-tmp[0]) > 0 ? -1 : 1;
+                        addbullet(chrt, NULL, 820, x + get_elaps_frames() * 20 * dir, y, dir, pos, tmp, 3);
+                    }
+
+
+                    tmp[0] = 0;
+                    tmp[1] = 0;
+                    tmp[2] = 4;
+                    addbullet(chrt, NULL, 820, x - get_elaps_frames() * 20 * dir, y, dir, 1, tmp, 3);
+                    tmp[2] = 6;
+                    addbullet(chrt, NULL, 820, x - get_elaps_frames() * 20 * dir, y, dir, 1, tmp, 3);
+
+                    chrt->play_sfx(8);
+                    for (int8_t i=0; i< 12; i++)
+                    {
+                        tmp[0] = scene_rand_rng(30) + i * 30;
+                        tmp[1] = scene_rand_rng(50) * 0.1 + 15;
+                        tmp[2] = 5.0;
+                        int8_t pos = sin_deg(-tmp[0]) > 0 ? -1 : 1;
+                        addbullet(chrt, NULL, 820, x + get_elaps_frames() * 20 * dir, y, dir, pos, tmp, 3);
+                    }
+                }
+                break;
+            case 4:
+                if ( get_frame() < 2 )
+                {
+                    if ( field_190 == 6 )
+                    {
+                        field_190 = 0;
+                        field_194++;
+                    }
+                    if ( field_190 != 0)
+                    {
+                        field_370++;
+                        if ( field_370 > 10 )
+                        {
+                            field_370 = 0;
+                            field_190 = 0;
+                        }
+                    }
+                    scaleY = scaleX = (get_elaps_frames() % 2) * 0.1 + 1.0;
+                }
+                else
+                {
+                    scaleX *= 0.9;
+                    scaleY *= 0.9;
+
+                    if (c_A < 10 )
+                        active = false;
+                    else if (get_frame_time() > 10)
+                    {
+                        c_A -= 10;
+                        if ( c_G > 20)
+                        {
+                            c_G -= 20;
+                            c_R -= 20;
+                        }
+                    }
+                }
+                break;
+            case 5:
+                set_vec_speed(addition[0], addition[1]);
+                addition[1] *= 0.95;
+                if ( addition[1] < 0.5 )
+                    addition[1] = 0.5;
+
+                x += dir * h_inerc;
+                y += v_inerc * 0.25;
+                scaleX += 0.01;
+                scaleY += 0.01;
+
+                if (c_A < 4)
+                    active = false;
+                else
+                {
+                    c_A -= 4;
+                    if (c_G >= 4)
+                    {
+                        c_G -= 4;
+                        c_R -= 4;
+                    }
+                }
+                break;
+            case 6:
+                scaleX += 0.4;
+                scaleY += 0.4;
+
+                if (c_A < 30)
+                    active = false;
+                else
+                {
+                    c_A -= 30;
+                    c_G -= 30;
+                    c_R -= 30;
+                }
+                break;
+            case 7:
+                if (bul_parent)
+                {
+                    x = bul_parent->x;
+                    y = bul_parent->y;
+                    if (bul_parent->get_subseq() >= 2)
+                        active = false;
+                }
+                else
+                    active = false;
+                break;
+            case 8:
+            case 9:
+            case 10:
+                if ( get_frame() < 2 )
+                {
+                    sub_48C5F0(this, 0);
+                    sub_48C640(10);
+                }
+                break;
+            case 11:
+                angZ += 2;
+                if ( field_36C != 0 )
+                {
+                    if ( c_A < 15 )
+                        active = false;
+                    else
+                        c_A -= 15;
+                }
+                else
+                {
+                    if ( c_A > 235 )
+                        c_A = 255;
+                    else
+                        c_A += 20;
+
+                    if ((chrt->get_seq() == 542 || chrt->get_seq() == 543) && (chrt->get_subseq()  <= 1 || (chrt->get_subseq() == 2 && chrt->get_frame() <= 3) ))
+                    {
+                        x = chrt->x;
+                        y = chrt->y;
+                    }
+                    else
+                        field_36C = 1;
+                }
+                break;
+            default:
+                active = false;
+                break;
+            }
+            if (active)
+            {
+                if (process())
+                    active = false;
+
+                if (get_subseq() > 0 && get_subseq() < 7 && get_frame_time() == 0)
+                    active = false;
+
+                if ((get_subseq() == 9 || get_subseq() == 10 ) && get_elaps_frames() == 0)
+                    active = false;
+                else if (get_subseq() == 11 && get_elaps_frames() == 0 && get_frame() == 0 && get_frame_time() == 0)
+                    active = false;
+            }
+        }
+        break;
+    case 825:
+    {
+        switch(get_subseq())
+        {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            if ( field_190 == 5 )
+                active = false;
+            else
+            {
+
+                if ( char_is_shock(chrt))
+                {
+                    for (int8_t i=0; i<4; i++)
+                        scene_add_effect(this, 201, x, y,dir,1);
+                    active = false;
+                }
+                else
+                {
+                    angZ += 8;
+                    set_vec_speed(addition[0],addition[1]);
+                    addition[0] *= 0.98;
+                    addition[1] += 0.75;
+                    if ( x > 1380.0 || x < -100 || y > 1000 || y < -400 )
+                        active = false;
+                    else
+                    {
+                        if ( get_frame_time() <= 45 && field_190 == 0 )
+                        {
+                            x += dir * h_inerc;
+                            y += v_inerc;
+                            if ( process() )
+                                active = false;
+                        }
+                        else
+                        {
+                            float tmp[3];
+                            tmp[0] = 0;
+                            tmp[1] = 0;
+                            tmp[2] = 7;
+                            addbullet(chrt,NULL,825,x,y,dir,1,tmp,3);
+                            set_subseq(6);
+                        }
+                    }
+                }
+            }
+            break;
+        case 4:
+        {
+            if (get_elaps_frames() % 8 == 0)
+            {
+                float tmp[3];
+                tmp[0] = 0;
+                tmp[1] = 0;
+                tmp[2] = 5;
+                addbullet(chrt,this, 810,x,y,dir,1,tmp,3);
+            }
+            if (chrt->get_seq() > 559 && chrt->get_seq() < 564)
+            {
+                if (chrt->get_seq() == 560 || chrt->get_seq() == 561)
+                {
+
+                    if ( chrt->get_subseq() >= 4 )
+                    {
+                        active = false;
+                        break;
+                    }
+                    else if (chrt->get_subseq() == 1)
+                    {
+                        x = chrt->getX() - 24 * dir;
+                        y = chrt->getY() + 95;
+                    }
+                    else if (chrt->get_subseq() == 2)
+                    {
+                        if ( chrt->get_frame() == 0 )
+                        {
+                            x = chrt->getX() - 12 * dir;
+                            y = chrt->getY() + 80;
+                        }
+                        else if ( chrt->get_frame() == 1 )
+                        {
+                            x = chrt->getX() + 18 * dir;
+                            y = chrt->getY() + 80;
+                        }
+                        else if ( chrt->get_frame() == 2 )
+                        {
+                            x = chrt->getX() + 36 * dir;
+                            y = chrt->getY() + 85;
+                        }
+                        else if ( chrt->get_frame() == 3 )
+                        {
+                            x = chrt->getX() + 38 * dir;
+                            y = chrt->getY() + 85;
+                        }
+                    }
+                    else if ( chrt->get_subseq() == 3 )
+                    {
+                        x = chrt->getX() + 38 * dir;
+                        y = chrt->getY() + 85;
+                    }
+                }
+                else if (chrt->get_seq() == 562 || chrt->get_seq() == 563)
+                {
+                    if ( chrt->get_subseq() >= 4 )
+                    {
+                        active = false;
+                        break;
+                    }
+                    else if (chrt->get_subseq() == 1)
+                    {
+                        x = chrt->getX() - 23 * dir;
+                        y = chrt->getY() + 107;
+                    }
+                    else if (chrt->get_subseq() == 2)
+                    {
+                        if ( chrt->get_frame() == 0 )
+                        {
+                            x = chrt->getX() - 21 * dir;
+                            y = chrt->getY() + 96;
+                        }
+                        else if ( chrt->get_frame() == 1 )
+                        {
+                            x = chrt->getX() + 15 * dir;
+                            y = chrt->getY() + 95;
+                        }
+                        else if ( chrt->get_frame() == 2 )
+                        {
+                            x = chrt->getX() + 45 * dir;
+                            y = chrt->getY() + 105;
+                        }
+                        else if ( chrt->get_frame() == 3 )
+                        {
+                            x = chrt->getX() + 47 * dir;
+                            y = chrt->getY() + 103;
+                        }
+                    }
+                    else if ( chrt->get_subseq() == 3 )
+                    {
+                        x = chrt->getX() + 47 * dir;
+                        y = chrt->getY() + 103;
+                    }
+                }
+                scaleX = scaleY = (get_elaps_frames() % 2) * 0.2 + 0.9;
+            }
+            else
+                active = false;
+        }
+        break;
+        case 5:
+            if ( bul_parent)
+            {
+                x = bul_parent->x;
+                y = bul_parent->y;
+            }
+            scaleY = scaleX += 0.4;;
+            if (c_A >= 30)
+            {
+                c_A -= 30;
+                if (process())
+                    active = false;
+            }
+            else
+                active = false;
+            break;
+        case 6:
+            scaleY = scaleX *= 0.8;
+            if (get_elaps_frames() >= 30 || process())
+                active = false;
+            break;
+        case 7:
+            scaleY = scaleX += 0.4;;
+            if (c_A >= 30)
+            {
+                c_A -= 30;
+                if (process())
+                    active = false;
+            }
+            else
+                active = false;
+            break;
+        default:
+            if (process())
+                active = false;
+        }
+    }
+    break;
+    case 848:
+        if ( get_subseq() != 0 )
+        {
+            if ( get_subseq() == 1 )
             {
                 if ( addition[1] == 0 && chrt->get_seq() == 307 && chrt->get_frame() > 4 )
                 {
@@ -820,7 +1357,7 @@ void marisa_bullets::func10()
                     y = chrt->getY() + 103;
                 }
             }
-            else if (sprite.get_subseq() == 2)
+            else if (get_subseq() == 2)
             {
                 h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
                 v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
@@ -835,7 +1372,7 @@ void marisa_bullets::func10()
                 angZ += field_37C;
                 scaleY = scaleX +=0.02;
 
-                if ( sprite.get_elaps_frames() >= 0 )
+                if ( get_elaps_frames() >= 0 )
                 {
                     if ( c_A <= 5 )
                     {
@@ -860,14 +1397,14 @@ void marisa_bullets::func10()
         }
         if ( chrt->hit_stop == 0)
         {
-            if ( sprite.process() )
+            if ( process() )
                 active = false;
 
-            if ( sprite.get_elaps_frames() == 0 && sprite.get_frame_time() == 0 && sprite.get_frame() == 0 &&
-                    (sprite.get_subseq() == 2 || sprite.get_subseq() == 1))
+            if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 &&
+                    (get_subseq() == 2 || get_subseq() == 1))
                 active = false;
 
-            if ( sprite.get_subseq() == 1  && sprite.get_frame_time() == 0 && sprite.get_frame() == 3) //make smoke
+            if ( get_subseq() == 1  && get_frame_time() == 0 && get_frame() == 3) //make smoke
             {
                 float t[3];
                 t[0] = scene_rand_rng(360);
@@ -877,73 +1414,133 @@ void marisa_bullets::func10()
             }
         }
         break;
-    case 998:
-      angZ += 5.0;
-      if ( get_subseq() == 0)
-      {
-          if (chrt->get_seq() >= 150 && chrt->get_seq() < 154)
-          {
-              x = chrt->x + 57 * chrt->dir;
-            y = chrt->y + 94;
-            dir = chrt->dir;
-          }
-          else if (chrt->get_seq() >= 154 && chrt->get_seq() < 158)
-          {
-            x = chrt->x + 57 * chrt->dir;
-            y = chrt->y + 60;
-            dir = chrt->dir;
-          }
-          else if (chrt->get_seq() == 158)
-          {
-              x = chrt->x + 57 * chrt->dir;
-            y = chrt->y + 100;
-            dir = chrt->dir;
-          }
-          else
-          {
-              next_subseq();
-              chrt->bbarrier_show = false;
-          }
-      }
-      else if ( get_subseq() == 1)
-      {
-          if (c_A >= 10)
-            c_A -= 10;
-          else
-            active = false;
+    case 849:
+        if ( get_subseq() == 0 )
+        {
+            x = chrt->getX() + dir * 109;
+            y = chrt->getY() + 84;
+            if ( chrt->get_seq() != 500 || chrt->get_subseq() != 1)
+            {
+                active = false;
+                break;
+            }
+        }
+        else if ( get_subseq() == 1 )
+        {
+            x = chrt->getX() + dir * 61;
+            y = chrt->getY() + 232;
+            if ( (chrt->get_seq() != 520 && chrt->get_seq() != 521) || chrt->get_subseq() != 1)
+            {
+                active = false;
+                break;
+            }
+        }
+        else if (get_subseq() == 2)
+        {
+            x = chrt->getX() + dir * 61;
+            y = chrt->getY() + 232;
+            if  (chrt->get_seq() != 606 || chrt->get_subseq() != 1)
+            {
+                active = false;
+                break;
+            }
+        }
+        else if (get_subseq() == 3 || get_subseq() == 4 || get_subseq() == 5)
+        {
+            field_18C = 5;
+            if (field_190 == 6)
+            {
+                field_194++;
+                field_190 = 0;
+            }
+            else if (field_190 > 0)
+            {
+                field_36C++;
+                if (field_36C > 5)
+                {
+                    field_190 = 0;
+                    field_36C = 0;
+                }
+            }
 
-      }
+            bul_follow_char(this, 38, 54);
+            if  ((chrt->get_seq() != 525 && chrt->get_seq() != 526) || chrt->get_subseq() != 1)
+            {
+                active = false;
+                break;
+            }
+        }
+        if (chrt->hit_stop == 0)
+            if (process())
+                active = false;
+        break;
+    case 998:
+        angZ += 5.0;
+        if ( get_subseq() == 0)
+        {
+            if (chrt->get_seq() >= 150 && chrt->get_seq() < 154)
+            {
+                x = chrt->x + 57 * chrt->dir;
+                y = chrt->y + 94;
+                dir = chrt->dir;
+            }
+            else if (chrt->get_seq() >= 154 && chrt->get_seq() < 158)
+            {
+                x = chrt->x + 57 * chrt->dir;
+                y = chrt->y + 60;
+                dir = chrt->dir;
+            }
+            else if (chrt->get_seq() == 158)
+            {
+                x = chrt->x + 57 * chrt->dir;
+                y = chrt->y + 100;
+                dir = chrt->dir;
+            }
+            else
+            {
+                next_subseq();
+                chrt->bbarrier_show = false;
+            }
+        }
+        else if ( get_subseq() == 1)
+        {
+            if (c_A >= 10)
+                c_A -= 10;
+            else
+                active = false;
+
+        }
 
         if (active && process())
             active = false;
         break;
     default:
-        if (sprite.process())
+        if (process())
             active = false;
     }
 }
 
 void marisa_bullets::set_seq_params()
 {
-    switch(sprite.get_seq_id())
+    switch(get_seq())
     {
     case 800:
         scaleY = scaleX = 2.0;
         field_194 = 1;
         angZ = addition[0];
 
-        sprite.set_subseq(addition[2]);
+        set_subseq(addition[2]);
 
-        if ( sprite.get_subseq() == 0 )
+        if ( get_subseq() == 0 )
         {
             //if ( addition[3] != 0 )
             //sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(15.0), 5, 1, 2);
         }
 
-        if ( sprite.get_subseq() > 1 && sprite.get_subseq() < 6)
+        if ( get_subseq() > 1 && get_subseq() < 6)
             scaleY = scaleX = 1.0;
 
-        if ( sprite.get_subseq() == 7 )
+        if ( get_subseq() == 7 )
         {
             scaleY = scaleX = scene_rand_rng(200) * 0.01 + 2.0;
             angZ = scene_rand_rng(360);
@@ -952,25 +1549,25 @@ void marisa_bullets::set_seq_params()
         break;
     case 801:
         field_194 = 1;
-        sprite.set_subseq(addition[2]);
+        set_subseq(addition[2]);
 
-        if ( sprite.get_subseq() == 0 )
+        if ( get_subseq() == 0 )
         {
             /*sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(20.0), 6, 2, 2);*/
         }
-        else if ( sprite.get_subseq() == 1 )
+        else if ( get_subseq() == 1 )
         {
             /*sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(20.0), 6, 2, 2);*/
         }
-        else if ( sprite.get_subseq() == 2 )
+        else if ( get_subseq() == 2 )
         {
             angZ = scene_rand_rng(80) + addition[0] - 40.0;
         }
-        else if ( sprite.get_subseq() == 3 )
+        else if ( get_subseq() == 3 )
             field_194 = 3;
-        else if ( sprite.get_subseq() == 4 )
+        else if ( get_subseq() == 4 )
             field_194 = 5;
-        else if ( sprite.get_subseq() == 5 )
+        else if ( get_subseq() == 5 )
         {
             scaleY = scaleX = scene_rand_rng(200) * 0.01 + 2.0;
             angZ = scene_rand_rng(360);
@@ -981,14 +1578,14 @@ void marisa_bullets::set_seq_params()
     case 802:
 
         field_194 = 1;
-        sprite.set_subseq(addition[2]);
+        set_subseq(addition[2]);
 
-        if ( sprite.get_subseq() == 0 )
+        if ( get_subseq() == 0 )
         {
             h_inerc = addition[1] * 6.0 + 6.0;
             v_inerc = addition[1] * 6.0 + 12.5;
         }
-        else if ( sprite.get_subseq() == 2 ||  sprite.get_subseq() == 3 )
+        else if ( get_subseq() == 2 ||  get_subseq() == 3 )
         {
             field_378 = scene_rand_rng(10) - 5.0;
             scaleY = scaleX = scene_rand_rng(200) * 0.01 + 1.0;
@@ -999,10 +1596,10 @@ void marisa_bullets::set_seq_params()
         break;
     case 803:
         field_194 = 10;
-        sprite.set_subseq(addition[2]);
-        if ( sprite.get_subseq() <= 2 )
+        set_subseq(addition[2]);
+        if ( get_subseq() <= 2 )
             x_off = -40.0;
-        else if ( sprite.get_subseq() == 4 )
+        else if ( get_subseq() == 4 )
         {
             //sub_438450(v2, 0.0, 0.0, 0.0, 256.0);
             field_194 = 10;
@@ -1021,10 +1618,64 @@ void marisa_bullets::set_seq_params()
     case 804:
         field_194 = 1;
         break;
+    case 810:
+        angZ = scene_rand_rng(360);
+        set_subseq(addition[2]);
+        scaleY = scaleX = scene_rand_rng(50) * 0.01 + 0.5;
+        break;
+    case 820:
+        field_18C = 2;
+        field_194 = 1;
+        set_subseq(addition[2]);
+        if (addition[2] == 0 )
+        {
+            h_inerc = addition[1] * 6 + 3;
+            v_inerc = addition[1] * 6 + 6;
+            field_138 = -6;
+            has_shadow = 1;
+            float tmp[3];
+            tmp[0] = 0;
+            tmp[1] = 0;
+            tmp[2] = 7;
+            addbullet(chrt, this, 820,x,y,dir,-1,tmp,3);
+            field_138 = -6;
+            has_shadow = 1;
+        }
+        else if (addition[2] == 1 )
+        {
+            h_inerc = 5;
+            v_inerc = -25;
+            has_shadow = 1;
+            field_138 = -6;
+            float tmp[3];
+            tmp[0] = 0;
+            tmp[1] = 0;
+            tmp[2] = 7;
+            addbullet(chrt, this, 820,x,y,dir,-1,tmp,3);
+        }
+        else if (addition[2] == 5)
+        {
+            scaleX = scaleY = scene_rand_rng(100) * 0.01 + 1;
+            angZ = scene_rand_rng(360);
+        }
+        else if ( addition[2] == 11 )
+        {
+            angX = 80;
+            c_A = 0;
+        }
+        return;
+    case 825:
+        field_18C = 3;
+        field_194 = 1;
+        set_subseq(addition[2]);
+        //if ( addition[2] <= 3 )
+        //sub_4B0780(v2, addition[2] + 991, COERCE_UNSIGNED_INT(20.0), 6, 2, 2);
+        field_36C = 0;
+        break;
     case 848:
         angZ = addition[0];
-        sprite.set_subseq(addition[2]);
-        if ( sprite.get_subseq() == 2 )
+        set_subseq(addition[2]);
+        if ( get_subseq() == 2 )
         {
             if ( scene_rand_rng(100) >= 50 )
                 field_37C = -1.0;
@@ -1032,10 +1683,23 @@ void marisa_bullets::set_seq_params()
                 field_37C = 1.0;
         }
         break;
+    case 849:
+        angZ = addition[0];
+        set_subseq(addition[2]);
+
+        if (get_subseq() == 2)
+            scaleY = scaleX = 2.0;
+        else if (get_subseq() == 3 || get_subseq() == 4 || get_subseq() == 5)
+        {
+            field_18C = 5;
+            field_194 = 5;
+        }
+
+        break;
     case 998:
-      angZ = 0;
-      angY = 60;
-      break;
+        angZ = 0;
+        angY = 60;
+        break;
     }
 }
 

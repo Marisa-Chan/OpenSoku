@@ -50,7 +50,7 @@ private:
     int8_t  field_114;
     int8_t  field_115;
     int8_t  field_116;
-    int8_t  field_18C;
+
     int32_t field_198;
     float   field_19C;
     int8_t  field_49D;
@@ -92,14 +92,8 @@ private:
     int8_t  field_574;
     int8_t  field_577;
     int8_t  field_578;
-    int8_t  field_6A8;
-    int8_t  field_6A9;
-    int8_t  field_6AA;
-    int8_t  field_6AB;
-    int8_t  field_6AC;
-    int8_t  field_6AD;
-    int8_t  field_6AE;
-    int8_t  field_6AF;
+    int8_t  skills_1[32]; //0x6A4 - 0x6C3
+    int8_t  skills_2[32]; //0x6C4 - 0x6E3
     int32_t field_6EC;
     int8_t  cards_added;    // 0x5E6
     int32_t field_710;

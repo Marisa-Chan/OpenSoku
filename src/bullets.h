@@ -41,7 +41,9 @@ class c_bullet : public c_meta
     int16_t field_36E;
 
     c_bullet();
-    void init(char_c *parent,c_bullet *bul, seq *sq,int32_t idx, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num); //call this after creation
+    void init(char_c *parent,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num); //call this after creation
+
+    void set_seq(uint32_t idx);
 
     virtual void func10();
     virtual void set_seq_params(); //func15
@@ -57,6 +59,8 @@ class c_bullet : public c_meta
 void addbullet(char_c *chr,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num);
 void updatebullet(char_c *chr);
 void drawbullet(char_c *chr, int8_t order);
+
+void bul_follow_char(c_bullet *bul, int32_t h_inerc, int32_t v_inerc);
 
 #include "chars/marisa_bullets.h"
 #include "chars/alice_bullets.h"

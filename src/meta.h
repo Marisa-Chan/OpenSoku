@@ -127,6 +127,9 @@ class c_meta : public moveable
 {
     private:
     int32_t index;
+
+    protected:
+
     public:
     char_graph *pgp; //Pointer Graph Parent
 
@@ -136,6 +139,8 @@ class c_meta : public moveable
     c_meta  *parent_mlist;
     metalst childs;
     int8_t  has_shadow;
+    int32_t field_138;
+    int8_t  field_18C;
     int32_t field_190;
     int8_t  field_194;
     int16_t hit_stop;

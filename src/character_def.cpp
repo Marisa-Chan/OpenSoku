@@ -97,6 +97,12 @@ char_c::char_c(inp_ab *func)
     field_880 = 0;
     field_84E = 0;
 
+    for(int8_t i=0; i<32; i++)
+    {
+        skills_1[i] = 0;
+        skills_2[i] = -1;
+    }
+
     h_inerc = 0;
     v_inerc = 0;
     v_force = 0;
@@ -125,7 +131,7 @@ void char_c::set_seq(uint32_t idx)
 {
     c_meta::set_seq(idx);
     set_seq_params();
-    if (player_index == 1)
+    if (player_index == 0)
         printf("%d\n",idx);
 }
 
@@ -173,14 +179,14 @@ void char_c::draw(gr_shader *shader)
     // gr_draw_box(x,-y-y_off,0,255,0,1);
 
     //for (uint32_t i = 0; i<get_pframe()->box_hit.size(); i++)
-        //if (atk_area_2o[i])
+    //if (atk_area_2o[i])
     {
 //        frame_box *bx = &hit_area_2o[i];
         //gr_draw_box(bx->x1,
         //            bx->y1,
-          //          bx->x2-bx->x1,
-            //        bx->y2-bx->y1,
-              //      0,255,0,60,1);
+        //          bx->x2-bx->x1,
+        //        bx->y2-bx->y1,
+        //      0,255,0,60,1);
     }
     /*if (pf->box_atk.size() > 0)
     {
@@ -1626,7 +1632,7 @@ void char_c::func16()
         v5 = get_MT_range(0x96u) + y + 100.0;
         v6 = v5;
         v7 = v4 - get_MT_range(0xC8u);
-        sub_46E2F0(v2, 1260, v7, v6, 1, 1, &v106, 3);
+        addbullet(v2, 1260, v7, v6, 1, 1, &v106, 3);
         v1 = 0.0;*/
     }
     if ( field_526 <= 0 || time_stop != 0 )
@@ -1909,7 +1915,7 @@ void char_c::func16()
             v46 = v2->rend_cls.dir;
             v47 = v44;
             v48 = get_MT_range(0x64u) + v2->rend_cls.x_pos - 50.0;
-            sub_46E2F0(v2, 980, v48, v47, v46, v45, &v106, 3);
+            addbullet(v2, 980, v48, v47, v46, v45, &v106, 3);
             */
         }
     }
@@ -2113,7 +2119,7 @@ LABEL_219:
                     //v106 = 0.0;
                     weather_time = (weather_time * 0.8999999);
                     //v107 = 0.0;
-                    //sub_46E2F0(v2, 1110, v2->rend_cls.x_pos, 0.0, dir, -1, &v106, 3);
+                    //addbullet(v2, 1110, v2->rend_cls.x_pos, 0.0, dir, -1, &v106, 3);
                 }
             }
             if ( !field_4CD )
@@ -2445,14 +2451,6 @@ bool sub10func(char_c *chr)
     }
     if ( !char_is_shock(chr))
     {
-        chr->v_inerc = 0.0;
-        chr->v_force = 0.5;
-
-        if ( chr->h_inerc > 10.0 )
-            chr->h_inerc = 10.0;
-        if ( chr->h_inerc < -10.0 )
-            chr->h_inerc = -10.0;
-
         if ( sq < 700 || sq > 799 )
         {
             chr->scaleX = 1.0;
@@ -2462,17 +2460,24 @@ bool sub10func(char_c *chr)
         }
         else
             chr->set_seq(704);
+
+        chr->v_inerc = 0.0;
+        chr->v_force = 0.5;
+
+        if ( chr->h_inerc > 10.0 )
+            chr->h_inerc = 10.0;
+        if ( chr->h_inerc < -10.0 )
+            chr->h_inerc = -10.0;
     }
     else
     {
+        chr->set_seq(71);
         chr->field_1A8 = 0.0;
         chr->field_1A4 = -chr->h_inerc;
         chr->scaleX = 1.0;
         chr->scaleY = 1.0;
         chr->angZ    = 0.0;
         chr->v_force = 0.5;
-
-        chr->set_seq(71);
     }
     return true;
 }
@@ -2787,151 +2792,151 @@ void char_c::set_seq_params()
         field_7D0 = 0;
         break;
     case 112:
-        case 113:
-        case 197:
-        case 198:
-        case 199:
-          reset_forces();
-          break;
+    case 113:
+    case 197:
+    case 198:
+    case 199:
+        reset_forces();
+        break;
     case 115:
-          x_off = x_delta;
-          y_off = y_delta;
-          angZ = 0;
-          break;
-        case 140:
-          h_inerc = -11;
-          field_7D0 = 0;
-          v_inerc = 0.0;
-          field_571 = 1;
-          field_572 = 1;
-          angZ = 0;
-          break;
-        case 143:
-        case 144:
-          h_inerc = -12;
-          field_7D0 = 0;
-          v_inerc = 0.0;
-          field_571 = 1;
-          field_572 = 1;
-          angZ = 0;
-          break;
+        x_off = x_delta;
+        y_off = y_delta;
+        angZ = 0;
+        break;
+    case 140:
+        h_inerc = -11;
+        field_7D0 = 0;
+        v_inerc = 0.0;
+        field_571 = 1;
+        field_572 = 1;
+        angZ = 0;
+        break;
+    case 143:
+    case 144:
+        h_inerc = -12;
+        field_7D0 = 0;
+        v_inerc = 0.0;
+        field_571 = 1;
+        field_572 = 1;
+        angZ = 0;
+        break;
     case 145:
-          h_inerc = -10.0;
-          field_571 = 1;
-          v_inerc = 14.0;
-          field_572 = 1;
-          v_force = 0.5;
-          angZ = 0.0;
-          break;
-        case 149:
-          field_571 = 1;
-          field_572 = 1;
-          x_off = x_delta;
-          y_off = y_delta;
-          h_inerc = -3.0;
-          v_inerc = 17.5;
-          v_force = 0.5;
-          break;
-        case 150:
-        case 154:
-          h_inerc = -6.0;
-          field_190 = 0;
-          v_inerc = 0.0;
-          field_83C = 0;
-          field_7D0 = 0;
-          break;
-        case 151:
-        case 155:
-          h_inerc = -10.0;
-          field_190 = 0;
-          v_inerc = 0.0;
-          field_83C = 0;
-          field_7D0 = 0;
-          break;
-        case 152:
-        case 156:
-          h_inerc = -13.0;
-          field_190 = 0;
-          v_inerc = 0.0;
-          field_83C = 0;
-          field_7D0 = 0;
-          break;
-        case 153:
-        case 157:
-          h_inerc = -14.5;
-          field_190 = 0;
-          v_inerc = 0.0;
-          field_83C = 0;
-          field_7D0 = 0;
-          break;
-        case 158:
-          h_inerc = -6.0;
-          field_7D0 = 7;
-          v_inerc = 12.0;
-          field_7D2 = 0;
-          field_83C = 0;
-          v_force = 0.75;
-          break;
-        case 159:
-        case 163:
-          h_inerc = -6.0;
-          field_190 = 0;
-          v_inerc = 0.0;
-          field_7D0 = 0;
-          break;
-        case 160:
-        case 164:
-          h_inerc = -10.0;
-          field_190 = 0;
-          v_inerc = 0.0;
-          field_7D0 = 0;
-          break;
-        case 161:
-        case 165:
-          h_inerc = -13.0;
-          field_190 = 0;
-          v_inerc = 0.0;
-          field_7D0 = 0;
-          break;
-        case 162:
-        case 166:
-          h_inerc = -14.5;
-          field_190 = 0;
-          v_inerc = 0.0;
-          field_7D0 = 0;
-          break;
-        case 167:
-          h_inerc = -6.0;
-          field_7D0 = 7;
-          v_inerc = 8.0;
-          v_force = 0.75;
-          break;
-        case 180:
-          reset_forces();
-          h_inerc = 8.0;
-          v_inerc = 12.5;
-          v_force = 0.75;
-          scene_add_effect(this, 61, x, y + 100, dir, 1);
-          angZ = 0;
-          break;
-        case 181:
-            reset_forces();
-          h_inerc = -8.0;
-          v_inerc = 12.5;
-          v_force = 0.75;
-          scene_add_effect(this, 61, x, y + 100, dir, 1);
-          angZ = 0;
-          break;
-        case 200:
-          field_49A = 1;
-          reset_forces();
-          field_7DC = 0.0;
-          dash_angle = 0.0;
-          field_7E4 = 0.0;
+        h_inerc = -10.0;
+        field_571 = 1;
+        v_inerc = 14.0;
+        field_572 = 1;
+        v_force = 0.5;
+        angZ = 0.0;
+        break;
+    case 149:
+        field_571 = 1;
+        field_572 = 1;
+        x_off = x_delta;
+        y_off = y_delta;
+        h_inerc = -3.0;
+        v_inerc = 17.5;
+        v_force = 0.5;
+        break;
+    case 150:
+    case 154:
+        h_inerc = -6.0;
+        field_190 = 0;
+        v_inerc = 0.0;
+        field_83C = 0;
+        field_7D0 = 0;
+        break;
+    case 151:
+    case 155:
+        h_inerc = -10.0;
+        field_190 = 0;
+        v_inerc = 0.0;
+        field_83C = 0;
+        field_7D0 = 0;
+        break;
+    case 152:
+    case 156:
+        h_inerc = -13.0;
+        field_190 = 0;
+        v_inerc = 0.0;
+        field_83C = 0;
+        field_7D0 = 0;
+        break;
+    case 153:
+    case 157:
+        h_inerc = -14.5;
+        field_190 = 0;
+        v_inerc = 0.0;
+        field_83C = 0;
+        field_7D0 = 0;
+        break;
+    case 158:
+        h_inerc = -6.0;
+        field_7D0 = 7;
+        v_inerc = 12.0;
+        field_7D2 = 0;
+        field_83C = 0;
+        v_force = 0.75;
+        break;
+    case 159:
+    case 163:
+        h_inerc = -6.0;
+        field_190 = 0;
+        v_inerc = 0.0;
+        field_7D0 = 0;
+        break;
+    case 160:
+    case 164:
+        h_inerc = -10.0;
+        field_190 = 0;
+        v_inerc = 0.0;
+        field_7D0 = 0;
+        break;
+    case 161:
+    case 165:
+        h_inerc = -13.0;
+        field_190 = 0;
+        v_inerc = 0.0;
+        field_7D0 = 0;
+        break;
+    case 162:
+    case 166:
+        h_inerc = -14.5;
+        field_190 = 0;
+        v_inerc = 0.0;
+        field_7D0 = 0;
+        break;
+    case 167:
+        h_inerc = -6.0;
+        field_7D0 = 7;
+        v_inerc = 8.0;
+        v_force = 0.75;
+        break;
+    case 180:
+        reset_forces();
+        h_inerc = 8.0;
+        v_inerc = 12.5;
+        v_force = 0.75;
+        scene_add_effect(this, 61, x, y + 100, dir, 1);
+        angZ = 0;
+        break;
+    case 181:
+        reset_forces();
+        h_inerc = -8.0;
+        v_inerc = 12.5;
+        v_force = 0.75;
+        scene_add_effect(this, 61, x, y + 100, dir, 1);
+        angZ = 0;
+        break;
+    case 200:
+        field_49A = 1;
+        reset_forces();
+        field_7DC = 0.0;
+        dash_angle = 0.0;
+        field_7E4 = 0.0;
         field_7D4 = 0;
-          field_7D2 = 0;
-          field_7D0 = 0;
-          break;
+        field_7D2 = 0;
+        field_7D0 = 0;
+        break;
     case 201:
     case 202:
     case 203:
@@ -2950,94 +2955,94 @@ void char_c::set_seq_params()
         v_force = 0.0;
         break;
     case 220:
-        case 221:
-        case 222:
-          reset_forces();
-          scene_add_effect(this, 69, x, y+100, dir, 1);
-          break;
-        case 223:
-          field_49A = 1;
-          reset_forces();
-          scene_add_effect(this, 69, x, y+100, dir, 1);
-          field_7D4 = 0;
-          field_7D2 = 0;
-          field_7D0 = 0;
-          break;
-        case 224:
-        case 225:
-        case 226:
-          reset_forces();
-            scene_add_effect(this, 69, x, y+100, dir, 1);
-          field_7D4 = 0;
-          field_7D2 = 0;
-          field_7D0 = 0;
-          break;
-        case 690:
-      reset_forces();
-      /*if ( cards_added > 0 )//HACK
-      {
-        field_190 = 0;
-        sub_488E70(this, v55);
-      }*/
-      break;
-      case 691:
+    case 221:
+    case 222:
+        reset_forces();
+        scene_add_effect(this, 69, x, y+100, dir, 1);
+        break;
+    case 223:
+        field_49A = 1;
+        reset_forces();
+        scene_add_effect(this, 69, x, y+100, dir, 1);
+        field_7D4 = 0;
+        field_7D2 = 0;
+        field_7D0 = 0;
+        break;
+    case 224:
+    case 225:
+    case 226:
+        reset_forces();
+        scene_add_effect(this, 69, x, y+100, dir, 1);
+        field_7D4 = 0;
+        field_7D2 = 0;
+        field_7D0 = 0;
+        break;
+    case 690:
+        reset_forces();
+        /*if ( cards_added > 0 )//HACK
+        {
+          field_190 = 0;
+          sub_488E70(this, v55);
+        }*/
+        break;
+    case 691:
         field_190 = 0;
         reset_forces();
         switch ( field_7D0 )
         {
-          case 4:
+        case 4:
             field_840 ++;
             if ( field_840 > 4.0 )
-              field_840 = 4.0;
+                field_840 = 4.0;
             scene_add_effect(this, field_840 + 130, x, y, 1, 1);
             break;
-          case 5:
+        case 5:
             field_560++;
             if ( field_560 > 4 )
-              field_560 = 4;
+                field_560 = 4;
             scene_add_effect(this, field_560 + 130, x, y, 1, 1);
             break;
-          case 10:
+        case 10:
             tengu_fan++;
             if ( tengu_fan > 4 )
-              tengu_fan = 4;
-              {
-            float params[3];
-            params[0] = 0;
-            params[1] = 0;
-            params[2] = 1;
-            addbullet(this,NULL,1010, x, y, dir, 1, params,3);
-              }
+                tengu_fan = 4;
+            {
+                float params[3];
+                params[0] = 0;
+                params[1] = 0;
+                params[2] = 1;
+                addbullet(this,NULL,1010, x, y, dir, 1, params,3);
+            }
             scene_add_effect(this, tengu_fan + 130, x, y, 1, 1);
             break;
-          case 17:
+        case 17:
             field_84E = 240;
             break;
-          case 18:
+        case 18:
             field_844++;
             if ( field_844 > 4.0 )
-              field_844 = 4.0;
+                field_844 = 4.0;
             scene_add_effect(this, field_844 +130, x, y, dir, 1);
             break;
-          case 19:
+        case 19:
             if ( field_850 < 3 )
             {
-              scene_add_effect(this, field_850 + 130, x, y, 1, 1);
+                scene_add_effect(this, field_850 + 130, x, y, 1, 1);
             }
             else
             {
-              field_852 += 420;
-              field_850 = 3;
-              scene_add_effect(this, 139, x, y, 1, 1);
+                field_852 += 420;
+                field_850 = 3;
+                scene_add_effect(this, 139, x, y, 1, 1);
             }
             break;
-          default:
+        default:
             break;
         }
         break;
-        case 692:
-      case 693:
-      case 694:
+    case 692:
+    case 693:
+    case 694:
         scene_add_effect(this, 71, x, y + 100, dir, 1);
         field_7D0 = 0;
         field_7D2 = 0;
@@ -3049,7 +3054,7 @@ void char_c::set_seq_params()
         field_190 = 0;
         reset_forces();
         break;
-      case 696:
+    case 696:
         field_194 = 1;
         field_190 = 0;
         field_49A = 0;
@@ -3057,62 +3062,64 @@ void char_c::set_seq_params()
         scene_add_effect(this, 69, x, y + 100, dir, 1);
         field_4A6 = 10;
         break;
-      case 697:
+    case 697:
         field_194 = 1;
         field_190 = 0;
         field_49A = 0;
         reset_forces();
         scene_add_effect(this, 69, x, y + 100, dir, 1);
         break;
-      case 698:
+    case 698:
         field_7D0 = 0;
         field_194 = 1;
         field_190 = 0;
         field_49A = 0;
         reset_forces();
         break;
-      case 700:
+    case 700:
         reset_forces();
         v_force = 0.0;
         field_190 = 1;
         break;
-      case 701:
-      case 702:
-      case 703:
+    case 701:
+    case 702:
+    case 703:
         reset_forces();
         v_force = 0.0;
         break;
-      case 704:
+    case 704:
         if ( v_force == 0 )
-          v_force = 0.5;
+            v_force = 0.5;
         break;
-      case 705:
+    case 705:
         reset_forces();
         h_inerc = field_854;
         break;
-      case 706:
+    case 706:
         reset_forces();
         h_inerc = field_858;
         break;
-      case 709:
+    case 709:
         scene_play_sfx(30);
         reset_forces();
         break;
-      case 789:
+    case 789:
         field_7D8 = 0;
         reset_forces();
         break;
-      case 790:
+    case 790:
         field_7D0 = 0;
         reset_forces();
         break;
-      case 795:
+    case 795:
         field_7D0 = 0;
         break;
-      case 796:
-      case 799:
+    case 796:
+    case 799:
         field_7DC = 0.0;
         reset_forces();
+        break;
+    default:
         break;
     }
 }

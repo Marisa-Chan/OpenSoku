@@ -132,7 +132,6 @@ void c_meta::draw(gr_shader *shader)
 {
 }
 
-
 void set_custom_box(c_meta *met, int32_t x1, int32_t y1, int32_t x2, int32_t y2, float angl, int32_t dx, int32_t dy)
 {
   if (!met->cust_box)

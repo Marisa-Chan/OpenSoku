@@ -11,13 +11,12 @@
 
 void addbullet(char_c *chr, c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num)
 {
-    seq *sq = chr->get_seq(idx);
-    if (sq)
+    if (chr->get_seq(idx))
     {
         c_bullet *tmp = chr->new_bullet();
         if (tmp)
         {
-            tmp->init(chr,bul,sq,idx,x,y,dir,order,addit,num);
+            tmp->init(chr,bul,idx,x,y,dir,order,addit,num);
             if (chr)
                 chr->get_bullets()->push_back(tmp);
         }
@@ -87,7 +86,7 @@ c_bullet::~c_bullet()
     }
 }
 
-void c_bullet::init(char_c *_parent, c_bullet *bul, seq *sq, int32_t idx, float _x, float _y, int8_t _dir, int8_t _order, float *addit, int8_t num)
+void c_bullet::init(char_c *_parent, c_bullet *bul, int32_t idx, float _x, float _y, int8_t _dir, int8_t _order, float *addit, int8_t num)
 {
 //    parent = _parent;
     chrt = _parent;
@@ -105,7 +104,6 @@ void c_bullet::init(char_c *_parent, c_bullet *bul, seq *sq, int32_t idx, float 
     else if (bul_parent)
         pgp = bul_parent->pgp;
 
-    sprite.set_seq(sq);
     x = _x;
     y = _y;
     dir = _dir;
@@ -113,6 +111,12 @@ void c_bullet::init(char_c *_parent, c_bullet *bul, seq *sq, int32_t idx, float 
     for (int8_t i=0; i< num; i++)
         addition[i] = addit[i];
 
+    set_seq(idx);
+}
+
+void c_bullet::set_seq(uint32_t idx)
+{
+    c_meta::set_seq(idx);
     set_seq_params();
 }
 
@@ -147,7 +151,7 @@ void c_bullet::draw(int8_t plane)
 
         sprite.draw(plane);
 
-        for (int32_t i = 0; i<5; i++)
+        /*for (int32_t i = 0; i<5; i++)
             //if (atk_area_2o[i])
         {
             frame_box *bx = &atk_area_2o[i];
@@ -156,7 +160,7 @@ void c_bullet::draw(int8_t plane)
                         bx->x2-bx->x1,
                         bx->y2-bx->y1,
                         255,0,0,60,1);
-        }
+        }*/
         /*
         char_frame *pf = sprite.get_pframe();
 
@@ -237,4 +241,12 @@ void c_bullet::sub_48C4B0(float p1, float p2, float p3)
     else
         addition[0] = tmp;
 
+}
+
+void bul_follow_char(c_bullet *bul, int32_t h_inerc, int32_t v_inerc)
+{
+    char_c *chr = bul->chrt;
+    bul->dir = chr->dir;
+    bul->x = chr->x + chr->dir * (chr->h_inerc + h_inerc);
+    bul->y = chr->y + chr->v_inerc + v_inerc;
 }
