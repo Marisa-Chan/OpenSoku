@@ -1,0 +1,18 @@
+id,title,type,cost,card description,stage,rare,?,?,?,?,?,?,?,sort order
+
+type:
+2 - spell card
+1 - skill card
+0 - system card
+
+stage:
+0 - from start
+1~6 - easy
+11~16 - normal
+21~26 - hard
+31~36 - luna
+
+rare:
+0 - 60%
+1 - 30%
+2 - 10%
