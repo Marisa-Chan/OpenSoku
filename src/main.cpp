@@ -14,7 +14,8 @@
 #include <math.h>
 #include <unistd.h>
 #include "gui.h"
-
+#include "profile.h"
+#include "menu/menus.h"
 
 
 int main(int argc, char *argv[])
@@ -75,9 +76,15 @@ int main(int argc, char *argv[])
     sfx_init();
     scene_load_sounds();
 
+
      //playmusic();
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
+
+    sprintf(buf,"%s/profile/Zidane.pf",path);
+    s_profile *prof = profile_load_from_file(buf);
+    if (prof)
+        marisa->set_input_profile(prof);
 
     char_c *alice = new char_utsuho(inp_createinput(INP_TYPE_NONE));
 
@@ -100,18 +107,19 @@ int main(int argc, char *argv[])
 
     gui_holder gui;
 
-    gui.load_dat("data/battle","battleUnder.dat");
+   // gui.load_dat("data/battle","battleUnder.dat");
 
     gui_holder gui2;
 
-    gui2.load_dat("data/battle","battleUpper.dat");
+    //gui2.load_dat("data/battle","battleUpper.dat");
 
     gui_holder gui3;
 
-    gui3.load_dat("data/battle","combo.dat");
+   // gui3.load_dat("data/battle","combo.dat");
 
     while(!kb.rawPressed(kC_Escape))
     {
+
         if (kb.rawPressed(kC_Q))
             ii++;
 
@@ -133,6 +141,10 @@ int main(int argc, char *argv[])
         //gui.draw_all(0);
         //gui2.draw_all(0);
         //gui3.draw_all(0);
+
+        //menu_call();
+
+        debug_str(100,100,"aaaaa");
 
         gr_flip();
 

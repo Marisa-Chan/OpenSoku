@@ -18,6 +18,7 @@ char_c::char_c(inp_ab *func)
     chrt = this;
 
     input = func;
+    func->set_devid(0);
     x = 0;
     y = 0;
     dir = 1.0;
@@ -3459,6 +3460,11 @@ bullist *char_c::get_bullets()
 void char_c::health_to_max()
 {
     health = max_health;
+}
+
+void char_c::set_input_profile(s_profile *prof)
+{
+    input->load_profile(prof);
 }
 
 void sub_4689D0(char_c *, int32_t)

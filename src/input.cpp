@@ -280,9 +280,19 @@ void inp_kb::set_devid(uint32_t)
     return;
 }
 
-void inp_kb::load_profile(kmapper maps)
+void inp_kb::load_profile(s_profile * prof)
 {
-
+    map[INP_UP]    = prof->kbd.UP;
+    map[INP_DOWN]  = prof->kbd.DOWN;
+    map[INP_LEFT]  = prof->kbd.LEFT;
+    map[INP_RIGHT] = prof->kbd.RIGHT;
+    map[INP_A]     = prof->kbd.A;
+    map[INP_B]     = prof->kbd.B;
+    map[INP_C]     = prof->kbd.C;
+    map[INP_D]     = prof->kbd.D;
+    map[INP_AB]    = prof->kbd.AB;
+    map[INP_BC]    = prof->kbd.BC;
+    map[INP_ST]    = prof->kbd.START;
 }
 
 void inp_kb::load_def_profile()
@@ -308,9 +318,19 @@ inp_js::inp_js()
     load_def_profile();
 }
 
-void inp_js::load_profile(kmapper keys)
+void inp_js::load_profile(s_profile * prof)
 {
-    return;
+    map[INP_UP]    = INP_AXIS(INP_AX_Y,0);
+    map[INP_DOWN]  = INP_AXIS(INP_AX_Y,1);
+    map[INP_LEFT]  = INP_AXIS(INP_AX_X,0);
+    map[INP_RIGHT] = INP_AXIS(INP_AX_X,1);
+    map[INP_A]     = prof->joy.A;
+    map[INP_B]     = prof->joy.B;
+    map[INP_C]     = prof->joy.C;
+    map[INP_D]     = prof->joy.D;
+    map[INP_AB]    = prof->joy.AB;
+    map[INP_BC]    = prof->joy.BC;
+    map[INP_ST]    = prof->joy.START;
 }
 
 void inp_js::update()
@@ -413,10 +433,10 @@ void inp_both::load_def_profile()
     js.load_def_profile();
 }
 
-void inp_both::load_profile(kmapper keys)
+void inp_both::load_profile(s_profile * prof)
 {
-    kb.load_profile(keys);
-    js.load_profile(keys);
+    kb.load_profile(prof);
+    js.load_profile(prof);
 }
 
 void inp_both::update()
@@ -456,7 +476,7 @@ void inp_both::set_devid(uint32_t id)
 
 
 
-inp_ab *inp_createinput(uint8_t type)
+inp_ab *inp_createinput(inp_types type)
 {
     switch(type)
     {

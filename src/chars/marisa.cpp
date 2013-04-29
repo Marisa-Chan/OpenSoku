@@ -2669,7 +2669,6 @@ void char_marisa::func10()
                     tmp[2] = scene_rand_rng(4);
                     addbullet(this,NULL, 825, x + dir*44, y + 85, dir, 1 , tmp, 3);
                     play_sfx(9);
-                    scene_add_effect(this, 129, x , y, dir, -1);
                 }
                 if (field_7DC < 0)
                     field_7DC = -(-30 + field_7DC);
@@ -2765,7 +2764,6 @@ void char_marisa::func10()
                     tmp[2] = scene_rand_rng(4);
                     addbullet(this,NULL, 825, x + dir*44, y + 85, dir, 1 , tmp, 3);
                     play_sfx(9);
-                    scene_add_effect(this, 129, x , y, dir, -1);
                 }
                 if (field_7DC < 0)
                     field_7DC = -(-30 + field_7DC);

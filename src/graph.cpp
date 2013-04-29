@@ -1,5 +1,6 @@
 #include "global_types.h"
 #include "file_read.h"
+#include "archive.h"
 #include "graph.h"
 #include <math.h>
 
@@ -43,6 +44,18 @@ gr_tex * gr_create_tex(uint32_t width, uint32_t height)
     gr_tex * tmp = new gr_tex;
     tmp->create(width, height);
     return tmp;
+}
+
+gr_tex *gr_load_cv2(const char *filename, uint32_t *pal)
+{
+    filehandle *f = arc_get_file(filename);
+    if (f)
+    {
+        gr_tex *tx = gr_load_cv2(f,pal);
+        delete f;
+        return tx;
+    }
+    return NULL;
 }
 
 gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal)
@@ -127,6 +140,11 @@ void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex,int32_t x, int32_t y, int32_t w,
         spr->setTexture(*tex, false);
         spr->setTextureRect(sf::IntRect(x,y,w,h));
     }
+}
+
+void gr_set_spr_box(gr_sprite *spr,int32_t x, int32_t y, int32_t w, int32_t h)
+{
+    spr->setTextureRect(sf::IntRect(x,y,w,h));
 }
 
 void gr_draw_sprite(gr_sprite *spr, float x, float y)
@@ -314,4 +332,24 @@ void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2)
 {
     sf::Vector2u sz = spr->getTexture()->getSize();
     spr->setTextureRect(sf::IntRect(x1*sz.x,y1*sz.y, x2*sz.x, y2*sz.y));
+}
+
+
+sf::Text *ttx = NULL;
+sf::Font *fnt = NULL;
+
+void debug_str(float x, float y, const char *str)
+{
+    if (!fnt)
+    {
+        fnt = new sf::Font();
+        fnt->loadFromFile("/usr/share/fonts/TTF/DejaVuSans.ttf");
+    }
+
+    if (!ttx)
+        ttx = new sf::Text(str, *fnt, 10);
+
+    ttx->setString(str);
+    ttx->setPosition(x,y);
+    window->draw(*ttx);
 }

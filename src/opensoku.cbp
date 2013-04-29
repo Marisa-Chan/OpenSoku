@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="/media/202/Games/th123/" />
+				<Option parameters="/media/chg/games/th123" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -52,16 +52,18 @@
 		<Unit filename="chars.h" />
 		<Unit filename="chars/alice.cpp" />
 		<Unit filename="chars/alice.h" />
-		<Unit filename="chars/marisa.cpp" />
-		<Unit filename="chars/marisa.h" />
 		<Unit filename="chars/alice_bullets.cpp" />
 		<Unit filename="chars/alice_bullets.h" />
+		<Unit filename="chars/marisa.cpp" />
+		<Unit filename="chars/marisa.h" />
 		<Unit filename="chars/marisa_bullets.cpp" />
 		<Unit filename="chars/marisa_bullets.h" />
 		<Unit filename="chars/utsuho.cpp" />
 		<Unit filename="chars/utsuho.h" />
 		<Unit filename="crc32.cpp" />
 		<Unit filename="crc32.h" />
+		<Unit filename="effects.cpp" />
+		<Unit filename="effects.h" />
 		<Unit filename="file_read.cpp" />
 		<Unit filename="file_read.h" />
 		<Unit filename="framedata.cpp" />
@@ -77,9 +79,17 @@
 		<Unit filename="graph.h" />
 		<Unit filename="graph_efx.cpp" />
 		<Unit filename="graph_efx.h" />
+		<Unit filename="gui.cpp" />
+		<Unit filename="gui.h" />
+		<Unit filename="infoeffect.cpp" />
+		<Unit filename="infoeffect.h" />
 		<Unit filename="input.cpp" />
 		<Unit filename="input.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="menu/menus.cpp" />
+		<Unit filename="menu/menus.h" />
+		<Unit filename="menu/title.cpp" />
+		<Unit filename="menu/title.h" />
 		<Unit filename="meta.cpp" />
 		<Unit filename="meta.h" />
 		<Unit filename="moveable.cpp" />
@@ -88,25 +98,21 @@
 		<Unit filename="mt.h" />
 		<Unit filename="music.cpp" />
 		<Unit filename="music.h" />
+		<Unit filename="profile.cpp" />
+		<Unit filename="profile.h" />
 		<Unit filename="scene.cpp" />
 		<Unit filename="scene.h" />
 		<Unit filename="scene_fx.cpp" />
 		<Unit filename="scene_fx.h" />
 		<Unit filename="sfx.cpp" />
 		<Unit filename="sfx.h" />
+		<Unit filename="text.cpp" />
+		<Unit filename="text.h" />
 		<Unit filename="unknown.cpp" />
 		<Unit filename="utils.cpp" />
 		<Unit filename="utils.h" />
-		<Unit filename="text.cpp" />
-		<Unit filename="text.h" />
-		<Unit filename="gui.cpp" />
-		<Unit filename="gui.h" />
-		<Unit filename="effects.cpp" />
-		<Unit filename="effects.h" />
 		<Unit filename="weather.cpp" />
 		<Unit filename="weather.h" />
-		<Unit filename="infoeffect.cpp" />
-		<Unit filename="infoeffect.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />

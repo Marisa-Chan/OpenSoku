@@ -2,6 +2,7 @@
 #define INPUT_H_INCLUDED
 
 #include <SFML/Window.hpp>
+#include "profile.h"
 
 enum inp_types
 {
@@ -149,11 +150,6 @@ enum inp_keys
 #define INP_AXIS(x,y)   (((x & 0xF) << 1 | (y & 0x1)) << 8)
 
 
-struct kmapper
-{
-    uint32_t keys[INP_KEYS];
-};
-
 class inp_ab
 {
 protected:
@@ -175,26 +171,42 @@ protected:
 public:
     inp_ab();
 
+    //Adds current keystate to input stack
     void fill_kframes();
+    //Get DOWN key state
     bool keyDown(inp_keys key);
+    //Get Hit key state
     bool keyHit(inp_keys key);
+    //Get Up key state
     bool keyUp(inp_keys key);
+    //Return timer how many frames key was pressed (255 - infinity)
     uint8_t keyFramed(inp_keys key);
+    //Return pressed LEFT/RIGHT with char direction care (1 - forward, -1 - backward, 0 not pressed)
     int8_t gX(int8_t dir);
+    //Return pressed UP/DOWN (1 - up, -1 - down, 0 not pressed)
     int8_t gY();
+    //Setting current press direction
     void   setgX(int8_t dir);
     void   setgY(int8_t dir);
 
+    //clear all down states
     void zero_input();
 
+    //check if pressed sq seq of num frames with care of direction
     int8_t check_input_seq(const char *sq, uint8_t frames, int8_t direction);
 
+    //update routines
     virtual void update() = 0;
+    //loads default profile
     virtual void load_def_profile() = 0;
-    virtual void load_profile(kmapper keys) = 0;
+    //loads profile
+    virtual void load_profile(s_profile * prof) = 0;
+    //setting device ID (useable for joystick)
     virtual void set_devid(uint32_t) = 0;
 };
 
+
+//keyboard input class
 class inp_kb: public inp_ab
 {
 private:
@@ -205,13 +217,15 @@ private:
 public:
     inp_kb();
 
-    void load_profile(kmapper keys);
+    void load_profile(s_profile * prof);
     void load_def_profile();
+    //get raw pressed keyboard key (any key)
     bool rawPressed(uint32_t key);
     void update();
     void set_devid(uint32_t);
 };
 
+//joystick input class
 class inp_js: public inp_ab
 {
     private:
@@ -224,18 +238,19 @@ class inp_js: public inp_ab
 public:
     inp_js();
 
-    void load_profile(kmapper keys);
+    void load_profile(s_profile * prof);
     void load_def_profile();
     void update();
     void set_devid(uint32_t);
 };
 
+//no input class
 class inp_none: public inp_ab
 {
 
 public:
 
-    void load_profile(kmapper keys)
+    void load_profile(s_profile * prof)
         {return;};
     void load_def_profile()
         {return;};
@@ -245,6 +260,7 @@ public:
         {return;};
 };
 
+//keyboard and joystick input class
 class inp_both: public inp_ab
 {
     private:
@@ -252,13 +268,13 @@ class inp_both: public inp_ab
     inp_kb kb;
 
     public:
-    void load_profile(kmapper keys);
+    void load_profile(s_profile * prof);
     void load_def_profile();
     void update();
     void set_devid(uint32_t);
 };
 
-
-inp_ab *inp_createinput(uint8_t type);
+//Create selected input class
+inp_ab *inp_createinput(inp_types type);
 
 #endif // INPUT_H_INCLUDED

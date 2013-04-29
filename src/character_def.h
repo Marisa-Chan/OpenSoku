@@ -227,6 +227,7 @@ private:
     int8_t gY();
     void   setgX(int8_t dir);
     void   setgY(int8_t dir);
+    void set_input_profile(s_profile *prof);
 };
 
 typedef list<char_c *> charlist;

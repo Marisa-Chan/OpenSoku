@@ -24,10 +24,12 @@ OBJS =  \
 	music.cpp\
 	scene.cpp\
 	chars/alice.cpp\
-	chars/alice_bullets.cpp\
  	chars/marisa.cpp\
 	chars/marisa_bullets.cpp\
+	chars/alice_bullets.cpp\
 	chars/utsuho.cpp\
+	menu/menus.cpp\
+	menu/title.cpp\
 	main.cpp\
 	sfx.cpp\
 	scene_fx.cpp\
@@ -44,10 +46,11 @@ OBJS =  \
 	text.cpp\
 	effects.cpp\
 	weather.cpp\
-	infoeffect.cpp
+	infoeffect.cpp\
+	profile.cpp
 
 linux: $(OBJS)
-	$(CXX) -O3 -Os --std=c++11 -o $(TARGET) $(OBJS) $(LIBS) -I /usr/include/ 
+	$(CXX) -O3 -Os --std=c++11 -pedantic -o $(TARGET) $(OBJS) $(LIBS) -I /usr/include/ 
 
 win32: $(OBJS)
 	$(CXX_WIN) -O3 -Os --std=c++11 -o $(TARGET_WIN) $(OBJS) $(WINOBJ) $(LIBS_WIN) -I $(MINGW)/include/ 

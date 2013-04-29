@@ -3,11 +3,16 @@
 #include "file_read.h"
 #include "gui.h"
 
+//#define GUI_DEBUG   1
+
 bool gui_holder::load_dat(const char *path, const char *file)
 {
     char buf[CHRBUF];
 
     sprintf(buf, "%s/%s", path, file);
+#ifdef GUI_DEBUG
+    printf("Loading gui: %s\n",buf);
+#endif // GUI_DEBUG
 
     filehandle *f = arc_get_file(buf);
 
@@ -77,7 +82,9 @@ bool gui_holder::load_dat(const char *path, const char *file)
         f->read(1, &type);
 
         gui_element *lmnt = NULL;
-        int32_t tmp;
+#ifdef GUI_DEBUG
+        printf("type %d guid %d\n",type,guid);
+#endif // GUI_DEBUG
         switch(type)
         {
         case 0:
@@ -102,13 +109,15 @@ bool gui_holder::load_dat(const char *path, const char *file)
         break;
 
         case 1:
-            //lmnt = new gui_element;
-            //lmnt->tex = NULL;
-            f->read(4, &tmp);
-            //lmnt->x = tmp;
-            f->read(4, &tmp);
-            //lmnt->y = tmp;
-            break;
+        {
+            int32_t x, y;
+            gui_el_t1 *t1 = new gui_el_t1(guid);
+            f->read(4, &x);
+            f->read(4, &y);
+            t1->setXY(x,y);
+            lmnt = t1;
+        }
+        break;
 
         case 6:
         {
@@ -136,6 +145,9 @@ bool gui_holder::load_dat(const char *path, const char *file)
         }
 
         elmnt[i] = lmnt;
+        if (lmnt)
+            if (lmnt->guid == 0)
+                elmnt[i]->renderable = true;
     }
 
     return true;
@@ -146,7 +158,16 @@ void gui_holder::draw_all(int8_t plane)
     for (uint32_t i=0; i<elmnt.size(); i++)
     {
         if (elmnt[i])
-            elmnt[i]->draw(plane);
+        {
+            if (elmnt[i]->renderable)
+                elmnt[i]->draw(plane);
+#ifdef GUI_DEBUG
+            char buf[32];
+            sprintf(buf,"%d t%d",elmnt[i]->guid,elmnt[i]->get_type());
+            debug_str(elmnt[i]->x+20,elmnt[i]->y,buf);
+#endif // GUI_DEBUG
+        }
+
     }
 }
 
@@ -170,6 +191,16 @@ gui_el_t0 * gui_holder::get_gui_t0(int32_t id)
     return NULL;
 }
 
+gui_el_t1 * gui_holder::get_gui_t1(int32_t id)
+{
+    for (uint32_t i=0; i< elmnt.size(); i++)
+        if (elmnt[i])
+            if (elmnt[i]->guid == id && elmnt[i]->get_type() == 1)
+                return (gui_el_t1 *)elmnt[i];
+
+    return NULL;
+}
+
 
 gui_element::gui_element(int32_t _guid):
     guid (_guid)
@@ -189,7 +220,56 @@ void gui_element::setXY(float _x, float _y)
     y = _y;
 }
 
+void gui_element::setDXDY(float _x, float _y)
+{
+    dx = _x;
+    dy = _y;
+}
 
+void gui_element::setOrigin(int32_t _x, int32_t _y)
+{
+    ox = _x;
+    oy = _y;
+}
+
+float gui_element::getDX()
+{
+    return dx;
+}
+
+float gui_element::getDY()
+{
+    return dy;
+}
+
+float gui_element::getX()
+{
+    return x;
+}
+
+float gui_element::getY()
+{
+    return y;
+}
+
+void gui_element::setColor(uint8_t a, uint8_t r, uint8_t g, uint8_t b)
+{
+    c_A = a;
+    c_R = r;
+    c_G = g;
+    c_B = b;
+}
+
+void gui_element::setRotate(float angl)
+{
+    angle = angl;
+}
+
+gui_el_t6::gui_el_t6(gui_tex *_tex, int32_t _w, int32_t _h, int32_t _frames, int32_t _dw, int32_t _intg, int32_t _flt):
+    gui_el_t6(0,_tex, _w, _h, _frames, _dw, _intg, _flt)
+{
+
+}
 
 gui_el_t6::gui_el_t6(int32_t _guid, gui_tex *_tex, int32_t _w, int32_t _h, int32_t _frames, int32_t _dw, int32_t _intg, int32_t _flt):
     gui_element(_guid)
@@ -201,6 +281,7 @@ gui_el_t6::gui_el_t6(int32_t _guid, gui_tex *_tex, int32_t _w, int32_t _h, int32
     intg = _intg;
     flt = _flt;
     dw = _dw;
+    gr_set_spr_tex(sprite, tex->tex);
 }
 
 void gui_el_t6::draw_d(float _dx, float _dy, int8_t plane)
@@ -295,10 +376,13 @@ void gui_el_t6::draw_frame(int32_t frm, float _dx, float _dy, int8_t plane)
 {
     if (frm >= 0 && frm < frames)
     {
-    gr_set_spr_tex(sprite, tex->tex, frm* w, 0, w, h);
-    gr_setxy_sprite(sprite,x + _dx, y + _dy);
-    gr_setscale_sprite(sprite,sx,sy);
-    gr_draw_sprite(sprite,gr_alpha,plane);
+        gr_set_spr_box(sprite, frm* w, 0, w, h);
+        gr_setcolor_sprite(sprite, c_R, c_G, c_B, c_A);
+        gr_setorigin_sprite(sprite, ox,oy);
+        gr_setxy_sprite(sprite,x + _dx + dx, y + _dy + dy);
+        gr_setrotate_sprite(sprite,angle);
+        gr_setscale_sprite(sprite,sx,sy);
+        gr_draw_sprite(sprite,gr_alpha,plane);
     }
 }
 
@@ -328,24 +412,132 @@ void gui_el_t6::setInt(int32_t d)
     vard = d;
 }
 
+
+
+gui_el_t0::gui_el_t0(gui_tex *_tex):
+    gui_el_t0(0,_tex)
+{
+
+}
+
 gui_el_t0::gui_el_t0(int32_t _guid, gui_tex *_tex):
     gui_element(_guid)
 {
     tex = _tex;
+    gr_set_spr_tex(sprite, tex->tex);
 }
 
 void gui_el_t0::draw(int8_t plane)
 {
-    gr_set_spr_tex(sprite, tex->tex);
-    gr_setxy_sprite(sprite,x, y);
+    draw(0,0,plane);
+}
+
+void gui_el_t0::draw(float _dx, float _dy, int8_t plane)
+{
+    gr_setorigin_sprite(sprite, ox,oy);
+    gr_setcolor_sprite(sprite, c_R, c_G, c_B, c_A);
+    gr_setxy_sprite(sprite,x + _dx + dx, y + _dy + dy);
+    gr_setrotate_sprite(sprite,angle);
     gr_setscale_sprite(sprite,sx,sy);
     gr_draw_sprite(sprite,gr_alpha,plane);
 }
 
-void gui_el_t0::draw(float dx, float dy, int8_t plane)
+
+
+gui_el_t1::gui_el_t1(int32_t _guid):
+    gui_element(_guid)
 {
-    gr_set_spr_tex(sprite, tex->tex);
-    gr_setxy_sprite(sprite,x + dx, y + dy);
-    gr_setscale_sprite(sprite,sx,sy);
-    gr_draw_sprite(sprite,gr_alpha,plane);
+    tex = new gui_tex;
+    tex->b = 0;
+    tex->l = 0;
+    tex->r = 0;
+    tex->t = 0;
+    tex->tex = NULL;
+}
+
+gui_el_t1::gui_el_t1():
+    gui_el_t1(0)
+{
+
+}
+
+void gui_el_t1::draw(int8_t plane)
+{
+    draw(0,0,plane);
+}
+
+void gui_el_t1::draw(float _dx, float _dy, int8_t plane)
+{
+    if (tex->tex)
+    {
+        gr_setorigin_sprite(sprite, ox,oy);
+        gr_setcolor_sprite(sprite, c_R, c_G, c_B, c_A);
+        gr_setxy_sprite(sprite,x + _dx + dx, y + _dy + dy);
+        gr_setrotate_sprite(sprite,angle);
+        gr_setscale_sprite(sprite,sx,sy);
+        gr_draw_sprite(sprite,gr_alpha,plane);
+    }
+}
+
+void gui_el_t1::draw(float _x, float _y, float _w, float _h, int8_t plane)
+{
+    draw(0,0,_x,_y,_w,_h,plane);
+}
+
+void gui_el_t1::draw(float _dx, float _dy, float _x, float _y, float _w, float _h, int8_t plane)
+{
+    if (tex->tex)
+    {
+        gr_set_spr_box(sprite, _x, _y, _w, _h);
+        gr_setcolor_sprite(sprite, c_R, c_G, c_B, c_A);
+        gr_setorigin_sprite(sprite, ox,oy);
+        gr_setxy_sprite(sprite,x + _dx + dx, y + _dy + dy);
+        gr_setrotate_sprite(sprite,angle);
+        gr_setscale_sprite(sprite,sx,sy);
+        gr_draw_sprite(sprite,gr_alpha,plane);
+    }
+}
+
+void gui_el_t1::draw_frame(int32_t col, int32_t row, int8_t plane)
+{
+    draw(0,0,col,row,plane);
+}
+
+void gui_el_t1::draw_frame(float _dx, float _dy, int32_t col, int32_t row, int8_t plane)
+{
+    if (tex->tex)
+    {
+        gr_set_spr_box(sprite, f_w * col, f_h * row, f_w, f_h);
+        gr_setcolor_sprite(sprite, c_R, c_G, c_B, c_A);
+        gr_setorigin_sprite(sprite, ox,oy);
+        gr_setxy_sprite(sprite,x + _dx + dx, y + _dy + dy);
+        gr_setrotate_sprite(sprite,angle);
+        gr_setscale_sprite(sprite,sx,sy);
+        gr_draw_sprite(sprite,gr_alpha,plane);
+    }
+}
+
+void gui_el_t1::setTexture(gr_tex *_tex)
+{
+    tex->tex = _tex;
+    gr_set_spr_tex(sprite, _tex);
+}
+
+void gui_el_t1::setTexture(gr_tex *_tex,float _x, float _y, float _w, float _h)
+{
+    tex->tex = _tex;
+    gr_set_spr_tex(sprite, _tex,_x,_y,_w,_h);
+}
+
+void gui_el_t1::setTextureFramed(gr_tex *_tex, int32_t w, int32_t h)
+{
+    tex->tex = _tex;
+    gr_set_spr_tex(sprite, _tex);
+    set_frame_size(w,h);
+}
+
+void gui_el_t1::set_frame_size(int32_t w, int32_t h)
+{
+    f_w = w;
+    f_h = h;
 }

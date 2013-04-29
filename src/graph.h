@@ -40,11 +40,13 @@ void gr_tex_update(gr_tex *tex, void *buf, uint32_t wi, uint32_t hi);
 gr_tex * gr_create_tex(uint32_t width, uint32_t height);
 
 gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal);
+gr_tex *gr_load_cv2(const char *filename, uint32_t *pal);
 
 gr_sprite * gr_create_sprite();
 
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex);
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex,int32_t x, int32_t y, int32_t w, int32_t h);
+void gr_set_spr_box(gr_sprite *spr,int32_t x, int32_t y, int32_t w, int32_t h);
 
 void gr_setxy_sprite(gr_sprite *spr, float x, float y);
 void gr_setscale_sprite(gr_sprite *spr, float x, float y);
@@ -79,4 +81,6 @@ void gr_set_repeate(gr_tex *tex, bool rpt);
 void gr_set_smoth(gr_tex *tex, bool smoth);
 void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2);
 
+
+void debug_str(float x, float y, const char *str);
 #endif // GRAPH_H_INCLUDED
