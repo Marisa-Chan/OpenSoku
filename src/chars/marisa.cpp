@@ -10,8 +10,10 @@
 char_marisa::char_marisa(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
+    char_id = CHAR_ID_MARISA;
     pgp->load_dat("marisa",pal);
     char_loadsfx(this,"marisa");
+    cards_load_cards(&chr_cards,"marisa");
 };
 
 void sub_4834F0(char_c *)

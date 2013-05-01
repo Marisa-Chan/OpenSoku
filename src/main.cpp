@@ -84,9 +84,28 @@ int main(int argc, char *argv[])
     sprintf(buf,"%s/profile/Zidane.pf",path);
     s_profile *prof = profile_load_from_file(buf);
     if (prof)
+    {
         marisa->set_input_profile(prof);
+        marisa->set_cards_deck(prof,0);
+        marisa->add_card();
+        marisa->add_card();
+        marisa->add_card();
+        marisa->add_card();
+        marisa->add_card();
+    }
 
-    char_c *alice = new char_utsuho(inp_createinput(INP_TYPE_NONE));
+
+    char_c *alice = new char_alice(inp_createinput(INP_TYPE_NONE));
+
+    if (prof)
+    {
+        alice->set_cards_deck(prof,0);
+        alice->add_card();
+        alice->add_card();
+        alice->add_card();
+        alice->add_card();
+        alice->add_card();
+    }
 
 //    uint32_t i = 0;
 //
@@ -144,7 +163,25 @@ int main(int argc, char *argv[])
 
         //menu_call();
 
-        debug_str(100,100,"aaaaa");
+        for(uint32_t i=0; i < marisa->cards_active.size(); i++)
+        {
+            if (i == 0)
+                cards_draw_card(marisa->cards_active[i],10 + i*50, 400, 1, 0 );
+            else
+                cards_draw_card(marisa->cards_active[i],32+i*25, 430, 0.5, 0 );
+
+        }
+
+        for(uint32_t i=0; i < alice->cards_active.size(); i++)
+        {
+            if (i == 0)
+                cards_draw_card(alice->cards_active[i],600 - (10 + i*50), 400, 1, 0 );
+            else
+                cards_draw_card(alice->cards_active[i],600 -(10+i*25), 430, 0.5, 0 );
+
+        }
+
+        //debug_str(100,100,"фы");
 
         gr_flip();
 

@@ -191,8 +191,13 @@ s_profile *profile_load_from_file(const char *file)
     f->read(1,  &tmp->unk2);
     for (int32_t chr=0; chr < 20; chr++)
         for (int32_t dk=0; dk < 4; dk++)
-            for (int32_t crd=0; crd < 20; crd++)
+        {
+            uint8_t crd_num = 20;
+            f->read(1, &crd_num);
+            for (int32_t crd=0; crd < crd_num; crd++)
                 f->read(2, &tmp->decks[chr][dk][crd]);
+        }
+
 
     return tmp;
 }

@@ -2,6 +2,7 @@
 #include "file_read.h"
 #include "archive.h"
 #include "graph.h"
+#include <locale>
 #include <math.h>
 
 static sf::RenderWindow *window = NULL;

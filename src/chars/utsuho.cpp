@@ -33,6 +33,7 @@ void main()\
 char_utsuho::char_utsuho(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
+    char_id = CHAR_ID_UTSUHO;
     pgp->load_dat("utsuho",pal);
     char_loadsfx(this,"utsuho");
     filehandle *f = arc_get_file("data/character/utsuho/backA000.cv2");

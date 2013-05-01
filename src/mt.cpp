@@ -57,7 +57,8 @@ uint32_t mtwist::get_next_ranged(uint32_t range)
 
 mtwist::mtwist()
 {
-    pos = 0;
+    set_seed(0);
+    //pos = 0;
 }
 
 mtwist::mtwist(uint32_t seed)

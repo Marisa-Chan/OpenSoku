@@ -9,8 +9,10 @@
 char_alice::char_alice(inp_ab *func, uint8_t pal):
     char_c::char_c(func)
 {
+    char_id = CHAR_ID_ALICE;
     pgp->load_dat("alice",pal);
     char_loadsfx(this,"alice");
+    cards_load_cards(&chr_cards,"alice");
 };
 
 c_bullet *char_alice::new_bullet()

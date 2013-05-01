@@ -47,7 +47,8 @@ OBJS =  \
 	effects.cpp\
 	weather.cpp\
 	infoeffect.cpp\
-	profile.cpp
+	profile.cpp\
+	cards.cpp
 
 linux: $(OBJS)
 	$(CXX) -O3 -Os --std=c++11 -pedantic -o $(TARGET) $(OBJS) $(LIBS) -I /usr/include/ 

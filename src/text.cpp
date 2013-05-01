@@ -5,9 +5,10 @@ char *txt_load_cv1(filehandle *f)
 {
     uint32_t fsz = f->get_size();
 
-    char *buf = (char *)malloc(fsz);
+    char *buf = (char *)malloc(fsz+1);
 
     f->read(fsz, buf);
+    buf[fsz] = 0;
 
     uint8_t p1 = 0x8B;
     uint8_t p2 = 0x71;

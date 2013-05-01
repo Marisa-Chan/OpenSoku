@@ -3467,8 +3467,53 @@ void char_c::set_input_profile(s_profile *prof)
     input->load_profile(prof);
 }
 
+
+
+void shuffle_cards(card_vec *crd)
+{
+    uint32_t sz = crd->size()-1;
+    if (sz > 0)
+    {
+    for (int32_t i=0; i < 100; i++)
+    {
+        uint32_t id = scene_rand() % sz;
+        s_card *tmp = (*crd)[sz];
+        (*crd)[sz] = (*crd)[id];
+        (*crd)[id] = tmp;
+    }
+    }
+}
+
+void char_c::set_cards_deck(s_profile *prof, uint32_t deck_id)
+{
+    cards_deck.clear();
+    cards_shuffle.clear();
+    cards_active.clear();
+    cards_used.clear();
+
+    for (uint32_t i=0; i < 20; i++)
+    {
+        uint32_t id = prof->decks[char_id][deck_id % 4][i];
+        s_card *crd = cards_get_card(&chr_cards,id);
+
+        if (!crd)
+            printf("UNKNOWN CARD ID %d \n",id);
+        else
+            cards_deck.push_back(crd);
+    }
+
+    cards_shuffle = cards_deck;
+    shuffle_cards(&cards_shuffle);
+}
+
+void char_c::add_card()
+{
+    s_card *card = cards_shuffle.back();
+    cards_shuffle.pop_back();
+    cards_active.push_back(card);
+}
+
 void sub_4689D0(char_c *, int32_t)
 {
     //HACK
 }
-

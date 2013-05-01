@@ -4,6 +4,32 @@
 #define MAX_CHR_SFX     0x100
 
 #include "bullets.h"
+#include "cards.h"
+
+enum CHAR_ID
+{
+    CHAR_ID_REIMU  = 0,
+    CHAR_ID_MARISA = 1,
+    CHAR_ID_SAKUYA = 2,
+    CHAR_ID_ALICE  = 3,
+    CHAR_ID_PACHOU = 4,
+    CHAR_ID_YOUMU  = 5,
+    CHAR_ID_REMI   = 6,
+    CHAR_ID_YUYUKO = 7,
+    CHAR_ID_YUKARI = 8,
+    CHAR_ID_SUIKA  = 9,
+    CHAR_ID_REISEN = 10,
+    CHAR_ID_AYA    = 11,
+    CHAR_ID_KOMACHI= 12,
+    CHAR_ID_IKU    = 13,
+    CHAR_ID_TENSHI = 14,
+    CHAR_ID_SANAE  = 15,
+    CHAR_ID_CIRNO  = 16,
+    CHAR_ID_MEILING= 17,
+    CHAR_ID_UTSUHO = 18,
+    CHAR_ID_SUWAKO = 19,
+    CHAR_ID_NAMAZU = 21
+};
 
 class c_bullet;
 
@@ -16,6 +42,9 @@ private:
     inp_ab      *input;
     bullist     bullets;
     virtual void set_seq_params(); //func15
+
+    //character_ID
+    CHAR_ID char_id = CHAR_ID_REIMU;
     public:
 
         int8_t input_function;//HACK
@@ -169,6 +198,27 @@ private:
     int16_t combo_damage;
     int16_t combo_limit;
     int16_t correction;
+
+
+
+    ////// CARDS
+    //cards holder
+    s_cards chr_cards;
+    //Contain cards deck
+    card_vec cards_deck;
+    //Contain shuffled deck
+    card_vec cards_shuffle;
+    //Contain added cards to hand
+    card_vec cards_active;
+    //Contain used cards
+    card_vec cards_used;
+
+    //Sets deck from profile
+    void set_cards_deck(s_profile *prof, uint32_t deck_id);
+    //Add card from shuffle deck to hand
+    void add_card();
+
+    //////
 
 
 
