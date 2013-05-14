@@ -16,6 +16,8 @@ class gui_element
 
     protected:
 
+    int32_t tex_w = 0;
+    int32_t tex_h = 0;
     float x = 0;
     float y = 0;
     float dx = 0;
@@ -53,6 +55,8 @@ class gui_element
     float getDY();
     float getX();
     float getY();
+    int32_t getTexW();
+    int32_t getTexH();
 
 
     virtual void draw(int8_t plane) = 0;
@@ -117,6 +121,7 @@ class gui_el_t1: public gui_element
     void setTexture(gr_tex *tex);
     void setTexture(gr_tex *tex,float x, float y, float w, float h);
     void setTextureFramed(gr_tex *_tex, int32_t w, int32_t h);
+    void nullTexture();
 
     virtual int8_t get_type()
     {
@@ -132,6 +137,8 @@ class gui_el_t0: public gui_element
     gui_el_t0(int32_t _guid, gui_tex *tex);
     void draw(int8_t plane);
     void draw(float dx, float dy, int8_t plane);
+
+    void setRect(int32_t x, int32_t y, int32_t w, int32_t h);
 
     virtual int8_t get_type()
     {

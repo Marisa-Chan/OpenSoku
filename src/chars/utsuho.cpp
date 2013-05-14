@@ -49,6 +49,8 @@ char_utsuho::char_utsuho(inp_ab *func, uint8_t pal):
         gr_shader_set_texture(shader,"tex",backtex);
     }
     shd_p = 0;
+
+    load_face("utsuho");
 };
 
 void char_utsuho::draw(gr_shader *_shader)
@@ -319,14 +321,14 @@ void char_utsuho::func10()
 
                     if ( field_7D4 > 0 )
                     {
-                        if ( weather_var != 0 )
+                        if ( weather_get() != 0 )
                             dash_angle += 0.5;
                         else
                             dash_angle += 1.5;
                     }
                     else if ( field_7D4 < 0 )
                     {
-                        if ( weather_var != 0 )
+                        if ( weather_get() != 0 )
                             dash_angle -= 0.5;
                         else
                             dash_angle -= 1.5;
@@ -343,8 +345,7 @@ void char_utsuho::func10()
                     if ( field_7DC > 12.0 )
                         field_7DC = 12.0;
 
-                    //v1417 = weather_var != 0 ? 10 : 5;
-                    //sub_479FF0(v3, v1417, 1);
+                    spell_energy_spend(this, weather_get() != 0 ? 10 : 5, 1);
                     angZ = -dash_angle;
 
 
@@ -506,7 +507,7 @@ void char_utsuho::func20()
     bool cu = (fflags & FF_HJC) != 0;
     //int32_t sq = get_seq();
 
-    if ( /* !sub_4870A0(a1, v2)*/ true ) // !sub_4870A0(a1, v2) - AB input check
+    if ( !check_AB_pressed(this) )
     {
         if ( cc || cu )
         {
@@ -527,7 +528,7 @@ void char_utsuho::func20()
             }
             else
             {
-                int8_t mx = (weather_var == 10) + 2;
+                int8_t mx = (weather_get() == 10) + 2;
                 if ( border_escape_air(this)
                         || fwd_dash_air(this, cprior, cu, mx, 2)
                         || bkg_dash_air(this, cprior, cu, mx, 2)

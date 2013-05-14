@@ -389,22 +389,6 @@ bool sub_47ABE0(c_scene *scn, c_meta *plr, c_meta *enm)
     return false;
 }
 
-void sub_479FF0(char_c *chr, int32_t a1, int32_t a2)
-{
-    if ( chr->get_seq() >= 500  && chr->get_seq() < 600)
-        if ( chr->field_4C8 > 0 )
-            a1 >>= (chr->field_4C8 - 1);
-
-    chr->spell_energy -= a1;
-
-    if ( chr->spell_energy < 0 )
-        chr->spell_energy = 0;
-
-    if ( chr->spell_energy_stop < a2 )
-        chr->spell_energy_stop = a2;
-}
-
-
 bool sub_47AAA0(c_scene *scn, c_meta *plr, char_c *enm)
 {
     char_frame *frm = plr->get_pframe();
@@ -421,7 +405,7 @@ bool sub_47AAA0(c_scene *scn, c_meta *plr, char_c *enm)
         if ((frm->aflags & AF_UNK1000000) == 0 )
         {
             if (enm->spell_energy > 4 )
-                sub_479FF0(enm, 4, 30);
+                spell_energy_spend(enm, 4, 30);
             else
                 return false;
         }
@@ -436,9 +420,9 @@ bool sub_47AAA0(c_scene *scn, c_meta *plr, char_c *enm)
         if (frm->aflags & AF_UNK400000 )
         {
             if ( (frm->aflags & AF_UNK1000000)  && enm->spell_energy >= 10 )
-                sub_479FF0(enm, 10, 60);
+                spell_energy_spend(enm, 10, 60);
             else if ((frm->aflags & AF_UNK1000000) == 0  && enm->spell_energy > 30)
-                sub_479FF0(enm, 4, 30);
+                spell_energy_spend(enm, 4, 30);
             else
                 return false;
 
@@ -446,7 +430,7 @@ bool sub_47AAA0(c_scene *scn, c_meta *plr, char_c *enm)
             plr->field_190 = 6;
         }
         else if ( enm->spell_energy >= 50 )
-            sub_479FF0(enm, 50, 60);
+            spell_energy_spend(enm, 50, 60);
         else
             return false;
     }
@@ -636,8 +620,9 @@ void sub_47A980(c_scene *scn, c_meta *plr, char_c *enm)
 {
     char_frame *frm = plr->get_pframe();
 
-    //if ( !plr->chrt->field_56D ) //HACK
-    //  sub_463160(enm, 1);
+    if ( !plr->chrt->field_56D )
+      crash_spell_borders(enm, 1);
+
     sub_478FC0(plr->chrt, enm);
 
     plr->field_190 = 2;
@@ -651,7 +636,7 @@ void sub_47A980(c_scene *scn, c_meta *plr, char_c *enm)
     enm->field_1A8 = frm->velocity_y;
     enm->field_4BA = 0x4000;
 
-    //card_energy_add(plr->chr, frm->card_energy2); // HACK
+    add_card_energy2(plr->chrt, frm->card_energy2);
 
     if ( plr->chrt->field_554 > 0.0 )
         scn->scn_p2[enm->player_index] -= (frm->card_energy2 / 2) * plr->chrt->field_554;
@@ -750,7 +735,7 @@ bool sub_47B5A0(c_scene *scn, c_meta *plr, char_c *enm)
 
     char_c * plr_c = plr->chrt;
 
-    //plr_c->card_energy_add(plr_c->field_54C * frm->card_energy2); // HACK
+    add_card_energy2(plr_c, plr_c->field_54C * (float)frm->card_energy2);
 
     if ( plr_c->field_554 > 0.0 )
         scn->scn_p2[enm->player_index] -= (plr_c->field_54C * frm->card_energy2 / 2) * plr_c->field_554;
@@ -801,12 +786,12 @@ bool sub_47B8F0(c_scene *scn, c_meta *plr, char_c *enm)
         else
             enm->spell_energy -= frm->sp_smval;
 
-                        if ( frm->attack_type == 0 )
-                    enm->spell_energy_stop = 60;
-                else if ( frm->attack_type == 1 )
-                    enm->spell_energy_stop = 60;
-                else if ( frm->attack_type >= 2 )
-                    enm->spell_energy_stop = 90;
+        if ( frm->attack_type == 0 )
+            enm->spell_energy_stop = 60;
+        else if ( frm->attack_type == 1 )
+            enm->spell_energy_stop = 60;
+        else if ( frm->attack_type >= 2 )
+            enm->spell_energy_stop = 90;
 
         if ( enm->spell_energy <= 0 && enm->spell_energy < old_sp )
         {
@@ -822,7 +807,7 @@ bool sub_47B8F0(c_scene *scn, c_meta *plr, char_c *enm)
     enm->hit_stop = frm->flag196_enemy2;
     enm->field_1A4 = frm->velocity_x;
     enm->field_1A8 = frm->velocity_y;
-    //card_energy_add(plr_c, plr_c->field_54C * frm->card_energy2); //HACK
+    add_card_energy2(plr_c, plr_c->field_54C * (float)frm->card_energy2);
 
     if ( plr_c->field_554 > 0.0 )
         scn->scn_p2[enm->player_index] -= (frm->card_energy2 / 2.0) * plr_c->field_554;
@@ -1088,14 +1073,14 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
     }
 
 
-       if ( !char_is_shock(enm) )
-       {
-           for (int8_t i = 0; i <= atype && i < 3; ++i )
-               scene_add_effect_ibox(scn, 201, enm->dir);
+    if ( !char_is_shock(enm) )
+    {
+        for (int8_t i = 0; i <= atype && i < 3; ++i )
+            scene_add_effect_ibox(scn, 201, enm->dir);
 
-           if ( atype >= 2 )
-               scene_add_effect_ibox(scn, 201, enm->dir);
-       }
+        if ( atype >= 2 )
+            scene_add_effect_ibox(scn, 201, enm->dir);
+    }
 
     plr->field_194 = plr->field_1BC - 1;
     plr->hit_stop = frm->flag196_char;
@@ -1127,13 +1112,10 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
 
         dmg = sub_464240(plr);
     }
-    //int32_t energ = (plr->selft_pointer1?->field_54C * v5->props_card_energy);
-    //card_energy_add(plr->selft_pointer1?, energ);
-    //v26 = 0.0;
+    add_card_energy2(plr->chrt, plr->chrt->field_54C * (float)frm->card_energy);
     if ( plr->chrt->field_554 <= 0.0 )
     {
-        //card_energy_add(enm, dmg / 20);
-        //v26 = 0.0;
+        add_card_energy2(enm, dmg / 20);
     }
     else
     {

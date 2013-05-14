@@ -14,6 +14,7 @@ char_marisa::char_marisa(inp_ab *func, uint8_t pal):
     pgp->load_dat("marisa",pal);
     char_loadsfx(this,"marisa");
     cards_load_cards(&chr_cards,"marisa");
+    load_face("marisa");
 };
 
 void sub_4834F0(char_c *)
@@ -724,14 +725,14 @@ void char_marisa::func10()
 
                     if ( field_7D4 > 0 )
                     {
-                        if ( weather_var != 0 )
+                        if ( weather_get() != 0 )
                             dash_angle += 0.5;
                         else
                             dash_angle += 1.5;
                     }
                     else if ( field_7D4 < 0 )
                     {
-                        if ( weather_var != 0 )
+                        if ( weather_get() != 0 )
                             dash_angle -= 0.5;
                         else
                             dash_angle -= 1.5;
@@ -748,8 +749,7 @@ void char_marisa::func10()
                     if ( field_7DC > 12.0 )
                         field_7DC = 12.0;
 
-                    //v1417 = weather_var != 0 ? 10 : 5;
-                    //sub_479FF0(v3, v1417, 1);
+                    spell_energy_spend(this, weather_get() != 0 ? 10 : 5, 1);
                     angZ = -dash_angle;
 
 
@@ -1378,7 +1378,7 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 5 )
                 {
                     field_190 = 1;
-                    //add_card_energy(v3, 10);
+                    add_card_energy(this, 10);
                     float t[4];
                     t[0] = (-10 * field_7D2) + field_7F0;
                     t[1] = 10;
@@ -1395,7 +1395,7 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 3 )
                 {
                     field_190 = 1;
-                    //add_card_energy(v3, 10);
+                    add_card_energy(this, 10);
                     float t[4];
                     t[0] = (-10 * field_7D2) + field_7F0;
                     t[1] = 7;
@@ -1427,7 +1427,7 @@ void char_marisa::func10()
         {
             sub_486FD0(25.0, -25.0);
             field_7D0 = 1;
-            //sub_479FF0(v3, 200, 45);
+            spell_energy_spend(this, 200, 45);
         }
         break;
 
@@ -1447,7 +1447,7 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 5 )
                 {
                     field_190 = 1;
-                    //add_card_energy(v3, 10);
+                    add_card_energy(this, 10);
                     float t[4];
                     t[0] = (-10 * field_7D2) + field_7F0;
                     t[1] = 10;
@@ -1464,7 +1464,7 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 3 )
                 {
                     field_190 = 1;
-                    //add_card_energy(v3, 10);
+                    add_card_energy(this, 10);
                     float t[4];
                     t[0] = (-10 * field_7D2) + field_7F0;
                     t[1] = 7;
@@ -1502,7 +1502,7 @@ void char_marisa::func10()
 
             sub_486FD0(-20.0, -55.0);
             field_7D0 = 1;
-            /*sub_479FF0(v3, 200, 45);*/
+            spell_energy_spend(this, 200, 45);
         }
         break;
 
@@ -1519,7 +1519,7 @@ void char_marisa::func10()
             {
                 field_190 = 1;
                 play_sfx(0);
-                //add_card_energy(v3, 5);
+                add_card_energy(this, 5);
                 float t[3];
                 t[0] = (scene_rand() % 30) - 15.0;
                 t[1] = field_7D2*2 + 15;
@@ -1540,7 +1540,7 @@ void char_marisa::func10()
         if ( get_subseq() == 2 && get_frame_time() == 0  && get_frame() == 2 )
         {
             field_7D0 = 1;
-            //sub_479FF0(v3, 200, 45);
+            spell_energy_spend(this, 200, 45);
             scene_add_effect(this, 62, 90*dir + x, y+70, dir, 1);
         }
         break;
@@ -1566,7 +1566,7 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 5 )
                     {
                         field_190 = 1;
-                        //add_card_energy(v3, 10);
+                        add_card_energy(this, 10);
                         float t[4];
                         t[0] = (-10 * field_7D2) + field_7F0;
                         t[1] = 10.0;
@@ -1583,7 +1583,7 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 3 )
                     {
                         field_190 = 1;
-                        //add_card_energy(v3, 10);
+                        add_card_energy(this, 10);
                         float t[4];
                         t[0] = (-10 * field_7D2) + field_7F0;
                         t[1] = 7.0;
@@ -1631,7 +1631,7 @@ void char_marisa::func10()
                 field_7F0 = 25; //sub_486FD0(25.0, 25.0);
 
                 field_7D0 = 1;
-                //sub_479FF0(v3, 200, 45);
+                spell_energy_spend(this, 200, 45);
             }
 
             if ( get_subseq() == 3  && get_frame_time() == 0 && get_frame() == 0 && get_elaps_frames() == 0 )
@@ -1661,7 +1661,7 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 5 )
                     {
                         field_190 = 1;
-                        //add_card_energy(v3, 10);
+                        add_card_energy(this, 10);
                         float t[4];
                         t[0] = (10 * field_7D2) + field_7F0;
                         t[1] = 10.0;
@@ -1678,7 +1678,7 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 3 )
                     {
                         field_190 = 1;
-                        //add_card_energy(v3, 10);
+                        add_card_energy(this, 10);
                         float t[4];
                         t[0] = (10 * field_7D2) + field_7F0;
                         t[1] = 7.0;
@@ -1724,7 +1724,7 @@ void char_marisa::func10()
                 sub_486FD0(60.0, 20.0);
 
                 field_7D0 = 1;
-                //sub_479FF0(v3, 200, 45);
+                spell_energy_spend(this, 200, 45);
             }
             if ( get_subseq() == 3  && get_frame_time() == 0 && get_frame() == 0 && get_elaps_frames() == 0 )
                 set_seq(9);
@@ -1775,9 +1775,9 @@ void char_marisa::func10()
                 field_7D4 = 20;
 
             play_sfx(2);
-            //sub_479FF0(200, 60);
+            spell_energy_spend(this,200, 60);
             field_190 = 1;
-            //add_card_energy(v3, 50);
+            add_card_energy(this, 50);
             if ( field_7D8 )
             {
                 float t[3];
@@ -1823,7 +1823,7 @@ void char_marisa::func10()
 
         if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
-            //add_card_energy(v3, 50);
+            add_card_energy(this, 50);
             field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
             if ( field_7D4 < -10 )
                 field_7D4 = -10;
@@ -1832,7 +1832,7 @@ void char_marisa::func10()
 
             play_sfx(4);
             field_190 = 1;
-            //sub_479FF0(v3, 200, 60);
+            spell_energy_spend(this, 200, 60);
 
             float t[3];
             t[0] = 0;
@@ -1864,8 +1864,8 @@ void char_marisa::func10()
             t[1] = field_7DC / 40.0;
             t[2] = 0;
             field_190 = 1;
-            //sub_479FF0(v3, 200, 60);
-            //add_card_energy(v3, 50);
+            spell_energy_spend(this, 200, 60);
+            add_card_energy(this, 50);
             addbullet(this, NULL,802, 70*dir + x, y+162, dir, 1, t, 3);
         }
 
@@ -1899,9 +1899,9 @@ void char_marisa::func10()
 
             if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
             {
-                //sub_479FF0(v3, 200, 60);
+                spell_energy_spend(this, 200, 60);
                 field_190 = 1;
-                //add_card_energy(v3, 50);
+                add_card_energy(this, 50);
                 field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
                 if ( field_7D4 < -40 )
                     field_7D4 = -40;
@@ -1978,8 +1978,8 @@ void char_marisa::func10()
             {
                 play_sfx(4);
                 field_190 = 1;
-                //sub_479FF0(v3, 200, 60);
-                //add_card_energy(v3, 50);
+                spell_energy_spend(this, 200, 60);
+                add_card_energy(this, 50);
                 if ( field_7D8 == 1 )
                 {
                     float t[3];
@@ -2064,8 +2064,8 @@ void char_marisa::func10()
             v_force = 0.5;
 
             field_190 = 1;
-            //sub_479FF0(v3, 200, 60);
-            //add_card_energy(v3, 50);
+            spell_energy_spend(this, 200, 60);
+            add_card_energy(this, 50);
 
             float t[3];
             t[0] = 60;
@@ -2162,8 +2162,8 @@ void char_marisa::func10()
                     scene_add_effect(this, 128, x + dir * 200, y, dir, -1);
 
                 h_inerc = 20.0;
-                //sub_479FF0(v3, 200, 120);
-                //add_card_energy(v3, 50);
+                spell_energy_spend(this, 200, 120);
+                add_card_energy(this, 50);
                 play_sfx(6);
             }
             else if (get_subseq() == 3)
@@ -2251,8 +2251,8 @@ void char_marisa::func10()
             addbullet(this,NULL,849, x + dir*61, y + 232, dir,1,tmp,3);
             scene_add_effect(this, 127, x, y, dir, -1);
             play_sfx(5);
-            //sub_479FF0(v3, 200, 120);
-            //add_card_energy(v3, 50);
+            spell_energy_spend(this, 200, 120);
+            add_card_energy(this, 50);
             h_inerc = 12.5;
             v_inerc = 17.5;
             v_force = 0.6;
@@ -2315,8 +2315,8 @@ void char_marisa::func10()
             addbullet(this,NULL,849, x + dir*61, y + 232, dir,1,tmp,3);
             scene_add_effect(this, 127, x, y, dir, -1);
             play_sfx(5);
-            //sub_479FF0(v3, 200, 120);
-            //add_card_energy(v3, 50);
+            spell_energy_spend(this, 200, 120);
+            add_card_energy(this, 50);
             h_inerc = 15.0;
             v_inerc = 25.0;
             v_force = 0.6;
@@ -2333,8 +2333,8 @@ void char_marisa::func10()
             set_seq(0);
         if ( get_subseq() == 2 && get_frame_time() == 0  && get_frame() == 1 )
         {
-            //add_card_energy(v3, 50);
-            //sub_479FF0(v3, 200, 120);
+            add_card_energy(this, 50);
+            spell_energy_spend(this, 200, 120);
             field_190 = 1;
             float tmp[3];
             tmp[0] = 4;
@@ -2360,8 +2360,8 @@ void char_marisa::func10()
             set_seq(0);
         if ( get_subseq() == 2 && get_frame_time() == 0  && get_frame() == 1 )
         {
-            //add_card_energy(v3, 50);
-            //sub_479FF0(v3, 200, 120);
+            add_card_energy(this, 50);
+            spell_energy_spend(this, 200, 120);
             field_190 = 1;
             float tmp[3];
             tmp[0] = 4;
@@ -2405,8 +2405,8 @@ void char_marisa::func10()
             {
                 if (get_frame() == 1)
                 {
-                    //add_card_energy(v3, 50);
-                    //sub_479FF0(v3, 200, 120);
+                    add_card_energy(this, 50);
+                    spell_energy_spend(this, 200, 120);
                     field_190 = 1;
                     float tmp[3];
                     tmp[0] = 4;
@@ -2455,8 +2455,8 @@ void char_marisa::func10()
             {
                 if (get_frame() == 1)
                 {
-                    //add_card_energy(v3, 50);
-                    //sub_479FF0(v3, 200, 120);
+                    add_card_energy(this, 50);
+                    spell_energy_spend(this, 200, 120);
                     field_190 = 1;
                     float tmp[3];
                     tmp[0] = 4;
@@ -2544,8 +2544,8 @@ void char_marisa::func10()
         if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
             field_7D0 = 1;
-            //sub_479FF0(v3, 200, 120);
-            //add_card_energy(v3, 50);
+            spell_energy_spend(this, 200, 120);
+            add_card_energy(this, 50);
             sub_486FD0(10.0, -10.0);
         }
         if ( get_subseq() == 3 )
@@ -2622,8 +2622,8 @@ void char_marisa::func10()
         if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
             field_7D0 = 1;
-            //sub_479FF0(v3, 200, 120);
-            //add_card_energy(v3, 50);
+            spell_energy_spend(this, 200, 120);
+            add_card_energy(this, 50);
             sub_486FD0(10.0, -10.0);
         }
         if ( get_subseq() == 3 )
@@ -2715,8 +2715,8 @@ void char_marisa::func10()
             if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
             {
                 field_7D0 = 1;
-                //sub_479FF0(v3, 200, 120);
-                //add_card_energy(v3, 50);
+                spell_energy_spend(this, 200, 120);
+                add_card_energy(this, 50);
                 sub_486FD0(10.0, -10.0);
             }
             if ( get_subseq() == 3 )
@@ -2810,8 +2810,8 @@ void char_marisa::func10()
             if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
             {
                 field_7D0 = 1;
-                //sub_479FF0(v3, 200, 120);
-                //add_card_energy(v3, 50);
+                spell_energy_spend(this, 200, 120);
+                add_card_energy(this, 50);
                 sub_486FD0(10.0, -10.0);
             }
             if ( get_subseq() == 3 )
@@ -2854,7 +2854,7 @@ void char_marisa::func20()
     bool cu = (fflags & FF_HJC) != 0;
     int32_t sq = get_seq();
 
-    if ( /* !sub_4870A0(a1, v2)*/ true ) // !sub_4870A0(a1, v2) - AB input check
+    if ( !check_AB_pressed(this) )
     {
         if ( cc || cu )
         {
@@ -2875,7 +2875,7 @@ void char_marisa::func20()
             }
             else
             {
-                int8_t mx = (weather_var == 10) + 2;
+                int8_t mx = (weather_get() == 10) + 2;
                 if ( border_escape_air(this)
                         || fwd_dash_air(this, cprior, cu, mx, 2)
                         || bkg_dash_air(this, cprior, cu, mx, 2)

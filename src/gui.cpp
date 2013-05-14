@@ -205,7 +205,7 @@ gui_el_t1 * gui_holder::get_gui_t1(int32_t id)
 gui_element::gui_element(int32_t _guid):
     guid (_guid)
 {
-    sprite = new gr_sprite;
+    sprite = gr_create_sprite();
 }
 
 void gui_element::setScale(float x, float y)
@@ -252,6 +252,16 @@ float gui_element::getY()
     return y;
 }
 
+int32_t gui_element::getTexW()
+{
+    return tex_w;
+}
+
+int32_t gui_element::getTexH()
+{
+    return tex_h;
+}
+
 void gui_element::setColor(uint8_t a, uint8_t r, uint8_t g, uint8_t b)
 {
     c_A = a;
@@ -282,6 +292,10 @@ gui_el_t6::gui_el_t6(int32_t _guid, gui_tex *_tex, int32_t _w, int32_t _h, int32
     flt = _flt;
     dw = _dw;
     gr_set_spr_tex(sprite, tex->tex);
+
+    gr_info inf = gr_get_info(tex->tex);
+    tex_h = inf.h;
+    tex_w = inf.w;
 }
 
 void gui_el_t6::draw_d(float _dx, float _dy, int8_t plane)
@@ -425,6 +439,10 @@ gui_el_t0::gui_el_t0(int32_t _guid, gui_tex *_tex):
 {
     tex = _tex;
     gr_set_spr_tex(sprite, tex->tex);
+
+    gr_info inf = gr_get_info(tex->tex);
+    tex_h = inf.h;
+    tex_w = inf.w;
 }
 
 void gui_el_t0::draw(int8_t plane)
@@ -440,6 +458,11 @@ void gui_el_t0::draw(float _dx, float _dy, int8_t plane)
     gr_setrotate_sprite(sprite,angle);
     gr_setscale_sprite(sprite,sx,sy);
     gr_draw_sprite(sprite,gr_alpha,plane);
+}
+
+void gui_el_t0::setRect(int32_t x, int32_t y, int32_t w, int32_t h)
+{
+    gr_set_spr_box(sprite, x,y,w,h);
 }
 
 
@@ -517,16 +540,33 @@ void gui_el_t1::draw_frame(float _dx, float _dy, int32_t col, int32_t row, int8_
     }
 }
 
+void gui_el_t1::nullTexture()
+{
+    tex->tex = NULL;
+    gr_set_spr_tex(sprite, NULL);
+
+    tex_h = 0;
+    tex_w = 0;
+}
+
 void gui_el_t1::setTexture(gr_tex *_tex)
 {
     tex->tex = _tex;
     gr_set_spr_tex(sprite, _tex);
+
+    gr_info inf = gr_get_info(tex->tex);
+    tex_h = inf.h;
+    tex_w = inf.w;
 }
 
 void gui_el_t1::setTexture(gr_tex *_tex,float _x, float _y, float _w, float _h)
 {
     tex->tex = _tex;
     gr_set_spr_tex(sprite, _tex,_x,_y,_w,_h);
+
+    gr_info inf = gr_get_info(tex->tex);
+    tex_h = inf.h;
+    tex_w = inf.w;
 }
 
 void gui_el_t1::setTextureFramed(gr_tex *_tex, int32_t w, int32_t h)
@@ -534,6 +574,10 @@ void gui_el_t1::setTextureFramed(gr_tex *_tex, int32_t w, int32_t h)
     tex->tex = _tex;
     gr_set_spr_tex(sprite, _tex);
     set_frame_size(w,h);
+
+    gr_info inf = gr_get_info(tex->tex);
+    tex_h = inf.h;
+    tex_w = inf.w;
 }
 
 void gui_el_t1::set_frame_size(int32_t w, int32_t h)

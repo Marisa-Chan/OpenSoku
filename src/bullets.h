@@ -37,6 +37,7 @@ class c_bullet : public c_meta
     float   field_378;
     float   field_37C;
     float   field_380;
+    int16_t field_394;
     int16_t field_396;
     int16_t field_36E;
 

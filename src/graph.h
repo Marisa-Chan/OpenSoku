@@ -47,6 +47,7 @@ gr_sprite * gr_create_sprite();
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex);
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex,int32_t x, int32_t y, int32_t w, int32_t h);
 void gr_set_spr_box(gr_sprite *spr,int32_t x, int32_t y, int32_t w, int32_t h);
+void gr_set_spr_box_perc(gr_sprite *spr,float x, float y, float x2, float y2);
 
 void gr_setxy_sprite(gr_sprite *spr, float x, float y);
 void gr_setscale_sprite(gr_sprite *spr, float x, float y);
@@ -77,6 +78,7 @@ void gr_shader_set(gr_shader *shd, const char *param, float x, float y, float z)
 void gr_shader_set(gr_shader *shd, const char *param, float x, float y, float z, float w);
 
 gr_info gr_get_info(gr_sprite *spr);
+gr_info gr_get_info(gr_tex *tex);
 void gr_set_repeate(gr_tex *tex, bool rpt);
 void gr_set_smoth(gr_tex *tex, bool smoth);
 void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2);

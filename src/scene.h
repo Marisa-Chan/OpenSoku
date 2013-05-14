@@ -97,4 +97,8 @@ c_scene_sp *scene_get_sp();
 uint32_t scene_rand();
 uint32_t scene_rand_rng(uint32_t rng);
 
+int32_t time_count_get();
+void time_count_inc();
+void time_count_set(int32_t st);
+
 #endif // SCENE_H_INCLUDED

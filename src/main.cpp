@@ -16,6 +16,7 @@
 #include "gui.h"
 #include "profile.h"
 #include "menu/menus.h"
+#include "battle_ui.h"
 
 
 int main(int argc, char *argv[])
@@ -87,24 +88,14 @@ int main(int argc, char *argv[])
     {
         marisa->set_input_profile(prof);
         marisa->set_cards_deck(prof,0);
-        marisa->add_card();
-        marisa->add_card();
-        marisa->add_card();
-        marisa->add_card();
-        marisa->add_card();
     }
 
 
-    char_c *alice = new char_alice(inp_createinput(INP_TYPE_NONE));
+    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),1);
 
     if (prof)
     {
-        alice->set_cards_deck(prof,0);
-        alice->add_card();
-        alice->add_card();
-        alice->add_card();
-        alice->add_card();
-        alice->add_card();
+        alice->set_cards_deck(prof,1);
     }
 
 //    uint32_t i = 0;
@@ -115,7 +106,7 @@ int main(int argc, char *argv[])
     marisa->set_seq(0);
     alice->set_seq(0);
     srand(time(NULL));
-    background  *bkg = bkg_create(38);
+    background  *bkg = bkg_create(2);
 
 
 
@@ -123,18 +114,10 @@ int main(int argc, char *argv[])
 
     int32_t ii = 0;
 
+    battle_ui_std ui;
 
-    gui_holder gui;
+    ui.link(marisa,alice);
 
-   // gui.load_dat("data/battle","battleUnder.dat");
-
-    gui_holder gui2;
-
-    //gui2.load_dat("data/battle","battleUpper.dat");
-
-    gui_holder gui3;
-
-   // gui3.load_dat("data/battle","combo.dat");
 
     while(!kb.rawPressed(kC_Escape))
     {
@@ -148,40 +131,23 @@ int main(int argc, char *argv[])
 
         scn->players_input();
 
-        bkg->update();
+        //bkg->update();
 
-        //scn.players_collisions();
         scn->update();
 
         scn->draw_scene();
 
         scn->update_char_anims();
 
-        //gui.draw_all(0);
-        //gui2.draw_all(0);
-        //gui3.draw_all(0);
 
         //menu_call();
 
-        for(uint32_t i=0; i < marisa->cards_active.size(); i++)
-        {
-            if (i == 0)
-                cards_draw_card(marisa->cards_active[i],10 + i*50, 400, 1, 0 );
-            else
-                cards_draw_card(marisa->cards_active[i],32+i*25, 430, 0.5, 0 );
-
-        }
-
-        for(uint32_t i=0; i < alice->cards_active.size(); i++)
-        {
-            if (i == 0)
-                cards_draw_card(alice->cards_active[i],600 - (10 + i*50), 400, 1, 0 );
-            else
-                cards_draw_card(alice->cards_active[i],600 -(10+i*25), 430, 0.5, 0 );
-
-        }
-
         //debug_str(100,100,"фы");
+
+       // printf("sp %d %d\n",alice->current_card_energy, alice->max_spell_energy);
+
+        ui.update();
+        ui.draw();
 
         gr_flip();
 

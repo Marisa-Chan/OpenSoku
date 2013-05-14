@@ -13,6 +13,7 @@ char_alice::char_alice(inp_ab *func, uint8_t pal):
     pgp->load_dat("alice",pal);
     char_loadsfx(this,"alice");
     cards_load_cards(&chr_cards,"alice");
+    load_face("alice");
 };
 
 c_bullet *char_alice::new_bullet()
@@ -236,8 +237,8 @@ void char_alice::func10()
             addbullet(this, NULL, 803,x - 74*dir, y + 104, dir, 1,tmp,3 );
             play_sfx(2);
             field_190 = 1;
-            //sub_479FF0(this, 200, 45);
-            //add_card_energy(v2, 30);
+            spell_energy_spend(this, 200, 45);
+            add_card_energy(this, 30);
         }
 
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 4 )
@@ -303,7 +304,7 @@ void char_alice::func20()
     bool cu = (fflags & FF_HJC) != 0;
     //int32_t sq = get_seq();
 
-    if ( /* !sub_4870A0(a1, v2)*/ true ) // !sub_4870A0(a1, v2) - AB input check
+    if ( !check_AB_pressed(this) ) // !sub_4870A0(a1, v2) - AB input check
     {
         if ( cc || cu )
         {
@@ -324,7 +325,7 @@ void char_alice::func20()
             }
             else
             {
-                int8_t mx = (weather_var == 10) + 2;
+                int8_t mx = (weather_get() == 10) + 2;
                 if ( border_escape_air(this)
                         || fwd_dash_air(this, cprior, cu, mx, 2)
                         || bkg_dash_air(this, cprior, cu, mx, 2)

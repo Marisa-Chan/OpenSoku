@@ -148,6 +148,14 @@ void gr_set_spr_box(gr_sprite *spr,int32_t x, int32_t y, int32_t w, int32_t h)
     spr->setTextureRect(sf::IntRect(x,y,w,h));
 }
 
+void gr_set_spr_box_perc(gr_sprite *spr,float x, float y, float x2, float y2)
+{
+    sf::Vector2u a =  spr->getTexture()->getSize();
+    x2 -= x;
+    y2 -= y;
+    spr->setTextureRect(sf::IntRect(x*a.x,y*a.y,x2*a.x,y2*a.y));
+}
+
 void gr_draw_sprite(gr_sprite *spr, float x, float y)
 {
     if (spr->getTexture() != NULL)
@@ -317,6 +325,17 @@ gr_info gr_get_info(gr_sprite *spr)
     tmp.y = v.top;
     tmp.w = v.width;
     tmp.h = v.height;
+    return tmp;
+}
+
+gr_info gr_get_info(gr_tex *tex)
+{
+    gr_info tmp;
+    sf::Vector2u a =  tex->getSize();
+    tmp.x = 0;
+    tmp.y = 0;
+    tmp.w = a.x;
+    tmp.h = a.y;
     return tmp;
 }
 

@@ -5,6 +5,7 @@
 #include "scene.h"
 #include "archive.h"
 #include "file_read.h"
+#include "weather.h"
 #include <math.h>
 
 char_c::char_c(inp_ab *func)
@@ -14,6 +15,9 @@ char_c::char_c(inp_ab *func)
 
     if (!pgp)
         pgp = new char_graph;
+
+    player_face_tex = NULL;
+    player_face = NULL;
 
     chrt = this;
 
@@ -42,6 +46,17 @@ char_c::char_c(inp_ab *func)
     field_74C = 0;
     field_4C2 = 0;
     field_852 = 0;
+    field_844 = 0;
+
+    field_54C = 1.0;
+
+    combo_rate = 1.0;
+    field_530 = 1.0;
+    field_534 = 1.0;
+    field_848 = 0;
+
+    field_550 = 0.0;
+    field_558 = 0.0;
 
     field_19C = 0;
     field_838 = 0;
@@ -50,7 +65,7 @@ char_c::char_c(inp_ab *func)
     field_890 = 0;
     field_892 = 0;
 
-    weather_var = 0;
+    //weather_var = 0;
 
     field_80C = 0;
 
@@ -60,6 +75,7 @@ char_c::char_c(inp_ab *func)
     field_7D6 = 0;
     field_7DC = 0;
     field_7F0 = 0;
+    field_7F8 = 0;
 
     time_stop = 0;
 
@@ -70,13 +86,18 @@ char_c::char_c(inp_ab *func)
     //field_49A = 0;
     field_84C = 0;
     spell_energy = 1000;
+    spell_energy_stop = 0;
     max_spell_energy = 1000;
+    current_card_energy = 0;
+    card_slots = 5;
+
+    win_count = 0;
 
     speed_mult = 1.0;
     tengu_fan  = 0;
 
     field_1BC = 1;
-    field_4A4 = 0;
+    crshd_sp_brdrs_timer = 0;
     field_560 = 0;
     field_4BE = 0;
     field_51E = 0;
@@ -468,7 +489,7 @@ void char_c::func10()
 
                     //shake_camera(2.0); //HACK
                 }
-                else if ( weather_var != 18 ) //HACK?
+                else if ( weather_get() != 18 ) //HACK?
                 {
                     field_7D0 = 100 * h_inerc;
                     field_7D2 = 100 * v_inerc;
@@ -482,7 +503,7 @@ void char_c::func10()
                 }
                 else
                 {
-                    weather_time *= 0.75;
+                    weather_time_mul(0.75);
 
                     field_7D0 = 100 * h_inerc;
                     field_7D2 = 100 * v_inerc;
@@ -538,7 +559,7 @@ void char_c::func10()
 
                     //shake_camera(2.0); //HACK
                 }
-                else if ( weather_var != 18 ) //HACK?
+                else if ( weather_get() != 18 ) //HACK?
                 {
                     field_7D0 = 100 * h_inerc;
                     field_7D2 = 100 * v_inerc;
@@ -552,7 +573,7 @@ void char_c::func10()
                 }
                 else
                 {
-                    weather_time *= 0.75;
+                    weather_time_mul(0.75);
 
                     field_7D0 = 100 * h_inerc;
                     field_7D2 = 100 * v_inerc;
@@ -596,8 +617,8 @@ void char_c::func10()
             }
             else
             {
-                if (weather_var == 18)
-                    weather_time *= 0.75;
+                if (weather_get() == 18)
+                    weather_time_mul(0.75);
                 field_7D0 = 100 * h_inerc;
                 field_7D2 = 100 * v_inerc;
                 reset_forces();
@@ -649,8 +670,8 @@ void char_c::func10()
         {
             if ( get_border_near(this) && (h_inerc <= -25.0 || field_80C != 0) )
             {
-                if ( weather_var != 18 ) // HACK?
-                    weather_time *= 0.75; //Global
+                if ( weather_get() != 18 ) // HACK?
+                    weather_time_mul(0.75);
 
                 set_seq(76);
             }
@@ -681,8 +702,8 @@ void char_c::func10()
                 }
                 else
                 {
-                    if ( weather_var != 18 ) // HACK?
-                        weather_time *= 0.75; //Global
+                    if ( weather_get() != 18 ) // HACK?
+                        weather_time_mul(0.75);
 
                     field_7D0 = 100 * h_inerc;
                     field_7D2 = 100 * v_inerc;
@@ -702,8 +723,8 @@ void char_c::func10()
         {
             if ( field_80C )
             {
-                if ( weather_var == 18 ) // HACK
-                    weather_time *= 0.75; //Global
+                if ( weather_get() == 18 ) // HACK
+                    weather_time_mul(0.75);
 
                 field_7D0 = 100 * h_inerc;
                 field_7D2 = 100 * v_inerc;
@@ -727,8 +748,8 @@ void char_c::func10()
         {
             if ( get_border_near(this) && (h_inerc <= -25.0 || field_80C) )
             {
-                if ( weather_var == 18 )
-                    weather_time *= 0.75;
+                if ( weather_get() == 18 )
+                    weather_time_mul(0.75);
                 set_seq(76);
             }
             else if ( get_border_near(this) && h_inerc <= -15.0 )
@@ -963,10 +984,10 @@ void char_c::func10()
 
     case 98:
         sub10func(this);
-        if ( weather_var == 15 ) //HACK
+        if ( weather_get() == 15 ) //HACK
         {
-            if ( weather_time > 10 ) //GLOBAL
-                weather_time -= 10; //GLOBAL
+            if ( weather_time_get() > 10 ) //GLOBAL
+                weather_time_sub(10);
 
             if ( health > 0 )
             {
@@ -1262,9 +1283,9 @@ void char_c::func10()
             break;
             case 14:
                 scene_add_effect(this, 70, x , y, dir, 1);
-                if ( weather == 21 ) //HACK //global
+                if ( weather_get() == 21 ) //HACK //global
                 {
-                    weather_time = 999;
+                    weather_time_set(999);
                     /*if ( weather_index_for_name != 21 )
                         change_weather(weather_index_for_name, 1);*/
                 }
@@ -1339,7 +1360,7 @@ void char_c::func10()
         if ( get_subseq() == 1 )
         {
             if ( max_spell_energy < 1000 )
-                field_4A4 = 4799;
+                crshd_sp_brdrs_timer = 4799;
         }
         if ( get_elaps_frames() < 20  || get_subseq() != 1)
         {
@@ -1705,13 +1726,13 @@ void char_c::func16()
     }
     if ( field_52A == 1 )
     {
-        if ( weather != 21 )
+        if ( weather_get() != 21 )
         {
-            if ( weather_time >= 3 )
-                weather_time -= 3;
+            if ( weather_time_get() >= 3 )
+                weather_time_sub(3);
             else
             {
-                weather_time = 0;
+                weather_time_set(0);
                 field_52A = 0;
             }
         }
@@ -1922,7 +1943,7 @@ void char_c::func16()
     }
 
     field_18C = -1;
-    if ( weather_var != 3 || field_526 > 0 )
+    if ( weather_get() != 3 || field_526 > 0 )
     {
         field_800 = 1;
         field_801 = 1;
@@ -1931,19 +1952,19 @@ void char_c::func16()
         field_804 = 1;
         field_4C8 = 0;
     }
-    if ( weather_var != 11 )
+    if ( weather_get() != 11 )
         field_4CC = 0;
-    if ( weather_var != 12 )
+    if ( weather_get() != 12 )
     {
         field_808 = 0;
         field_4D4 = 480;
     }
-    if ( weather_var != 14 )
+    if ( weather_get() != 14 )
     {
         field_4CD = 0;
         field_4CE = 0;
     }
-    if ( weather_var != 18 )
+    if ( weather_get() != 18 )
     {
         field_4D8 = 0;
 
@@ -2008,7 +2029,7 @@ void char_c::func16()
     }
     if ( field_526 == 0)
     {
-        switch ( weather_var )
+        switch ( weather_get() )
         {
         case 1:
             field_544 = 1.25;
@@ -2097,7 +2118,7 @@ void char_c::func16()
                 if ( field_4CD )
                 {
 LABEL_219:
-                    if ( !(time_count % 0xAu) )
+                    if ( !(time_count_get() % 0xAu) )
                     {
                         if ( health > 0 )
                         {
@@ -2118,7 +2139,7 @@ LABEL_219:
                         field_4CE = 15;
                     enemy->field_4CE = field_4CE;
                     //v106 = 0.0;
-                    weather_time = (weather_time * 0.8999999);
+                    weather_time_mul(0.8999999);
                     //v107 = 0.0;
                     //addbullet(v2, 1110, v2->rend_cls.x_pos, 0.0, dir, -1, &v106, 3);
                 }
@@ -2199,7 +2220,7 @@ LABEL_219:
         speed_mult = 1.0;
 
     if ( field_526 == 0 )
-        if ( weather_var == 10 )
+        if ( weather_get() == 10 )
             speed_mult = 1.4;
 
 
@@ -2261,7 +2282,7 @@ LABEL_219:
         if ( field_110 )
             field_110 = 3;
 
-        uint32_t tm_c = 6 * time_count % 0x168u;
+        uint32_t tm_c = 6 * time_count_get() % 0x168u;
 
         if ( tm_c < 60 )
         {
@@ -3218,7 +3239,7 @@ bool hi_jump_after_move(char_c *chr)
 bool border_escape_ground(char_c *chr)
 {
     if ( chr->pres_move & PMOVE_DD  && chr->field_80E == 0)
-        if (  char_is_block_knock(chr) && (chr->max_spell_energy >= 200 || chr->weather_var == 0) )
+        if (  char_is_block_knock(chr) && (chr->max_spell_energy >= 200 || weather_get() == 0) )
         {
             if ( chr->gY() <= 0 )
             {
@@ -3228,7 +3249,7 @@ bool border_escape_ground(char_c *chr)
                 else
                     chr->set_seq(223);
                 //if ( v1->weather_var? )
-                // sub_463160(v1, 1);
+                crash_spell_borders(chr, 1);
                 return true;
             }
             else
@@ -3239,7 +3260,7 @@ bool border_escape_ground(char_c *chr)
                 else
                     chr->set_seq(222);
                 //if ( chr->weather_var )
-                // sub_463160(v1, 1);
+                crash_spell_borders(chr, 1);
                 return true;
             }
         }
@@ -3308,21 +3329,21 @@ bool fw_bk_dash_ground(char_c *chr, uint16_t cprior, uint32_t hjc)
 bool border_escape_air(char_c *chr)
 {
     if ( (chr->pres_move & PMOVE_DD) != 0  && chr->field_80E == 0 && chr->get_seq() == 158 &&
-            (chr->max_spell_energy >= 200 || chr->weather_var==0 ))
+            (chr->max_spell_energy >= 200 || weather_get()==0 ))
     {
         chr->angZ = 0.0;
         if ( chr->gX(chr->dir) > 0 )
         {
             chr->set_seq(226);
             //if ( chr->weather_var == 0 )
-            //sub_463160(v1, 1);
+            crash_spell_borders(chr, 1);
             return 1;
         }
         else
         {
             chr->set_seq(225);
             //if ( v1->weather_var? )
-            //sub_463160(v1, 1);
+            crash_spell_borders(chr, 1);
             return true;
         }
     }
@@ -3467,20 +3488,28 @@ void char_c::set_input_profile(s_profile *prof)
     input->load_profile(prof);
 }
 
+void char_c::load_face(const char *name)
+{
+    char buf[256];
+    sprintf(buf,"data/character/%s/face/face000.cv2",name);
+    player_face_tex = gr_load_cv2(buf,NULL);
+    player_face = gr_create_sprite();
+    gr_set_spr_tex(player_face, player_face_tex);
+}
 
 
-void shuffle_cards(card_vec *crd)
+void shuffle_cards(card_deq *crd)
 {
     uint32_t sz = crd->size()-1;
     if (sz > 0)
     {
-    for (int32_t i=0; i < 100; i++)
-    {
-        uint32_t id = scene_rand() % sz;
-        s_card *tmp = (*crd)[sz];
-        (*crd)[sz] = (*crd)[id];
-        (*crd)[id] = tmp;
-    }
+        for (int32_t i=0; i < 100; i++)
+        {
+            uint32_t id = scene_rand() % sz;
+            s_card *tmp = (*crd)[sz];
+            (*crd)[sz] = (*crd)[id];
+            (*crd)[id] = tmp;
+        }
     }
 }
 
@@ -3506,11 +3535,87 @@ void char_c::set_cards_deck(s_profile *prof, uint32_t deck_id)
     shuffle_cards(&cards_shuffle);
 }
 
-void char_c::add_card()
+
+void spell_energy_spend(char_c *chr, int32_t energy, int32_t stop_time)
 {
-    s_card *card = cards_shuffle.back();
-    cards_shuffle.pop_back();
-    cards_active.push_back(card);
+    if ( chr->get_seq() >= 500  && chr->get_seq() < 600)
+        if ( chr->field_4C8 > 0 )
+            energy >>= (chr->field_4C8 - 1);
+
+    chr->spell_energy -= energy;
+
+    if ( chr->spell_energy < 0 )
+        chr->spell_energy = 0;
+
+    if ( chr->spell_energy_stop < stop_time )
+        chr->spell_energy_stop = stop_time;
+}
+
+void crash_spell_borders(char_c *chr, int8_t num)
+{
+    for (int8_t i=0; i<num; i++)
+        if (chr->max_spell_energy > 0)
+        {
+            chr->max_spell_energy -= 200;
+            if (chr->max_spell_energy < 0)
+                chr->max_spell_energy = 0;
+
+            chr->spell_energy = chr->max_spell_energy;
+            chr->spell_energy_stop = 0;
+
+            //battle_manager->vtbl->bman_func6)(1, player_index, chr->spell_energy / 200);
+        }
+}
+
+void add_card_energy(char_c *chr, int32_t energy)
+{
+    chr->current_card_energy += chr->field_54C * (float)energy;
+}
+
+void add_card_energy2(char_c *chr, int32_t energy)
+{
+    if (chr->controlling_type != 2)
+        if (chr->cards_added < chr->card_slots)
+        {
+            chr->current_card_energy += energy;
+            if (chr->current_card_energy > 500)
+                chr->current_card_energy = 500;
+        }
+}
+
+void add_card(char_c *chr)
+{
+    if ( (int32_t)chr->cards_active.size() < chr->card_slots )
+        if (chr->cards_shuffle.size())
+        {
+            chr->current_card_energy = 0;
+
+            s_card *card = chr->cards_shuffle.back();
+            chr->cards_shuffle.pop_back();
+            if (card)
+                chr->cards_active.push_back(card);
+            chr->cards_added = chr->cards_active.size();
+        }
+}
+
+bool check_AB_pressed(char_c *chr)
+{
+  if ( chr->keyHit(INP_AB) && chr->get_seq() < 600 )
+  {
+    //a1->pressed_AB = 4;
+    //loop_active_cards(chr);
+
+    //code from loop_active_cards
+    if (chr->cards_active.size())
+    {
+        s_card *crd = chr->cards_active.front();
+        chr->cards_active.pop_front();
+        chr->cards_active.push_back(crd);
+    }
+
+    return true;
+  }
+  return false;
 }
 
 void sub_4689D0(char_c *, int32_t)

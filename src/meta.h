@@ -136,51 +136,88 @@ class c_meta : public moveable
     c_meta(char_graph *pgp);
     c_meta();
 
-    c_meta  *parent_mlist;
-    metalst childs;
-    int8_t  has_shadow;
+
+//-------------------------------------------
+    int32_t field_110;
+    int8_t  field_114;
+    int8_t  field_115;
+    int8_t  field_116;
+
+    //charstruct_with_vector_1 *char_images_vector; //0x130
+    //char field_134;
+    int8_t  has_shadow;         //0x135
+    //__int16 field_136;
     int32_t field_138;
+    //__int16 playing_seq;      //0x13C
+    //__int16 viz.get_subseq;   //0x13E
+    //__int16 viz.get_frame;    //0x140
+    //__int16 viz.get_frame_time; //0x142
+    //int viz.get_elaps_frames; //0x144
+    //__int16 seq_frames_count; //0x148
+    //__int16 field_14A;
+    //__int16 cur_frame_duration;//0x14C
+    //__int16 field_14E;
+    //frame_head *rendering_frame; //0x150
+    //struc_154 *field_154;         //0x154
+    //frame_head *current_frame_params; //0x158
+    //num_of_seqs *current_seq_frames_vector; //0x15C
+    //int all_seq_mapping;      //0x160
+    //int sounds_max_256;       //0x164
+    char_c  *chrt;  //for char classes - it's self, for bullets - char caster  0x168
+    //char_class_vars *selft_pointer1?; //0x16C
+    char_c  *enemy;          //0x170
+    c_meta  *parent_mlist;  //0x174
+    metalst childs;         //0x178 + 0xC
+    int16_t health;         //0x184
+    int16_t max_health;     //0x186
+    //int   field_188;
     int8_t  field_18C;
+    //char  field_18D;
+    //char  field_18E;
+    //char  field_18F;
     int32_t field_190;
     int8_t  field_194;
+    //char  field_195;
     int16_t hit_stop;
+    float   field_198;
+    float   field_19C;
     int8_t  field_1A0;
     int8_t  field_1A1;
     int16_t field_1A2;
     float   field_1A4;
     float   field_1A8;
     int8_t  field_1AC;
+    //char  field_1AD;
+    //char  field_1AE;
+    //char  field_1AF;
+    custom_box *cust_box; //0x1B0
     int16_t field_1B4;
-    int8_t  field_1B8;
+    //__int16 field_1B6;
+    int32_t field_1B8;
     int16_t field_1BC;
-    int16_t field_394;
-
+    //char  field_1BD;
+    //char  field_1BE;
+    //char  field_1BF;
+    //frame_head *current_frame_params2?;   //0x1C0
+    //num_of_seqs *num_of_seqs?;        //0x1C4
     int16_t field_1C8;
     int8_t  field_1CA;
     int8_t  atk_box_cnt; //0x1CB
     int8_t  hit_box_cnt; //0x1CC
+    //char  field_1CD;
+    //char  field_1CE;
+    //char  field_1CF;
+    frame_box hit_area_2o[5];   //0x1D0 + 0x50
+    frame_box atk_area_2o[16];  //0x220 + 0x100
+    frame_box *atk_area_of[5];  //0x320 + 0x14
+    frame_box *hit_area_flags[6];   //0x334 + 0x18
+//-------------------------------------------
 
-    int16_t health;
-    int16_t max_health;
-
-    char_c *enemy;
-    char_c *chrt;  //for char classes - it's self, for bullets - char caster
 
     char_sprite sprite;
 
-    //boxes
-
-    frame_box hit_area_2o[5];
-    frame_box atk_area_2o[16];
-
-    frame_box *atk_area_of[5];
-    frame_box *hit_area_flags[6];
-
     frame_box *pcoll_box;
 
-    custom_box *cust_box;
-
-    //////////
 
     virtual void set_seq(uint32_t idx);
 

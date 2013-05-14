@@ -134,6 +134,11 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     chrs[0]->player_index = 0;
     chrs[1]->player_index = 1;
 
+    scn_p1[0] = 0;
+    scn_p1[1] = 0;
+    scn_p2[0] = 0;
+    scn_p2[1] = 0;
+
    // chrs[1]->controlling_type = 3;
 
     set_camera(chrs[0],chrs[1]);
@@ -1063,7 +1068,7 @@ void sub_469A20(char_c *chr)
 
     if ( chr->field_526 )
     {
-        chr->weather_var = 21;
+//        chr->weather_var = 21;
     }
     else
     {
@@ -1097,7 +1102,6 @@ void sub_469A20(char_c *chr)
     }*/
 }
 
-int32_t time_count = 0; //HACK
 
 void sub_463200(char_c *chr)
 {
@@ -1105,33 +1109,33 @@ void sub_463200(char_c *chr)
   {
     if ( chr->max_spell_energy < 1000 )
     {
-      if ( chr->field_4A4 < 4800 )
+      if ( chr->crshd_sp_brdrs_timer < 4800 )
       {
-        if ( chr->weather_var == 8 )
+        if ( weather_get() == 8 )
         {
-          chr->field_4A4 += 50;
+          chr->crshd_sp_brdrs_timer += 50;
         }
         else
         {
           if ( chr->max_spell_energy <= 800 )
-            chr->field_4A4 +=  5;
+            chr->crshd_sp_brdrs_timer +=  5;
           if ( chr->max_spell_energy <= 600 )
-            chr->field_4A4 +=  2;
+            chr->crshd_sp_brdrs_timer +=  2;
           if ( chr->max_spell_energy <= 400 )
-            chr->field_4A4 +=  3;
+            chr->crshd_sp_brdrs_timer +=  3;
           if ( chr->max_spell_energy <= 200 )
-            chr->field_4A4 +=  8;
+            chr->crshd_sp_brdrs_timer +=  8;
           if ( chr->max_spell_energy <= 0 )
-            chr->field_4A4 +=  10;
+            chr->crshd_sp_brdrs_timer +=  10;
         }
-        if ( chr->field_4A4 >= 4800 )
+        if ( chr->crshd_sp_brdrs_timer >= 4800 )
         {//HACK
           /*(*(void (__stdcall **)(_DWORD, _DWORD, _DWORD))(*(_DWORD *)battle_manager + 24))(
             2,
             v1->player_index,
             v2 / 200);*/
           chr->max_spell_energy += 200;
-          chr->field_4A4 = 0;
+          chr->crshd_sp_brdrs_timer = 0;
         }
       }
     }
@@ -1142,48 +1146,48 @@ void sub_463200(char_c *chr)
     }
     else
     {
-      if ( chr->weather_var == 4 )
+      if ( weather_get() == 4 )
         chr->spell_energy += 12;
       else
         chr->spell_energy += 6;
 
       if ( chr->field_560 >= 1 )
-        if ( !(time_count & 1) )
+        if ( !(time_count_get() & 1) )
           chr->spell_energy++;
 
       if ( chr->field_560 >= 2 )
       {
-        if ( !(time_count & 1) )
+        if ( !(time_count_get() & 1) )
           chr->spell_energy++;
 
-        if ( !(time_count & 3) )
+        if ( !(time_count_get() & 3) )
           chr->spell_energy++;
       }
 
       if ( chr->field_560 >= 3 )
       {
-        if ( !(time_count & 1) )
+        if ( !(time_count_get() & 1) )
           chr->spell_energy++;
 
-        if ( !(time_count & 3) )
+        if ( !(time_count_get() & 3) )
           chr->spell_energy++;
 
-        if ( !(time_count % 6u) )
+        if ( !(time_count_get() % 6u) )
           chr->spell_energy++;
       }
 
       if ( chr->field_560 >= 4 )
       {
-        if ( !(time_count & 1) )
+        if ( !(time_count_get() & 1) )
           chr->spell_energy++;
 
-        if ( !(time_count & 3) )
+        if ( !(time_count_get() & 3) )
           chr->spell_energy++;
 
-        if ( !(time_count % 6u) )
+        if ( !(time_count_get() % 6u) )
           chr->spell_energy++;
 
-        if ( time_count % 6u == 3 )
+        if ( time_count_get() % 6u == 3 )
           chr->spell_energy++;
       }
 
@@ -1265,7 +1269,7 @@ void char_stats_check(char_c *chr)
             }
             else if (chr->current_card_energy >= 500 && chr->controlling_type != 2 )
             {
-                //add_card(chr); //HACK
+                add_card(chr);
                 scene_play_sfx(36);
                 chr->current_card_energy = 0;
             }
@@ -1295,6 +1299,7 @@ void scene_subfunc5(c_scene *scn)
 
 void c_scene::update()
 {
+    bkg->update();
     //draw_weather_bkg(3);
     func16();
     scene_subfunc1(this);
@@ -1363,3 +1368,22 @@ uint32_t scene_rand_rng(uint32_t rng)
     return randomm.get_next_ranged(rng);
 }
 
+
+
+
+int32_t time_count = 0;
+
+int32_t time_count_get()
+{
+    return time_count;
+}
+
+void time_count_inc()
+{
+    time_count++;
+}
+
+void time_count_set(int32_t st)
+{
+    time_count = st;
+}

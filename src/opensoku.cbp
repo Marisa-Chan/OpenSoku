@@ -40,14 +40,16 @@
 			<Add library="sfml-system" />
 			<Add library="sfml-window" />
 		</Linker>
-		<Unit filename="./cards.cpp" />
-		<Unit filename="./cards.h" />
 		<Unit filename="archive.cpp" />
 		<Unit filename="archive.h" />
 		<Unit filename="background.cpp" />
 		<Unit filename="background.h" />
+		<Unit filename="battle_ui.cpp" />
+		<Unit filename="battle_ui.h" />
 		<Unit filename="bullets.cpp" />
 		<Unit filename="bullets.h" />
+		<Unit filename="cards.cpp" />
+		<Unit filename="cards.h" />
 		<Unit filename="char_sprite.cpp" />
 		<Unit filename="character_def.cpp" />
 		<Unit filename="character_def.h" />

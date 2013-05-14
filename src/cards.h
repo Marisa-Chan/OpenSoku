@@ -3,6 +3,8 @@
 
 //enum CARD_TYPE
 
+#include <deque>
+
 
 struct s_card
 {
@@ -29,7 +31,7 @@ struct s_card
 typedef vector<s_card > cards_holder_vec;
 typedef map<int32_t,s_card *> card_map;
 typedef map<int32_t,s_card *>::iterator card_map_it;
-typedef vector<s_card *> card_vec;
+typedef deque<s_card *> card_deq;
 
 struct s_cards
 {

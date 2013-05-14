@@ -94,3 +94,47 @@ void c_weather_bg::draw(int8_t weather, int8_t plane)
 
     gr_draw_sprite(&sprite,gr_alpha,plane,NULL);
 }
+
+
+int32_t weather = 0;
+int32_t weather_time = 0;
+
+int32_t weather_get()
+{
+    return weather;
+}
+
+void weather_set(int32_t id)
+{
+    weather = id;
+}
+
+int32_t weather_time_mul(float m)
+{
+    weather_time = (int32_t)((float)weather_time * m);
+    return weather_time;
+}
+
+int32_t weather_time_add(int32_t vl)
+{
+    weather_time += vl;
+    return weather_time;
+}
+
+int32_t weather_time_sub(int32_t vl)
+{
+    weather_time -= vl;
+    return weather_time;
+}
+
+int32_t weather_time_set(int32_t vl)
+{
+    weather_time = vl;
+    return weather_time;
+}
+
+int32_t weather_time_get()
+{
+    return weather_time;
+}
+

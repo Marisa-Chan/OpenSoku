@@ -41,4 +41,14 @@ class c_weather_bg
 
 };
 
+
+int32_t weather_get();
+void weather_set(int32_t id);
+
+int32_t weather_time_mul(float m);
+int32_t weather_time_add(int32_t vl);
+int32_t weather_time_sub(int32_t vl);
+int32_t weather_time_set(int32_t vl);
+int32_t weather_time_get();
+
 #endif // WEATHER_H_INCLUDED
