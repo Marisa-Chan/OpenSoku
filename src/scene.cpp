@@ -170,7 +170,7 @@ void c_scene::draw_scene()
 
     bkg->draw_mid();
 
-    img_sp->draw(-1);
+    img_sp->draw(-1, 1);
 
     for (uint32_t i=0; i < 2; i++)
         drawbullet(chrs[i],-1);
@@ -180,9 +180,9 @@ void c_scene::draw_scene()
 
     bkg->draw_near();
 
-    img_sp->draw(1);
+    img_sp->draw(1, 1);
 
-    weather_sp->draw(1);
+    weather_sp->draw(1, 2);
 
     for (uint32_t i=0; i < 2; i++)
         drawbullet(chrs[i],1);

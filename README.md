@@ -1,6 +1,9 @@
 OpenSoku
 ========
 
+Not stable api
+
+
 OpenSoku
 
 First steps: http://www.youtube.com/watch?v=GgN6UvbIjVc (old)

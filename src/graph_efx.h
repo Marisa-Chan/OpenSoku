@@ -148,7 +148,7 @@ class gfx_holder
     gfx_seq *get_seq(uint32_t idx);
 
     virtual void update();
-    virtual void draw(int8_t order);
+    virtual void draw(int8_t order, int8_t plane = 0 );
 };
 
 #endif //GRAPH_EFX_H_INCLUDED

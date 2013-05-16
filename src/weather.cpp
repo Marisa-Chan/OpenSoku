@@ -47,11 +47,11 @@ void c_weather_sp::addeffect(int32_t idx, int8_t order)
     }
 }
 
-void c_weather_sp::draw(int8_t order)
+void c_weather_sp::draw(int8_t order, int8_t plane)
 {
     for(uint32_t i=0; i<fx.size(); i++)
         if (fx[i]->order == order)
-            fx[i]->draw(2);
+            fx[i]->draw(plane);
 }
 
 
@@ -87,7 +87,6 @@ void c_weather_bg::draw(int8_t weather, int8_t plane)
         gr_set_spr_tex(&sprite, bg[weather]);
         cur_weather = weather;
     }
-
     //gr_setxy_sprite(&sprite,-BKG_WIDTH / 2,0);
     //gr_setorigin_sprite(&sprite,,0);
     gr_setscale_sprite(&sprite,3.0,3.0);

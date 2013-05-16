@@ -9,7 +9,7 @@ using namespace std;
 class c_infoef_fx: public gfx_meta
 {
     public:
-    c_infoef_fx(int32_t idx, gfx_seq *sq, int8_t order);
+    c_infoef_fx(int32_t idx, gfx_seq *sq, float x, float y, int8_t dir, int8_t order);
 
     void func10();
     void set_seq_params(); //func15
@@ -21,8 +21,7 @@ class c_infoef_sp: public gfx_holder
     public:
     c_infoef_sp();
 
-    void addeffect(int32_t idx, int8_t order);
-    void draw(int8_t order);
+    c_infoef_fx *addeffect(int32_t idx, float x, float y, int8_t dir, int8_t order);
 };
 
 

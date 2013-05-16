@@ -22,7 +22,7 @@ class c_weather_sp: public gfx_holder
     c_weather_sp();
 
     void addeffect(int32_t idx, int8_t order);
-    void draw(int8_t order);
+    void draw(int8_t order, int8_t plane = 0);
 };
 
 class c_weather_bg
@@ -37,7 +37,7 @@ class c_weather_bg
     c_weather_bg();
     ~c_weather_bg();
 
-    void draw(int8_t weather, int8_t plane);
+    void draw(int8_t weather, int8_t plane = 0);
 
 };
 

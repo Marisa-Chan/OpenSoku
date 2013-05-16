@@ -4,13 +4,13 @@
 #include "moveable.h"
 #include "infoeffect.h"
 
-c_infoef_fx::c_infoef_fx(int32_t idx, gfx_seq *sq, int8_t _order)
+c_infoef_fx::c_infoef_fx(int32_t idx, gfx_seq *sq, float _x, float _y, int8_t _dir, int8_t _order)
 {
     index = idx;
     sprite.set_seq(sq);
-    x = 100;
-    y = -100;
-    dir = 1;
+    x = _x;
+    y = _y;
+    dir = _dir;
 
     active = true;
     order = _order;
@@ -20,12 +20,22 @@ c_infoef_fx::c_infoef_fx(int32_t idx, gfx_seq *sq, int8_t _order)
 
 void c_infoef_fx::func10()
 {
-    process();
+    switch(get_seq())
+    {
+        case 32:
+        case 33:
+        default:
+            if (process())
+                active = false;
+    }
 }
 
 void c_infoef_fx::set_seq_params()
 {
+    switch(get_seq())
+    {
 
+    }
 }
 
 
@@ -34,19 +44,14 @@ c_infoef_sp::c_infoef_sp()
     load_dat("effect.pat","data/infoeffect");
 }
 
-void c_infoef_sp::addeffect(int32_t idx, int8_t order)
+c_infoef_fx *c_infoef_sp::addeffect(int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
     gfx_seq *sq = get_seq(idx);
     if (sq)
     {
-        c_infoef_fx *ff = new c_infoef_fx(idx, sq, order);
+        c_infoef_fx *ff = new c_infoef_fx(idx, sq, x, y, dir, order);
         fx.push_back(ff);
+        return ff;
     }
-}
-
-void c_infoef_sp::draw(int8_t order)
-{
-    for(uint32_t i=0; i<fx.size(); i++)
-        if (fx[i]->order == order)
-            fx[i]->draw(0);
+    return NULL;
 }

@@ -20,6 +20,7 @@ struct btl_std_plr
     gui_el_t0 *cardGaugeBigB[5];
     gui_el_t0 *cardGaugeBigB2[5];
     gui_el_t1  addedCards[5];
+    c_infoef_fx *cardBlink[5];
     gui_el_t0 *win[2];
     int32_t    health;
     int32_t    health_prev;
@@ -37,12 +38,13 @@ class battle_ui_std
 
     c_infoef_sp inf_eff;
 
+    void init();
+
     public:
 
     battle_ui_std();
     ~battle_ui_std();
 
-    void init();
     void link(char_c *p1, char_c *p2);
     void update();
     void draw();

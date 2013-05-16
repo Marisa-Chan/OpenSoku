@@ -643,9 +643,9 @@ void gfx_holder::update()
 
 }
 
-void gfx_holder::draw(int8_t order)
+void gfx_holder::draw(int8_t order,int8_t plane)
 {
     for(uint32_t i=0; i<fx.size(); i++)
         if (fx[i]->order == order)
-            fx[i]->draw(1);
+            fx[i]->draw(plane);
 }

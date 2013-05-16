@@ -52,6 +52,7 @@ void battle_ui_std::init()
             int32_t x_corr = i * pl->cardBarBigB[j]->getTexW();
             pl->addedCards[j].setXY(pl->cardBarBigB[j]->getX() - x_corr,pl->cardBarBigB[j]->getY());
 
+            pl->cardBlink[j] = NULL;
         }
 
         float scl = (float)pl->cardBarBigB[1]->getTexW() / (float)pl->cardBarBigB[0]->getTexW();
@@ -136,14 +137,22 @@ void battle_ui_std::update()
         pl->borderGaugeCrashB[4]->renderable = pl->borderGaugeB[4]->renderable == 0;
         pl->borderBarCrashB[4]->renderable = chr->max_spell_energy == 800;
 
+        for (int8_t j=0; j<5; j++)
+                pl->addedCards[j].nullTexture();
 
         if (chr->field_570)
         {
             for(int8_t j=0; j < 5; j++)
             {
-            pl->cardFaceDown[j]->renderable = true;
-            pl->cardGaugeBigB[j]->renderable = true;
-            pl->cardGaugeBigB2[j]->renderable = false;
+                pl->cardFaceDown[j]->renderable = true;
+                pl->cardGaugeBigB[j]->renderable = true;
+                pl->cardGaugeBigB2[j]->renderable = false;
+
+                if (pl->cardBlink[j])
+                {
+                    pl->cardBlink[j]->active = false;
+                    pl->cardBlink[j] = NULL;
+                }
             }
         }
         else
@@ -178,6 +187,13 @@ void battle_ui_std::update()
                 pl->cardFaceDown[j]->renderable = false;
                 pl->cardGaugeBigB[j]->renderable = (cost > j) && (crd_cnt > j);
                 pl->cardGaugeBigB2[j]->renderable = (cost <= j) && (crd_cnt > j);
+
+                if (j > cost)
+                    if (pl->cardBlink[j])
+                    {
+                        pl->cardBlink[j]->active = false;
+                        pl->cardBlink[j] = NULL;
+                    }
             }
 //            pl->cardFaceDown[0]->renderable = false;
 //            pl->cardGaugeBigB[0]->renderable = (cost > 0) && (crd_cnt > 0);
@@ -199,22 +215,28 @@ void battle_ui_std::update()
 //            pl->cardGaugeBigB[4]->renderable = (cost > 4) && (crd_cnt > 4);
 //            pl->cardGaugeBigB2[4]->renderable = (cost <= 4) && (crd_cnt > 4);
 
-            for (int8_t j=0; j<5; j++)
-                pl->addedCards[j].nullTexture();
-
             for (uint8_t j=0; j<chr->cards_active.size(); j++)
-            {
                 pl->addedCards[j].setTexture(chr->cards_active[j]->tex);
-                /*((int (__stdcall *)(_DWORD, _DWORD, _DWORD, int, signed int, _DWORD))bat->infoeff_pat->vtbl->patgr_func3__spawn_effect)(
-                   (unsigned __int16)((v46 > 0) + 32),
-                   *(float *)(*(_DWORD *)(v47 - 80) + 12),
-                   *(float *)(*(_DWORD *)(v47 - 80) + 16),
-                   v52,
-                   1,
-                   0);*/
+
+            if ((uint8_t )cost <= chr->cards_active.size())
+            {
+                for (uint8_t j=0; j<cost; j++)
+                    if (!pl->cardBlink[j])
+                        pl->cardBlink[j] = inf_eff.addeffect(32 + (j > 0),pl->addedCards[j].getX(), -pl->addedCards[j].getY(), 1, 1);
+            }
+            else
+            {
+                for (uint8_t j=0; j<5; j++)
+                    if (pl->cardBlink[j])
+                    {
+                        pl->cardBlink[j]->active = false;
+                        pl->cardBlink[j] = NULL;
+                    }
             }
         }
     }
+
+    inf_eff.update();
 }
 
 void battle_ui_std::draw()
@@ -272,9 +294,17 @@ void battle_ui_std::draw()
     for(int8_t i=0; i < 2; i++)
         gr_draw_sprite(player[i].chr->player_face,gr_alpha,0);
 
-    upper.draw_all(0);
     under.draw_all(0);
+
+    inf_eff.draw(2,0);
+
     for (int32_t i=0; i<2; i++)
         for (uint8_t j=0; j<5; j++)
             player[i].addedCards[j].draw(0);
+
+    inf_eff.draw(1,0);
+
+    upper.draw_all(0);
+
+    inf_eff.draw(0,0);
 }
