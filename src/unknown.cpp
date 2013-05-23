@@ -555,7 +555,7 @@ int8_t sub_469750(char_c *plr, uint32_t enemu_aflags)
 void sub_478FC0(char_c *plr, char_c *enm)
 {
     enm->health_prev = enm->health;
-    enm->field_4BE = 0;
+    enm->damage_limit = 0;
     plr->combo_count = 0;
     plr->combo_rate = 1.0;
     plr->combo_damage = 0;
@@ -966,22 +966,22 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
 
     if ( enm->field_4BC < 100 )
     {
-        enm->field_4BE += (plr->chrt->field_53C * frm->limit);
+        enm->damage_limit += (plr->chrt->limit_multiply * frm->limit);
         enm->field_19C = 15.0;
         enm->field_4C0 = 20;
 
-        plr->chrt->combo_limit = enm->field_4BE;
+        plr->chrt->combo_limit = enm->damage_limit;
         plr->field_190 = 7;
     }
     else
     {
 
         enm->field_4BC = 0;
-        enm->field_4BE += (plr->chrt->field_53C * frm->limit);
+        enm->damage_limit += (plr->chrt->limit_multiply * frm->limit);
         enm->field_4C0 = 0;
 
         plr->field_190 = 1;
-        plr->chrt->combo_limit = enm->field_4BE;
+        plr->chrt->combo_limit = enm->damage_limit;
 
         enm->reset_ofs();
 
@@ -1022,7 +1022,7 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
         }
 
 
-        if ( enm->health <= 0 || enm->field_4BE >= 100 )
+        if ( enm->health <= 0 || enm->damage_limit >= 100 )
         {
             if ( frm->fall_seq == 70 )
                 fallseq = 71;
@@ -1233,7 +1233,7 @@ void  sub_47BE70(c_scene *scn, c_meta *plr, char_c *enm)
 {
     if ( plr->chrt->field_575 == 0 && enm->field_575 != 2 )
     {
-        if ( !sub_4699E0(enm) && enm->field_4BE < 100 )
+        if ( !sub_4699E0(enm) && enm->damage_limit < 100 )
         {
             char_frame *frm = plr->get_pframe();
             if (plr != enm || (frm->aflags & AF_HITSALL) == 0 || plr->enemy->field_575 == 0)

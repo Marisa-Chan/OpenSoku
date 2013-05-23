@@ -65,6 +65,8 @@ class gfx_sprite
 
     void frame_val_set();
 
+    bool y_axis_up;
+
     public:
 
     gfx_sprite();
@@ -93,6 +95,8 @@ class gfx_sprite
     void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
     void setRotate(float angl);
     void setRotate(float x, float y, float z);
+
+    void set_Y_to_up(bool up);
 
     void draw(uint8_t plane = 0);
 };
@@ -125,6 +129,8 @@ class gfx_meta: public moveable
     uint32_t get_elaps_frames();
     gfx_frame * get_pframe();
     uint32_t get_seq();
+
+    void set_Y_to_up(bool up);
 
     bool process(bool ignore_loop = false);
 };

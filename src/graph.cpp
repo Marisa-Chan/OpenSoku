@@ -117,6 +117,7 @@ gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal)
     }
 
     gr_tex_update(tex, img, hdr.width, hdr.height);
+    //gr_set_smoth(tex, true);
 
     free(img);
 

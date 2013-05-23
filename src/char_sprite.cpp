@@ -100,6 +100,8 @@ void char_sprite::frame_val_set()
                 setBlend(gr_add);
             else if (pframe->blend_mode == 3)
                 setBlend(gr_add);
+            else
+                setBlend(gr_alpha);
         }
         else
         {

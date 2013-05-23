@@ -1,10 +1,33 @@
 #include "global_types.h"
 #include "battle_ui.h"
 
+battle_ui_std * battle_ui = NULL;
+
+battle_ui_std * get_battle_ui()
+{
+    return battle_ui;
+}
+
+battle_ui_std * init_new_battle_ui()
+{
+    if (!battle_ui)
+        delete battle_ui;
+
+    battle_ui = new battle_ui_std;
+    return battle_ui;
+}
+
+void battle_ui_effect(int32_t idx, float x, float y, int8_t dir, int8_t order)
+{
+    if (battle_ui)
+        battle_ui->spawneffect(idx, x, y, dir, order);
+}
+
 
 battle_ui_std::battle_ui_std()
 {
     init();
+    inf_eff.addeffect(313,200,100,1,0);
 }
 
 battle_ui_std::~battle_ui_std()
@@ -173,7 +196,7 @@ void battle_ui_std::update()
             if ( chr->cards_added )
             {
                 cost = chr->cards_active.front()->cost;
-                if (weather_get() == 2)
+                if (weather_get() == WEATHER_CLOUDY)
                     if (cost > 1)
                         cost--;
             }
@@ -222,7 +245,7 @@ void battle_ui_std::update()
             {
                 for (uint8_t j=0; j<cost; j++)
                     if (!pl->cardBlink[j])
-                        pl->cardBlink[j] = inf_eff.addeffect(32 + (j > 0),pl->addedCards[j].getX(), -pl->addedCards[j].getY(), 1, 1);
+                        pl->cardBlink[j] = inf_eff.addeffect(32 + (j > 0),pl->addedCards[j].getX(), pl->addedCards[j].getY(), 1, 1);
             }
             else
             {
@@ -296,15 +319,19 @@ void battle_ui_std::draw()
 
     under.draw_all(0);
 
-    inf_eff.draw(2,0);
 
     for (int32_t i=0; i<2; i++)
         for (uint8_t j=0; j<5; j++)
             player[i].addedCards[j].draw(0);
 
-    inf_eff.draw(1,0);
-
     upper.draw_all(0);
 
+    inf_eff.draw(2,0);
+    inf_eff.draw(1,0);
     inf_eff.draw(0,0);
+}
+
+void battle_ui_std::spawneffect(int32_t idx, float x, float y, int8_t dir, int8_t order)
+{
+    inf_eff.addeffect(idx, x, y, dir, order);
 }

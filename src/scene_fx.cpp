@@ -45,6 +45,8 @@ c_scene_fx::c_scene_fx(int32_t idx, gfx_seq *sq, c_meta *chr, float _x, float _y
     parent = chr;
     order = _order;
 
+    set_Y_to_up(true);
+
     set_seq_params();
 }
 
@@ -614,7 +616,7 @@ void c_scene_fx::func10()
         if ( chr )
         {
             x = chr->getX();
-            x = chr->getY()+100;
+            y = chr->getY()+100;
 
             par1 -= 0.3;
             if (par1 < 1.0)
@@ -632,7 +634,7 @@ void c_scene_fx::func10()
             }
             if (get_frame() == 0)
             {
-                if (chr->chrt->field_4BE < 100 || chr->chrt->get_seq() == 99)
+                if (chr->chrt->damage_limit < 100 || chr->chrt->get_seq() == 99)
                     if ( chr->chrt->field_4C2 <= 0)
                     {
                         set_frame(1);

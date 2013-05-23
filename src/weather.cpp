@@ -5,7 +5,10 @@
 #include "file_read.h"
 #include "archive.h"
 
+#include "infoeffect.h"
+#include "battle_ui.h"
 #include "weather.h"
+
 
 c_weather_fx::c_weather_fx(int32_t idx, gfx_seq *sq, int8_t _order)
 {
@@ -95,15 +98,17 @@ void c_weather_bg::draw(int8_t weather, int8_t plane)
 }
 
 
-int32_t weather = 0;
+WEATHER_ID weather = WEATHER_CLEAR;
 int32_t weather_time = 0;
+WEATHER_ID weather_index_for_name = WEATHER_CLEAR;
+WEATHER_ID weather_setted = WEATHER_CLEAR;
 
-int32_t weather_get()
+WEATHER_ID weather_get()
 {
     return weather;
 }
 
-void weather_set(int32_t id)
+void weather_set(WEATHER_ID id)
 {
     weather = id;
 }
@@ -137,3 +142,37 @@ int32_t weather_time_get()
     return weather_time;
 }
 
+WEATHER_ID weather_index_for_name_get()
+{
+    return weather_index_for_name;
+}
+
+WEATHER_ID weather_setted_get()
+{
+    return weather_setted;
+}
+
+void weather_setted_change(WEATHER_ID id)
+{
+    weather_setted = id;
+    battle_ui_effect(get_ieid_by_weather(id), 320, 42, 1, 1);
+    //weather_set_sky
+}
+
+void weather_change(WEATHER_ID id, bool setted)
+{
+    if (setted)
+        weather_setted_change(id);
+
+  if ( id != WEATHER_CLEAR )
+  {
+      scene_play_sfx(53);
+        battle_ui_effect(get_ieid_by_weather(id) + 2, 320, 42, 1, 1);
+  }
+  weather_index_for_name = id;
+
+  if ( id == WEATHER_AURORA )
+    weather = (WEATHER_ID)scene_rand_rng(19);
+  else
+    weather = id;
+}

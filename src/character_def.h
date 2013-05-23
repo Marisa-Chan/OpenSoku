@@ -93,7 +93,7 @@ private:
     int16_t combo_limit;    //0x4B8
     int16_t field_4BA;
     int16_t field_4BC;
-    int16_t field_4BE;
+    int16_t damage_limit;   //0x4BE
     int16_t field_4C0;
     int16_t field_4C2;
     int8_t  field_4C4; //char suwako_not_on_ground_flag?;
@@ -138,7 +138,7 @@ private:
     float   field_530;
     float   field_534;
     int32_t field_538;
-    int32_t field_53C;
+    float   limit_multiply; //0x53C
     int32_t field_540;
     int32_t field_544;
     int32_t field_548;
@@ -259,7 +259,7 @@ private:
     int8_t  not_charge_attack;  //0x7F4
     bool    bbarrier_show;  //if true - block barrier showing  0x7F5
     //char field_7F6;
-    int8_t  field_7F7;
+    int8_t  damage_limited;     //0x7F7
     int16_t field_7F8;
     //__int16 field_7FA;
     //float field_7FC;

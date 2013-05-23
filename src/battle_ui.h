@@ -48,7 +48,11 @@ class battle_ui_std
     void link(char_c *p1, char_c *p2);
     void update();
     void draw();
+    void spawneffect(int32_t idx, float x, float y, int8_t dir, int8_t order);
 };
 
+battle_ui_std * get_battle_ui();
+battle_ui_std * init_new_battle_ui();
+void battle_ui_effect(int32_t idx, float x, float y, int8_t dir, int8_t order);
 
 #endif // BATTLE_UI_H_INCLUDED

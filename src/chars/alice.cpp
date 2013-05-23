@@ -325,7 +325,7 @@ void char_alice::func20()
             }
             else
             {
-                int8_t mx = (weather_get() == 10) + 2;
+                int8_t mx = (weather_get() == WEATHER_TEMPEST) + 2;
                 if ( border_escape_air(this)
                         || fwd_dash_air(this, cprior, cu, mx, 2)
                         || bkg_dash_air(this, cprior, cu, mx, 2)

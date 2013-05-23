@@ -99,7 +99,7 @@ char_c::char_c(inp_ab *func)
     field_1BC = 1;
     crshd_sp_brdrs_timer = 0;
     field_560 = 0;
-    field_4BE = 0;
+    damage_limit = 0;
     field_51E = 0;
     field_575 = 0;
     field_51C = 0;
@@ -107,7 +107,6 @@ char_c::char_c(inp_ab *func)
     field_522 = 0;
     field_524 = 0;
     field_538 = 1.0;
-    field_4BE = 0;
     field_4BC = 0;
     field_4BA = 0;
     field_4C0 = 0;
@@ -489,7 +488,7 @@ void char_c::func10()
 
                     //shake_camera(2.0); //HACK
                 }
-                else if ( weather_get() != 18 ) //HACK?
+                else if ( weather_get() != WEATHER_MONSOON )
                 {
                     field_7D0 = 100 * h_inerc;
                     field_7D2 = 100 * v_inerc;
@@ -559,7 +558,7 @@ void char_c::func10()
 
                     //shake_camera(2.0); //HACK
                 }
-                else if ( weather_get() != 18 ) //HACK?
+                else if ( weather_get() != WEATHER_MONSOON )
                 {
                     field_7D0 = 100 * h_inerc;
                     field_7D2 = 100 * v_inerc;
@@ -617,7 +616,7 @@ void char_c::func10()
             }
             else
             {
-                if (weather_get() == 18)
+                if (weather_get() == WEATHER_MONSOON)
                     weather_time_mul(0.75);
                 field_7D0 = 100 * h_inerc;
                 field_7D2 = 100 * v_inerc;
@@ -670,7 +669,7 @@ void char_c::func10()
         {
             if ( get_border_near(this) && (h_inerc <= -25.0 || field_80C != 0) )
             {
-                if ( weather_get() != 18 ) // HACK?
+                if ( weather_get() != WEATHER_MONSOON ) // HACK?
                     weather_time_mul(0.75);
 
                 set_seq(76);
@@ -702,7 +701,7 @@ void char_c::func10()
                 }
                 else
                 {
-                    if ( weather_get() != 18 ) // HACK?
+                    if ( weather_get() != WEATHER_MONSOON )
                         weather_time_mul(0.75);
 
                     field_7D0 = 100 * h_inerc;
@@ -723,7 +722,7 @@ void char_c::func10()
         {
             if ( field_80C )
             {
-                if ( weather_get() == 18 ) // HACK
+                if ( weather_get() == WEATHER_MONSOON )
                     weather_time_mul(0.75);
 
                 field_7D0 = 100 * h_inerc;
@@ -748,7 +747,7 @@ void char_c::func10()
         {
             if ( get_border_near(this) && (h_inerc <= -25.0 || field_80C) )
             {
-                if ( weather_get() == 18 )
+                if ( weather_get() == WEATHER_MONSOON )
                     weather_time_mul(0.75);
                 set_seq(76);
             }
@@ -984,7 +983,7 @@ void char_c::func10()
 
     case 98:
         sub10func(this);
-        if ( weather_get() == 15 ) //HACK
+        if ( weather_get() == WEATHER_DIAMOND_DUST )
         {
             if ( weather_time_get() > 10 ) //GLOBAL
                 weather_time_sub(10);
@@ -1283,11 +1282,11 @@ void char_c::func10()
             break;
             case 14:
                 scene_add_effect(this, 70, x , y, dir, 1);
-                if ( weather_get() == 21 ) //HACK //global
+                if ( weather_get() == WEATHER_CLEAR )
                 {
                     weather_time_set(999);
-                    /*if ( weather_index_for_name != 21 )
-                        change_weather(weather_index_for_name, 1);*/
+                    if ( weather_index_for_name_get() != WEATHER_CLEAR )
+                        weather_change(weather_index_for_name_get(), 1);
                 }
                 else
                     field_52A = 1;
@@ -1726,7 +1725,7 @@ void char_c::func16()
     }
     if ( field_52A == 1 )
     {
-        if ( weather_get() != 21 )
+        if ( weather_get() != WEATHER_CLEAR )
         {
             if ( weather_time_get() >= 3 )
                 weather_time_sub(3);
@@ -1750,7 +1749,7 @@ void char_c::func16()
         if ( get_seq() >= 197 && get_seq() <= 199 )
         {
             field_4C2 = 60;
-            field_4BE = 100;
+            damage_limit = 100;
         }
 
         if (get_subseq() == 0)
@@ -1758,7 +1757,7 @@ void char_c::func16()
                     (get_seq() >= 180 && get_seq() <= 181))
             {
                 field_4C2 = 60;
-                field_4BE = 100;
+                damage_limit = 100;
             }
 
         if ( field_4C2 > 0 )
@@ -1786,7 +1785,7 @@ void char_c::func16()
                         v_inerc = 0.0;
                         h_inerc = 0.0;
                         field_4C2 = 60;
-                        field_4BE = 100;
+                        damage_limit = 100;
                         return;
                     }
 
@@ -1799,7 +1798,7 @@ void char_c::func16()
                         v_inerc = 0.0;
                         h_inerc = 0.0;
                         field_4C2 = 60;
-                        field_4BE = 100;
+                        damage_limit = 100;
                         field_574 = 0;
                         field_577 = 1;
                         return;
@@ -1816,7 +1815,7 @@ void char_c::func16()
                         v_inerc = 0.0;
                         h_inerc = 0.0;
                         field_4C2 = 60;
-                        field_4BE = 100;
+                        damage_limit = 100;
                         field_574 = 0;
                         field_577 = 1;
                         return;
@@ -1905,15 +1904,15 @@ void char_c::func16()
         }
     }
 
-    if ( field_4BE >= 100 && field_7F7 == 0 )
+    if ( damage_limit >= 100 && damage_limited == 0 )
     {
-//            sub_438170(v2, 112, x, y + 100.0, dir, -1);
-//            sub_438170(v2, 137, x, y + 100.0, dir, -1);
-        field_7F7 = 1;
+        scene_add_effect(this,112, getX(), getY() + 100, dir, -1);
+        scene_add_effect(this,137, getX(), getY() + 100, dir, -1);
+        damage_limited = 1;
     }
 
     if ( !char_is_shock(this) && field_4C0 <= 0 && field_4C2 == 0)
-        field_7F7 = 0;
+        damage_limited = 0;
 
     if ( field_80D )
     {
@@ -1943,7 +1942,7 @@ void char_c::func16()
     }
 
     field_18C = -1;
-    if ( weather_get() != 3 || field_526 > 0 )
+    if ( weather_get() != WEATHER_BLUE_SKY || field_526 > 0 )
     {
         field_800 = 1;
         field_801 = 1;
@@ -1952,19 +1951,19 @@ void char_c::func16()
         field_804 = 1;
         field_4C8 = 0;
     }
-    if ( weather_get() != 11 )
+    if ( weather_get() != WEATHER_MOUNTAIN_VAPOR )
         field_4CC = 0;
-    if ( weather_get() != 12 )
+    if ( weather_get() != WEATHER_RIVER_MIST )
     {
         field_808 = 0;
         field_4D4 = 480;
     }
-    if ( weather_get() != 14 )
+    if ( weather_get() != WEATHER_CALM )
     {
         field_4CD = 0;
         field_4CE = 0;
     }
-    if ( weather_get() != 18 )
+    if ( weather_get() != WEATHER_MONSOON )
     {
         field_4D8 = 0;
 
@@ -1993,7 +1992,7 @@ void char_c::func16()
     field_4AA = 0;
     field_538 = 1.0;
     field_56C = 0;
-    field_53C = 1.0;
+    limit_multiply = 1.0;
     field_80C = 0;
     field_550 = 0;
     field_554 = 0;
@@ -2220,7 +2219,7 @@ LABEL_219:
         speed_mult = 1.0;
 
     if ( field_526 == 0 )
-        if ( weather_get() == 10 )
+        if ( weather_get() == WEATHER_TEMPEST )
             speed_mult = 1.4;
 
 
@@ -3239,7 +3238,7 @@ bool hi_jump_after_move(char_c *chr)
 bool border_escape_ground(char_c *chr)
 {
     if ( chr->pres_move & PMOVE_DD  && chr->field_80E == 0)
-        if (  char_is_block_knock(chr) && (chr->max_spell_energy >= 200 || weather_get() == 0) )
+        if (  char_is_block_knock(chr) && (chr->max_spell_energy >= 200 || weather_get() == WEATHER_SUNNY) )
         {
             if ( chr->gY() <= 0 )
             {
@@ -3329,7 +3328,7 @@ bool fw_bk_dash_ground(char_c *chr, uint16_t cprior, uint32_t hjc)
 bool border_escape_air(char_c *chr)
 {
     if ( (chr->pres_move & PMOVE_DD) != 0  && chr->field_80E == 0 && chr->get_seq() == 158 &&
-            (chr->max_spell_energy >= 200 || weather_get()==0 ))
+            (chr->max_spell_energy >= 200 || weather_get()==WEATHER_SUNNY ))
     {
         chr->angZ = 0.0;
         if ( chr->gX(chr->dir) > 0 )

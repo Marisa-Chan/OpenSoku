@@ -320,7 +320,7 @@ void sub_462FF0(char_c *chr)
   char_frame *frm = chr->get_pframe();
   if ( !(frm->fflags & FF_UNK100000) )
   {
-    if ( chr->field_4BE < 100 )
+    if ( chr->damage_limit < 100 )
     {
       if ( chr->health > 0 )
       {
@@ -338,7 +338,7 @@ void sub_462FF0(char_c *chr)
               {
                 if ( chr->keyDown(INP_A) || chr->keyDown(INP_B) || chr->keyDown(INP_C) || chr->keyDown(INP_D) )
                 {
-                  chr->field_4BE = 0;
+                  chr->damage_limit = 0;
                   chr->flip_to_enemy();
                   if (chr->gX(chr->dir) <= 0)
                     chr->set_seq(181);
@@ -357,7 +357,7 @@ void sub_462FF0(char_c *chr)
                 {
                   if ( v4 == 1 )
                   {
-                    v1->field_4BE = 0;
+                    v1->damage_limit = 0;
                     flip_to_enemy(v1);
                     v5 = v1->meta.vtbl;
                     v6 = get_MT_range(2u);
@@ -366,14 +366,14 @@ void sub_462FF0(char_c *chr)
                 }
                 else
                 {
-                  v1->field_4BE = 0;
+                  v1->damage_limit = 0;
                   flip_to_enemy(v1);
                   v1->meta.vtbl->func2_set_seq(v1, 181);
                 }
               }
               else
               {
-                v1->field_4BE = 0;
+                v1->damage_limit = 0;
                 flip_to_enemy(v1);
                 v1->meta.vtbl->func2_set_seq(v1, 180);
               }
@@ -412,7 +412,7 @@ void scene_subfunc1(c_scene *scn)
                 {
                     scn->chrs[i]->func18();
                     if ( !scn->chrs[i]->field_4C0 )
-                        scn->chrs[i]->field_4BE = 0;
+                        scn->chrs[i]->damage_limit = 0;
                 }
                 if (char_is_shock(scn->chrs[i]))
                     if ( scn->chrs[i]->y > 0.0 )
@@ -1111,7 +1111,7 @@ void sub_463200(char_c *chr)
     {
       if ( chr->crshd_sp_brdrs_timer < 4800 )
       {
-        if ( weather_get() == 8 )
+        if ( weather_get() == WEATHER_SUNSHOWER )
         {
           chr->crshd_sp_brdrs_timer += 50;
         }
@@ -1146,7 +1146,7 @@ void sub_463200(char_c *chr)
     }
     else
     {
-      if ( weather_get() == 4 )
+      if ( weather_get() == WEATHER_HAIL )
         chr->spell_energy += 12;
       else
         chr->spell_energy += 6;
@@ -1215,11 +1215,11 @@ void char_stats_check(char_c *chr)
             if ( chr->field_4BC )
                 chr->field_4BC--;
 
-            if (chr->field_4BE)
+            if (chr->damage_limit)
             {
                 if ( (chr->get_seq() >= 197 && chr->get_seq() <= 199) || (chr->field_4C0 && !char_is_shock(chr)) )
                 {
-                    chr->field_4BE = 0;
+                    chr->damage_limit = 0;
                     chr->field_4C0 = 0;
                 }
             }

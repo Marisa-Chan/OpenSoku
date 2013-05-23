@@ -16,6 +16,7 @@ gfx_sprite::gfx_sprite()
     elaps_frames = 0;
     _num_frames = 0;
     _cur_sseq = NULL;
+    y_axis_up = false;
 }
 
 gfx_sprite::~gfx_sprite()
@@ -102,8 +103,12 @@ void gfx_sprite::frame_val_set()
                 setBlend(gr_add);
             else if (pframe->blend_mode == 3)
                 setBlend(gr_add);
-
+            else
+                setBlend(gr_alpha);
         }
+        else
+            setBlend(gr_alpha);
+
         setRotate(0,0,0);
         setScale(1.0,1.0);
         setColor(255,255,255,255);
@@ -197,7 +202,15 @@ void gfx_sprite::draw(uint8_t plane)
 
 void gfx_sprite::setXY(float x, float y)
 {
-    gr_setxy_sprite(sprite,x,-y);
+    if (y_axis_up)
+        gr_setxy_sprite(sprite,x,-y);
+    else
+        gr_setxy_sprite(sprite,x,y);
+}
+
+void gfx_sprite::set_Y_to_up(bool up)
+{
+    y_axis_up = up;
 }
 
 void gfx_sprite::setScale(float x, float y)
@@ -342,6 +355,11 @@ void gfx_meta::draw(int8_t plane)
 
         sprite.draw(plane);
     }
+}
+
+void gfx_meta::set_Y_to_up(bool up)
+{
+    sprite.set_Y_to_up(up);
 }
 
 gfx_meta::~gfx_meta()

@@ -41,14 +41,47 @@ class c_weather_bg
 
 };
 
+enum WEATHER_ID
+{
+    WEATHER_SUNNY = 0,
+    WEATHER_DRIZZLE = 1,
+    WEATHER_CLOUDY = 2,
+    WEATHER_BLUE_SKY = 3,
+    WEATHER_HAIL = 4,
+    WEATHER_SPRING_HAZE = 5,
+    WEATHER_HEAVY_FOG = 6,
+    WEATHER_SNOW = 7,
+    WEATHER_SUNSHOWER = 8,
+    WEATHER_SPRINKLE = 9,
+    WEATHER_TEMPEST = 10,
+    WEATHER_MOUNTAIN_VAPOR = 11,
+    WEATHER_RIVER_MIST = 12,
+    WEATHER_TYPHOON = 13,
+    WEATHER_CALM = 14,
+    WEATHER_DIAMOND_DUST = 15,
+    WEATHER_DUST_STORM = 16,
+    WEATHER_SCORCHING_SUN = 17,
+    WEATHER_MONSOON = 18,
+    WEATHER_AURORA = 19,
+    WEATHER_HISOUTEN = 20,
+    WEATHER_CLEAR = 21,
+    WEATHER_ID_COUNT = 22
+};
 
-int32_t weather_get();
-void weather_set(int32_t id);
+
+WEATHER_ID weather_get();
+void weather_set(WEATHER_ID id);
 
 int32_t weather_time_mul(float m);
 int32_t weather_time_add(int32_t vl);
 int32_t weather_time_sub(int32_t vl);
 int32_t weather_time_set(int32_t vl);
 int32_t weather_time_get();
+
+WEATHER_ID weather_index_for_name_get();
+WEATHER_ID weather_setted_get();
+
+void weather_setted_change(WEATHER_ID id);
+void weather_change(WEATHER_ID id, bool setted);
 
 #endif // WEATHER_H_INCLUDED

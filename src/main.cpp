@@ -17,6 +17,7 @@
 #include "profile.h"
 #include "menu/menus.h"
 #include "battle_ui.h"
+#include "weather.h"
 
 
 int main(int argc, char *argv[])
@@ -91,7 +92,7 @@ int main(int argc, char *argv[])
     }
 
 
-    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),1);
+    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_NONE),1);
 
     if (prof)
     {
@@ -114,13 +115,28 @@ int main(int argc, char *argv[])
 
     int32_t ii = 0;
 
-    battle_ui_std ui;
+    battle_ui_std *ui = init_new_battle_ui();
 
-    ui.link(marisa,alice);
+    ui->link(marisa,alice);
 
+    int32_t aa = 0;
+    int32_t bb = 0;
+
+    weather_change(WEATHER_CLEAR,1);
+
+    battle_ui_effect(10,320,240,1,1);
 
     while(!kb.rawPressed(kC_Escape))
     {
+
+        aa++;
+        if (aa % 240 == 0)
+        {
+            aa = 0;
+            weather_change((WEATHER_ID)bb,1);
+            bb++;
+            bb %= WEATHER_ID_COUNT;
+        }
 
         if (kb.rawPressed(kC_Q))
             ii++;
@@ -146,8 +162,8 @@ int main(int argc, char *argv[])
 
        // printf("sp %d %d\n",alice->current_card_energy, alice->max_spell_energy);
 
-        ui.update();
-        ui.draw();
+        ui->update();
+        ui->draw();
 
         gr_flip();
 
