@@ -355,6 +355,12 @@ void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2)
     spr->setTextureRect(sf::IntRect(x1*sz.x,y1*sz.y, x2*sz.x, y2*sz.y));
 }
 
+void gr_sprite_skew(gr_sprite *spr, float x, float y)
+{
+    sf::Vector2u sz = spr->getTexture()->getSize();
+    spr->setTextureRect(sf::IntRect(x, y, x + sz.x, y + sz.y));
+}
+
 
 sf::Text *ttx = NULL;
 sf::Font *fnt = NULL;

@@ -3,6 +3,7 @@
 
 #include "framedata.h"
 #include "scene_fx.h"
+#include "weather.h"
 
 using namespace std;
 
@@ -39,10 +40,14 @@ class c_scene
 
     s_camera cam;
 
+    void sub_478C30();
+    void sub_470190();
 
     public:
 
     c_scene(background *bg, char_c *p1, char_c *p2);
+
+    t_weather_manager *w_man;
 
     char_c      *chrs[2];
     background  *bkg;
@@ -56,6 +61,7 @@ class c_scene
 
     //c_scene();
 
+    int32_t get_stage_id();
 
     void set_camera(float x1, float y1, float x2, float y2);
     void upd_camera(float x1, float y1, float x2, float y2);
@@ -69,9 +75,10 @@ class c_scene
     void update_char_anims();
     void players_input();
 
-
-    void func16();
+    void func11(char_c *pl);
     void func12();
+    void func15();
+    void func16();
     void update();
 };
 
@@ -96,9 +103,13 @@ c_scene_sp *scene_get_sp();
 
 uint32_t scene_rand();
 uint32_t scene_rand_rng(uint32_t rng);
+float scene_rand_rngf(uint32_t rng);
 
 int32_t time_count_get();
 void time_count_inc();
 void time_count_set(int32_t st);
+
+c_scene *scene_new_scene(background *bg, char_c *p1, char_c *p2);
+c_scene *scene_get_scene();
 
 #endif // SCENE_H_INCLUDED

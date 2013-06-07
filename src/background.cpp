@@ -133,22 +133,29 @@ void background::loadbkg_t2(int32_t id, float y_off)
             imgs.push_back(chunk);
         }
     }
+}
 
+uint32_t background::get_idx()
+{
+    return idx;
 }
 
 
 background_0::background_0()
 {
+    idx = 0;
     loadbkg_t1(0,0);
 }
 
 background_1::background_1()
 {
+    idx = 1;
     loadbkg_t1(1,0);
 }
 
 background_2::background_2()
 {
+    idx = 2;
     loadbkg_t1(2,0);
 
     frame = 0;
@@ -241,11 +248,13 @@ void background_2::update()
 
 background_3::background_3()
 {
+    idx = 3;
     loadbkg_t1(3,0);
 }
 
 background_4::background_4()
 {
+    idx = 4;
     loadbkg_t1(4,0);
 
     posit = 0;
@@ -284,26 +293,31 @@ void background_4::update()
 
 background_5::background_5()
 {
+    idx = 5;
     loadbkg_t1(5,0);
 }
 
 background_6::background_6()
 {
+    idx = 6;
     loadbkg_t1(6,0);
 }
 
 background_10::background_10()
 {
+    idx = 10;
     loadbkg_t1(10,-86);
 }
 
 background_11::background_11()
 {
+    idx = 11;
     loadbkg_t1(11,-86);
 }
 
 background_12::background_12()
 {
+    idx = 12;
     angle = 0;
     loadbkg_t1(12,-86);
 
@@ -366,21 +380,25 @@ void background_12::update() //HACK
 
 background_13::background_13()
 {
+    idx = 13;
     loadbkg_t1(13,-86);
 }
 
 background_14::background_14()
 {
+    idx = 14;
     loadbkg_t1(14,0);
 }
 
 background_15::background_15()
 {
+    idx = 15;
     loadbkg_t1(15,-86);
 }
 
 background_16::background_16()
 {
+    idx = 16;
     angle = 0;
     loadbkg_t1(16,0);
 
@@ -461,7 +479,7 @@ void background_16::draw_mid()
 
     for (int8_t i=0; i<4; i++)
     {
-        decor[3].sy = decor[3].sx = scl[i] + 0.1 * cos_deg(i * 90 + angle * ( i + 4));
+        decor[3].sy = decor[3].sx = scl[i] + 0.1 * sin_deg(i * 90 + angle * ( i + 4));
         decor[3].x = px[i];
         decor[3].y = py[i];
         render(&decor[3]);
@@ -470,7 +488,7 @@ void background_16::draw_mid()
 
 void background_16::draw_near()
 {
-    decor[2].sy = 0.1 * (6.0 + cos_deg(angle * 2));
+    decor[2].sy = 0.1 * (6.0 + sin_deg(angle * 2));
     decor[2].sx = 2;
     render(&decor[2]);
     decor[2].sx = -2;
@@ -497,31 +515,37 @@ void background_16::draw_shadow(c_meta *chr)
 
 background_17::background_17()
 {
+    idx = 17;
     loadbkg_t1(17,-86);
 }
 
 background_18::background_18()
 {
+    idx = 18;
     loadbkg_t1(18,0);
 }
 
 background_30::background_30()
 {
+    idx = 30;
     loadbkg_t2(30,-86);
 }
 
 background_31::background_31()
 {
+    idx = 31;
     loadbkg_t2(31,-86);
 }
 
 background_32::background_32()
 {
+    idx = 32;
     loadbkg_t2(32,-86);
 }
 
 background_33::background_33()
 {
+    idx = 33;
     loadbkg_t2(33,0);
     posit = 0;
 
@@ -586,6 +610,7 @@ void background_33::draw_back()
 
 background_34::background_34()
 {
+    idx = 34;
     //loadbkg_t2(34,0);
     for(uint32_t i=0; i < 30; i++)
     {
@@ -744,6 +769,7 @@ void background_34::draw_shadow(c_meta *chr)
 
 background_36::background_36()
 {
+    idx = 36;
     loadbkg_t2(36,-86);
 
     angle = 0;
@@ -841,6 +867,7 @@ void background_36::draw_back()
 
 background_37::background_37()
 {
+    idx = 37;
     loadbkg_t2(37,-86);
 
     angle = 0;
@@ -929,6 +956,7 @@ void background_37::draw_back()
 
 background_38::background_38()
 {
+    idx = 38;
     loadbkg_t2(38,0);
 
     pos[0] = -400;
@@ -989,7 +1017,6 @@ void background_38::draw_back()
     cloud[1].x = BKG_WIDTH/2 + BKG_HOR_PAD + pos[1];
     render(&cloud[1]);
 }
-
 
 background * bkg_create(uint32_t idx)
 {

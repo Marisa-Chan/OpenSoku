@@ -24,13 +24,14 @@
 #define MAX_GLB_SFX     0x100
 
 c_scene_sp *img_sp = NULL;
-c_weather_sp *weather_sp = NULL;
 
 static sfxc *snds[MAX_GLB_SFX];
 
 float lvl_height[BKG_WIDTH];
 
 mtwist randomm;
+
+c_scene *scn = NULL;
 
 void init_scene_height()
 {
@@ -150,10 +151,11 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     if (!img_sp)
         img_sp = new c_scene_sp;
 
-    if (!weather_sp)
-        weather_sp = new c_weather_sp;
-
     init_effects();
+
+    weather_init_manager();
+
+    w_man = weather_manager_get();
 
     //add_infoeffect(2,1);
     //weather_sp->addeffect(1,1);
@@ -163,12 +165,21 @@ void c_scene::draw_scene()
 {
     upd_camera(chrs[0],chrs[1]);
 
+    for(uint32_t i=0; i < w_man->sky_deque.size(); i++)
+    {
+        s_asky *tmp = &w_man->sky_deque[i];
+        w_man->skys.draw(tmp->sky_id,tmp->alpha,2);
+    }
+
+    w_man->wfx_holder.draw(-2,1);
+
     bkg->draw_back();
 
     for (uint32_t i=0; i < 2; i++)
         bkg->draw_shadow(chrs[i]);
 
     bkg->draw_mid();
+    w_man->wfx_holder.draw(-1,1);
 
     img_sp->draw(-1, 1);
 
@@ -179,10 +190,9 @@ void c_scene::draw_scene()
         chrs[i]->draw();
 
     bkg->draw_near();
+    w_man->wfx_holder.draw(1,1);
 
     img_sp->draw(1, 1);
-
-    weather_sp->draw(1, 2);
 
     for (uint32_t i=0; i < 2; i++)
         drawbullet(chrs[i],1);
@@ -203,6 +213,12 @@ void c_scene::players_input()
 
     for (uint32_t i=0; i < 2; i++)
         chrs[i]->check_seq_input();
+}
+
+void c_scene::func11(char_c *pl)
+{
+  if ( /*get_game_type() != 8 */ true)
+    pl->field_574 = 1;
 }
 
 //Borders:
@@ -297,12 +313,93 @@ void char_xy_pos_calculation(char_c *chr)
     }
 }
 
-void c_scene::func16()
+int32_t c_scene::get_stage_id()
+{
+    return bkg->get_idx();
+}
+
+void c_scene::func12()
 {
 
 }
 
-void c_scene::func12()
+void c_scene::sub_478C30()
+{
+  //if ( chrs[0]->field_740 || chrs[1]->field_740 ) //HACK
+    //dword_8855C0->field_FC = -10;
+  //if ( get_game_type() != 4 )
+  //  if ( get_game_type() != 5 )
+  //    sub_429E80(practice_params);//HACK
+
+  img_sp->update();
+  sub_470190(/*dword_8855C0*/);
+  time_count_inc();
+}
+
+void c_scene::sub_470190()
+{ //HACK
+    //NOT FULL CODE!!!
+
+    weather_spawn_effects_by_id(w_man->current_sky_weather);
+
+    w_man->wfx_holder.update();//HACK
+
+    for (int32_t i=w_man->sky_deque.size() - 1 ; i > 0; i--)
+    {
+        if (w_man->sky_deque[i].alpha > 15)
+            w_man->sky_deque[i].alpha -= 15;
+        else
+            w_man->sky_deque.erase(w_man->sky_deque.begin() + i);
+    }
+}
+
+void c_scene::func15()
+{
+  //if ( this->field_88 == 2 ) //HACK
+  {
+    if ( weather_get() == WEATHER_CLEAR )
+    {
+        weather_time_add(1);
+      if ( weather_index_for_name_get() == WEATHER_CLEAR && weather_time_get() >= 0 )
+        weather_forecast_set((WEATHER_ID)scene_rand_rng(20));
+
+      else if ( weather_time_get() >= 999 )
+      {
+        weather_time_set(999);
+        weather_change(weather_index_for_name_get(), true);
+
+        switch ( weather_get() )
+        {
+          case WEATHER_SPRING_HAZE:
+          case WEATHER_TEMPEST:
+              weather_time_mul(0.5);
+              break;
+          case WEATHER_SUNSHOWER:
+          case WEATHER_RIVER_MIST:
+          case WEATHER_TYPHOON:
+            weather_time_mul(0.75);
+              break;
+          default:
+            break;
+        }
+      }
+    }
+    else
+    {
+        if (time_count_get() & 1)
+            weather_time_sub(1);
+
+      if ( weather_time_get() <= 0 )
+      {
+        weather_time_set(0);
+        weather_change(WEATHER_CLEAR, true);
+      }
+    }
+  }
+  sub_478C30();
+}
+
+void c_scene::func16()
 {
 
 }
@@ -485,54 +582,54 @@ void frame_box_move_rotate(frame_box *src, int16_t angle, int16_t x_c, int16_t y
     float sin_ = sin_deg(angle);
     float cos_ = cos_deg(angle);
 
-    if ( cos_ < 0.0 )
+    if ( sin_ < 0.0 )
     {
-        if ( sin_ < 0.0 )
+        if ( cos_ < 0.0 )
         {
-            dst1->x1 = x_c + ((src->x2 - x_c) * sin_) - ((src->y1 - y_c) * cos_);
-            dst1->y1 = y_c + ((src->x2 - x_c) * cos_) + ((src->y1 - y_c) * sin_);
-            dst1->x2 = x_c + ((src->x1 - x_c) * sin_) - ((src->y2 - y_c) * cos_);
-            dst1->y2 = y_c + ((src->x1 - x_c) * cos_) + ((src->y2 - y_c) * sin_);
-            dst2->x1 = -((src->y2 - src->y1) * cos_);
-            dst2->y1 = (src->y2 - src->y1) * sin_;
-            dst2->x2 = -(sin_ * (src->x2 - src->x1));
-            dst2->y2 = -(cos_ * (src->x2 - src->x1));
+            dst1->x1 = x_c + ((src->x2 - x_c) * cos_) - ((src->y1 - y_c) * sin_);
+            dst1->y1 = y_c + ((src->x2 - x_c) * sin_) + ((src->y1 - y_c) * cos_);
+            dst1->x2 = x_c + ((src->x1 - x_c) * cos_) - ((src->y2 - y_c) * sin_);
+            dst1->y2 = y_c + ((src->x1 - x_c) * sin_) + ((src->y2 - y_c) * cos_);
+            dst2->x1 = -((src->y2 - src->y1) * sin_);
+            dst2->y1 = (src->y2 - src->y1) * cos_;
+            dst2->x2 = -(cos_ * (src->x2 - src->x1));
+            dst2->y2 = -(sin_ * (src->x2 - src->x1));
         }
         else
         {
-            dst1->x1 = x_c + ((src->x1 - x_c) * sin_) - ((src->y1 - y_c) * cos_);
-            dst1->y1 = y_c + ((src->x1 - x_c) * cos_) + ((src->y1 - y_c) * sin_);
-            dst1->x2 = x_c + ((src->x2 - x_c) * sin_) - ((src->y2 - y_c) * cos_);
-            dst1->y2 = y_c + ((src->x2 - x_c) * cos_) + ((src->y2 - y_c) * sin_);
-            dst2->x1 = (src->x2 - src->x1) * sin_;
-            dst2->y1 = (src->x2 - src->x1) * cos_;
-            dst2->x2 = -(cos_ * (src->y2 - src->y1));
-            dst2->y2 = sin_ * (src->y2 - src->y1);
+            dst1->x1 = x_c + ((src->x1 - x_c) * cos_) - ((src->y1 - y_c) * sin_);
+            dst1->y1 = y_c + ((src->x1 - x_c) * sin_) + ((src->y1 - y_c) * cos_);
+            dst1->x2 = x_c + ((src->x2 - x_c) * cos_) - ((src->y2 - y_c) * sin_);
+            dst1->y2 = y_c + ((src->x2 - x_c) * sin_) + ((src->y2 - y_c) * cos_);
+            dst2->x1 = (src->x2 - src->x1) * cos_;
+            dst2->y1 = (src->x2 - src->x1) * sin_;
+            dst2->x2 = -(sin_ * (src->y2 - src->y1));
+            dst2->y2 = cos_ * (src->y2 - src->y1);
         }
     }
     else
     {
-        if ( sin_ < 0.0 )
+        if ( cos_ < 0.0 )
         {
-            dst1->x1 = x_c + ((src->x2 - x_c) * sin_) - ((src->y2 - y_c) * cos_);
-            dst1->y1 = y_c + ((src->y2 - y_c) * sin_) + ((src->x2 - x_c) * cos_);
-            dst1->x2 = x_c + ((src->x1 - x_c) * sin_) - ((src->y1 - y_c) * cos_);
-            dst1->y2 = y_c + ((src->y1 - y_c) * sin_) + ((src->x1 - x_c) * cos_);
-            dst2->x1 = -((src->x2 - src->x1) * sin_);
-            dst2->y1 = -((src->x2 - src->x1) * cos_);
-            dst2->x2 = cos_ * (src->y2 - src->y1);
-            dst2->y2 = -(sin_ * (src->y2 - src->y1));
+            dst1->x1 = x_c + ((src->x2 - x_c) * cos_) - ((src->y2 - y_c) * sin_);
+            dst1->y1 = y_c + ((src->y2 - y_c) * cos_) + ((src->x2 - x_c) * sin_);
+            dst1->x2 = x_c + ((src->x1 - x_c) * cos_) - ((src->y1 - y_c) * sin_);
+            dst1->y2 = y_c + ((src->y1 - y_c) * cos_) + ((src->x1 - x_c) * sin_);
+            dst2->x1 = -((src->x2 - src->x1) * cos_);
+            dst2->y1 = -((src->x2 - src->x1) * sin_);
+            dst2->x2 = sin_ * (src->y2 - src->y1);
+            dst2->y2 = -(cos_ * (src->y2 - src->y1));
         }
         else
         {
-            dst1->x1 = x_c + ((src->x1 - x_c) * sin_) - ((src->y2 - y_c) * cos_);
-            dst1->y1 = y_c + ((src->y2 - y_c) * sin_) + ((src->x1 - x_c) * cos_);
-            dst1->x2 = x_c + ((src->x2 - x_c) * sin_) - ((src->y1 - y_c) * cos_);
-            dst1->y2 = y_c + ((src->y1 - y_c) * sin_) + ((src->x2 - x_c) * cos_);
-            dst2->x1 = (src->y2 - src->y1) * cos_;
-            dst2->y1 = -((src->y2 - src->y1) * sin_);
-            dst2->x2 = sin_ * (src->x2 - src->x1);
-            dst2->y2 = cos_ * (src->x2 - src->x1);
+            dst1->x1 = x_c + ((src->x1 - x_c) * cos_) - ((src->y2 - y_c) * sin_);
+            dst1->y1 = y_c + ((src->y2 - y_c) * cos_) + ((src->x1 - x_c) * sin_);
+            dst1->x2 = x_c + ((src->x2 - x_c) * cos_) - ((src->y1 - y_c) * sin_);
+            dst1->y2 = y_c + ((src->y1 - y_c) * cos_) + ((src->x2 - x_c) * sin_);
+            dst2->x1 = (src->y2 - src->y1) * sin_;
+            dst2->y1 = -((src->y2 - src->y1) * cos_);
+            dst2->x2 = cos_ * (src->x2 - src->x1);
+            dst2->y2 = sin_ * (src->x2 - src->x1);
         }
     }
 }
@@ -1061,20 +1158,20 @@ void sub_469A20(char_c *chr)
     if ( !char_is_shock(chr) )
         chr->health_prev = chr->health;
 
-    //sub_46E450((int)&v6->field_3EC);
+    //sub_46E450((int)&v6->field_3EC); //HACK
 
     if ( chr->field_710 > 0 )
         chr->field_710--;
 
     if ( chr->field_526 )
     {
-//        chr->weather_var = 21;
+//        chr->weather_var = 21;//HACK
     }
     else
     {
-        // chr->weather_var = weather;
+        // chr->weather_var = weather;//HACK
     }
-    /*result = (int)&v13->field_6A4;
+    /*result = (int)&v13->field_6A4; //HACK
     if ( v13->field_56E )
     {
       v2 = 32;
@@ -1294,7 +1391,12 @@ void scene_subfunc4(c_scene *scn)
 
 void scene_subfunc5(c_scene *scn)
 {
-
+//HACK
+    scn->func15();
+    //scn->field_8 = 0;
+  //((void (*)(void))battle_manager->vtbl->bman_func4)();
+  //sub_428990(&transform_values__);
+  //sub_428BB0(&transform_values__);
 }
 
 void c_scene::update()
@@ -1308,9 +1410,6 @@ void c_scene::update()
     scene_subfunc4(this);
     scene_subfunc5(this);
     func12();
-    img_sp->update();
-    weather_sp->update();
-    update_infoeffect();
 }
 
 
@@ -1368,7 +1467,10 @@ uint32_t scene_rand_rng(uint32_t rng)
     return randomm.get_next_ranged(rng);
 }
 
-
+float scene_rand_rngf(uint32_t rng)
+{
+    return randomm.get_next_ranged(rng);
+}
 
 
 int32_t time_count = 0;
@@ -1387,3 +1489,19 @@ void time_count_set(int32_t st)
 {
     time_count = st;
 }
+
+
+c_scene *scene_new_scene(background *bg, char_c *p1, char_c *p2)
+{
+    if (scn)
+        delete scn;
+    scn = new c_scene(bg, p1, p2);
+    return scn;
+}
+
+c_scene *scene_get_scene()
+{
+    return scn;
+}
+
+

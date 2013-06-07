@@ -132,8 +132,8 @@ void draw_title()
     bkg[1]->draw(bkgs[0],0,0);
     bkg[1]->draw(bkgs[0]-512,0,0);
 
-    bkg[2]->setRotate(cos_deg(t_frms) * 3.0);
-    bkg[2]->draw(0,fabs(cos_deg(t_frms) * 3.0),0);
+    bkg[2]->setRotate(sin_deg(t_frms) * 3.0);
+    bkg[2]->draw(0,fabs(sin_deg(t_frms) * 3.0),0);
 
     bkg[3]->draw(bkgs[1],0,0);
     bkg[3]->draw(bkgs[1]-640,0,0);

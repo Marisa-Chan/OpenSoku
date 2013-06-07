@@ -82,7 +82,7 @@ gr_info gr_get_info(gr_tex *tex);
 void gr_set_repeate(gr_tex *tex, bool rpt);
 void gr_set_smoth(gr_tex *tex, bool smoth);
 void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2);
-
+void gr_sprite_skew(gr_sprite *spr, float x, float y);
 
 void debug_str(float x, float y, const char *str);
 #endif // GRAPH_H_INCLUDED

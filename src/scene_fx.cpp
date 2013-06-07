@@ -749,7 +749,7 @@ void c_scene_fx::func10()
         scaleY += 0.02;
         y += 15;
 
-        c_A = cos_deg(get_elaps_frames() * 6) * 255.0;
+        c_A = sin_deg(get_elaps_frames() * 6) * 255.0;
         if (get_elaps_frames() * 6 >= 180)
             active = false;
 

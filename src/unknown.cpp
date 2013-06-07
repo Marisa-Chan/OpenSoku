@@ -1150,7 +1150,9 @@ void sub_47A060(c_scene *scn, c_meta *plr, char_c *enm)
         if ( enm->health <= 0 )
         {
             enm->health = 0;
-            //(thisa->vtbl->scene_func_11)(thisa, enm);
+
+            scn->func11(enm);
+
             if ( frm->fall_seq == 70 )
                 fallseq = 71;
             else

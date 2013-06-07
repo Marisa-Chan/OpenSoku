@@ -160,7 +160,7 @@ class gui_holder
     bool load_dat(const char *path, const char *file);
 
     void draw_all(int8_t plane);
-    void draw_by_id(int32_t id, int8_t plane);
+    void draw_by_id(int32_t id, bool rendcare, int8_t plane);
 
     gui_el_t0 *get_gui_t0(int32_t id);
     gui_el_t6 *get_gui_t6(int32_t id);

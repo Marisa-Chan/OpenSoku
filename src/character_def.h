@@ -203,11 +203,7 @@ private:
     //char field_729;
     //char field_72A;
     //char field_72B;
-    //int spell_images__vector_list;    //0x72C
-    //int field_730;
-    //int field_734;
-    //int field_738;
-    //int field_73C;
+    //def_deque spell_images__vector_list;    //0x72C+0x14
     int16_t field_740;
     //char field_742;
     //char field_743;

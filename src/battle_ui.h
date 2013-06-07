@@ -38,6 +38,9 @@ class battle_ui_std
 
     c_infoef_sp inf_eff;
 
+    gui_el_t6 *weatherFont001;
+    gui_el_t6 *weatherFont000;
+
     void init();
 
     public:

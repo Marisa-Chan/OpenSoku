@@ -36,6 +36,8 @@ protected:
     void loadbkg_t1(int32_t id, float y_off);
     void loadbkg_t2(int32_t id, float y_off);
 
+    uint32_t idx;
+
 public:
     virtual void update();
 
@@ -46,6 +48,8 @@ public:
     virtual void draw_mid();
     virtual void draw_near();
     virtual void draw_shadow(c_meta *chr);
+
+    uint32_t get_idx();
 };
 
 class background_0: public background

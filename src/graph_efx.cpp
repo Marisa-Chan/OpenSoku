@@ -208,6 +208,11 @@ void gfx_sprite::setXY(float x, float y)
         gr_setxy_sprite(sprite,x,y);
 }
 
+void gfx_sprite::setSkew(float x, float y)
+{
+    gr_sprite_skew(sprite,x,y);
+}
+
 void gfx_sprite::set_Y_to_up(bool up)
 {
     y_axis_up = up;
@@ -287,6 +292,14 @@ gfx_meta::gfx_meta()
     index = -1;
     active = true;
     order = 1;
+    skew_x = 0;
+    skew_y = 0;
+}
+
+void gfx_meta::setSkew(float x, float y)
+{
+    skew_x = x;
+    skew_y = y;
 }
 
 uint32_t gfx_meta::get_subseq()
@@ -352,6 +365,9 @@ void gfx_meta::draw(int8_t plane)
             sprite.setRotate(angX,angY,-angZ*dir);
         else
             sprite.setRotate(angX,angY,angZ*dir);
+
+        if (skew_x != 0 || skew_y != 0)
+            sprite.setSkew(skew_x,skew_y);
 
         sprite.draw(plane);
     }
@@ -451,6 +467,7 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
         }
 
         gr_tex *tex = gr_load_cv2(ft, plt);
+        gr_set_repeate(tex, true);
 
         imgs[i] = tex;
 
@@ -550,9 +567,6 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
                 f->read(2, &frm->unk1);
                 f->read(2, &frm->unk2);
 
-                frm->scale_x = 2.0;
-                frm->scale_y = 2.0;
-
                 f->read(2, &frm->tx_width);
                 f->read(2, &frm->tx_height);
                 f->read(2, &frm->x_offset);
@@ -560,6 +574,17 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
                 f->read(2, &frm->durate);
 
                 f->read(1, &frm->type);
+
+                frm->angle_z = 0;
+                frm->angle_x = 0;
+                frm->angle_y = 0;
+                frm->scale_x = 2.0;
+                frm->scale_y = 2.0;
+                frm->c_A = 255;
+                frm->c_R = 255;
+                frm->c_G = 255;
+                frm->c_B = 255;
+                frm->blend_mode = 0;
 
                 if (frm->type == 2)
                 {
@@ -585,7 +610,7 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
                 else
                 {
                     frm->x_offset /= frm->scale_x;
-                    frm->x_offset /= frm->scale_y;
+                    frm->y_offset /= frm->scale_y;
                 }
 
                 ssq.frames[j] = frm;

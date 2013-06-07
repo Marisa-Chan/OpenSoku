@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
     // Create the main window
 
     //Nyan Shinki, nyan
-
     FILE *dats = NULL;
     const char *path = ".";
     char buf[256];
@@ -78,7 +77,6 @@ int main(int argc, char *argv[])
     sfx_init();
     scene_load_sounds();
 
-
      //playmusic();
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
@@ -107,39 +105,42 @@ int main(int argc, char *argv[])
     marisa->set_seq(0);
     alice->set_seq(0);
     srand(time(NULL));
-    background  *bkg = bkg_create(2);
+    background  *bkg = bkg_create(0);
 
 
 
-    c_scene *scn = new c_scene(bkg,marisa,alice);
+    c_scene *scn = scene_new_scene(bkg,marisa,alice);
 
-    int32_t ii = 0;
+//    int32_t ii = 0;
 
     battle_ui_std *ui = init_new_battle_ui();
 
     ui->link(marisa,alice);
 
     int32_t aa = 0;
-    int32_t bb = 0;
+    int32_t bb = WEATHER_SUNNY;
 
     weather_change(WEATHER_CLEAR,1);
+    weather_time_set(0);
 
-    battle_ui_effect(10,320,240,1,1);
 
     while(!kb.rawPressed(kC_Escape))
     {
 
         aa++;
-        if (aa % 240 == 0)
+        if (aa > 30 && kb.rawPressed(kC_Q))
         {
             aa = 0;
-            weather_change((WEATHER_ID)bb,1);
+            weather_time_set(999);
+            weather_change((WEATHER_ID)bb,true);
+
             bb++;
             bb %= WEATHER_ID_COUNT;
         }
 
-        if (kb.rawPressed(kC_Q))
-            ii++;
+
+        //if (kb.rawPressed(kC_Q))
+          //  ii++;
 
         kb.update();
 
@@ -160,7 +161,7 @@ int main(int argc, char *argv[])
 
         //debug_str(100,100,"фы");
 
-       // printf("sp %d %d\n",alice->current_card_energy, alice->max_spell_energy);
+        //printf("hp %d %d\n",alice->health, alice->max_spell_energy);
 
         ui->update();
         ui->draw();

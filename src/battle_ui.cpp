@@ -83,6 +83,9 @@ void battle_ui_std::init()
         for (int8_t j=1; j < 5; j++)
             pl->addedCards[j].setScale(scl,scl);
     }
+
+    weatherFont001 = upper.get_gui_t6(100);
+    weatherFont000 = upper.get_gui_t6(101);
 }
 
 void battle_ui_std::link(char_c *p1, char_c *p2)
@@ -259,6 +262,14 @@ void battle_ui_std::update()
         }
     }
 
+    weatherFont000->renderable = (weather_get() != WEATHER_CLEAR);
+    weatherFont001->renderable = (weather_get() == WEATHER_CLEAR);
+
+    float wtime = weather_time_get() / 10.0;
+
+    weatherFont001->setFloat(wtime);
+    weatherFont000->setFloat(wtime);
+
     inf_eff.update();
 }
 
@@ -311,7 +322,7 @@ void battle_ui_std::draw()
         }
 
         gr_setscale_sprite(chr->player_face,1 - 2 * i,1);
-        gr_setxy_sprite(chr->player_face,640 * i,1);
+        gr_setxy_sprite(chr->player_face,640 * i,0);
     }
 
     for(int8_t i=0; i < 2; i++)
@@ -328,6 +339,10 @@ void battle_ui_std::draw()
 
     inf_eff.draw(2,0);
     inf_eff.draw(1,0);
+
+    upper.draw_by_id(100,true,0);
+    upper.draw_by_id(101,true,0);
+
     inf_eff.draw(0,0);
 }
 

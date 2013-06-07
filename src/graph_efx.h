@@ -98,6 +98,8 @@ class gfx_sprite
 
     void set_Y_to_up(bool up);
 
+    void setSkew(float x, float y);
+
     void draw(uint8_t plane = 0);
 };
 
@@ -107,6 +109,9 @@ class gfx_meta: public moveable
 {
     protected:
     int32_t index;
+
+    float skew_x;
+    float skew_y;
 
     public:
     gfx_meta();
@@ -129,6 +134,8 @@ class gfx_meta: public moveable
     uint32_t get_elaps_frames();
     gfx_frame * get_pframe();
     uint32_t get_seq();
+
+    void setSkew(float x, float y);
 
     void set_Y_to_up(bool up);
 

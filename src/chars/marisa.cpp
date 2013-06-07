@@ -725,14 +725,14 @@ void char_marisa::func10()
 
                     if ( field_7D4 > 0 )
                     {
-                        if ( weather_get() != WEATHER_SUNNY )
+                        if ( weather_get() != 0 )
                             dash_angle += 0.5;
                         else
                             dash_angle += 1.5;
                     }
                     else if ( field_7D4 < 0 )
                     {
-                        if ( weather_get() != WEATHER_SUNNY )
+                        if ( weather_get() != 0 )
                             dash_angle -= 0.5;
                         else
                             dash_angle -= 1.5;
@@ -749,7 +749,7 @@ void char_marisa::func10()
                     if ( field_7DC > 12.0 )
                         field_7DC = 12.0;
 
-                    spell_energy_spend(this, weather_get() != WEATHER_SUNNY ? 10 : 5, 1);
+                    spell_energy_spend(this, weather_get() != 0 ? 10 : 5, 1);
                     angZ = -dash_angle;
 
 
@@ -2875,7 +2875,7 @@ void char_marisa::func20()
             }
             else
             {
-                int8_t mx = (weather_get() == WEATHER_TEMPEST) + 2;
+                int8_t mx = (weather_get() == 10) + 2;
                 if ( border_escape_air(this)
                         || fwd_dash_air(this, cprior, cu, mx, 2)
                         || bkg_dash_air(this, cprior, cu, mx, 2)

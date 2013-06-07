@@ -171,6 +171,24 @@ void gui_holder::draw_all(int8_t plane)
     }
 }
 
+void gui_holder::draw_by_id(int32_t id, bool rendcare, int8_t plane)
+{
+    for (uint32_t i=0; i<elmnt.size(); i++)
+    {
+        if (elmnt[i] && elmnt[i]->guid == id)
+        {
+            if (rendcare)
+            {
+                if (elmnt[i]->renderable)
+                    elmnt[i]->draw(plane);
+            }
+            else
+                elmnt[i]->draw(plane);
+        }
+
+    }
+}
+
 gui_el_t6 * gui_holder::get_gui_t6(int32_t id)
 {
     for (uint32_t i=0; i< elmnt.size(); i++)

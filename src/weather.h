@@ -2,14 +2,22 @@
 #define WEATHER_H_INCLUDED
 
 #include "graph_efx.h"
+#include "map"
+#include "vector"
+#include "deque"
 
 using namespace std;
 
 
 class c_weather_fx: public gfx_meta
 {
+    protected:
+    int16_t par1;
+    int16_t par2;
+    float par3;
+
     public:
-    c_weather_fx(int32_t idx, gfx_seq *sq, int8_t order);
+    c_weather_fx(int32_t idx, gfx_seq *sq, float x, float y, int8_t dir, int8_t order);
 
     void func10();
     void set_seq_params(); //func15
@@ -21,7 +29,7 @@ class c_weather_sp: public gfx_holder
     public:
     c_weather_sp();
 
-    void addeffect(int32_t idx, int8_t order);
+    void addeffect(int32_t idx, float x, float y, int8_t dir, int8_t order);
     void draw(int8_t order, int8_t plane = 0);
 };
 
@@ -38,6 +46,7 @@ class c_weather_bg
     ~c_weather_bg();
 
     void draw(int8_t weather, int8_t plane = 0);
+    void draw(int8_t weather, int32_t alpha, int8_t plane);
 
 };
 
@@ -79,9 +88,41 @@ int32_t weather_time_set(int32_t vl);
 int32_t weather_time_get();
 
 WEATHER_ID weather_index_for_name_get();
+void weather_forecast_set(WEATHER_ID id);
 WEATHER_ID weather_setted_get();
 
 void weather_setted_change(WEATHER_ID id);
 void weather_change(WEATHER_ID id, bool setted);
+
+typedef vector<int32_t> sky_of_bkg;
+typedef map<int32_t,sky_of_bkg> mapsky;
+
+struct s_asky
+{
+    int16_t alpha;
+    int32_t sky_id;
+};
+
+typedef deque<s_asky> t_askies;
+
+struct t_weather_manager
+{
+    c_weather_sp wfx_holder;
+    c_weather_bg skys;
+    mapsky       sky_mapping;
+    t_askies     sky_deque;
+
+    WEATHER_ID   current_sky_weather;
+
+    float field_DC;
+    float field_E0;
+    float field_E4;
+    float field_E8;
+};
+
+void weather_init_manager();
+
+void weather_spawn_effects_by_id(WEATHER_ID wid);
+t_weather_manager *weather_manager_get();
 
 #endif // WEATHER_H_INCLUDED
