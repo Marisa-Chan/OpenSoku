@@ -181,6 +181,7 @@ void char_c::draw(gr_shader *shader)
         sprite.setRotate(angZ*dir);
 
     sprite.setColor(255,255,255,255);
+
     sprite.setScale(dir*scaleX,scaleY);
     // }
 
@@ -1641,21 +1642,16 @@ void char_c::func10()
 
 void char_c::func16()
 {
-    if (field_524 > 0  &&
-            time_stop == 0 &&
-            hit_stop == 0  &&
-            field_524 % 15 == 0 )
-    {
-        /*v106 = 0.0;
-        v107 = 0.0;
-        v108 = 0.0;
-        v4 = x + 100.0;
-        v5 = get_MT_range(0x96u) + y + 100.0;
-        v6 = v5;
-        v7 = v4 - get_MT_range(0xC8u);
-        addbullet(v2, 1260, v7, v6, 1, 1, &v106, 3);
-        v1 = 0.0;*/
-    }
+    if (field_524 > 0  &&  time_stop == 0 &&
+        hit_stop == 0  &&  field_524 % 15 == 0 )
+        {
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = 0.0;
+            addbullet(this,NULL,1260, x + 100.0 - scene_rand_rngf(200), scene_rand_rngf(150) + y + 100.0, 1, 1, tmp,3);
+        }
+
     if ( field_526 <= 0 || time_stop != 0 )
     {
         if ( field_814 <= 0 )
@@ -1689,7 +1685,7 @@ void char_c::func16()
         {
           if ( get_seq() <= 149 )
           {
-            sub_4685C0(this, enemy, 0);
+            sub_4685C0(this, enemy, 0); //HACK
             sub_46AB50(this, v12, 0, 0);
           }
         }
@@ -1714,13 +1710,13 @@ void char_c::func16()
         if ( health >= max_health )
             health = max_health;
 
-        /*if ( life_recovery % 15 == 0 )
-          scene_add_effect(v2, 151, x, y, dir, 1);
-        if ( !(v2->life_recovery % 10) )
-        {
+        if ( life_recovery % 15 == 0 )
+          scene_add_effect(this, 151, x, y, dir, 1);
+
+        if ( life_recovery % 10 == 0 )
           if ( char_on_ground(this) )
-            scene_add_effect(v2, 150, x, y, dir, -1);
-        }*/
+            scene_add_effect(this, 150, x, y, dir, -1);
+
         life_recovery--;
     }
     if ( field_52A == 1 )
@@ -1740,7 +1736,7 @@ void char_c::func16()
     }
 
     if ( char_on_ground(this) )
-        if ( !(get_pframe()->fflags & 4) )
+        if ( (get_pframe()->fflags & FF_AIRBORNE) == 0 )
             air_dash_cnt = 0;
 
 
@@ -1825,14 +1821,14 @@ void char_c::func16()
             else
             {
                 v_inerc *= 0.98;
-                v_force *= 0.8999999;
-                if ( hit_stop == 0 || !enemy->time_stop )
+                v_force *= 0.9;
+                if ( hit_stop == 0 || enemy->time_stop == 0 )
                 {
                     if (y < -200.0)
                     {
                         v_force = 0;
                         if (v_inerc < 0)
-                            v_inerc *= 0.8999999;
+                            v_inerc *= 0.9;
                     }
 
                     float tmp = (240.0 - y) * 0.025;
@@ -1844,7 +1840,7 @@ void char_c::func16()
                     else
                         y += tmp;
 
-                    if ( (get_seq() <= 9 || get_seq() >= 200) && get_seq() <= 299 )
+                    if ( get_seq() <= 9 || (get_seq() >= 20 && get_seq() <= 299) )
                     {
 
                         if (input->gX(dir) == 0)
@@ -1888,12 +1884,12 @@ void char_c::func16()
                                     v_inerc = 0;
                             }
                         }
-                        else if (input->gY() > 0)
+                        else if (input->gY() < 0)
                         {
                             if ( v_inerc > -12 )
                                 v_inerc -= 0.5;
                         }
-                        else if (input->gY() < 0)
+                        else if (input->gY() > 0)
                         {
                             if ( v_inerc < 12 )
                                 v_inerc +=  0.5;
@@ -1925,19 +1921,19 @@ void char_c::func16()
             field_810--;
         else
         {
-            /*field_810 = get_MT_range(0x3Cu) + 60;
-            v106 = get_MT_range(0x168u);
-            v107 = get_MT_range(0x3Cu) + 90.0;
-            v108 = 0.0;
-            v100 = 25.0 - get_MT_range(0x32u);
-            v43 = v100 >= 0.0;
-            v44 = v100 + v2->rend_cls.y_pos;
-            v45 = (1 - 2 * v43);
-            v46 = v2->rend_cls.dir;
-            v47 = v44;
-            v48 = get_MT_range(0x64u) + v2->rend_cls.x_pos - 50.0;
-            addbullet(v2, 980, v48, v47, v46, v45, &v106, 3);
-            */
+            field_810 = scene_rand_rng(60) + 60;
+
+            float yy = 25.0-scene_rand_rngf(50);
+
+            float tmp[3];
+            tmp[0] = scene_rand_rngf(360);
+            tmp[1] = scene_rand_rngf(60) + 90.0;
+            tmp[2] = 0.0;
+
+            if (yy >= 0)
+                addbullet(this,NULL, 980, scene_rand_rngf(100)+x-50.0, yy+y, dir, -1, tmp, 3);
+            else
+                addbullet(this,NULL, 980, scene_rand_rngf(100)+x-50.0, yy+y, dir, 1, tmp, 3);
         }
     }
 
@@ -1953,6 +1949,7 @@ void char_c::func16()
     }
     if ( weather_get() != WEATHER_MOUNTAIN_VAPOR )
         field_4CC = 0;
+
     if ( weather_get() != WEATHER_RIVER_MIST )
     {
         field_808 = 0;
@@ -1967,14 +1964,14 @@ void char_c::func16()
     {
         field_4D8 = 0;
 
-        /*v51 = &v2->field_4FC;
-
+        /*  // HACK      NOT USED?
+        int8_t j = 0;
         for (uint32_t i=0; i< 1280; i+=160)
         {
-            *(v51 - 8) = 0;
-            *v51 = 0;
-            sub_437E10(i, i + 159.0, 0);
-            v51 += 4;
+            lvl_hgt_1[j] = 0;
+            lvl_hgt_2[j] = 0;
+
+            setlvl_height_rng(i, i+159.0, 0);
         }*/
     }
 
@@ -1998,9 +1995,10 @@ void char_c::func16()
     field_554 = 0;
     field_558 = 0;
     field_540 = 0;
-    if ( !input->keyHit(INP_BC) || input->keyHit(INP_BC) >= 3 )
+    if ( !input->keyHit(INP_BC) /*|| input->keyHit(INP_BC) >= 3 */) //HACK
         field_836 = 0;
-    /*if ( controlling_type == 2 )
+
+    /*if ( controlling_type == 2 ) // HACK
     {
         if ( dword_8841B4 <= 3 )
         {
@@ -2021,6 +2019,7 @@ void char_c::func16()
             }
         }
     }*/
+
     if ( field_7F8 != 0 )
     {
         field_54C = 0;
@@ -2030,14 +2029,16 @@ void char_c::func16()
     {
         switch ( weather_get() )
         {
-        case 1:
+        case WEATHER_DRIZZLE:
             field_544 = 1.25;
             break;
-        case 2:
+
+        case WEATHER_CLOUDY:
             field_54C += field_54C;
             break;
-        case 3:
-            if ( get_seq() <= 499 || get_seq() >= 600 )
+
+        case WEATHER_BLUE_SKY:
+            if ( get_seq() >= 500 && get_seq() < 600 )
             {
                 field_800 = 0;
                 field_801 = 0;
@@ -2047,43 +2048,45 @@ void char_c::func16()
                 field_4C8 = 0;
             }
             break;
-        case 4:
+
+        case WEATHER_HAIL:
             field_548 = 1.25;
             break;
-        case 5:
+
+        case WEATHER_SPRING_HAZE:
             field_56C = 1;
             break;
-        case 6:
+
+        case WEATHER_HEAVY_FOG:
             field_550 = 0.5;
             break;
-        case 7:
+
+        case WEATHER_SNOW:
             field_554 = 0.5;
             break;
-        case 8:
+
+        case WEATHER_SUNSHOWER:
             field_56D = 1;
             break;
-        case 9:
+
+        case WEATHER_SPRINKLE:
             field_56E = 1;
             break;
-        case 0x10:
-            field_56F = 1;
-            break;
-        case 0xB:
+
+        case WEATHER_MOUNTAIN_VAPOR:
             field_570 = 1;
             if ( field_4CC == 0 )
             {
                 field_4CC = 1;
-//                sub_469280(v2, v15);
-
+//                sub_469280(v2, v15); //HACK
             }
             break;
-        default:
-            break;
-        case 0xC:
+
+        case WEATHER_RIVER_MIST:
             if ( player_index == 1 )
                 field_4D4 = enemy->field_4D4;
             else
-                field_4D4 = (sin(field_808 * 3.1415926/180.0) * 480.0 + 480.0);
+                field_4D4 = (sin_deg(field_808) * 480.0 + 480.0);
 
             if ( get_seq() < 100 || (get_seq() > 111 && get_seq() < 500 ))
             {
@@ -2103,67 +2106,59 @@ void char_c::func16()
                     enemy->field_74C = tmp;
             }
             break;
-        case 0xD:
+
+        case WEATHER_TYPHOON:
             field_538 = 0;
             field_4AA = 1;
             break;
-        case 0xE:
+
+        case WEATHER_CALM:
             if ( char_is_shock(this) )
-            {
                 field_4CD = 0;
-            }
-            else
-            {
-                if ( field_4CD )
-                {
-LABEL_219:
-                    if ( !(time_count_get() % 0xAu) )
-                    {
-                        if ( health > 0 )
-                        {
-                            /*v81 = health + field_4CE + 5;
-                            v19 = (health + field_4CE - 9995) < 0;
-                            health = health + field_4CE + 5;;
-                            if ( !((v19 ^ __OFSUB__(v81, 10000)) | v81 == 10000) )
-                                v2->health = 10000;*/
-                        }
-                    }
-                    break;
-                }
-                if ( char_is_shock(enemy) )
+            else if ( field_4CD == 0  && char_is_shock(enemy) )
                 {
                     field_4CE += 3;
                     field_4CD = 1;
                     if ( field_4CE >= 15 )
                         field_4CE = 15;
+
                     enemy->field_4CE = field_4CE;
-                    //v106 = 0.0;
-                    weather_time_mul(0.8999999);
-                    //v107 = 0.0;
-                    //addbullet(v2, 1110, v2->rend_cls.x_pos, 0.0, dir, -1, &v106, 3);
+
+                    weather_time_mul(0.9);
+
+                    float tmp[3];
+                    tmp[0] = 0.0;
+                    tmp[1] = 0.0;
+                    tmp[2] = 0.0;
+
+                    addbullet(this, NULL, 1110, x, 0.0, dir, -1, tmp, 3);
                 }
-            }
-            if ( !field_4CD )
-            {
-                break;
-            }
-            goto LABEL_219;
-        case 0x11:
+
+            if ( field_4CD != 0  &&
+                (time_count_get() % 10 == 0) && health > 0 )
+                        {
+                            health += field_4CE + 5;
+                            if (health > 10000)
+                                health = 10000;
+                        }
+            break;
+
+        case WEATHER_DUST_STORM:
+            field_56F = 1;
+            break;
+
+        case WEATHER_SCORCHING_SUN:
         {
             float tmp = y - 100.0;
-            if ( tmp < 0.0 )
-                break;
-            if ( tmp <= 600.0 )
+            if ( tmp >= 0.0 )
             {
-                if ( tmp <= 0.0 )
-                    break;
-            }
-            else
-            {
+            if ( tmp > 600.0 )
                 tmp = 600.0;
-            }
+
             float tmp2 = (10.0 * tmp / 600.0);
+
             current_card_energy += (tmp * 5.0 / 600.0);
+
             if ( char_is_shock(this) )
                 tmp2 *= 0.25;
 
@@ -2175,11 +2170,15 @@ LABEL_219:
                     health -= tmp2;
             }
             field_530 = tmp * 0.35 / 600.0 + 1.0;
-
+            }
         }
         break;
-        case 0x12:
+
+        case WEATHER_MONSOON:
             field_80C = 1;
+            break;
+
+        default:
             break;
         }
     }
@@ -2188,33 +2187,38 @@ LABEL_219:
         field_84C --;
         time_stop = 2;
 
-        if ( enemy->field_110 != 1 )
-            enemy->field_110 = 1;
+        if ( enemy->shader_type != 1 )
+            enemy->shader_type = 1;
         if ( field_84C <= 0 )
         {
             field_84C = 0;
-            enemy->field_110 = 0;
+            enemy->shader_type = 0;
         }
     }
     if ( field_848 > 0 )
     {
-        // if ( (field_848 % 15) == 0 )
-        //   sub_438170(v2, 155, x, y, dir, 1);
+         if ( (int32_t)field_848 % 15 == 0 )
+           scene_add_effect(this, 155, x, y, dir, 1);
 
-        // if ( !(field_848 % 10) == 0 )
-        //   sub_438170(v2, 154, x, getlvl_height(this), dir, -1);
+         if ( (int32_t)field_848 % 10 == 0 )
+           scene_add_effect(this, 154, x, getlvl_height(this), dir, -1);
 
         spell_energy += 10;
         field_848--;
+
         if ( spell_energy > max_spell_energy )
             spell_energy = max_spell_energy;
     }
+
     if ( tengu_fan == 1 )
         speed_mult = 1.0;
+
     if ( tengu_fan == 2 )
         speed_mult = 1.0;
+
     if ( tengu_fan == 3 )
         speed_mult = 1.0;
+
     if ( tengu_fan >= 4 )
         speed_mult = 1.0;
 
@@ -2226,12 +2230,15 @@ LABEL_219:
     field_530 *= (field_844 * 0.1   + 1.0);
     field_534 *= (field_844 * 0.075 + 1.0);
 
-    if ( 1.0 == field_840 )
+    if ( field_840 == 1.0 )
         field_534 *= 0.97;
-    if ( 2.0 == field_840 )
+
+    if ( field_840 == 2.0 )
         field_534 *= 0.93;
-    if ( 3.0 == field_840 )
-        field_534 *= 0.87999999;
+
+    if ( field_840 == 3.0 )
+        field_534 *= 0.88;
+
     if ( field_840 >= 4.0 )
         field_534 *= 0.8;
 
@@ -2239,17 +2246,16 @@ LABEL_219:
     {
         field_538 *= 0.5;
 
-        if ( field_110 == 0 )
-            field_110 = 3;
+        if ( shader_type == 0 )
+            shader_type = 3;
 
         field_84E--;
-        field_114 = 0;
-        field_116 = (64.0 - cos(field_84E * 8.0) * 64.0);
-        field_115 = (64.0 - cos(field_84E * 8.0) * 64.0);
+        shader_cB = 0;
+        shader_cR = shader_cG = (64.0 - cos(field_84E * 8.0) * 64.0);
 
         if ( field_84E <= 0 )
         {
-            field_110 = 0;
+            shader_type = 0;
             field_84E = 0;
         }
     }
@@ -2267,7 +2273,6 @@ LABEL_219:
         if ( field_520 < 2 )
             field_520 = 1;
 
-
         speed_mult *= 1.2;
 
         if ( speed_mult >= 2.0 )
@@ -2278,51 +2283,51 @@ LABEL_219:
         if ( get_seq() != 691 )
             field_852--;
 
-        if ( field_110 )
-            field_110 = 3;
+        if ( shader_type )
+            shader_type = 3;
 
-        uint32_t tm_c = 6 * time_count_get() % 0x168u;
+        uint32_t tm_c = 6 * time_count_get() % 360;
 
         if ( tm_c < 60 )
         {
-            field_114 = 0;
-            field_115 = (tm_c / 60.0 * 255.0);
-            field_116 = -1;
+            shader_cB = 0;
+            shader_cG = (tm_c / 60.0 * 255.0);
+            shader_cR = 255;
         }
         else if ( tm_c <= 119 ) //60..120
         {
-            field_115 = -1;
-            field_114 = 0;
-            field_116 = (255.0 - (tm_c - 60.0) / 60.0 * 255.0);
+            shader_cG = 255;
+            shader_cB = 0;
+            shader_cR = (255.0 - (tm_c - 60.0) / 60.0 * 255.0);
         }
         else if ( tm_c <= 179 ) //120..180
         {
-            field_115 = -1;
-            field_116 = 0;
-            field_114 = ((tm_c - 120.0) / 60.0 * 255.0);
+            shader_cG = 255;
+            shader_cR = 0;
+            shader_cB = ((tm_c - 120.0) / 60.0 * 255.0);
         }
         else if ( tm_c <= 239 )
         {
-            field_114 = -1;
-            field_116 = 0;
-            field_115 = (255.0 - (tm_c - 180.0) / 60.0 * 255.0);
+            shader_cB = 255;
+            shader_cR = 0;
+            shader_cG = (255.0 - (tm_c - 180.0) / 60.0 * 255.0);
         }
         else if ( tm_c <= 299 )
         {
-            field_114 = -1;
-            field_115 = 0;
-            field_116 = ((tm_c - 240.0) / 60.0 * 255.0);
+            shader_cB = 255;
+            shader_cG = 0;
+            shader_cR = ((tm_c - 240.0) / 60.0 * 255.0);
         }
         else if ( tm_c <= 359 )
         {
-            field_115 = 0;
-            field_114 = (255.0 - (tm_c - 300.0) / 60.0 * 255.0);
-            field_116 = -1;
+            shader_cG = 0;
+            shader_cB = (255.0 - (tm_c - 300.0) / 60.0 * 255.0);
+            shader_cR = 255;
         }
 
         if ( field_852 <= 0 )
         {
-            field_110 = 0;
+            shader_type = 0;
             field_850 = 0;
         }
 

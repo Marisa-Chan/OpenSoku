@@ -109,22 +109,8 @@ private:
     //char field_4D9;
     //char field_4DA;
     //char field_4DB;
-    //int field_4DC;
-    //int field_4E0;
-    //int field_4E4;
-    //int field_4E8;
-    //int field_4EC;
-    //int field_4F0;
-    //int field_4F4;
-    //int field_4F8;
-    //int field_4FC;
-    //int field_500;
-    //int field_504;
-    //int field_508;
-    //int field_50C;
-    //int field_510;
-    //int field_514;
-    //int field_518;
+    //int lvl_hgt_1[8]; //0x4DC - 0x4FB //not used in soku?
+    //int lvl_hgt_2[8]; //0x4FC - 0x51B //not used in soku?
     int16_t field_51C;
     int16_t field_51E;
     int16_t field_520;

@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     }
 
 
-    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_NONE),1);
+    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),1);
 
     if (prof)
     {

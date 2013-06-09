@@ -138,10 +138,11 @@ class c_meta : public moveable
 
 
 //-------------------------------------------
-    int32_t field_110;
-    int8_t  field_114;
-    int8_t  field_115;
-    int8_t  field_116;
+    int32_t shader_type;    //0x110
+    uint8_t  shader_cB;     //0x114
+    uint8_t  shader_cG;     //0x115
+    uint8_t  shader_cR;     //0x116
+    uint8_t  shader_cA;     //0x117
 
     //charstruct_with_vector_1 *char_images_vector; //0x130
     //char field_134;

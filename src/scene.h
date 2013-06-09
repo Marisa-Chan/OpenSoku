@@ -87,6 +87,8 @@ class c_scene
 s_border get_border_near(char_c *chr);
 float getlvl_height(moveable *chr);
 float getlvl_height(moveable *chr, float dx);
+void setlvl_height_rng(int32_t from, int32_t to, float lvl);
+
 bool char_on_ground(char_c *chr);
 bool char_on_ground_flag(char_c *chr);
 bool char_on_ground_down(char_c *chr);

@@ -262,6 +262,15 @@ float getlvl_height(moveable *chr, float dx)
     return lvl_height[0];
 }
 
+void setlvl_height_rng(int32_t from, int32_t to, float lvl)
+{
+    int32_t mini = from < 0 ? 0 : (from >= 1280 ? 1279 : from);
+    int32_t maxi = to < 0 ? 0 : (to >= 1280 ? 1279 : to);
+
+    for (int32_t i= mini; i<= maxi; i++)
+        lvl_height[i] = (uint32_t)(lvl+0.5);
+}
+
 bool char_on_ground(char_c *chr)
 {
     return getlvl_height(chr) >= chr->y;
