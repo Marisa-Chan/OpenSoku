@@ -40,7 +40,6 @@ OBJS =  \
 	fxsprite/fxTransform.cpp\
 	fxsprite/fxTransformable.cpp\
 	utils.cpp\
-	unknown.cpp\
 	meta.cpp\
 	gui.cpp\
 	text.cpp\
@@ -48,8 +47,7 @@ OBJS =  \
 	weather.cpp\
 	infoeffect.cpp\
 	profile.cpp\
-	cards.cpp\
-	battle_ui.cpp
+	cards.cpp
 
 linux: $(OBJS)
 	$(CXX) -O3 -Os --std=c++11 -pedantic -o $(TARGET) $(OBJS) $(LIBS) -I /usr/include/ 

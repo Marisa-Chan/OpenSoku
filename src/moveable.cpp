@@ -2,7 +2,22 @@
 #include <math.h>
 #include "moveable.h"
 
+float lvl_height[BKG_WIDTH];
 
+void init_lvl_height()
+{
+    for(uint32_t i=0; i< BKG_WIDTH; i++)
+        lvl_height[i] = 0;
+}
+
+void setlvl_height_rng(int32_t from, int32_t to, float lvl)
+{
+    int32_t mini = from < 0 ? 0 : (from >= 1280 ? 1279 : from);
+    int32_t maxi = to < 0 ? 0 : (to >= 1280 ? 1279 : to);
+
+    for (int32_t i= mini; i<= maxi; i++)
+        lvl_height[i] = (uint32_t)(lvl+0.5);
+}
 
 moveable::moveable()
 {
@@ -83,4 +98,52 @@ void moveable::set_vec_speed_2(float angle, float speed)
 {
     h_inerc = cos_deg(angle) * speed;
     v_inerc = sin_deg(angle) * speed;
+}
+
+//Borders:
+// 0 - center
+//-1 - right border
+// 1 - left border
+s_border moveable::get_border_near()
+{
+    if ( x - 40.0 > 0.0 )
+    {
+        if ( x + 40.0 < 1280.0 )
+            return BORD_CENT;
+        else
+            return BORD_RIGHT;
+    }
+    return BORD_LEFT;
+}
+
+float moveable::getlvl_height()
+{
+    if ( x > 0.0 )
+    {
+        if ( x < BKG_WIDTH )
+            return lvl_height[(uint32_t)(x+0.5)];
+        else
+            return lvl_height[BKG_WIDTH - 1];
+    }
+    return lvl_height[0];
+}
+
+float moveable::getlvl_height(float dx)
+{
+    float t = x + dx;
+    if ( t > 0.0 )
+    {
+        if ( t < BKG_WIDTH )
+            return lvl_height[(uint32_t)(t+0.5)];
+        else
+            return lvl_height[BKG_WIDTH - 1];
+    }
+    return lvl_height[0];
+}
+
+
+
+bool moveable::char_on_ground()
+{
+    return getlvl_height() >= y;
 }

@@ -8,56 +8,56 @@
 #include <math.h>
 
 
-bool sub_5269B0(c_bullet *bul)
+bool alice_bullets::sub_5269B0()
 {
-    bul->field_380 = -atan2_deg(bul->chrt->y + 100 - bul->y, bul->chrt->x - bul->x);
-    bul->field_378 += 2;
-    if (bul->field_378 > 20)
-        bul->field_378 = 20.0;
+    field_380 = -atan2_deg(chrt->y + 100 - y, chrt->x - x);
+    field_378 += 2;
+    if (field_378 > 20)
+        field_378 = 20.0;
 
-    bul->set_vec_speed(bul->field_380, bul->field_378);
+    set_vec_speed(field_380, field_378);
 
-    if (bul->x - bul->chrt->x > 0)
-        bul->dir = -1;
-    else if (bul->x - bul->chrt->x < 0)
-        bul->dir = 1;
+    if (x - chrt->x > 0)
+        dir = -1;
+    else if (x - chrt->x < 0)
+        dir = 1;
 
-    if (fabs (bul->x - bul->chrt->x) >= 20 || fabs(bul->chrt->y + 100 - bul->y) >= 20.0)
+    if (fabs (x - chrt->x) >= 20 || fabs(chrt->y + 100 - y) >= 20.0)
         return false;
 
-    bul->active = false;
+    active = false;
     return true;
 }
 
-bool sub_526870(c_bullet *bul, uint16_t subseq)
+bool alice_bullets::sub_526870(uint16_t subseq)
 {
-    c_meta * par = bul->chrt;
-    c_bullet * parb = bul->bul_parent;
+    c_meta * par = chrt;
+    c_bullet * parb = bul_parent;
 
-    bul->x = par->x;
-    bul->y = par->y + 100;
+    x = par->x;
+    y = par->y + 100;
 
-    if ( bul->bul_parent )
+    if ( bul_parent )
     {
-        if (bul->dir == 1)
-            bul->angZ = -atan2_deg(parb->y - (par->y + 100), parb->x - bul->x);
+        if (dir == 1)
+            angZ = -atan2_deg(parb->y - (par->y + 100), parb->x - x);
         else
-            bul->angZ = atan2_deg(parb->y - (par->y + 100), parb->x - bul->x) + 180;
+            angZ = atan2_deg(parb->y - (par->y + 100), parb->x - x) + 180;
 
-        bul->field_378 = (parb->x - bul->x) * (parb->x - bul->x);
-        bul->field_37C = (parb->y - bul->y) * (parb->y - bul->y);
-        bul->field_380 = sqrt(bul->field_378 + bul->field_37C);
-        bul->scaleX = bul->field_380 * 0.004;
+        field_378 = (parb->x - x) * (parb->x - x);
+        field_37C = (parb->y - y) * (parb->y - y);
+        field_380 = sqrt(field_378 + field_37C);
+        scaleX = field_380 * 0.004;
 
         if (parb->get_subseq() == subseq)
         {
-            bul->active = false;
+            active = false;
             return true;
         }
     }
     else
     {
-        bul->active = false;
+        active = false;
         return true;
     }
     return false;
@@ -72,7 +72,7 @@ void alice_bullets::func10()
     {
     case 803:
     {
-        if (char_is_shock(chrt))
+        if (chrt->char_is_shock())
             if (get_subseq() < 4)
                 set_subseq(5);
 
@@ -135,7 +135,7 @@ void alice_bullets::func10()
                 next_subseq();
             break;
         case 4:
-            if ( sub_5269B0(this) )
+            if ( sub_5269B0() )
                 return;
             x += h_inerc;
             y += v_inerc;
@@ -164,7 +164,7 @@ void alice_bullets::func10()
             c_A -= 20;
             break;
         case 6:
-            if ( !sub_526870(this, 5) )
+            if ( !sub_526870(5) )
                 return;
             break;
         case 7:

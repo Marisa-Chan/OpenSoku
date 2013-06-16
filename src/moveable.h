@@ -1,6 +1,16 @@
 #ifndef MOVEABLE_H_INCLUDED
 #define MOVEABLE_H_INCLUDED
 
+#define BKG_WIDTH     1280
+
+enum s_border
+{
+    BORD_LEFT  = 1,
+    BORD_CENT  = 0,
+    BORD_RIGHT = -1
+};
+
+
 class moveable
 {
     public :
@@ -47,6 +57,16 @@ class moveable
 
 	void set_real_size(int16_t w, int16_t h);
 
+	s_border get_border_near();
+    float getlvl_height();
+    float getlvl_height(float dx);
+
+    bool char_on_ground();
+
 };
+
+void init_lvl_height();
+void setlvl_height_rng(int32_t from, int32_t to, float lvl);
+
 
 #endif // MOVEABLE_H_INCLUDED

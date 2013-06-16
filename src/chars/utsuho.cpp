@@ -35,7 +35,7 @@ char_utsuho::char_utsuho(inp_ab *func, uint8_t pal):
 {
     char_id = CHAR_ID_UTSUHO;
     pgp->load_dat("utsuho",pal);
-    char_loadsfx(this,"utsuho");
+    char_loadsfx("utsuho");
     filehandle *f = arc_get_file("data/character/utsuho/backA000.cv2");
 
     if (f)
@@ -51,7 +51,7 @@ char_utsuho::char_utsuho(inp_ab *func, uint8_t pal):
     shd_p = 0;
 
     load_face("utsuho");
-};
+}
 
 void char_utsuho::draw(gr_shader *_shader)
 {
@@ -92,43 +92,43 @@ void char_utsuho::func10()
     switch(sq)
     {
     case 0:
-        sub10func(this);
+        sub10func();
         if (h_inerc == 0)
             field_49A = 0;
         stopping(0.5);
         process();
         break;
     case 1:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         if (process() && get_frame() == 0)
             set_seq(2);
         break;
     case 2:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         process();
         break;
     case 3:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         if (process() && get_frame() == 0)
             set_seq(0);
         break;
     case 4:
-        sub10func(this);
-        char_h_move(this, 3.0);
+        sub10func();
+        char_h_move( 3.0);
         process();
         break;
     case 5:
-        sub10func(this);
-        char_h_move(this, -3.0);
+        sub10func();
+        char_h_move( -3.0);
         process();
         break;
     case 6:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -136,10 +136,10 @@ void char_utsuho::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -158,7 +158,7 @@ void char_utsuho::func10()
     case 7:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -167,10 +167,10 @@ void char_utsuho::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -185,14 +185,14 @@ void char_utsuho::func10()
         {
             v_inerc = 13.0;
             v_force = 0.3;
-            char_h_move(this, 3.0);
+            char_h_move( 3.0);
             field_49A = 0;
         }
         break;
     case 8:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -201,10 +201,10 @@ void char_utsuho::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -219,7 +219,7 @@ void char_utsuho::func10()
         {
             v_inerc = 13.0;
             v_force = 0.3;
-            char_h_move(this, -3.0);
+            char_h_move( -3.0);
         }
         break;
     case 9:
@@ -228,10 +228,10 @@ void char_utsuho::func10()
 
         v_inerc -=v_force;
 
-        if (char_on_ground_down(this))
+        if (char_on_ground_down())
         {
             set_seq(10);
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
             break;
         }
@@ -239,7 +239,7 @@ void char_utsuho::func10()
         process();
         break;
     case 10:
-        sub10func(this);
+        sub10func();
         reset_forces();
         if (process())
         {
@@ -250,7 +250,7 @@ void char_utsuho::func10()
         }
         break;
     case 199:
-        sub10func(this);
+        sub10func();
         if ( process() )
         {
 
@@ -321,14 +321,14 @@ void char_utsuho::func10()
 
                     if ( field_7D4 > 0 )
                     {
-                        if ( weather_get() != 0 )
+                        if ( weather_id != WEATHER_SUNNY )
                             dash_angle += 0.5;
                         else
                             dash_angle += 1.5;
                     }
                     else if ( field_7D4 < 0 )
                     {
-                        if ( weather_get() != 0 )
+                        if ( weather_id != WEATHER_SUNNY )
                             dash_angle -= 0.5;
                         else
                             dash_angle -= 1.5;
@@ -345,7 +345,7 @@ void char_utsuho::func10()
                     if ( field_7DC > 12.0 )
                         field_7DC = 12.0;
 
-                    spell_energy_spend(this, weather_get() != 0 ? 10 : 5, 1);
+                    spell_energy_spend( weather_id != WEATHER_SUNNY ? 10 : 5, 1);
                     angZ = -dash_angle;
 
 
@@ -434,9 +434,9 @@ void char_utsuho::func10()
                     }
                 }
             }
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
-                y = getlvl_height(this);
+                y = getlvl_height();
                 v_force = 0.0;
                 v_inerc = 0.0;
                 if ( get_subseq() < 5 )
@@ -507,7 +507,7 @@ void char_utsuho::func20()
     bool cu = (fflags & FF_HJC) != 0;
     //int32_t sq = get_seq();
 
-    if ( !check_AB_pressed(this) )
+    if ( !check_AB_pressed() )
     {
         if ( cc || cu )
         {
@@ -518,21 +518,21 @@ void char_utsuho::func20()
                return;
              }
              else*/
-            if ( char_on_ground_flag(this) )
+            if ( char_on_ground_flag() )
             {
-                if ( (cu && cprior >= 10 && hi_jump_after_move(this))
-                        || border_escape_ground(this)
-                        || hi_jump(this, cprior, cu)
-                        || fw_bk_dash_ground(this, cprior, cu) )
+                if ( (cu && cprior >= 10 && hi_jump_after_move())
+                        || border_escape_ground()
+                        || hi_jump(cprior, cu)
+                        || fw_bk_dash_ground(cprior, cu) )
                     return;
             }
             else
             {
-                int8_t mx = (weather_get() == 10) + 2;
-                if ( border_escape_air(this)
-                        || fwd_dash_air(this, cprior, cu, mx, 2)
-                        || bkg_dash_air(this, cprior, cu, mx, 2)
-                        || flying_air(this, cprior, cu, mx) )
+                int8_t mx = (weather_id == WEATHER_TEMPEST) + 2;
+                if ( border_escape_air()
+                        || fwd_dash_air(cprior, cu, mx, 2)
+                        || bkg_dash_air(cprior, cu, mx, 2)
+                        || flying_air(cprior, cu, mx) )
                     return;
             }
         }

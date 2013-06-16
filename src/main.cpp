@@ -83,6 +83,8 @@ int main(int argc, char *argv[])
 
     sprintf(buf,"%s/profile/Zidane.pf",path);
     s_profile *prof = profile_load_from_file(buf);
+    sprintf(buf,"%s/profile/profile2p.pf",path);
+    s_profile *prof2 = profile_load_from_file(buf);
     if (prof)
     {
         marisa->set_input_profile(prof);
@@ -92,9 +94,10 @@ int main(int argc, char *argv[])
 
     char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),1);
 
-    if (prof)
+    if (prof2)
     {
-        alice->set_cards_deck(prof,1);
+        alice->set_cards_deck(prof2,0);
+        alice->set_input_profile(prof2);
     }
 
 //    uint32_t i = 0;

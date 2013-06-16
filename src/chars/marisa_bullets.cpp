@@ -7,19 +7,6 @@
 #include "marisa_bullets.h"
 #include <math.h>
 
-bool sub_48C5F0(c_bullet *blt, int32_t a2)
-{
-    if ( blt->field_190 == 6 )
-    {
-        blt->field_394++;
-        if (a2 > 0 && blt->field_394 >= a2)
-            return true;
-
-        blt->field_194++;
-        blt->field_190 = 0;
-    }
-    return false;
-}
 
 void marisa_bullets::func10()
 {
@@ -59,7 +46,7 @@ void marisa_bullets::func10()
 
             sub_48C4B0(0.0, addition[3], 100.0);
 
-            if ( get_frame_time() > 180 || field_190 != 0 || getlvl_height(this) >= y )
+            if ( get_frame_time() > 180 || field_190 != 0 || getlvl_height() >= y )
             {
                 chrt->play_sfx(41);
                 active = false;
@@ -204,8 +191,8 @@ void marisa_bullets::func10()
                 break;
             }
 
-            sub_48C5F0(this, 0);
-            if ( get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
+            sub_48C5F0( 0);
+            if ( get_elaps_frames() > 180 || field_190 != 0 || getlvl_height() >= y )
             {
                 chrt->play_sfx(3);
                 active = false;
@@ -262,8 +249,8 @@ void marisa_bullets::func10()
                 break;
             }
 
-            sub_48C5F0(this, 0);
-            if ( get_elaps_frames() > 180 || field_190 != 0 || getlvl_height(this) >= y )
+            sub_48C5F0( 0);
+            if ( get_elaps_frames() > 180 || field_190 != 0 || getlvl_height() >= y )
             {
                 chrt->play_sfx(3);
                 active = false;
@@ -325,7 +312,7 @@ void marisa_bullets::func10()
             }
             else
             {
-                sub_48C5F0(this, 0);
+                sub_48C5F0( 0);
 
                 if ( field_190 != 0 )
                 {
@@ -368,7 +355,7 @@ void marisa_bullets::func10()
             }
             else
             {
-                sub_48C5F0(this, 0);
+                sub_48C5F0( 0);
 
                 if ( field_190 != 0 )
                 {
@@ -444,7 +431,7 @@ void marisa_bullets::func10()
             angZ += 12.0;
             v_inerc -= 0.85;
 
-            if ( field_190 != 0 || getlvl_height(this) >= y )
+            if ( field_190 != 0 || getlvl_height() >= y )
             {
                 active = false;
 
@@ -595,7 +582,7 @@ void marisa_bullets::func10()
             if ( field_36C % 3 == 0 )
                 field_190 = 0;
 
-            if ( char_is_shock(chrt))
+            if ( chrt->char_is_shock())
             {
                 for (int32_t i = 0; i< 40; i++)
                 {
@@ -674,8 +661,8 @@ void marisa_bullets::func10()
             else
             {
                 field_380 += 3.0;
-                set_custom_box(this, 0, scaleY * 35, field_37C, scaleY * (-35), addition[0],0,0);
-                sub_48C5F0(this, 0);
+                set_custom_box(0, scaleY * 35, field_37C, scaleY * (-35), addition[0],0,0);
+                sub_48C5F0( 0);
                 if ( field_190 != 0)
                 {
                     field_36E++;
@@ -711,7 +698,7 @@ void marisa_bullets::func10()
                             break;
                         }
 
-                        if ( char_is_shock(chrt))
+                        if ( chrt->char_is_shock())
                         {
                             for (int32_t i = 0; i< 40; i++)
                             {
@@ -780,7 +767,7 @@ void marisa_bullets::func10()
                 field_190 = 0;
                 field_194 ++;
             }
-            if ( field_190 != 0 || getlvl_height(this) >= y + v_inerc )
+            if ( field_190 != 0 || getlvl_height() >= y + v_inerc )
             {
                 next_subseq();
                 scaleX = 2.0;
@@ -828,7 +815,7 @@ void marisa_bullets::func10()
             {
             case 0:
             case 1:
-                if ( char_is_shock(chrt) && ssq == 0)
+                if ( chrt->char_is_shock() && ssq == 0)
                 {
                     for (int8_t i=0; i<10; i++)
                         scene_add_effect(this,201,x,y,dir,1);
@@ -853,7 +840,7 @@ void marisa_bullets::func10()
                     tmp[2] = scene_rand() & 3;
                     addbullet(chrt, NULL, 810, x, y,dir,1 , tmp, 3);
                 }
-                if ( getlvl_height(this) < y )
+                if ( getlvl_height() < y )
                 {
                     x += dir * h_inerc;
                     y += v_inerc;
@@ -1100,7 +1087,7 @@ void marisa_bullets::func10()
             case 10:
                 if ( get_frame() < 2 )
                 {
-                    sub_48C5F0(this, 0);
+                    sub_48C5F0( 0);
                     sub_48C640(10);
                 }
                 break;
@@ -1161,7 +1148,7 @@ void marisa_bullets::func10()
             else
             {
 
-                if ( char_is_shock(chrt))
+                if ( chrt->char_is_shock())
                 {
                     for (int8_t i=0; i<4; i++)
                         scene_add_effect(this, 201, x, y,dir,1);

@@ -112,7 +112,6 @@
 		<Unit filename="sfx.h" />
 		<Unit filename="text.cpp" />
 		<Unit filename="text.h" />
-		<Unit filename="unknown.cpp" />
 		<Unit filename="utils.cpp" />
 		<Unit filename="utils.h" />
 		<Unit filename="weather.cpp" />

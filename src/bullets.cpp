@@ -199,11 +199,26 @@ bool c_bullet::sub_48C640(int32_t p)
     return true;
 }
 
+bool c_bullet::sub_48C5F0(int32_t a2)
+{
+    if ( field_190 == 6 )
+    {
+        field_394++;
+        if (a2 > 0 && field_394 >= a2)
+            return true;
+
+        field_194++;
+        field_190 = 0;
+    }
+    return false;
+}
+
 bool c_bullet::sub_48C6A0(int32_t p1, int32_t p2, int32_t p3)
 {
     if (p1 == 0 && (chrt->get_seq() <= 49 || chrt->get_seq() >= 150))
         return false;
-    else if (p1 != 1 || chrt->get_seq() <= 70 || chrt->get_seq() >= 150)
+    else if (p1 != 0 )
+        if (p1 != 1 || chrt->get_seq() <= 70 || chrt->get_seq() >= 150)
         return false;
 
     for (int32_t i=0; i < p2; i++)

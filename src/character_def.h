@@ -34,10 +34,13 @@ enum CHAR_ID
 };
 
 class c_bullet;
+class c_scene;
 
 class char_c : public c_meta
 {
-private:
+    friend c_scene;
+
+    private:
 
     protected:
 
@@ -120,7 +123,7 @@ private:
     int16_t life_recovery;  //0x528
     int16_t field_52A;
     //char field_52B;
-    //int weather_var ?;     //0x52C
+    WEATHER_ID weather_id;     //0x52C
     float   field_530;
     float   field_534;
     int32_t field_538;
@@ -354,6 +357,43 @@ private:
     void load_face(const char *name);
 
     void sub_486FD0(float p1, float p2);
+    int8_t sub_469750(uint32_t enemu_aflags);
+    bool sub_4699E0();
+    void char_xy_pos_calculation();
+    void char_stats_check();
+    bool sub10func();
+    bool char_idle_or_move();
+    bool char_is_shock();
+    bool char_is_block_knock();
+    void char_h_move(float move);
+    void char_loadsfx(const char *name);
+    bool hi_jump_after_move();
+    bool border_escape_ground();
+    bool hi_jump(uint16_t cprior, uint32_t hjc);
+    bool fw_bk_dash_ground(uint16_t cprior, uint32_t hjc);
+    bool border_escape_air();
+    bool fwd_dash_air(uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
+    bool bkg_dash_air(uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
+    bool flying_air(uint16_t cprior, uint32_t hjc, int8_t max_dash);
+    void sub_463200();
+    void sub_462FF0();
+    void sub_469A20();
+    void sub_4834F0();
+    void sub_4873B0(int32_t seq, int32_t smt);
+
+    bool spell200_seq299_300_field190_0_3();
+
+    void spell_energy_spend(int32_t energy, int32_t stop_time);
+    void crash_spell_borders(int8_t num);
+
+    void sub_4689D0(int32_t);
+
+    void add_card_energy(int32_t energy);
+    void add_card_energy2(int32_t energy);
+    void add_card();
+
+    bool check_AB_pressed();
+
 
     bullist *get_bullets();
 
@@ -381,7 +421,10 @@ private:
     virtual void func18();
     virtual void func20();
 
-    virtual c_bullet *new_bullet() ;
+    virtual c_bullet *new_bullet();
+
+    bool char_on_ground_flag();
+    bool char_on_ground_down();
 
     //input functions
     bool keyDown(inp_keys key);
@@ -395,38 +438,5 @@ private:
 
 typedef list<char_c *> charlist;
 typedef list<char_c *>::iterator charlist_iter;
-
-
-
-bool char_idle_or_move(char_c *chr);
-bool char_is_shock(char_c *chr);
-bool char_is_block_knock(char_c *chr);
-void char_h_move(char_c *chr, float move);
-bool sub10func(char_c *chr);
-void char_loadsfx(char_c *chr, const char *name);
-
-
-
-bool hi_jump_after_move(char_c *chr);
-bool border_escape_ground(char_c *chr);
-bool hi_jump(char_c *chr, uint16_t cprior, uint32_t hjc);
-bool fw_bk_dash_ground(char_c *chr, uint16_t cprior, uint32_t hjc);
-bool border_escape_air(char_c *chr);
-bool fwd_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
-bool bkg_dash_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16_t subse);
-bool flying_air(char_c *chr, uint16_t cprior, uint32_t hjc, int8_t max_dash);
-
-bool spell200_seq299_300_field190_0_3(char_c *chr);
-
-void spell_energy_spend(char_c *chr, int32_t energy, int32_t stop_time);
-void crash_spell_borders(char_c *chr, int8_t num);
-
-void sub_4689D0(char_c *, int32_t);
-
-void add_card_energy(char_c *chr, int32_t energy);
-void add_card_energy2(char_c *chr, int32_t energy);
-void add_card(char_c *chr);
-
-bool check_AB_pressed(char_c *chr);
 
 #endif // CHARACTER_DEF_H_INCLUDED

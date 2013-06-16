@@ -12,26 +12,10 @@ char_marisa::char_marisa(inp_ab *func, uint8_t pal):
 {
     char_id = CHAR_ID_MARISA;
     pgp->load_dat("marisa",pal);
-    char_loadsfx(this,"marisa");
+    char_loadsfx("marisa");
     cards_load_cards(&chr_cards,"marisa");
     load_face("marisa");
-};
-
-void sub_4834F0(char_c *)
-{
-    // HACK
 }
-
-void sub_4873B0(char_c *chr, int32_t seq, int32_t smt)
-{
-    if ( smt >= 10 )
-        chr->correction |= 8;
-
-    chr->set_seq(seq);
-    //input_push_pressed_to_buf(chr);
-    chr->angZ = 0.0;
-}
-
 
 void char_marisa::func10()
 {
@@ -70,7 +54,7 @@ void char_marisa::func10()
             field_890 = 0;
         }
 
-        if ( field_890 != 50 && (char_is_shock(this) || field_894 <= 0))
+        if ( field_890 != 50 && (char_is_shock() || field_894 <= 0))
         {
             field_894 = 0;
             field_890 = 0;
@@ -161,43 +145,43 @@ void char_marisa::func10()
     switch(sq)
     {
     case 0:
-        sub10func(this);
+        sub10func();
         if (h_inerc == 0)
             field_49A = 0;
         stopping(0.5);
         process();
         break;
     case 1:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         if (process() && get_frame() == 0)
             set_seq(2);
         break;
     case 2:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         process();
         break;
     case 3:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         if (process() && get_frame() == 0)
             set_seq(0);
         break;
     case 4:
-        sub10func(this);
-        char_h_move(this, 6.0);
+        sub10func();
+        char_h_move( 6.0);
         process();
         break;
     case 5:
-        sub10func(this);
-        char_h_move(this, -5.0);
+        sub10func();
+        char_h_move( -5.0);
         process();
         break;
     case 6:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -206,10 +190,10 @@ void char_marisa::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -230,7 +214,7 @@ void char_marisa::func10()
     case 7:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -239,10 +223,10 @@ void char_marisa::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -257,13 +241,13 @@ void char_marisa::func10()
         {
             v_inerc = 16.0;
             v_force = 0.75;
-            char_h_move(this, 5.0);
+            char_h_move( 5.0);
         }
         break;
     case 8:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -272,10 +256,10 @@ void char_marisa::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -290,7 +274,7 @@ void char_marisa::func10()
         {
             v_inerc = 16.0;
             v_force = 0.75;
-            char_h_move(this, -4.0);
+            char_h_move( -4.0);
         }
         break;
     case 9:
@@ -299,10 +283,10 @@ void char_marisa::func10()
 
         v_inerc -=v_force;
 
-        if (char_on_ground_down(this))
+        if (char_on_ground_down())
         {
             set_seq(10);
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
             break;
         }
@@ -310,7 +294,7 @@ void char_marisa::func10()
         process();
         break;
     case 10:
-        sub10func(this);
+        sub10func();
         reset_forces();
         if (process())
         {
@@ -322,12 +306,12 @@ void char_marisa::func10()
         break;
     case 197:
         if ( (get_seq() == 0 && get_frame() <= 4) || get_subseq() == 2 )
-            sub10func(this);
+            sub10func();
         if ( get_subseq() < 2 )
             v_inerc -= v_force;
-        if ( char_on_ground_down(this) && get_subseq() < 2 )
+        if ( char_on_ground_down() && get_subseq() < 2 )
         {
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
             set_subseq(2);
         }
@@ -369,12 +353,12 @@ void char_marisa::func10()
 
     case 198:
         if ( (get_subseq() == 0 && get_frame() <= 3) || get_subseq() == 2 )
-            sub10func(this);
+            sub10func();
         if ( get_subseq() < 2 )
             v_inerc -= v_force;
-        if ( char_on_ground_down(this) && get_subseq() < 2 )
+        if ( char_on_ground_down() && get_subseq() < 2 )
         {
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
             set_subseq(2);
         }
@@ -415,7 +399,7 @@ void char_marisa::func10()
         }
         break;
     case 199:
-        sub10func(this);
+        sub10func();
         if ( process() )
         {
 
@@ -442,7 +426,7 @@ void char_marisa::func10()
         }
         break;
     case 200:
-        sub10func(this);
+        sub10func();
         field_49A = 1;
 
         if ( h_inerc > 12.0 )
@@ -456,7 +440,7 @@ void char_marisa::func10()
 
         if ( get_subseq() == 0 && get_frame() == 3 && get_frame_time() == 0 )
         {
-            char_h_move(this, 15.0);
+            char_h_move( 15.0);
             scene_add_effect(this, 125, 80*dir+x, y+80, dir,1);
             scene_add_effect(this, 126, x, y+80, dir,1);
             scene_play_sfx(31);
@@ -486,7 +470,7 @@ void char_marisa::func10()
         break;
     case 201:
         if ( get_subseq() == 0 || get_subseq() == 3 )
-            sub10func(this);
+            sub10func();
 
         if ( get_subseq() == 3 )
         {
@@ -494,7 +478,7 @@ void char_marisa::func10()
             if ( h_inerc > 0 )
                 h_inerc = 0;
         }
-        if ( !char_on_ground_flag(this) )
+        if ( !char_on_ground_flag() )
         {
             if ( (get_elaps_frames() % 5) == 0)
             {
@@ -506,11 +490,11 @@ void char_marisa::func10()
         if ( get_subseq() < 3 )
         {
             v_inerc -= v_force;
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
                 v_inerc = 0.0;
                 v_force = 0.0;
-                y = getlvl_height(this);
+                y = getlvl_height();
                 set_subseq(3);
                 break;
             }
@@ -522,7 +506,7 @@ void char_marisa::func10()
         }
         else if ( get_elaps_frames() ==0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
         {
-            char_h_move(this, -14.0);
+            char_h_move( -14.0);
             v_inerc = 4.0;
             v_force = 0.5;
             scene_add_effect(this, 125, x, y+80, -dir,1);
@@ -532,10 +516,10 @@ void char_marisa::func10()
         break;
     case 202:
         v_inerc -= v_force;
-        if ( char_on_ground_down(this) )
+        if ( char_on_ground_down() )
         {
             reset_forces();
-            y = getlvl_height(this);
+            y = getlvl_height();
             set_seq(10);
         }
         else
@@ -552,7 +536,7 @@ void char_marisa::func10()
             if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 2 )
             {
                 field_7D0 = 0;
-                char_h_move(this, 11.0);
+                char_h_move( 11.0);
                 v_inerc = 4.0;
                 v_force = 0.5;
                 scene_add_effect(this, 125, x+80*dir, y+110, dir,1);
@@ -565,10 +549,10 @@ void char_marisa::func10()
         break;
     case 203:
         v_inerc -= v_force;
-        if ( char_on_ground_down(this) )
+        if ( char_on_ground_down() )
         {
             reset_forces();
-            y = getlvl_height(this);
+            y = getlvl_height();
             set_seq(10);
         }
         else
@@ -585,7 +569,7 @@ void char_marisa::func10()
             if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 3 )
             {
                 field_7D0 = 0;
-                char_h_move(this, -11.0);
+                char_h_move( -11.0);
                 v_inerc = 4.0;
                 v_force = 0.5;
                 scene_add_effect(this, 125, x, y+120, -dir,1);
@@ -597,7 +581,7 @@ void char_marisa::func10()
         }
         break;
     case 204:
-        sub10func(this);
+        sub10func();
         h_inerc -= 0.5;
         if ( h_inerc < 0.0 )
         {
@@ -618,17 +602,17 @@ void char_marisa::func10()
     case 221:
     case 222:
         if ( get_subseq() == 0 )
-            sub10func(this);
+            sub10func();
 
-        if ( char_on_ground_down(this) )
+        if ( char_on_ground_down() )
         {
             set_seq(10);
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
         {
-            if ( char_on_ground_flag(this) || v_inerc > 0.0 )
+            if ( char_on_ground_flag() || v_inerc > 0.0 )
                 field_522 = 2;
             if ( get_subseq() > 0 )
             {
@@ -646,31 +630,31 @@ void char_marisa::func10()
             {
                 if (sq == 208)
                 {
-                    //char_h_move(this, 0);
+                    //char_h_move( 0);
                     v_inerc = 22.5;
                     v_force = 0.85;
                 }
                 else if (sq == 209 || sq == 221)
                 {
-                    char_h_move(this, 10.0);
+                    char_h_move( 10.0);
                     v_inerc = 18.0;
                     v_force = 0.85;
                 }
                 else if (sq == 210 || sq == 222)
                 {
-                    char_h_move(this, -10.0);
+                    char_h_move( -10.0);
                     v_inerc = 18.0;
                     v_force = 0.85;
                 }
                 else if (sq == 211)
                 {
-                    char_h_move(this, 3.0);
+                    char_h_move( 3.0);
                     v_inerc = 22.5;
                     v_force = 0.85;
                 }
                 else if (sq == 212)
                 {
-                    char_h_move(this, 10.0);
+                    char_h_move( 10.0);
                     v_inerc = 16.0;
                     v_force = 0.7;
                 }
@@ -725,14 +709,14 @@ void char_marisa::func10()
 
                     if ( field_7D4 > 0 )
                     {
-                        if ( weather_get() != 0 )
+                        if ( weather_id != 0 )
                             dash_angle += 0.5;
                         else
                             dash_angle += 1.5;
                     }
                     else if ( field_7D4 < 0 )
                     {
-                        if ( weather_get() != 0 )
+                        if ( weather_id != 0 )
                             dash_angle -= 0.5;
                         else
                             dash_angle -= 1.5;
@@ -749,7 +733,7 @@ void char_marisa::func10()
                     if ( field_7DC > 12.0 )
                         field_7DC = 12.0;
 
-                    spell_energy_spend(this, weather_get() != 0 ? 10 : 5, 1);
+                    spell_energy_spend( weather_id != WEATHER_SUNNY ? 10 : 5, 1);
                     angZ = -dash_angle;
 
 
@@ -838,9 +822,9 @@ void char_marisa::func10()
                     }
                 }
             }
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
-                y = getlvl_height(this);
+                y = getlvl_height();
                 v_force = 0.0;
                 v_inerc = 0.0;
                 if ( get_subseq() < 5 )
@@ -858,13 +842,13 @@ void char_marisa::func10()
         }
         break;
     case 215:
-        sub10func(this);
+        sub10func();
         stopping(0.75);
         if ( process())
             set_seq(0);
         break;
     case 300: //near A-attack
-        sub10func(this);
+        sub10func();
         stopping_posit(0.5);
 
         if ( process())
@@ -877,7 +861,7 @@ void char_marisa::func10()
         }
         break;
     case 301: //far A-attack
-        sub10func(this);
+        sub10func();
         stopping_posit(0.5);
         if (get_frame() > 4 )
             stopping_posit(1.5);
@@ -903,7 +887,7 @@ void char_marisa::func10()
     {
         uint32_t ssq = get_subseq();
         if ( ssq == 0 || ssq == 1 || ssq == 4 )
-            sub10func(this);
+            sub10func();
 
         if ( get_frame() < 2 )
             if ( !input->keyDown(INP_A))
@@ -957,7 +941,7 @@ void char_marisa::func10()
         else if ( ssq == 3 || ssq == 2 )
         {
             v_inerc -= v_force;
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
                 play_sfx(18);
                 if ( ssq == 2 )
@@ -965,7 +949,7 @@ void char_marisa::func10()
                 else
                     set_subseq(5);
 
-                y = getlvl_height(this);
+                y = getlvl_height();
                 v_inerc = 0.0;
                 h_inerc = 5.0;
             }
@@ -976,7 +960,7 @@ void char_marisa::func10()
     break;
 
     case 303:
-        sub10func(this);
+        sub10func();
         stopping_posit(0.6);
         if ( process() )
             set_seq(2);
@@ -986,7 +970,7 @@ void char_marisa::func10()
         break;
 
     case 304:
-        sub10func(this);
+        sub10func();
         if ( h_inerc > 0.0 )
         {
             h_inerc -= 2.0;
@@ -1043,7 +1027,7 @@ void char_marisa::func10()
         break;
 
     case 305:
-        sub10func(this);
+        sub10func();
 
         if ( get_frame() > 4 )
         {
@@ -1060,10 +1044,10 @@ void char_marisa::func10()
 
     case 306:
         v_inerc -= v_force;
-        if ( char_on_ground_down(this) )
+        if ( char_on_ground_down() )
         {
             set_seq(10);
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
@@ -1087,10 +1071,10 @@ void char_marisa::func10()
 
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) )
+        if ( char_on_ground_down() )
         {
             set_seq(10);
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
@@ -1173,10 +1157,10 @@ void char_marisa::func10()
 
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) )
+        if ( char_on_ground_down() )
         {
             set_seq(10);
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
@@ -1266,10 +1250,10 @@ void char_marisa::func10()
                 h_inerc = 2.0;
         }
 
-        if ( char_on_ground_down(this) )
+        if ( char_on_ground_down() )
         {
             set_seq(10);
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
@@ -1296,7 +1280,7 @@ void char_marisa::func10()
         break;
 
     case 320:
-        sub10func(this);
+        sub10func();
         if ( get_frame() > 1 )
         {
             h_inerc -= 2.0;
@@ -1313,7 +1297,7 @@ void char_marisa::func10()
         }
         break;
     case 321:
-        sub10func(this);
+        sub10func();
         if ( get_frame() > 1 )
         {
             h_inerc -= 0.5;
@@ -1332,7 +1316,7 @@ void char_marisa::func10()
         break;
 
     case 322:
-        sub10func(this);
+        sub10func();
 
         if ( get_frame() > 5 )
         {
@@ -1364,7 +1348,7 @@ void char_marisa::func10()
         }
         break;
     case 400:
-        sub10func(this);
+        sub10func();
 
         if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
             if ( input->keyDown(INP_B) == 0)
@@ -1378,7 +1362,7 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 5 )
                 {
                     field_190 = 1;
-                    add_card_energy(this, 10);
+                    add_card_energy( 10);
                     float t[4];
                     t[0] = (-10 * field_7D2) + field_7F0;
                     t[1] = 10;
@@ -1395,7 +1379,7 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 3 )
                 {
                     field_190 = 1;
-                    add_card_energy(this, 10);
+                    add_card_energy( 10);
                     float t[4];
                     t[0] = (-10 * field_7D2) + field_7F0;
                     t[1] = 7;
@@ -1427,12 +1411,12 @@ void char_marisa::func10()
         {
             sub_486FD0(25.0, -25.0);
             field_7D0 = 1;
-            spell_energy_spend(this, 200, 45);
+            spell_energy_spend( 200, 45);
         }
         break;
 
     case 401:
-        sub10func(this);
+        sub10func();
 
         if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
             if ( input->keyDown(INP_B) == 0 )
@@ -1447,7 +1431,7 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 5 )
                 {
                     field_190 = 1;
-                    add_card_energy(this, 10);
+                    add_card_energy( 10);
                     float t[4];
                     t[0] = (-10 * field_7D2) + field_7F0;
                     t[1] = 10;
@@ -1464,7 +1448,7 @@ void char_marisa::func10()
                 if ( (field_7D0 % 3) == 1 && field_7D2 < 3 )
                 {
                     field_190 = 1;
-                    add_card_energy(this, 10);
+                    add_card_energy( 10);
                     float t[4];
                     t[0] = (-10 * field_7D2) + field_7F0;
                     t[1] = 7;
@@ -1502,12 +1486,12 @@ void char_marisa::func10()
 
             sub_486FD0(-20.0, -55.0);
             field_7D0 = 1;
-            spell_energy_spend(this, 200, 45);
+            spell_energy_spend( 200, 45);
         }
         break;
 
     case 402:
-        sub10func(this);
+        sub10func();
         if ( input->keyDown(INP_B) == 0 )
             not_charge_attack = 0;
         if ( field_7D0 >= 0)
@@ -1519,7 +1503,7 @@ void char_marisa::func10()
             {
                 field_190 = 1;
                 play_sfx(0);
-                add_card_energy(this, 5);
+                add_card_energy( 5);
                 float t[3];
                 t[0] = (scene_rand() % 30) - 15.0;
                 t[1] = field_7D2*2 + 15;
@@ -1540,20 +1524,20 @@ void char_marisa::func10()
         if ( get_subseq() == 2 && get_frame_time() == 0  && get_frame() == 2 )
         {
             field_7D0 = 1;
-            spell_energy_spend(this, 200, 45);
+            spell_energy_spend( 200, 45);
             scene_add_effect(this, 62, 90*dir + x, y+70, dir, 1);
         }
         break;
 
     case 404:
         if ( get_subseq() == 3 )
-            sub10func(this);
+            sub10func();
         v_inerc -= v_force;
-        if ( char_on_ground_down(this) && get_subseq() < 3 )
+        if ( char_on_ground_down() && get_subseq() < 3 )
         {
             set_subseq(3);
             air_dash_cnt = 0;
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
@@ -1566,7 +1550,7 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 5 )
                     {
                         field_190 = 1;
-                        add_card_energy(this, 10);
+                        add_card_energy( 10);
                         float t[4];
                         t[0] = (-10 * field_7D2) + field_7F0;
                         t[1] = 10.0;
@@ -1583,7 +1567,7 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 3 )
                     {
                         field_190 = 1;
-                        add_card_energy(this, 10);
+                        add_card_energy( 10);
                         float t[4];
                         t[0] = (-10 * field_7D2) + field_7F0;
                         t[1] = 7.0;
@@ -1631,7 +1615,7 @@ void char_marisa::func10()
                 field_7F0 = 25; //sub_486FD0(25.0, 25.0);
 
                 field_7D0 = 1;
-                spell_energy_spend(this, 200, 45);
+                spell_energy_spend( 200, 45);
             }
 
             if ( get_subseq() == 3  && get_frame_time() == 0 && get_frame() == 0 && get_elaps_frames() == 0 )
@@ -1641,13 +1625,13 @@ void char_marisa::func10()
 
     case 406:
         if ( get_subseq() == 3 )
-            sub10func(this);
+            sub10func();
         v_inerc -= v_force;
-        if ( char_on_ground_down(this) && get_subseq() < 3 )
+        if ( char_on_ground_down() && get_subseq() < 3 )
         {
             set_subseq(3);
             air_dash_cnt = 0;
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
@@ -1661,7 +1645,7 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 5 )
                     {
                         field_190 = 1;
-                        add_card_energy(this, 10);
+                        add_card_energy( 10);
                         float t[4];
                         t[0] = (10 * field_7D2) + field_7F0;
                         t[1] = 10.0;
@@ -1678,7 +1662,7 @@ void char_marisa::func10()
                     if ( (field_7D0 %3) == 1 && field_7D2 < 3 )
                     {
                         field_190 = 1;
-                        add_card_energy(this, 10);
+                        add_card_energy( 10);
                         float t[4];
                         t[0] = (10 * field_7D2) + field_7F0;
                         t[1] = 7.0;
@@ -1724,14 +1708,14 @@ void char_marisa::func10()
                 sub_486FD0(60.0, 20.0);
 
                 field_7D0 = 1;
-                spell_energy_spend(this, 200, 45);
+                spell_energy_spend( 200, 45);
             }
             if ( get_subseq() == 3  && get_frame_time() == 0 && get_frame() == 0 && get_elaps_frames() == 0 )
                 set_seq(9);
         }
         break;
     case 408:
-        sub10func(this);
+        sub10func();
         h_inerc -= 0.75;
         if ( h_inerc < 0.0 )
             h_inerc = 0.0;
@@ -1751,18 +1735,18 @@ void char_marisa::func10()
     case 409:
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) )
+        if ( char_on_ground_down() )
         {
             set_seq(10);
             reset_forces();
-            y = getlvl_height(this);
+            y = getlvl_height();
         }
         else if ( process() )
             set_seq(9);
 
         break;
     case 410:
-        sub10func(this);
+        sub10func();
 
         if ( input->keyDown(INP_C) == 0)
             not_charge_attack = 0;
@@ -1775,9 +1759,9 @@ void char_marisa::func10()
                 field_7D4 = 20;
 
             play_sfx(2);
-            spell_energy_spend(this,200, 60);
+            spell_energy_spend(200, 60);
             field_190 = 1;
-            add_card_energy(this, 50);
+            add_card_energy( 50);
             if ( field_7D8 )
             {
                 float t[3];
@@ -1815,7 +1799,7 @@ void char_marisa::func10()
             next_subseq();
         break;
     case 411:
-        sub10func(this);
+        sub10func();
 
         if ( get_subseq() < 2 )
             if ( input->keyDown(INP_C) == 0)
@@ -1823,7 +1807,7 @@ void char_marisa::func10()
 
         if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
-            add_card_energy(this, 50);
+            add_card_energy( 50);
             field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
             if ( field_7D4 < -10 )
                 field_7D4 = -10;
@@ -1832,7 +1816,7 @@ void char_marisa::func10()
 
             play_sfx(4);
             field_190 = 1;
-            spell_energy_spend(this, 200, 60);
+            spell_energy_spend( 200, 60);
 
             float t[3];
             t[0] = 0;
@@ -1850,7 +1834,7 @@ void char_marisa::func10()
 
         break;
     case 412:
-        sub10func(this);
+        sub10func();
 
         if ( get_subseq() < 2 )
             if ( input->keyDown(INP_C) == 0)
@@ -1864,8 +1848,8 @@ void char_marisa::func10()
             t[1] = field_7DC / 40.0;
             t[2] = 0;
             field_190 = 1;
-            spell_energy_spend(this, 200, 60);
-            add_card_energy(this, 50);
+            spell_energy_spend( 200, 60);
+            add_card_energy( 50);
             addbullet(this, NULL,802, 70*dir + x, y+162, dir, 1, t, 3);
         }
 
@@ -1881,15 +1865,15 @@ void char_marisa::func10()
         break;
     case 414:
         if ( get_subseq() == 5 )
-            sub10func(this);
+            sub10func();
 
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) && get_subseq() < 5 )
+        if ( char_on_ground_down() && get_subseq() < 5 )
         {
             set_subseq(5);
             air_dash_cnt = 0;
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
@@ -1899,9 +1883,9 @@ void char_marisa::func10()
 
             if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
             {
-                spell_energy_spend(this, 200, 60);
+                spell_energy_spend( 200, 60);
                 field_190 = 1;
-                add_card_energy(this, 50);
+                add_card_energy( 50);
                 field_7D4 = -atan2_deg(enemy->getY() - y, (enemy->getX() - x) * dir);
                 if ( field_7D4 < -40 )
                     field_7D4 = -40;
@@ -1957,15 +1941,15 @@ void char_marisa::func10()
         break;
     case 415:
         if ( get_subseq() == 6 )
-            sub10func(this);
+            sub10func();
 
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) && get_subseq() < 6 )
+        if ( char_on_ground_down() && get_subseq() < 6 )
         {
             set_subseq(6);
             air_dash_cnt = 0;
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
         else
@@ -1978,8 +1962,8 @@ void char_marisa::func10()
             {
                 play_sfx(4);
                 field_190 = 1;
-                spell_energy_spend(this, 200, 60);
-                add_card_energy(this, 50);
+                spell_energy_spend( 200, 60);
+                add_card_energy( 50);
                 if ( field_7D8 == 1 )
                 {
                     float t[3];
@@ -2038,14 +2022,14 @@ void char_marisa::func10()
         break;
     case 416:
         if ( get_subseq() == 1 )
-            sub10func(this);
+            sub10func();
         if ( get_subseq() == 0 )
         {
             v_inerc -= v_force;
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
                 next_subseq();
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -2064,8 +2048,8 @@ void char_marisa::func10()
             v_force = 0.5;
 
             field_190 = 1;
-            spell_energy_spend(this, 200, 60);
-            add_card_energy(this, 50);
+            spell_energy_spend( 200, 60);
+            add_card_energy( 50);
 
             float t[3];
             t[0] = 60;
@@ -2075,7 +2059,7 @@ void char_marisa::func10()
         }
         break;
     case 418:
-        sub10func(this);
+        sub10func();
 
         h_inerc -= 0.5;
         if ( h_inerc < 0.0 )
@@ -2103,7 +2087,7 @@ void char_marisa::func10()
         break;
     case 500:
         if ( get_subseq() == 5 )
-            sub10func(this);
+            sub10func();
 
         field_18C = 0;
         if ( get_subseq() == 1 )
@@ -2137,9 +2121,9 @@ void char_marisa::func10()
             h_inerc += 0.1;
             if ( h_inerc > -1.0 )
                 h_inerc = -1.0;
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 set_subseq(5);
             }
@@ -2158,12 +2142,12 @@ void char_marisa::func10()
                 tmp[1] = 0;
                 tmp[2] = 0;
                 addbullet(this,NULL, 849, x + 109*dir, y + 84, dir, 1, tmp, 3);
-                if ( getlvl_height(this) == y )
+                if ( getlvl_height() == y )
                     scene_add_effect(this, 128, x + dir * 200, y, dir, -1);
 
                 h_inerc = 20.0;
-                spell_energy_spend(this, 200, 120);
-                add_card_energy(this, 50);
+                spell_energy_spend( 200, 120);
+                add_card_energy( 50);
                 play_sfx(6);
             }
             else if (get_subseq() == 3)
@@ -2175,15 +2159,15 @@ void char_marisa::func10()
         break;
     case 504:
         if ( get_subseq() == 3 )
-            sub10func(this);
+            sub10func();
 
         field_18C = 0;
         if ( get_subseq() >= 0 && get_subseq() <= 2 )
         {
             v_inerc -= v_force;
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 set_subseq(3);
             }
@@ -2200,7 +2184,7 @@ void char_marisa::func10()
         uint32_t sq = get_subseq();
 
         if ( sq == 0 || sq == 4 )
-            sub10func(this);
+            sub10func();
 
         field_18C = 1;
 
@@ -2231,10 +2215,10 @@ void char_marisa::func10()
                 h_inerc = 0;
         }
 
-        if ( get_subseq() == 3 && char_on_ground_down(this) )
+        if ( get_subseq() == 3 && char_on_ground_down() )
         {
             next_subseq();
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
 
@@ -2251,8 +2235,8 @@ void char_marisa::func10()
             addbullet(this,NULL,849, x + dir*61, y + 232, dir,1,tmp,3);
             scene_add_effect(this, 127, x, y, dir, -1);
             play_sfx(5);
-            spell_energy_spend(this, 200, 120);
-            add_card_energy(this, 50);
+            spell_energy_spend( 200, 120);
+            add_card_energy( 50);
             h_inerc = 12.5;
             v_inerc = 17.5;
             v_force = 0.6;
@@ -2266,7 +2250,7 @@ void char_marisa::func10()
 
         if ( sq == 0 || sq == 4 )
         {
-            sub10func(this);
+            sub10func();
         }
         field_18C = 1;
         if ( sq == 1 )
@@ -2295,10 +2279,10 @@ void char_marisa::func10()
                 h_inerc = 0;
         }
 
-        if ( get_subseq() == 3 && char_on_ground_down(this) )
+        if ( get_subseq() == 3 && char_on_ground_down() )
         {
             next_subseq();
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
         }
 
@@ -2315,8 +2299,8 @@ void char_marisa::func10()
             addbullet(this,NULL,849, x + dir*61, y + 232, dir,1,tmp,3);
             scene_add_effect(this, 127, x, y, dir, -1);
             play_sfx(5);
-            spell_energy_spend(this, 200, 120);
-            add_card_energy(this, 50);
+            spell_energy_spend( 200, 120);
+            add_card_energy( 50);
             h_inerc = 15.0;
             v_inerc = 25.0;
             v_force = 0.6;
@@ -2325,7 +2309,7 @@ void char_marisa::func10()
     }
     break;
     case 540:
-        sub10func(this);
+        sub10func();
         field_18C = 2;
         if ( !keyDown(INP_B))
             not_charge_attack = 0;
@@ -2333,8 +2317,8 @@ void char_marisa::func10()
             set_seq(0);
         if ( get_subseq() == 2 && get_frame_time() == 0  && get_frame() == 1 )
         {
-            add_card_energy(this, 50);
-            spell_energy_spend(this, 200, 120);
+            add_card_energy( 50);
+            spell_energy_spend( 200, 120);
             field_190 = 1;
             float tmp[3];
             tmp[0] = 4;
@@ -2352,7 +2336,7 @@ void char_marisa::func10()
         }
         break;
     case 541:
-        sub10func(this);
+        sub10func();
         field_18C = 2;
         if ( !keyDown(INP_C))
             not_charge_attack = 0;
@@ -2360,8 +2344,8 @@ void char_marisa::func10()
             set_seq(0);
         if ( get_subseq() == 2 && get_frame_time() == 0  && get_frame() == 1 )
         {
-            add_card_energy(this, 50);
-            spell_energy_spend(this, 200, 120);
+            add_card_energy( 50);
+            spell_energy_spend( 200, 120);
             field_190 = 1;
             float tmp[3];
             tmp[0] = 4;
@@ -2380,14 +2364,14 @@ void char_marisa::func10()
         break;
     case 542:
         if ( get_subseq() == 3 )
-            sub10func(this);
+            sub10func();
         else
         {
             v_inerc -= v_force;
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
                 reset_forces();
-                y = getlvl_height(this);
+                y = getlvl_height();
                 set_subseq(3);
                 break;
             }
@@ -2405,8 +2389,8 @@ void char_marisa::func10()
             {
                 if (get_frame() == 1)
                 {
-                    add_card_energy(this, 50);
-                    spell_energy_spend(this, 200, 120);
+                    add_card_energy( 50);
+                    spell_energy_spend( 200, 120);
                     field_190 = 1;
                     float tmp[3];
                     tmp[0] = 4;
@@ -2430,14 +2414,14 @@ void char_marisa::func10()
         break;
     case 543:
         if ( get_subseq() == 3 )
-            sub10func(this);
+            sub10func();
         else
         {
             v_inerc -= v_force;
-            if ( char_on_ground_down(this) )
+            if ( char_on_ground_down() )
             {
                 reset_forces();
-                y = getlvl_height(this);
+                y = getlvl_height();
                 set_subseq(3);
                 break;
             }
@@ -2455,8 +2439,8 @@ void char_marisa::func10()
             {
                 if (get_frame() == 1)
                 {
-                    add_card_energy(this, 50);
-                    spell_energy_spend(this, 200, 120);
+                    add_card_energy( 50);
+                    spell_energy_spend( 200, 120);
                     field_190 = 1;
                     float tmp[3];
                     tmp[0] = 4;
@@ -2479,7 +2463,7 @@ void char_marisa::func10()
         }
         break;
     case 560:
-        sub10func(this);
+        sub10func();
 
         field_18C = 3;
         if ( !get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 9) )
@@ -2544,8 +2528,8 @@ void char_marisa::func10()
         if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
             field_7D0 = 1;
-            spell_energy_spend(this, 200, 120);
-            add_card_energy(this, 50);
+            spell_energy_spend( 200, 120);
+            add_card_energy( 50);
             sub_486FD0(10.0, -10.0);
         }
         if ( get_subseq() == 3 )
@@ -2561,7 +2545,7 @@ void char_marisa::func10()
         }
         break;
     case 561:
-        sub10func(this);
+        sub10func();
 
         field_18C = 3;
         if ( !get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 9) )
@@ -2622,8 +2606,8 @@ void char_marisa::func10()
         if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
             field_7D0 = 1;
-            spell_energy_spend(this, 200, 120);
-            add_card_energy(this, 50);
+            spell_energy_spend( 200, 120);
+            add_card_energy( 50);
             sub_486FD0(10.0, -10.0);
         }
         if ( get_subseq() == 3 )
@@ -2640,15 +2624,15 @@ void char_marisa::func10()
         break;
     case 562:
         if ( get_subseq() == 5 )
-            sub10func(this);
+            sub10func();
         field_18C = 3;
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) && get_subseq() < 5 )
+        if ( char_on_ground_down() && get_subseq() < 5 )
         {
             set_subseq(5);
             air_dash_cnt = 0;
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
             break;
         }
@@ -2715,8 +2699,8 @@ void char_marisa::func10()
             if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
             {
                 field_7D0 = 1;
-                spell_energy_spend(this, 200, 120);
-                add_card_energy(this, 50);
+                spell_energy_spend( 200, 120);
+                add_card_energy( 50);
                 sub_486FD0(10.0, -10.0);
             }
             if ( get_subseq() == 3 )
@@ -2736,15 +2720,15 @@ void char_marisa::func10()
         break;
     case 563:
         if ( get_subseq() == 5 )
-            sub10func(this);
+            sub10func();
         field_18C = 3;
         v_inerc -= v_force;
 
-        if ( char_on_ground_down(this) && get_subseq() < 5 )
+        if ( char_on_ground_down() && get_subseq() < 5 )
         {
             set_subseq(5);
             air_dash_cnt = 0;
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
             break;
         }
@@ -2810,8 +2794,8 @@ void char_marisa::func10()
             if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
             {
                 field_7D0 = 1;
-                spell_energy_spend(this, 200, 120);
-                add_card_energy(this, 50);
+                spell_energy_spend( 200, 120);
+                add_card_energy( 50);
                 sub_486FD0(10.0, -10.0);
             }
             if ( get_subseq() == 3 )
@@ -2854,7 +2838,7 @@ void char_marisa::func20()
     bool cu = (fflags & FF_HJC) != 0;
     int32_t sq = get_seq();
 
-    if ( !check_AB_pressed(this) )
+    if ( !check_AB_pressed() )
     {
         if ( cc || cu )
         {
@@ -2865,21 +2849,21 @@ void char_marisa::func20()
                return;
              }
              else*/
-            if ( char_on_ground_flag(this) )
+            if ( char_on_ground_flag() )
             {
-                if ( (cu && cprior >= 10 && hi_jump_after_move(this))
-                        || border_escape_ground(this)
-                        || hi_jump(this, cprior, cu)
-                        || fw_bk_dash_ground(this, cprior, cu) )
+                if ( (cu && cprior >= 10 && hi_jump_after_move())
+                        || border_escape_ground()
+                        || hi_jump(cprior, cu)
+                        || fw_bk_dash_ground(cprior, cu) )
                     return;
             }
             else
             {
-                int8_t mx = (weather_get() == 10) + 2;
-                if ( border_escape_air(this)
-                        || fwd_dash_air(this, cprior, cu, mx, 2)
-                        || bkg_dash_air(this, cprior, cu, mx, 2)
-                        || flying_air(this, cprior, cu, mx) )
+                int8_t mx = (weather_id == WEATHER_TEMPEST) + 2;
+                if ( border_escape_air()
+                        || fwd_dash_air(cprior, cu, mx, 2)
+                        || bkg_dash_air(cprior, cu, mx, 2)
+                        || flying_air(cprior, cu, mx) )
                     return;
             }
         }
@@ -2890,7 +2874,7 @@ void char_marisa::func20()
             {
                 if (input->keyHit(INP_BC))
                 {
-                    if (char_on_ground_flag(this))
+                    if (char_on_ground_flag())
                     {
 
                     }
@@ -2900,11 +2884,11 @@ void char_marisa::func20()
                     }
                 }
 
-                if (pres_comb && spell200_seq299_300_field190_0_3(this) )
+                if (pres_comb && spell200_seq299_300_field190_0_3() )
                 {
-                    if (char_on_ground_flag(this))
+                    if (char_on_ground_flag())
                     {
-                        if ( spell200_seq299_300_field190_0_3(this) )
+                        if ( spell200_seq299_300_field190_0_3() )
 
                             if ( pres_comb & PCOMB_623C )
                             {
@@ -2917,8 +2901,8 @@ void char_marisa::func20()
                                             field_4C8++;
                                             field_801 = 1;
                                         }
-                                        sub_4834F0(this);
-                                        sub_4873B0(this, 531, cprior);
+                                        sub_4834F0();
+                                        sub_4873B0( 531, cprior);
                                         return;
                                     }
                                 }
@@ -2931,8 +2915,8 @@ void char_marisa::func20()
                                             field_4C8++;
                                             field_801 = 1;
                                         }
-                                        sub_4834F0(this);
-                                        sub_4873B0(this, 526, cprior);
+                                        sub_4834F0();
+                                        sub_4873B0( 526, cprior);
                                         return;
                                     }
                                 }
@@ -2943,8 +2927,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_801 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 521, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 521, cprior);
                                     return;
                                 }
                             }
@@ -2959,8 +2943,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_801 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 530, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 530, cprior);
                                     return;
                                 }
                             }
@@ -2973,8 +2957,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_801 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 525, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 525, cprior);
                                     return;
                                 }
                             }
@@ -2985,8 +2969,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_801 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 520, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 520, cprior);
                                 return;
                             }
                         }
@@ -3001,8 +2985,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_803 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 571, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 571, cprior);
                                     return;
                                 }
                             }
@@ -3015,8 +2999,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_803 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 566, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 566, cprior);
                                     return;
                                 }
                             }
@@ -3027,8 +3011,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_803 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 561, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 561, cprior);
                                 return;
                             }
                         }
@@ -3043,8 +3027,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_803 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 570, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 570, cprior);
                                     return;
                                 }
                             }
@@ -3057,8 +3041,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_803 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 565, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 565, cprior);
                                     return;
                                 }
                             }
@@ -3069,8 +3053,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_803 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 560, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 560, cprior);
                                 return;
                             }
                         }
@@ -3085,8 +3069,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_800 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 511, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 511, cprior);
                                     return;
                                 }
                             }
@@ -3099,8 +3083,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_800 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 506, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 506, cprior);
                                     return;
                                 }
                             }
@@ -3111,8 +3095,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_800 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 500, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 500, cprior);
                                 return;
                             }
                         }
@@ -3127,8 +3111,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_800 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 510, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 510, cprior);
                                     return;
                                 }
                             }
@@ -3141,8 +3125,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_800 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 505, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 505, cprior);
                                     return;
                                 }
                             }
@@ -3153,8 +3137,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_800 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 500, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 500, cprior);
                                 return;
                             }
                         }
@@ -3169,8 +3153,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 551, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 551, cprior);
                                     return;
                                 }
                             }
@@ -3183,8 +3167,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 546, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 546, cprior);
                                     return;
                                 }
                             }
@@ -3195,8 +3179,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_802 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 541, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 541, cprior);
                                 return;
                             }
                         }
@@ -3211,8 +3195,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 550, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 550, cprior);
                                     return;
                                 }
                             }
@@ -3225,8 +3209,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 545, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 545, cprior);
                                     return;
                                 }
                             }
@@ -3237,8 +3221,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_802 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 540, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 540, cprior);
                                 return;
                             }
                         }
@@ -3256,8 +3240,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_803 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 573, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 573, cprior);
                                     return;
                                 }
                             }
@@ -3270,8 +3254,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_803 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 568, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 568, cprior);
                                     return;
                                 }
                             }
@@ -3282,8 +3266,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_803 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 563, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 563, cprior);
                                 return;
                             }
                         }
@@ -3298,8 +3282,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_803 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 572, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 572, cprior);
                                     return;
                                 }
                             }
@@ -3312,8 +3296,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_803 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 567, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 567, cprior);
                                     return;
                                 }
                             }
@@ -3324,8 +3308,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_803 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 562, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 562, cprior);
                                 return;
                             }
                         }
@@ -3340,8 +3324,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_800 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 513, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 513, cprior);
                                     return;
                                 }
                             }
@@ -3354,8 +3338,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_800 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 506, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 506, cprior);
                                     return;
                                 }
                             }
@@ -3366,8 +3350,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_800 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 500, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 500, cprior);
                                 return;
                             }
                         }
@@ -3382,8 +3366,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_800 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 512, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 512, cprior);
                                     return;
                                 }
                             }
@@ -3396,8 +3380,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_800 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 505, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 505, cprior);
                                     return;
                                 }
                             }
@@ -3408,8 +3392,8 @@ void char_marisa::func20()
                                     field_4C8++;
                                     field_800 = 1;
                                 }
-                                sub_4834F0(this);
-                                sub_4873B0(this, 500, cprior);
+                                sub_4834F0();
+                                sub_4873B0( 500, cprior);
                                 return;
                             }
                         }
@@ -3424,8 +3408,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 553, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 553, cprior);
                                     return;
                                 }
                             }
@@ -3438,8 +3422,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 548, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 548, cprior);
                                     return;
                                 }
                             }
@@ -3452,8 +3436,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 543, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 543, cprior);
                                     return;
                                 }
                             }
@@ -3469,8 +3453,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 552, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 552, cprior);
                                     return;
                                 }
                             }
@@ -3483,8 +3467,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 547, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 547, cprior);
                                     return;
                                 }
                             }
@@ -3497,8 +3481,8 @@ void char_marisa::func20()
                                         field_4C8++;
                                         field_802 = 1;
                                     }
-                                    sub_4834F0(this);
-                                    sub_4873B0(this, 542, cprior);
+                                    sub_4834F0();
+                                    sub_4873B0( 542, cprior);
                                     return;
                                 }
                             }
@@ -3509,7 +3493,7 @@ void char_marisa::func20()
 
             if (input->keyHit(INP_A))
             {
-                if (char_on_ground_flag(this)) // On Ground
+                if (char_on_ground_flag()) // On Ground
                 {
                     if ( sq == 200 && input->gY() == 0 &&
                             input->gX(dir) > 0 &&
@@ -3642,7 +3626,7 @@ void char_marisa::func20()
 
             if (input->keyHit(INP_B))
             {
-                if (char_on_ground_flag(this)) // On Ground
+                if (char_on_ground_flag()) // On Ground
                 {
                     if ( sq == 200 && input->gY() == 0 &&  input->gX(dir) > 0 )  // 66B
                     {
@@ -3749,7 +3733,7 @@ void char_marisa::func20()
             }
             if (input->keyHit(INP_C))
             {
-                if (char_on_ground_flag(this)) // On Ground
+                if (char_on_ground_flag()) // On Ground
                 {
                     if ( sq == 200 && input->gY() == 0 &&  input->gX(dir) > 0 )  // 66B
                     {
@@ -3901,9 +3885,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_800 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v14);
-                      sub_4873B0(this, 500, v147);
+                      sub_4873B0( 500, v147);
                       break;
                     case 101:
                       if ( !field_801 )
@@ -3911,9 +3895,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_801 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v15);
-                      sub_4873B0(this, 520, v147);
+                      sub_4873B0( 520, v147);
                       break;
                     case 102:
                       if ( !field_802 )
@@ -3921,9 +3905,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_802 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v16);
-                      sub_4873B0(this, 540, v147);
+                      sub_4873B0( 540, v147);
                       break;
                     case 103:
                       if ( !field_803 )
@@ -3931,9 +3915,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_803 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v17);
-                      sub_4873B0(this, 560, v147);
+                      sub_4873B0( 560, v147);
                       break;
                     case 104:
                       if ( !field_800 )
@@ -3941,9 +3925,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_800 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v18);
-                      sub_4873B0(this, 505, v147);
+                      sub_4873B0( 505, v147);
                       break;
                     case 105:
                       if ( !field_801 )
@@ -3951,9 +3935,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_801 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v19);
-                      sub_4873B0(this, 525, v147);
+                      sub_4873B0( 525, v147);
                       break;
                     case 106:
                       if ( !field_802 )
@@ -3961,9 +3945,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_802 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v20);
-                      sub_4873B0(this, 545, v147);
+                      sub_4873B0( 545, v147);
                       break;
                     case 107:
                       if ( !field_803 )
@@ -3971,9 +3955,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_803 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v21);
-                      sub_4873B0(this, 565, v147);
+                      sub_4873B0( 565, v147);
                       break;
                     case 108:
                       if ( !field_800 )
@@ -3981,9 +3965,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_800 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v22);
-                      sub_4873B0(this, 510, v147);
+                      sub_4873B0( 510, v147);
                       break;
                     case 109:
                       if ( !field_801 )
@@ -3991,9 +3975,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_801 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v23);
-                      sub_4873B0(this, 530, v147);
+                      sub_4873B0( 530, v147);
                       break;
                     case 110:
                       if ( !field_802 )
@@ -4001,9 +3985,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_802 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v24);
-                      sub_4873B0(this, 550, v147);
+                      sub_4873B0( 550, v147);
                       break;
                     case 111:
                       if ( !field_803 )
@@ -4011,9 +3995,9 @@ void char_marisa::func20()
                         field_4C8++;
                         field_803 = 1;
                       }
-                      sub_4834F0(this);
+                      sub_4834F0();
                       sub_488E70(v1, v25);
-                      sub_4873B0(this, 570, v147);
+                      sub_4873B0( 570, v147);
                       break;
                     default:
                       goto LABEL_77;
@@ -4137,9 +4121,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_800 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v54);
-                  sub_4873B0(this, 500, v147);
+                  sub_4873B0( 500, v147);
                   break;
                 case 102:
                   if ( !field_802 )
@@ -4147,9 +4131,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_802 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v55);
-                  sub_4873B0(this, 542, v147);
+                  sub_4873B0( 542, v147);
                   break;
                 case 103:
                   if ( !field_803 )
@@ -4157,9 +4141,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_803 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v56);
-                  sub_4873B0(this, 562, v147);
+                  sub_4873B0( 562, v147);
                   break;
                 case 104:
                   if ( !field_800 )
@@ -4167,9 +4151,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_800 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v57);
-                  sub_4873B0(this, 505, v147);
+                  sub_4873B0( 505, v147);
                   break;
                 case 106:
                   if ( SBYTE2(field_6A8) < 1 )
@@ -4179,9 +4163,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_802 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v58);
-                  sub_4873B0(this, 547, v147);
+                  sub_4873B0( 547, v147);
                   break;
                 case 107:
                   if ( !field_803 )
@@ -4189,9 +4173,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_803 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v59);
-                  sub_4873B0(this, 567, v147);
+                  sub_4873B0( 567, v147);
                   break;
                 case 108:
                   if ( !field_800 )
@@ -4199,9 +4183,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_800 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v60);
-                  sub_4873B0(this, 512, v147);
+                  sub_4873B0( 512, v147);
                   break;
                 case 110:
                   if ( SBYTE2(field_6AC) < 1 )
@@ -4211,9 +4195,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_802 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v61);
-                  sub_4873B0(this, 552, v147);
+                  sub_4873B0( 552, v147);
                   break;
                 case 111:
                   if ( !field_803 )
@@ -4221,9 +4205,9 @@ void char_marisa::func20()
                     field_4C8++;
                     field_803 = 1;
                   }
-                  sub_4834F0(this);
+                  sub_4834F0();
                   sub_488E70(v1, v62);
-                  sub_4873B0(this, 572, v147);
+                  sub_4873B0( 572, v147);
                   break;
                 default:
                   goto LABEL_341;

@@ -243,11 +243,28 @@ class c_meta : public moveable
     uint16_t get_cprior(uint32_t idx);
     uint16_t get_prior(uint32_t idx);
 
+    void set_mlist_hitflag(int8_t flag );
+    int32_t sub_464240();
+    double sub_4636B0();
+    float sub_464270();
+    void sub_4647B0(c_meta *enm);
+    void sub_464890(c_meta *enm);
+
+    void box_coll_get(box_box *box);
+
+    void set_custom_box(int32_t x1, int32_t y1, int32_t x2, int32_t y2, float angl, int32_t dx, int32_t dy);
+
+    void frame_box_fullflip( frame_box *src, frame_box *dst);
+    void frame_box_flip(frame_box *src, frame_box *dst);
+
+    void scn_char_ss2();
+
     seq *get_seq(uint32_t idx);
 
 };
 
+void frame_box_move_rotate(frame_box *src, int16_t angle, int16_t x_c, int16_t y_c, frame_box *dst1, frame_box *dst2);
 
-void set_custom_box(c_meta *met, int32_t x1, int32_t y1, int32_t x2, int32_t y2, float angl, int32_t dx, int32_t dy);
+
 
 #endif // META_H_INCLUDED

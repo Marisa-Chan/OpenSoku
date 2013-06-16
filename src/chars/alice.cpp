@@ -11,10 +11,10 @@ char_alice::char_alice(inp_ab *func, uint8_t pal):
 {
     char_id = CHAR_ID_ALICE;
     pgp->load_dat("alice",pal);
-    char_loadsfx(this,"alice");
+    char_loadsfx("alice");
     cards_load_cards(&chr_cards,"alice");
     load_face("alice");
-};
+}
 
 c_bullet *char_alice::new_bullet()
 {
@@ -37,43 +37,43 @@ void char_alice::func10()
     switch(sq)
     {
     case 0:
-        sub10func(this);
+        sub10func();
         if (h_inerc == 0)
             field_49A = 0;
         stopping(0.5);
         process();
         break;
     case 1:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         if (process() && get_frame() == 0)
             set_seq(2);
         break;
     case 2:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         process();
         break;
     case 3:
-        sub10func(this);
+        sub10func();
         stopping(0.5);
         if (process() && get_frame() == 0)
             set_seq(0);
         break;
     case 4:
-        sub10func(this);
-        char_h_move(this, 6.0);
+        sub10func();
+        char_h_move( 6.0);
         process();
         break;
     case 5:
-        sub10func(this);
-        char_h_move(this, -6.0);
+        sub10func();
+        char_h_move( -6.0);
         process();
         break;
     case 6:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -81,10 +81,10 @@ void char_alice::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -103,7 +103,7 @@ void char_alice::func10()
     case 7:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -112,10 +112,10 @@ void char_alice::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -130,14 +130,14 @@ void char_alice::func10()
         {
             v_inerc = 15.0;
             v_force = 0.65;
-            char_h_move(this, 5.0);
+            char_h_move( 5.0);
             field_49A = 0;
         }
         break;
     case 8:
         if (get_subseq() == 0)
         {
-            sub10func(this);
+            sub10func();
             if (field_49A == 0)
                 reset_forces();
         }
@@ -146,10 +146,10 @@ void char_alice::func10()
         {
             v_inerc -=v_force;
 
-            if (char_on_ground_down(this))
+            if (char_on_ground_down())
             {
                 set_seq(10);
-                y = getlvl_height(this);
+                y = getlvl_height();
                 reset_forces();
                 break;
             }
@@ -164,7 +164,7 @@ void char_alice::func10()
         {
             v_inerc = 15.0;
             v_force = 0.65;
-            char_h_move(this, -5.0);
+            char_h_move( -5.0);
         }
         break;
     case 9:
@@ -173,10 +173,10 @@ void char_alice::func10()
 
         v_inerc -=v_force;
 
-        if (char_on_ground_down(this))
+        if (char_on_ground_down())
         {
             set_seq(10);
-            y = getlvl_height(this);
+            y = getlvl_height();
             reset_forces();
             break;
         }
@@ -184,7 +184,7 @@ void char_alice::func10()
         process();
         break;
     case 10:
-        sub10func(this);
+        sub10func();
         reset_forces();
         if (process())
         {
@@ -195,7 +195,7 @@ void char_alice::func10()
         }
         break;
     case 199:
-        sub10func(this);
+        sub10func();
         if ( process() )
         {
 
@@ -222,7 +222,7 @@ void char_alice::func10()
         }
         break;
     case 401:
-        sub10func(this);
+        sub10func();
         if ( !keyDown(INP_B) )
             not_charge_attack = 0;
         if ( process() )
@@ -237,8 +237,8 @@ void char_alice::func10()
             addbullet(this, NULL, 803,x - 74*dir, y + 104, dir, 1,tmp,3 );
             play_sfx(2);
             field_190 = 1;
-            spell_energy_spend(this, 200, 45);
-            add_card_energy(this, 30);
+            spell_energy_spend( 200, 45);
+            add_card_energy( 30);
         }
 
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 4 )
@@ -304,7 +304,7 @@ void char_alice::func20()
     bool cu = (fflags & FF_HJC) != 0;
     //int32_t sq = get_seq();
 
-    if ( !check_AB_pressed(this) ) // !sub_4870A0(a1, v2) - AB input check
+    if ( !check_AB_pressed() ) // !sub_4870A0(a1, v2) - AB input check
     {
         if ( cc || cu )
         {
@@ -315,21 +315,21 @@ void char_alice::func20()
                return;
              }
              else*/
-            if ( char_on_ground_flag(this) )
+            if ( char_on_ground_flag() )
             {
-                if ( (cu && cprior >= 10 && hi_jump_after_move(this))
-                        || border_escape_ground(this)
-                        || hi_jump(this, cprior, cu)
-                        || fw_bk_dash_ground(this, cprior, cu) )
+                if ( (cu && cprior >= 10 && hi_jump_after_move())
+                        || border_escape_ground()
+                        || hi_jump(cprior, cu)
+                        || fw_bk_dash_ground(cprior, cu) )
                     return;
             }
             else
             {
-                int8_t mx = (weather_get() == 10) + 2;
-                if ( border_escape_air(this)
-                        || fwd_dash_air(this, cprior, cu, mx, 2)
-                        || bkg_dash_air(this, cprior, cu, mx, 2)
-                        || flying_air(this, cprior, cu, mx) )
+                int8_t mx = (weather_id == WEATHER_TEMPEST) + 2;
+                if ( border_escape_air()
+                        || fwd_dash_air(cprior, cu, mx, 2)
+                        || bkg_dash_air(cprior, cu, mx, 2)
+                        || flying_air(cprior, cu, mx) )
                     return;
             }
         }
@@ -337,7 +337,7 @@ void char_alice::func20()
         {
             if (input->keyHit(INP_B))
             {
-                if (char_on_ground_flag(this)) // On Ground
+                if (char_on_ground_flag()) // On Ground
                 {
                     if (gX(dir) > 0 && gY() == 0)
                     {

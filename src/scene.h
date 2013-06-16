@@ -9,16 +9,10 @@ using namespace std;
 
 
 #define CHAR_PADDING  40
-#define BKG_WIDTH     1280
 #define BKG_HOR_PAD   60.0
 #define BKG_VERT_POS  860.0
 
-enum s_border
-{
-    BORD_LEFT  = 1,
-    BORD_CENT  = 0,
-    BORD_RIGHT = -1
-};
+
 
 struct s_camera
 {
@@ -32,16 +26,48 @@ class background;
 
 
 
-
-
 class c_scene
 {
     private:
 
     s_camera cam;
 
-    void sub_478C30();
-    void sub_470190();
+    void upd_practice_efx_wfx_bkg();
+    void upd_wfx_bkg_sky();
+
+    bool sub_47AD60(c_meta *plr, c_meta *enm);
+    bool sub_479D50(c_meta *p1, c_meta *p2);
+    bool sub_479720(frame_box *a1, frame_box *a2, frame_box *b1, frame_box *b2);
+    void sub_479250(frame_box *a2, frame_box *a3, frame_box *a4, frame_box *a5);
+    void scene_set_ibox(frame_box *a2, frame_box *a3);
+    void sub_479200(frame_box *a1, frame_box *a2, frame_box *a3);
+    bool sub_479420(frame_box *a1, frame_box *a2, frame_box *a3);
+    bool sub_479650(c_meta *p1, c_meta *p2);
+    bool sub_479BC0(c_meta *p1, c_meta *p2);
+    bool sub_47BD80(c_meta *plr, char_c *enm);
+    bool sub_47ABE0(c_meta *plr, c_meta *enm);
+    bool sub_47AAA0(c_meta *plr, char_c *enm);
+    void scene_add_effect_ibox(int32_t idx, int8_t dir);
+    bool sub_47BBA0(c_meta *plr, char_c *enm);
+    void sub_47A060(c_meta *plr, char_c *enm);
+    void sub_478FC0(char_c *plr, char_c *enm);
+    bool sub_47B5A0(c_meta *plr, char_c *enm);
+    void sub_47A980(c_meta *plr, char_c *enm);
+    bool sub_47B8F0(c_meta *plr, char_c *enm);
+    void sub_47BE70(c_meta *plr, char_c *enm);
+    bool sub_47C080(c_meta *plr, c_meta *enm);
+    char sub_47AC70(c_meta *plr, c_meta *enm);
+    void sub_47BFA0(c_meta *plr, c_meta *enm);
+    bool sub_47AD00(c_meta *plr, c_meta *enm);
+    bool scene_collid(box_box *b1, box_box *b2);
+    void sub_47C180();
+    void sub_47C430();
+
+    void scene_subfunc1();
+    void scene_subfunc2();
+    void scene_check_collisions();
+    void scene_subfunc4();
+    void scene_subfunc5();
 
     public:
 
@@ -84,12 +110,7 @@ class c_scene
 
 
 
-s_border get_border_near(char_c *chr);
-float getlvl_height(moveable *chr);
-float getlvl_height(moveable *chr, float dx);
-void setlvl_height_rng(int32_t from, int32_t to, float lvl);
 
-bool char_on_ground(char_c *chr);
 bool char_on_ground_flag(char_c *chr);
 bool char_on_ground_down(char_c *chr);
 void char_xy_pos_calculation(char_c *chr);
@@ -99,7 +120,6 @@ void scene_load_sounds();
 void scene_play_sfx(uint32_t idx);
 
 void scene_add_effect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order);
-void scene_add_effect_ibox(c_scene *scn, int32_t idx, int8_t dir);
 c_scene_sp *scene_get_sp();
 
 
@@ -113,5 +133,8 @@ void time_count_set(int32_t st);
 
 c_scene *scene_new_scene(background *bg, char_c *p1, char_c *p2);
 c_scene *scene_get_scene();
+
+bool sub_479510(frame_box *a1, frame_box *a2, int32_t x, int32_t y);
+bool sub_4795A0(int32_t x11, int32_t y11, int32_t x12, int32_t y12, int32_t x21, int32_t y21, int32_t x22, int32_t y22);
 
 #endif // SCENE_H_INCLUDED

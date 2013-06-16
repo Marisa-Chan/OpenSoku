@@ -7,6 +7,9 @@ class alice_bullets: public c_bullet
 
     void func10();
     void set_seq_params(); //func15
+
+    bool sub_5269B0();
+    bool sub_526870(uint16_t subseq);
 };
 
 #endif // ALICE_CPP_INCLUDED
