@@ -3950,6 +3950,11 @@ void char_c::sub_4834F0()
     weather_time_mul(0.9);
 }
 
+bool char_c::sub_469710()
+{
+  return get_seq() >= 197 && get_seq() < 200;
+}
+
 void char_c::sub_4873B0(int32_t seq, int32_t smt)
 {
     if ( smt >= 10 )

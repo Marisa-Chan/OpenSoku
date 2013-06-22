@@ -22,23 +22,27 @@ c_meta::c_meta(char_graph *_pgp)
 }
 
 c_meta::c_meta():
-c_meta(NULL)
+    c_meta(NULL)
 {
 }
 
 void c_meta::set_seq(uint32_t idx)
 {
     // printf("%d\n",idx);
-    if (pgp->get_seq(idx))
-    {
-        index = idx;
-        sprite.set_seq(pgp->get_seq(idx));
-    }
+    if (pgp)
+        if (pgp->get_seq(idx))
+        {
+            index = idx;
+            sprite.set_seq(pgp->get_seq(idx));
+        }
 }
 
 seq *c_meta::get_seq(uint32_t idx)
 {
-    return pgp->get_seq(idx);
+    if (pgp)
+        return pgp->get_seq(idx);
+    else
+        return NULL;
 }
 
 bool c_meta::process(bool ignore_loop)
@@ -362,34 +366,34 @@ void c_meta::frame_box_flip(frame_box *src, frame_box *dst)
 
 void c_meta::set_custom_box(int32_t x1, int32_t y1, int32_t x2, int32_t y2, float angl, int32_t dx, int32_t dy)
 {
-  if (!cust_box)
-    cust_box = new custom_box;
+    if (!cust_box)
+        cust_box = new custom_box;
 
-  if (x1 <= x2)
-  {
-      cust_box->box.x1 = x1;
-      cust_box->box.x2 = x2;
-  }
-  else
-  {
-      cust_box->box.x1 = x2;
-      cust_box->box.x2 = x1;
-  }
+    if (x1 <= x2)
+    {
+        cust_box->box.x1 = x1;
+        cust_box->box.x2 = x2;
+    }
+    else
+    {
+        cust_box->box.x1 = x2;
+        cust_box->box.x2 = x1;
+    }
 
-  if (y1 <= y2)
-  {
-      cust_box->box.y1 = y1;
-      cust_box->box.y2 = y2;
-  }
-  else
-  {
-      cust_box->box.y1 = y2;
-      cust_box->box.y2 = y1;
-  }
+    if (y1 <= y2)
+    {
+        cust_box->box.y1 = y1;
+        cust_box->box.y2 = y2;
+    }
+    else
+    {
+        cust_box->box.y1 = y2;
+        cust_box->box.y2 = y1;
+    }
 
-  cust_box->angle = angl;
-  cust_box->c_x = dx;
-  cust_box->c_y = dy;
+    cust_box->angle = angl;
+    cust_box->c_x = dx;
+    cust_box->c_y = dy;
 }
 
 
@@ -505,16 +509,16 @@ void c_meta::scn_char_ss2()
         }
     }
 
-  if ( cust_box )
-  {
-      if (cust_box->angle != 0)
-      {
-          frame_box tmp,tmp2;
-          atk_area_of[atk_box_cnt] = &atk_area_2o[5 + atk_box_cnt];
-          frame_box_move_rotate(&cust_box->box, cust_box->angle, cust_box->c_x, cust_box->c_y, &tmp,&tmp2);
-          frame_box_fullflip(&tmp,&atk_area_2o[atk_box_cnt]);
+    if ( cust_box )
+    {
+        if (cust_box->angle != 0)
+        {
+            frame_box tmp,tmp2;
+            atk_area_of[atk_box_cnt] = &atk_area_2o[5 + atk_box_cnt];
+            frame_box_move_rotate(&cust_box->box, cust_box->angle, cust_box->c_x, cust_box->c_y, &tmp,&tmp2);
+            frame_box_fullflip(&tmp,&atk_area_2o[atk_box_cnt]);
 
-          frame_box *bx = atk_area_of[atk_box_cnt];
+            frame_box *bx = atk_area_of[atk_box_cnt];
             if ( dir < 0 )
             {
                 bx->x1 = tmp2.x2;
@@ -529,27 +533,27 @@ void c_meta::scn_char_ss2()
                 bx->x2 = tmp2.x2;
                 bx->y2 = tmp2.y2;
             }
-      }
-      else
-      {
-          atk_area_of[atk_box_cnt] = NULL;
-          frame_box_flip(&cust_box->box ,&atk_area_2o[atk_box_cnt]);
-      }
+        }
+        else
+        {
+            atk_area_of[atk_box_cnt] = NULL;
+            frame_box_flip(&cust_box->box ,&atk_area_2o[atk_box_cnt]);
+        }
 
-     if ( frm->fflags & FF_ATK_AS_HIT )
-     {
-         hit_area_2o[hit_box_cnt] = atk_area_2o[atk_box_cnt];
-         hit_area_flags[hit_box_cnt] = atk_area_of[atk_box_cnt];
-         hit_box_cnt++;
-     }
-     atk_box_cnt++;
-  }
+        if ( frm->fflags & FF_ATK_AS_HIT )
+        {
+            hit_area_2o[hit_box_cnt] = atk_area_2o[atk_box_cnt];
+            hit_area_flags[hit_box_cnt] = atk_area_of[atk_box_cnt];
+            hit_box_cnt++;
+        }
+        atk_box_cnt++;
+    }
 
-  if (frm->box_coll)
-  {
-    pcoll_box = &atk_area_2o[15];
-    frame_box_flip(frm->box_coll, &atk_area_2o[15]);
-  }
-  else
-    pcoll_box = NULL;
+    if (frm->box_coll)
+    {
+        pcoll_box = &atk_area_2o[15];
+        frame_box_flip(frm->box_coll, &atk_area_2o[15]);
+    }
+    else
+        pcoll_box = NULL;
 }

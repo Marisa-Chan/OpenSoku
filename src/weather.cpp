@@ -1339,6 +1339,7 @@ void weather_init_manager()
     weather_manager->field_E0 = 0.0;
     weather_manager->field_E4 = 0.0;
     weather_manager->field_E8 = 0.0;
+    weather_manager->current_sky_weather = WEATHER_UNK;
 }
 
 t_weather_manager *weather_manager_get()

@@ -33,17 +33,24 @@ class c_bullet : public c_meta
 
 
     int16_t field_360;
+    int16_t field_368;
     int16_t field_36C;
     int16_t field_370;
+    int16_t field_372;
+    int16_t field_374;
     float   field_378;
     float   field_37C;
     float   field_380;
+    float   field_384;
+    float   field_388;
     int16_t field_394;
     int16_t field_396;
     int16_t field_36E;
 
     c_bullet();
-    void init(char_c *parent,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num); //call this after creation
+
+    //call this after creation
+    void init(char_c *parent,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num, char_graph *pgp = NULL);
 
     void set_seq(uint32_t idx);
 
@@ -63,6 +70,7 @@ void updatebullet(char_c *chr);
 void drawbullet(char_c *chr, int8_t order);
 
 void bul_follow_char(c_bullet *bul, int32_t h_inerc, int32_t v_inerc);
+void bullets_init_common();
 
 #include "chars/marisa_bullets.h"
 #include "chars/alice_bullets.h"

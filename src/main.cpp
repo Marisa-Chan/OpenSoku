@@ -18,6 +18,7 @@
 #include "menu/menus.h"
 #include "battle_ui.h"
 #include "weather.h"
+#include "bullets.h"
 
 
 int main(int argc, char *argv[])
@@ -78,6 +79,8 @@ int main(int argc, char *argv[])
     scene_load_sounds();
 
      //playmusic();
+
+    bullets_init_common();
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
 

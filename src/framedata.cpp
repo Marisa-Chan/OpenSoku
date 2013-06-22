@@ -424,15 +424,15 @@ seq *char_graph::get_seq(uint32_t idx)
 
 uint16_t char_graph::get_prior(uint32_t idx)
 {
-    mapseq::iterator tmp = seqs.find(idx);
-    if (tmp != seqs.end())
-       return tmp->second->prior;
+    seq *tmp = get_seq(idx);
+    if (tmp)
+       return tmp->prior;
     return 0xFFFF;
 }
 uint16_t char_graph::get_cprior(uint32_t idx)
 {
-    mapseq::iterator tmp = seqs.find(idx);
-    if (tmp != seqs.end())
-       return tmp->second->prior_for_cancel;
+    seq *tmp = get_seq(idx);
+    if (tmp)
+       return tmp->prior_for_cancel;
     return 0xFFFF;
 }

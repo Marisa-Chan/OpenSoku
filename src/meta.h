@@ -162,7 +162,7 @@ class c_meta : public moveable
     //struc_154 *field_154;         //0x154
     //frame_head *current_frame_params; //0x158
     //num_of_seqs *current_seq_frames_vector; //0x15C
-    //int all_seq_mapping;      //0x160
+    //mapstru* pat_map   ;      //0x160
     //int sounds_max_256;       //0x164
     char_c  *chrt;  //for char classes - it's self, for bullets - char caster  0x168
     //char_class_vars *selft_pointer1?; //0x16C
@@ -171,7 +171,7 @@ class c_meta : public moveable
     metalst childs;         //0x178 + 0xC
     int16_t health;         //0x184
     int16_t max_health;     //0x186
-    //int   field_188;
+    int32_t field_188;
     int8_t  field_18C;
     //char  field_18D;
     //char  field_18E;

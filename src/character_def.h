@@ -184,7 +184,7 @@ class char_c : public c_meta
     //char field_6F6;
     //char field_6F7;
     bullist     bullets;    //0x6F8
-    //mmm mmm_;             //0x6FC + 0x14
+    //def_deque all_seq__deque;             //0x6FC + 0x14
     int32_t field_710;
     //struc_714 struc714;   //0x714 + 0x10
     //int field_724;
@@ -293,12 +293,22 @@ class char_c : public c_meta
     float   field_85C;
     float   field_860;
     float   field_864;
+    //int8_t   field_868;
+    //int8_t   field_869;
+    int16_t field_86A;
+    //int   field_86C;
+    //int   field_870;
+    //int   field_874;
+    //int   field_878;
+    //int16 field_87C;
+    //int8_t   field_87E;
+    //int8_t   field_87F;
     int8_t  field_880;
     //char field_881;
     int16_t field_882;
-    //__int16 field_884;
-    //__int16 field_886;
-    //__int16 field_888;
+    int16_t field_884;
+    int16_t field_886;
+    int16_t field_888;
     //__int16 field_88A;
     int16_t x_delta; //x_offset     //0x88C
     int16_t y_delta; //y_offset     //0x89E
@@ -380,6 +390,7 @@ class char_c : public c_meta
     void sub_469A20();
     void sub_4834F0();
     void sub_4873B0(int32_t seq, int32_t smt);
+    bool sub_469710();
 
     bool spell200_seq299_300_field190_0_3();
 

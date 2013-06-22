@@ -48,6 +48,7 @@ bool cards_load_cards(s_cards *cards, const char *charname)
             if (period == 14)
             {
                 strncpy(buf, txt + oldoff, off - oldoff);
+                buf[off-oldoff] = 0;
                 char *nxt = strtok(buf,",");
                 s_card tmp;
                 tmp.id = atoi(nxt);

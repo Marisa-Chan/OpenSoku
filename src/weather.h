@@ -52,6 +52,7 @@ class c_weather_bg
 
 enum WEATHER_ID
 {
+    WEATHER_UNK = -1,
     WEATHER_SUNNY = 0,
     WEATHER_DRIZZLE = 1,
     WEATHER_CLOUDY = 2,
