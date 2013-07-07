@@ -27,6 +27,8 @@ OBJS =  \
  	chars/marisa.cpp\
 	chars/marisa_bullets.cpp\
 	chars/alice_bullets.cpp\
+	chars/cirno.cpp\
+	chars/cirno_bullets.cpp\
 	chars/utsuho.cpp\
 	menu/menus.cpp\
 	menu/title.cpp\

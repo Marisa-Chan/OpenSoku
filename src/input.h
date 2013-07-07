@@ -250,7 +250,7 @@ class inp_none: public inp_ab
 
 public:
 
-    void load_profile(s_profile * prof)
+    void load_profile(s_profile * /*prof*/)
         {return;};
     void load_def_profile()
         {return;};

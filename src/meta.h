@@ -148,7 +148,7 @@ class c_meta : public moveable
     //char field_134;
     int8_t  has_shadow;         //0x135
     //__int16 field_136;
-    int32_t field_138;
+    float  field_138;
     //__int16 playing_seq;      //0x13C
     //__int16 viz.get_subseq;   //0x13E
     //__int16 viz.get_frame;    //0x140
@@ -219,12 +219,6 @@ class c_meta : public moveable
 
     frame_box *pcoll_box;
 
-
-    virtual void set_seq(uint32_t idx);
-
-    virtual void draw_shadow(shd_trans *trans, gr_shader *shader = NULL);
-    virtual void draw(gr_shader *shader = NULL);
-
     bool process(bool ignore_loop = false);
     void reset_seq();
     void set_frame(uint32_t frm);
@@ -261,6 +255,15 @@ class c_meta : public moveable
 
     seq *get_seq(uint32_t idx);
 
+
+    virtual void set_seq(uint32_t idx);
+
+    virtual void draw_shadow(shd_trans *trans, gr_shader *shader = NULL);
+    virtual void draw(gr_shader *shader = NULL);
+
+    virtual void func10() = 0;
+    virtual void set_seq_params() = 0; //func15
+    virtual void func16() = 0;
 };
 
 void frame_box_move_rotate(frame_box *src, int16_t angle, int16_t x_c, int16_t y_c, frame_box *dst1, frame_box *dst2);

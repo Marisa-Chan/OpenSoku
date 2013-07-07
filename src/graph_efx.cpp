@@ -478,7 +478,7 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
 
     f->read(4, &num_seq);
 
-    uint32_t lastid = -1;
+    int32_t lastid = -1;
 
     for (uint32_t i=0; i < num_seq && !f->eof(); i++)
     {
@@ -545,21 +545,24 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
             f->read(1, &ssq.looped);
 
 
-            uint32_t nframes = 0;
+            int32_t nframes = 0;
 
             f->read(4, &nframes);
 
+            if (nframes < 0)
+                return false;
+
             ssq.frames.resize(nframes);
 
-            for (uint32_t j = 0; j < nframes; j++)
+            for (int32_t j = 0; j < nframes; j++)
             {
 
                 gfx_frame *frm = new gfx_frame;
 
-                uint32_t frame = 0;
+                int32_t frame = 0;
                 f->read(4, &frame);
 
-                if (frame < imgs.size() && frame >= 0)
+                if (frame >= 0 && (uint32_t)frame < imgs.size())
                     frm->img = imgs[frame];
                 else
                     frm->img = NULL;

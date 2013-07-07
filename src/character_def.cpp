@@ -10,145 +10,332 @@
 
 char_c::char_c(inp_ab *func)
 {
-    input_function = 1; //HACK
-    field_578 = 0;
-
     if (!pgp)
         pgp = new char_graph;
 
-    player_face_tex = NULL;
-    player_face = NULL;
+    player_face_tex = NULL;    //texture
+    player_face = NULL;        //sprite
+    stand_gfx = new stand_graph();
+    chr_cards.cards_holder.clear();
+    chr_cards.card_mapping.clear();
+    cards_deck.clear();
+    cards_shuffle.clear();
+    cards_active.clear();
+    cards_used.clear();
+    //graph_3.tex_id = 0;                                   //HACK
+    //graph_3.vtbl = (graph_2dui_vtbl *)&graph_2dui_vtbl_;
+
+    //all_seq__deque.clear()        // HACK NOT USED
+
+    //create_default_struc714(&_this->struc714);  //HACK    USED FOR SANAE-GUI?
+
+    spell_images.clear();
+    //input__input__deque
 
     chrt = this;
 
-    input = func;
-    func->set_devid(0);
-    x = 0;
-    y = 0;
-    dir = 1.0;
+    //pat_map = (mapstru *)v4; //HACK?  USED PGP with global common seq's
+    //char_images_vector       //HACK?  USED PGP with global common seq's
 
-    angZ = 0;
-    angX = 0;
-    angY = 0;
+    for (uint32_t i=0; i<MAX_CHR_SFX; i++)
+        sfx[i] = NULL;
 
-    x_off = 0;
-    y_off = 0;
+    input_function = 1; //HACK
 
-    hit_stop = 0;
-    field_4A6 = 0;
-    field_4C4 = 0;
-    field_564 = 1.0;
-    field_568 = 1.0;
-    field_571 = 1;
-    field_572 = 1;
-    field_710 = 0;
-    field_744 = 0;
-    field_74C = 0;
-    field_4C2 = 0;
-    field_852 = 0;
-    field_844 = 0;
+    input = func;       //HACK!?
+    input->set_devid(0); //HACK!?
 
-    field_54C = 1.0;
+    //char_id = sel_char->character_number;
+    char_id = CHAR_ID_UNKNOW;                 //HACK!?
+    //pallete_number = sel_char->pallete_index;     //HACK!?
+    //player_index = sel_char->player_index         //HACK!?
+    player_index = 0;                             //HACK!?
 
-    combo_rate = 1.0;
-    field_530 = 1.0;
-    field_534 = 1.0;
-    field_848 = 0;
 
-    field_550 = 0.0;
-    field_558 = 0.0;
-
-    field_19C = 0;
-    field_838 = 0;
-    field_526 = 0;
-
-    field_890 = 0;
-    field_892 = 0;
-
-    //weather_var = 0;
+    //additional init
 
     field_80C = 0;
-
-    dash_angle = 0;
-    field_7D2 = 0;
-    field_7D4 = 0;
-    field_7D6 = 0;
-    field_7DC = 0;
-    field_7F0 = 0;
-    field_7F8 = 0;
-
-    time_stop = 0;
-
-    field_1A4 = 0;
-    field_1A8 = 0;
-
-    field_190 = 1;
-    //field_49A = 0;
-    field_84C = 0;
-    spell_energy = 1000;
-    spell_energy_stop = 0;
-    max_spell_energy = 1000;
-    current_card_energy = 0;
-    card_slots = 5;
-
-    win_count = 0;
-
-    speed_mult = 1.0;
-    tengu_fan  = 0;
-
     field_1BC = 1;
-    crshd_sp_brdrs_timer = 0;
-    field_560 = 0;
-    damage_limit = 0;
-    field_51E = 0;
-    field_575 = 0;
+}
+
+void char_c::init_vars()
+{
+    init_vars_base();
+    field_7DC = 0.0;
+    dash_angle = 0.0;
+    field_7D0 = 0;
+    field_7E4 = 0.0;
+    field_7D2 = 0;
+    field_7E8 = 0.0;
+    field_7D4 = 0;
+    field_7EC = 0.0;
+    field_7D6 = 0;
+    field_808 = 0.0;
+    field_7D8 = 0;
+    field_7FC = 0.0;
+    not_charge_attack = 0;
+    field_82C = 0.0;
+    field_81A = 0;
+    field_830 = 0.0;
+    field_81C = 0;
+    field_7F0 = 0.0;
+    field_818 = 0;
+    field_81E = 0;
+    speed_mult = 1.0;
+    field_820 = 0;
+    field_822 = 0;
+    field_824 = 0;
+    field_826 = 0;
+    field_838 = 0.0;
+    field_828 = 0;
+    field_844 = 0.0;
+    x_delta = 0;
+    field_840 = 0.0;
+    y_delta = 0;
+    field_848 = 0.0;
+    field_524 = 0;
+    field_854 = 0.0;
+    field_526 = 0;
+    field_858 = 0.0;
+    bbarrier_show = false;
+    field_85C = 0.0;
+    damage_limited = 0;
+    field_860 = 0.0;
+    field_7F6 = 0;
+    field_864 = 0.0;
+    field_800 = 0;
+    field_801 = 0;
+    field_802 = 0;
+    field_803 = 0;
+    field_804 = 0;
+    field_4C8 = 0;
+    field_80D = 0;
+    field_80E = 0;
+    field_7F8 = 0;
+    field_882 = 0;
+    field_884 = 0;
+    field_886 = 0;
+    field_4C4 = 0;
+    field_82A = 0;
+    field_52A = 0;
+    field_810 = 0;
+    field_814 = 0;
+    skills_2[0] = 0;
+    skills_2[1] = 0;
+    skills_2[2] = 0;
+    skills_2[3] = 0;
+    tengu_fan = 0;
+    field_83C = 0;
+    field_836 = 0;
+    field_84C = 0;
+    field_84E = 0;
+    field_850 = 0;
+    field_852 = 0;
+    field_868 = 0;
+    field_86A = 0;
+    field_888 = 0;
+    field_88A = 0;
+    field_880 = 0;
+    field_86C = 0;
+    field_870 = 0;
+    field_874 = 0;
+    field_878 = 0;
+    field_87C = 0;
+}
+
+void char_c::init_vars_base()
+{
+    //if ( input_function )                       //HACK
+    //clear_input_substructure(v2->subinput);
+
+    //((void (*)(void))  char_bullets->vtbl->func2)();
+    bullets.clear(); //HACK?
+
+    field_1AC = 0;
+//    pressed_x_axis = 0;
+//  pressed_y_axis = 0;
+//  pressed_A = 0;
+//  pressed_B = 0;
+//  pressed_C = 0;
+//  pressed_D = 0;
+//  pressed_AB = 0;
+//  pressed_BC = 0;
+//  keyup_A = 0;
+//  keyup_B = 0;
+//  keyup_C = 0;
+//  keyup_D = 0;
+//  keyup_AB = 0;
+//  keyup_BC = 0;
+    //zero_input_charclass_ispressed_vars(v1); //HACK?
+    //input_push_pressed_to_buf(v1); //HACK?
+
+    dir = 1 - 2 * (player_index == 1); //HACK OR WILL SET?
+    x = (player_index == 1) * 320 + 480;
+    y = 0.0;
+    h_inerc = 0.0;
+    v_inerc = 0.0;
+    field_744 = 0.0;
+    field_748 = 0.0;
+    field_74C = 0.0;
+    field_1A4 = 0.0;
+    field_1A8 = 0.0;
+    //field_F8 = 0.0;     //HACK ?
+    v_force = 0.0;
+    reset_ofs();
+    hit_stop = 0;
+    field_4A6 = 0;
+    time_stop = 0;
     field_51C = 0;
+    field_51E = 0;
     field_520 = 0;
     field_522 = 0;
     field_524 = 0;
-    field_538 = 1.0;
-    field_4BC = 0;
+    field_526 = 0;
+    weather_id = weather_get();
+    field_19C = 0.0;
+    field_4AA = 0;
     field_4BA = 0;
+    field_4BC = 0;
+    damage_limit = 0;
+    field_4C2 = 0;
+    field_1A2 = 0;
+    field_49D = 0;
+    field_4C6 = 0;
     field_4C0 = 0;
     field_4AC = 0;
-    field_882 = 0;
-
-    field_574 = 0;
-    field_576 = 0;
-    field_880 = 0;
-    field_84E = 0;
-
+    field_49A = 0;
+    air_dash_cnt = 0;
+    field_49C = 0;
+    life_recovery = 0;
+    field_4CC = 0;
+    field_4CD = 0;
+    field_4CE = 0;
+    field_4D4 = 0;
+    field_4D6 = 0;
+    field_4D8 = 0;
+    /*for (int8_t i=0; i<8; i++) // HACK    NOT USED?
+    {
+        lvl_hgt_1[i] = 0;
+        lvl_hgt_2[i] = 0;
+    }*/
+    combo_rate = 1.0;
+    field_530 = 1.0;
+    current_card_energy = 0;
+    field_534 = 1.0;
+    spell_energy_stop = 0;
+    field_538 = 1.0;
+    crshd_sp_brdrs_timer = 0;
+    field_544 = 1.0;
+    field_740 = 0;
+    field_548 = 1.0;
+    combo_count = 0;
+    field_54C = 1.0;
+    combo_damage = 0;
+    limit_multiply = 1.0;
+    correction = 0;
+    field_560 = 0;
+    field_550 = 0.0;
+    field_56C = 0;
+    field_554 = 0.0;
+    field_56D = 0;
+    field_558 = 0.0;
+    field_56E = 0;
+    field_540 = 0.0;
+    field_56F = 0;
+    field_570 = 0;
+    field_55C = 1.0;
+    field_571 = 1;
+    field_564 = 1.0;
+    field_572 = 1;
+    field_568 = 1.0;
+    max_health = 10000;
+    health = 10000;
+    health_prev = 10000;
+    max_spell_energy = 1000;
+    spell_energy = 1000;
+    combo_limit = 0;
     for(int8_t i=0; i<32; i++)
     {
         skills_1[i] = 0;
         skills_2[i] = -1;
     }
-
-    h_inerc = 0;
-    v_inerc = 0;
-    v_force = 0;
-
-    pcoll_box = NULL;
-
-    not_charge_attack = 1;
-    air_dash_cnt = 0;
-
-    health = 10000;
-    max_health = 10000;
-
-    enemy = NULL;
-
-    cards_added = 0;
-    bbarrier_show = false;
-
-    for (uint32_t i=0; i<MAX_CHR_SFX; i++)
-        sfx[i] = NULL;
-
-    memset(atk_area_2o,0,sizeof(frame_box) * 15);
-    memset(hit_area_2o,0,sizeof(frame_box) * 5);
+    field_194 = 0;
+    field_190 = 0;
+    set_seq(0);
+    field_575 = 0;
+    field_574 = 0;
+    field_576 = 0;
+    field_577 = 0;
+    win_count = 0;
+    field_578 = 0;
+    pres_move = 0;
+    pres_comb = 0;
+    has_shadow = 1;
+    field_728 = 0;
+    field_710 = 0;
+    field_6E8 = 0;
+    field_6E4 = 0;
+    field_6F4 = 0;
+    field_6F5 = 0;
+    field_6EC = -1;
+    if (controlling_type == CONTROL_PC_STORY)
+    {
+        //HACK    PC STORY
+        //prepare_player_cards_deck(player_cards_map_deque, 0);
+        //card_slots = LOBYTE(player_cards_map_deque.cards_shuffle._Mysize);
+        //cards_added = 0;
+        //sub_468460(&cards_active);
+        /*for ( i = 0; i < card_slots; ++i )
+          char_c::add_card(v1);*/
+        /*v7 = cards_active._Myoff;
+        v8 = cards_active._Myoff;
+        v9 = v7;
+        v10 = cards_active._Mapsize;
+        if ( v10 <= (unsigned int)v7 )
+          v9 = v7 - v10;
+        v11 = cardmap_get_cardstru_by_id(&player_cards_map_deque, cards_active._Map[v9]->id)->cost;
+        meta.max_health = v11;
+        meta.health = v11;*/
+        //field_742 = 0;
+        /*v12 = cards_active._Myoff;
+        if ( cards_active._Map[v12]->id >= 200 )
+        {
+          field_6F0 = -1;
+          set_seq(700);
+        }
+        else
+        {
+          v15 = cards_active._Myoff;
+          field_6F0 = cardmap_get_cardstru_by_id(&player_cards_map_deque, cards_active._Map[v15]->id)->stage;
+          set_seq(700);
+        }*/
+    }
+    else
+    {
+        //prepare_player_cards_deck(v5, 1);  //HACK
+        card_slots = 5;
+        cards_added = 0;
+        //sub_468460(&cards_active);  //HACK    NOT NEEDED?
+        field_742 = 0;
+        field_6EC = -1;
+        field_6F0 = -1;
+    }
 }
 
+void char_c::load_spells(const char *name)
+{
+    char buf[CHRBUF];
+    for (int8_t i=0; i<10; i++)
+    {
+        sprintf(buf, "data/character/%s/back/spell%03d.cv2",name, i);
 
+        gr_tex *tx = gr_load_cv2(buf, NULL);
+        if (!tx)
+            break;
+        gr_set_repeate(tx, true);
+        spell_images.push_back(tx);
+    }
+}
 
 bool char_c::char_on_ground_flag()
 {
@@ -157,9 +344,7 @@ bool char_c::char_on_ground_flag()
 
 bool char_c::char_on_ground_down()
 {
-    return getlvl_height() >= y &&
-           v_inerc < 0 /*&&
-            field_4C4 == 0*/;
+    return getlvl_height() >= y && v_inerc < 0 && field_4C4 == 0;
 }
 
 void char_c::set_seq(uint32_t idx)
@@ -1051,18 +1236,11 @@ void char_c::func10()
         {
             if (field_576 == 0 && field_880 == 0)
             {
-                //HACK
-                /*if ( v1->cards_added > 0 )
-                    {
-                      if ( LOBYTE(v1->controlling_type) == 2 )
-                      {
-                        if ( *(_WORD *)get_card_id(&v1->field_5E8, 0) >= 248 )
-                        {
-                          health_to_max();
-                          field_867 = 0;
-                        }
-                      }
-                    }*/
+                if ( cards_added > 0 && controlling_type == CONTROL_PC_STORY && cards_active[0]->id >= 248 )
+                {
+                    health_to_max();
+                    //field_867 = 0; //HACK
+                }
                 set_seq(199);
                 field_574 = 0;
                 field_577 = 1;
@@ -1657,14 +1835,14 @@ void char_c::func10()
 void char_c::func16()
 {
     if (field_524 > 0  &&  time_stop == 0 &&
-        hit_stop == 0  &&  field_524 % 15 == 0 )
-        {
-            float tmp[3];
-            tmp[0] = 0.0;
-            tmp[1] = 0.0;
-            tmp[2] = 0.0;
-            addbullet(this,NULL,1260, x + 100.0 - scene_rand_rngf(200), scene_rand_rngf(150) + y + 100.0, 1, 1, tmp,3);
-        }
+            hit_stop == 0  &&  field_524 % 15 == 0 )
+    {
+        float tmp[3];
+        tmp[0] = 0.0;
+        tmp[1] = 0.0;
+        tmp[2] = 0.0;
+        addbullet(this,NULL,1260, x + 100.0 - scene_rand_rngf(200), scene_rand_rngf(150) + y + 100.0, 1, 1, tmp,3);
+    }
 
     if ( field_526 <= 0 || time_stop != 0 )
     {
@@ -1725,11 +1903,11 @@ void char_c::func16()
             health = max_health;
 
         if ( life_recovery % 15 == 0 )
-          scene_add_effect(this, 151, x, y, dir, 1);
+            scene_add_effect(this, 151, x, y, dir, 1);
 
         if ( life_recovery % 10 == 0 )
-          if ( char_on_ground() )
-            scene_add_effect(this, 150, x, y, dir, -1);
+            if ( char_on_ground() )
+                scene_add_effect(this, 150, x, y, dir, -1);
 
         life_recovery--;
     }
@@ -2130,31 +2308,31 @@ void char_c::func16()
             if ( char_is_shock() )
                 field_4CD = 0;
             else if ( field_4CD == 0  && enemy->char_is_shock() )
-                {
-                    field_4CE += 3;
-                    field_4CD = 1;
-                    if ( field_4CE >= 15 )
-                        field_4CE = 15;
+            {
+                field_4CE += 3;
+                field_4CD = 1;
+                if ( field_4CE >= 15 )
+                    field_4CE = 15;
 
-                    enemy->field_4CE = field_4CE;
+                enemy->field_4CE = field_4CE;
 
-                    weather_time_mul(0.9);
+                weather_time_mul(0.9);
 
-                    float tmp[3];
-                    tmp[0] = 0.0;
-                    tmp[1] = 0.0;
-                    tmp[2] = 0.0;
+                float tmp[3];
+                tmp[0] = 0.0;
+                tmp[1] = 0.0;
+                tmp[2] = 0.0;
 
-                    addbullet(this, NULL, 1110, x, 0.0, dir, -1, tmp, 3);
-                }
+                addbullet(this, NULL, 1110, x, 0.0, dir, -1, tmp, 3);
+            }
 
             if ( field_4CD != 0  &&
-                (time_count_get() % 10 == 0) && health > 0 )
-                        {
-                            health += field_4CE + 5;
-                            if (health > 10000)
-                                health = 10000;
-                        }
+                    (time_count_get() % 10 == 0) && health > 0 )
+            {
+                health += field_4CE + 5;
+                if (health > 10000)
+                    health = 10000;
+            }
             break;
 
         case WEATHER_DUST_STORM:
@@ -2166,24 +2344,24 @@ void char_c::func16()
             float tmp = y - 100.0;
             if ( tmp >= 0.0 )
             {
-            if ( tmp > 600.0 )
-                tmp = 600.0;
+                if ( tmp > 600.0 )
+                    tmp = 600.0;
 
-            float tmp2 = (10.0 * tmp / 600.0);
+                float tmp2 = (10.0 * tmp / 600.0);
 
-            current_card_energy += (tmp * 5.0 / 600.0);
+                current_card_energy += (tmp * 5.0 / 600.0);
 
-            if ( char_is_shock() )
-                tmp2 *= 0.25;
+                if ( char_is_shock() )
+                    tmp2 *= 0.25;
 
-            if ( health > 0 )
-            {
-                if ( health <= tmp2 )
-                    health = 1;
-                else
-                    health -= tmp2;
-            }
-            field_530 = tmp * 0.35 / 600.0 + 1.0;
+                if ( health > 0 )
+                {
+                    if ( health <= tmp2 )
+                        health = 1;
+                    else
+                        health -= tmp2;
+                }
+                field_530 = tmp * 0.35 / 600.0 + 1.0;
             }
         }
         break;
@@ -2211,11 +2389,11 @@ void char_c::func16()
     }
     if ( field_848 > 0 )
     {
-         if ( (int32_t)field_848 % 15 == 0 )
-           scene_add_effect(this, 155, x, y, dir, 1);
+        if ( (int32_t)field_848 % 15 == 0 )
+            scene_add_effect(this, 155, x, y, dir, 1);
 
-         if ( (int32_t)field_848 % 10 == 0 )
-           scene_add_effect(this, 154, x, getlvl_height(), dir, -1);
+        if ( (int32_t)field_848 % 10 == 0 )
+            scene_add_effect(this, 154, x, getlvl_height(), dir, -1);
 
         spell_energy += 10;
         field_848--;
@@ -2404,13 +2582,13 @@ void char_c::func18()
 
 
     bool grn = char_on_ground();
-    if ( grn /*&& v1->field_4C4 == 0*/ ) //hack
+    if ( grn && field_4C4 == 0 )
     {
         air_dash_cnt = 0;
-        // field_49C = 0;
+        field_49C = 0;
     }
     if ( get_prior() == 0)
-        if ( grn /*&& v1->field_4C4 == 0*/)  //hack
+        if ( grn && field_4C4 == 0)
         {
             int32_t sq = get_seq();
             if ( sq != 6 && sq != 7 && sq != 8 )
@@ -2741,7 +2919,7 @@ void char_c::set_seq_params()
     case 76:
         field_571 = 1;
         field_572 = 1;
-        //sub_4835C0();  //HACK
+        weather_forecast_next();
         for (int8_t i = 0; i < 5; i++)
             scene_add_effect(this,201,x,y+100,dir,1);
 
@@ -2777,7 +2955,7 @@ void char_c::set_seq_params()
         field_571 = 1;
         field_572 = 1;
         field_7D0++;
-        //sub_4835C0(); //HACK
+        weather_forecast_next();
 
         for (int8_t i=0; i < 5; i++)
             scene_add_effect(this,201, x, y, dir, 1);
@@ -2796,14 +2974,14 @@ void char_c::set_seq_params()
     case 89:
         field_571 = 1;
         field_572 = 1;
-        //sub_4835C0(); //HACK
+        weather_forecast_next();
         scene_add_effect(this, 58, x, y, dir, -1);
         for (int8_t i=0; i < 5; i++)
             scene_add_effect(this,201, x, y+100, dir, 1);
         angZ = 0;
         break;
     case 97:
-        //sub_4835C0(); //HACK
+        weather_forecast_next();
         scene_add_effect(this, 58, x, y, dir, -1);
 
         for (int8_t i=0; i < 5; i++)
@@ -3019,11 +3197,11 @@ void char_c::set_seq_params()
         break;
     case 690:
         reset_forces();
-        /*if ( cards_added > 0 )//HACK
+        if ( cards_added > 0 )
         {
-          field_190 = 0;
-          sub_488E70(this, v55);
-        }*/
+            field_190 = 0;
+            sub_488E70();
+        }
         break;
     case 691:
         field_190 = 0;
@@ -3189,6 +3367,237 @@ bool char_c::char_is_block_knock()
 bool char_c::spell200_seq299_300_field190_0_3()
 {
     return ((get_seq() > 299 && field_190 != 0 && field_190 != 3) || get_seq() < 300 ) && spell_energy >= 200;
+}
+
+bool char_c::seq299_300_field190_0_3()
+{
+    return ((get_seq() > 299 && field_190 != 0 && field_190 != 3) || get_seq() < 300 );
+}
+
+void char_c::sub_488E70()
+{
+    int32_t id = cards_active[0]->id;
+    switch ( id )
+    {
+    case 100:
+        if ( skills_2[0]++ == -1 )
+            skills_2[0] = 1;
+        if ( skills_2[0] >= 5 )
+            skills_2[0] = 4;
+        skills_2[4] = -1;
+        skills_2[8] = -1;
+        skills_2[12] = -1;
+        break;
+    case 101:
+        if ( skills_2[1]++ == -1 )
+            skills_2[1] = 1;
+        if ( skills_2[1] >= 5 )
+            skills_2[1] = 4;
+        skills_2[5] = -1;
+        skills_2[9] = -1;
+        skills_2[13] = -1;
+        break;
+    case 102:
+        if ( skills_2[2]++ == -1 )
+            skills_2[2] = 1;
+        if ( skills_2[2] >= 5 )
+            skills_2[2] = 4;
+        skills_2[6] = -1;
+        skills_2[10] = -1;
+        skills_2[14] = -1;
+        break;
+    case 103:
+        if ( skills_2[3]++ == -1 )
+            skills_2[3] = 1;
+        if ( skills_2[3] >= 5 )
+            skills_2[3] = 4;
+        skills_2[7] = -1;
+        skills_2[11] = -1;
+        skills_2[15] = -1;
+        break;
+    case 104:
+        if ( skills_2[4]++ == -1 )
+            skills_2[4] = 1;
+        if ( skills_2[4] >= 5 )
+            skills_2[4] = 4;
+        skills_2[0] = -1;
+        skills_2[8] = -1;
+        skills_2[12] = -1;
+        break;
+    case 105:
+        if ( skills_2[5]++ == -1 )
+            skills_2[5] = 1;
+        if ( skills_2[5] >= 5 )
+            skills_2[5] = 4;
+        skills_2[1] = -1;
+        skills_2[9] = -1;
+        skills_2[13] = -1;
+        break;
+    case 106:
+        if ( skills_2[6]++ == -1 )
+            skills_2[6] = 1;
+        if ( skills_2[6] >= 5 )
+            skills_2[6] = 4;
+        skills_2[2] = -1;
+        skills_2[10] = -1;
+        skills_2[14] = -1;
+        break;
+    case 107:
+        if ( skills_2[7]++ == -1 )
+            skills_2[7] = 1;
+        if ( skills_2[7] >= 5 )
+            skills_2[7] = 4;
+        skills_2[3] = -1;
+        skills_2[11] = -1;
+        skills_2[15] = -1;
+        break;
+    case 108:
+        if ( skills_2[8]++ == -1 )
+            skills_2[8] = 1;
+        if ( skills_2[8] >= 5 )
+            skills_2[8] = 4;
+        skills_2[0] = -1;
+        skills_2[4] = -1;
+        skills_2[12] = -1;
+        break;
+    case 109:
+        if ( skills_2[9]++ == -1 )
+            skills_2[9] = 1;
+        if ( skills_2[9] >= 5 )
+            skills_2[9] = 4;
+        skills_2[1] = -1;
+        skills_2[5] = -1;
+        skills_2[13] = -1;
+        break;
+    case 110:
+        if ( skills_2[10]++ == -1 )
+            skills_2[10] = 1;
+        if ( skills_2[10] >= 5 )
+            skills_2[10] = 4;
+        skills_2[2] = -1;
+        skills_2[6] = -1;
+        skills_2[14] = -1;
+        break;
+    case 111:
+        if ( skills_2[11]++ == -1 )
+            skills_2[11] = 1;
+        if ( skills_2[11] >= 5 )
+            skills_2[11] = 4;
+        skills_2[3] = -1;
+        skills_2[7] = -1;
+        skills_2[15] = -1;
+        break;
+    case 112:
+        if ( skills_2[12]++ == -1 )
+            skills_2[12] = 1;
+        if ( skills_2[12] >= 5 )
+            skills_2[12] = 4;
+        skills_2[0] = -1;
+        skills_2[4] = -1;
+        skills_2[8] = -1;
+        break;
+    case 113:
+        if ( skills_2[13]++ == -1 )
+            skills_2[13] = 1;
+        if ( skills_2[13] >= 5 )
+            skills_2[13] = 4;
+        skills_2[1] = -1;
+        skills_2[5] = -1;
+        skills_2[9] = -1;
+        break;
+    case 114:
+        if ( skills_2[14]++ == -1 )
+            skills_2[14] = 1;
+        if ( skills_2[14] >= 5 )
+            skills_2[14] = 4;
+        skills_2[2] = -1;
+        skills_2[6] = -1;
+        skills_2[10] = -1;
+        break;
+    case 115:
+        if ( skills_2[15]++ == -1 )
+            skills_2[15] = 1;
+        if ( skills_2[15] >= 5 )
+            skills_2[15] = 4;
+        skills_2[3] = -1;
+        skills_2[7] = -1;
+        skills_2[11] = -1;
+        break;
+    default:
+        break;
+    }
+    scene_add_effect(this, 71, x, y + 100.0, dir, 1);
+    scene_add_effect(this, skills_2[id-100] + 130, x, y, 1, 1);
+    sub_469450(0, 0, 60);
+    sub_483570();
+    sub_468330();
+}
+
+void char_c::sub_469450(int32_t id, int8_t _cost, int8_t efx)
+{
+    if ( cards_added != 0 )
+    {
+        int32_t cost = 0;
+
+        if (_cost > 0)
+            cost = _cost - (weather_id == WEATHER_CLOUDY);
+        else
+            cost = cards_active[id]->cost - (weather_id == WEATHER_CLOUDY);
+
+        if (cost < 1)
+            cost = 1;
+
+        if (cards_active[id]->id >= 200)
+            if (efx > 0)
+                stand_gfx->show();
+
+        //sub_435B70(&battle_manager->unks2[player_index], cards_active[id]->id, efx); //HACK
+
+        cards_used.push_back(cards_active[id]);
+
+        cards_active.erase(cards_active.begin() + id, cards_active.begin() + id + cost);
+
+        cards_added = cards_active.size();
+    }
+}
+
+void char_c::sub_483570()
+{
+    if ( weather_id == WEATHER_MOUNTAIN_VAPOR )
+        weather_time_set(1);
+    if ( weather_id == WEATHER_CLOUDY )
+        weather_time_set(1);
+    if ( weather_id == WEATHER_DRIZZLE )
+        weather_time_mul(0.75);
+}
+
+void char_c::sub_468330()
+{
+    if ( field_56E != 0 )
+    {
+        for (int8_t i=0; i< 32; i++)
+            if (skills_2[i] < 0)
+                skills_1[i] = 0;
+            else
+                skills_1[i] = 4;
+    }
+    else
+    {
+        for (int8_t i=0; i< 32; i++)
+            if (skills_2[i] < 0)
+                skills_1[i] = 0;
+            else
+                skills_1[i] = skills_2[i];
+    }
+}
+
+void char_c::sub_487370(uint32_t seq_id, uint16_t cprior)
+{
+    if ( cprior >= 10 )
+        correction |= 0x10u;
+    set_seq(seq_id);
+    //input_push_pressed_to_buf(v3); //HACK
+    angZ = 0.0;
 }
 
 void char_c::char_h_move(float move)
@@ -3848,111 +4257,175 @@ void char_c::add_card()
         }
 }
 
-bool char_c::check_AB_pressed()
+void char_c::add_card(int32_t id)
 {
-  if ( keyHit(INP_AB) && get_seq() < 600 )
-  {
-    //a1->pressed_AB = 4;
-    //loop_active_cards(chr); //HACK?
-
-    //code from loop_active_cards
-    if (cards_active.size())
+    if ( (int32_t)cards_active.size() < card_slots )
     {
-        s_card *crd = cards_active.front();
-        cards_active.pop_front();
-        cards_active.push_back(crd);
-    }
+        s_card *crd = cards_get_card(&chr_cards, id);
 
-    return true;
-  }
-  return false;
+        if (crd)
+        {
+            current_card_energy = 0;
+
+            if (crd)
+                cards_active.push_back(crd);
+            cards_added = cards_active.size();
+        }
+    }
 }
 
-void char_c::sub_4689D0(int32_t)
+bool char_c::check_AB_pressed()
 {
-    //HACK
+    if ( keyHit(INP_AB) && get_seq() < 600 )
+    {
+        //a1->pressed_AB = 4;
+        //loop_active_cards(chr); //HACK?
+
+        //code from loop_active_cards
+        if (cards_active.size())
+        {
+            s_card *crd = cards_active.front();
+            cards_active.pop_front();
+            cards_active.push_back(crd);
+        }
+
+        return true;
+    }
+    return false;
+}
+
+void char_c::sub_4689D0(int32_t a2)
+{
+    if ( controlling_type != CONTROL_PC_STORY )
+    {
+        if ( current_card_energy >= a2 )
+            current_card_energy -= a2;
+        else
+        {
+            if ( cards_added <= 0 )
+                current_card_energy = 0;
+            else
+            {
+                current_card_energy += 500 - a2;
+
+                if ( weather_id == WEATHER_SNOW )
+                    weather_time_mul(3.0/4.0);
+
+                scene_add_effect(this, 160, x, y + 100, dir, 1);
+                sub_4684F0();
+            }
+        }
+    }
+}
+
+void char_c::sub_4684F0()
+{
+    if ( !cards_active.empty() )
+    {
+        cards_active.pop_back();
+
+        cards_added = cards_active.size();
+
+        if (cards_added != 0)
+            if (cards_active[0]->type == 255)
+                max_health = cards_active[0]->cost;
+    }
+}
+
+bool char_c::sub_468660(int8_t card)
+{
+    if ( cards_added > card )
+    {
+        int8_t num = 1;
+        if ( cards_active[card]->cost - (weather_id == WEATHER_CLOUDY) >= 1)
+            num = cards_active[card]->cost - (weather_id == WEATHER_CLOUDY);
+
+        return cards_added >= num || (cards_added > 0 && weather_id == WEATHER_MOUNTAIN_VAPOR);
+    }
+    return false;
 }
 
 void char_c::sub_462FF0()
 {
-  char_frame *frm = get_pframe();
-  if ( !(frm->fflags & FF_UNK100000) )
-  {
-    if ( damage_limit < 100 )
+    char_frame *frm = get_pframe();
+    if ( !(frm->fflags & FF_UNK100000) )
     {
-      if ( health > 0 )
-      {
-        if ( !(char_on_ground() && field_4C4 == 0) )
+        if ( damage_limit < 100 )
         {
-          if ( field_4BA )
-          {
-            field_4BA--;
-          }
-          else
-          {
-            if ( input_function || controlling_type != 3 ) //HACK
+            if ( health > 0 )
             {
-              if ( gX(1) )
-              {
-                if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D) )
+                if ( !(char_on_ground() && field_4C4 == 0) )
                 {
-                  damage_limit = 0;
-                  flip_to_enemy();
-                  if (gX(dir) <= 0)
-                    set_seq(181);
-                  else
-                    set_seq(180);
+                    if ( field_4BA )
+                    {
+                        field_4BA--;
+                    }
+                    else
+                    {
+                        if ( input_function || controlling_type != 3 ) //HACK
+                        {
+                            if ( gX(1) )
+                            {
+                                if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D) )
+                                {
+                                    damage_limit = 0;
+                                    flip_to_enemy();
+                                    if (gX(dir) <= 0)
+                                        set_seq(181);
+                                    else
+                                        set_seq(180);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //HACK
+                            /*v3 = practice_params->dummy_tek;
+                            if ( v3 )
+                            {
+                              v4 = v3 - 1;
+                              if ( v4 )
+                              {
+                                if ( v4 == 1 )
+                                {
+                                  damage_limit = 0;
+                                  flip_to_enemy(v1);
+                                  v5 = meta.vtbl;
+                                  v6 = get_MT_range(2u);
+                                  v5->func2_set_seq(v1, v6 + 180);// random air tek
+                                }
+                              }
+                              else
+                              {
+                                damage_limit = 0;
+                                flip_to_enemy(v1);
+                                meta.vtbl->func2_set_seq(v1, 181);
+                              }
+                            }
+                            else
+                            {
+                              damage_limit = 0;
+                              flip_to_enemy(v1);
+                              meta.vtbl->func2_set_seq(v1, 180);
+                            }
+                            */
+                        }
+                    }
                 }
-              }
             }
-            else
-            {//HACK
-              /*v3 = practice_params->dummy_tek;
-              if ( v3 )
-              {
-                v4 = v3 - 1;
-                if ( v4 )
-                {
-                  if ( v4 == 1 )
-                  {
-                    v1->damage_limit = 0;
-                    flip_to_enemy(v1);
-                    v5 = v1->meta.vtbl;
-                    v6 = get_MT_range(2u);
-                    v5->func2_set_seq(v1, v6 + 180);// random air tek
-                  }
-                }
-                else
-                {
-                  v1->damage_limit = 0;
-                  flip_to_enemy(v1);
-                  v1->meta.vtbl->func2_set_seq(v1, 181);
-                }
-              }
-              else
-              {
-                v1->damage_limit = 0;
-                flip_to_enemy(v1);
-                v1->meta.vtbl->func2_set_seq(v1, 180);
-              }
-              */
-            }
-          }
         }
-      }
     }
-  }
 }
 
 void char_c::sub_4834F0()
 {
-  if ( weather_id == WEATHER_BLUE_SKY || weather_id == WEATHER_HAIL || weather_id == WEATHER_SPRINKLE )
-    weather_time_mul(0.9);
+    if ( weather_id == WEATHER_BLUE_SKY || weather_id == WEATHER_HAIL || weather_id == WEATHER_SPRINKLE )
+        weather_time_mul(0.9);
 }
 
 bool char_c::sub_469710()
 {
-  return get_seq() >= 197 && get_seq() < 200;
+    return get_seq() >= 197 && get_seq() < 200;
 }
 
 void char_c::sub_4873B0(int32_t seq, int32_t smt)
@@ -3963,6 +4436,11 @@ void char_c::sub_4873B0(int32_t seq, int32_t smt)
     set_seq(seq);
     //input_push_pressed_to_buf(chr); //HACK
     angZ = 0.0;
+}
+
+void char_c::sub_4834E0(int16_t next_stop_time)
+{
+    field_4A6 = next_stop_time;
 }
 
 void char_c::sub_469A20()
@@ -3992,138 +4470,219 @@ void char_c::sub_469A20()
     if ( !char_is_shock() )
         health_prev = health;
 
-    //sub_46E450((int)&v6->field_3EC); //HACK
+    stand_gfx->update();
 
     if ( field_710 > 0 )
         field_710--;
 
     if ( field_526 )
-    {
         weather_id = WEATHER_CLEAR;
-    }
     else
-    {
         weather_id = weather_get();
-    }
-    /*result = (int)&v13->field_6A4; //HACK
-    if ( v13->field_56E )
-    {
-      v2 = 32;
-      do
-      {
-        v3 = (*(_BYTE *)(result++ + 32) < 0) - 1;
-        --v2;
-        *(_BYTE *)(result - 1) = v3 & 4;
-      }
-      while ( v2 );
-    }
+    sub_468330();
+}
+
+void char_c::sub_46AB50(int8_t img, int16_t time)
+{
+    field_742 = img;
+    field_740 = time;
+    if ( enemy->field_740 != 0 || field_740 != 0 )
+        scene_set_spell_img(player_index, spell_images[img]);
     else
     {
-      v4 = 32;
-      do
-      {
-        v5 = *(_BYTE *)(result + 32);
-        LOBYTE(v11) = ((char)v5 < 0) - 1;
-        ++result;
-        v11 &= v5;
-        --v4;
-        *(_BYTE *)(result - 1) = v11;
-      }
-      while ( v4 );
-    }*/
+        scene_set_spell_img(0, spell_images[img]);
+        scene_set_spell_img(1, spell_images[img]);
+    }
 }
 
 
 void char_c::sub_463200()
 {
-  if ( !time_stop )
-  {
-    if ( max_spell_energy < 1000 )
+    if ( !time_stop )
     {
-      if ( crshd_sp_brdrs_timer < 4800 )
-      {
-        if ( weather_id == WEATHER_SUNSHOWER )
+        if ( max_spell_energy < 1000 )
         {
-          crshd_sp_brdrs_timer += 50;
+            if ( crshd_sp_brdrs_timer < 4800 )
+            {
+                if ( weather_id == WEATHER_SUNSHOWER )
+                {
+                    crshd_sp_brdrs_timer += 50;
+                }
+                else
+                {
+                    if ( max_spell_energy <= 800 )
+                        crshd_sp_brdrs_timer +=  5;
+                    if ( max_spell_energy <= 600 )
+                        crshd_sp_brdrs_timer +=  2;
+                    if ( max_spell_energy <= 400 )
+                        crshd_sp_brdrs_timer +=  3;
+                    if ( max_spell_energy <= 200 )
+                        crshd_sp_brdrs_timer +=  8;
+                    if ( max_spell_energy <= 0 )
+                        crshd_sp_brdrs_timer +=  10;
+                }
+                if ( crshd_sp_brdrs_timer >= 4800 )
+                {
+                    //HACK
+                    /*(*(void (__stdcall **)(_DWORD, _DWORD, _DWORD))(*(_DWORD *)battle_manager + 24))(
+                      2,
+                      player_index,
+                      v2 / 200);*/
+                    max_spell_energy += 200;
+                    crshd_sp_brdrs_timer = 0;
+                }
+            }
+        }
+
+        if ( spell_energy_stop )
+        {
+            spell_energy_stop--;
         }
         else
         {
-          if ( max_spell_energy <= 800 )
-            crshd_sp_brdrs_timer +=  5;
-          if ( max_spell_energy <= 600 )
-            crshd_sp_brdrs_timer +=  2;
-          if ( max_spell_energy <= 400 )
-            crshd_sp_brdrs_timer +=  3;
-          if ( max_spell_energy <= 200 )
-            crshd_sp_brdrs_timer +=  8;
-          if ( max_spell_energy <= 0 )
-            crshd_sp_brdrs_timer +=  10;
+            if ( weather_id == WEATHER_HAIL )
+                spell_energy += 12;
+            else
+                spell_energy += 6;
+
+            if ( field_560 >= 1 )
+                if ( !(time_count_get() & 1) )
+                    spell_energy++;
+
+            if ( field_560 >= 2 )
+            {
+                if ( !(time_count_get() & 1) )
+                    spell_energy++;
+
+                if ( !(time_count_get() & 3) )
+                    spell_energy++;
+            }
+
+            if ( field_560 >= 3 )
+            {
+                if ( !(time_count_get() & 1) )
+                    spell_energy++;
+
+                if ( !(time_count_get() & 3) )
+                    spell_energy++;
+
+                if ( !(time_count_get() % 6u) )
+                    spell_energy++;
+            }
+
+            if ( field_560 >= 4 )
+            {
+                if ( !(time_count_get() & 1) )
+                    spell_energy++;
+
+                if ( !(time_count_get() & 3) )
+                    spell_energy++;
+
+                if ( !(time_count_get() % 6u) )
+                    spell_energy++;
+
+                if ( time_count_get() % 6u == 3 )
+                    spell_energy++;
+            }
+
+            if (max_spell_energy < spell_energy)
+                spell_energy = max_spell_energy;
         }
-        if ( crshd_sp_brdrs_timer >= 4800 )
-        {//HACK
-          /*(*(void (__stdcall **)(_DWORD, _DWORD, _DWORD))(*(_DWORD *)battle_manager + 24))(
-            2,
-            v1->player_index,
-            v2 / 200);*/
-          max_spell_energy += 200;
-          crshd_sp_brdrs_timer = 0;
+    }
+}
+
+
+
+
+
+stand_graph::stand_graph()
+{
+    tex = NULL;
+    alpha = 0;
+    disp_stage = -1;
+    player = NULL;
+    xpos = 0;
+}
+
+stand_graph::~stand_graph()
+{
+    //if (tex)
+    //gr
+}
+
+void stand_graph::init(char_c *parent, const char *name)
+{
+    char buf[CHRBUF];
+    sprintf(buf,"data/stand/cutin/%s.cv2",name);
+    tex = gr_load_cv2(buf, NULL);
+    gr_set_repeate(tex,true);
+    player = parent;
+}
+
+void stand_graph::show()
+{
+    disp_stage = 0;
+    xpos = -640.0;
+    frames = 0;
+    alpha = 128;
+}
+
+void stand_graph::update()
+{
+    int8_t last_stage = disp_stage;
+
+    if ( last_stage >= 0 )
+    {
+        if ( last_stage == 1 )
+        {
+            if ( frames == 0)
+                disp_stage = 2;
         }
-      }
-    }
+        else if ( last_stage == 2 )
+        {
+            if ( alpha )
+                alpha -= 2;
+            else
+                disp_stage = -1;
+        }
+        else if (last_stage == 0)
+        {
+            xpos = (sin_deg(frames * 3) - 1.0) * 480.0 - 64.0;
 
-    if ( spell_energy_stop )
+            if (player->player_index == 1)
+                xpos = 640.0 - xpos;
+
+            if ( frames == 30 )
+                disp_stage = 1;
+        }
+        if ( last_stage == disp_stage )
+            frames++;
+        else
+            frames = 0;
+    }
+}
+
+void stand_graph::draw(int8_t plane)
+{
+    if (disp_stage >= 0)
     {
-      spell_energy_stop--;
+        gr_tex_box box;
+        box.tex = tex;
+        box.autosize = true;
+        box.overlay_tex = false;
+        box.x = xpos;
+        box.y = 32.0;
+        box.a = alpha;
+        box.r = 255;
+        box.g = 255;
+        box.b = 255;
+        box.skew_in_pix = false;
+        box.skew_x = 0;
+        box.skew_y = 0;
+        box.tex_scl_x = 1.0 - 2.0 * (player->player_index == 1);
+        box.tex_scl_y = 1.0;
+
+        gr_draw_tex_box(&box, gr_alpha, plane);
+
     }
-    else
-    {
-      if ( weather_id == WEATHER_HAIL )
-        spell_energy += 12;
-      else
-        spell_energy += 6;
-
-      if ( field_560 >= 1 )
-        if ( !(time_count_get() & 1) )
-          spell_energy++;
-
-      if ( field_560 >= 2 )
-      {
-        if ( !(time_count_get() & 1) )
-          spell_energy++;
-
-        if ( !(time_count_get() & 3) )
-          spell_energy++;
-      }
-
-      if ( field_560 >= 3 )
-      {
-        if ( !(time_count_get() & 1) )
-          spell_energy++;
-
-        if ( !(time_count_get() & 3) )
-          spell_energy++;
-
-        if ( !(time_count_get() % 6u) )
-          spell_energy++;
-      }
-
-      if ( field_560 >= 4 )
-      {
-        if ( !(time_count_get() & 1) )
-          spell_energy++;
-
-        if ( !(time_count_get() & 3) )
-          spell_energy++;
-
-        if ( !(time_count_get() % 6u) )
-          spell_energy++;
-
-        if ( time_count_get() % 6u == 3 )
-          spell_energy++;
-      }
-
-      if (max_spell_energy < spell_energy)
-        spell_energy = max_spell_energy;
-    }
-  }
 }

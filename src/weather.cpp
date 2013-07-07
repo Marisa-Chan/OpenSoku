@@ -1272,6 +1272,13 @@ void weather_change(WEATHER_ID id, bool setted)
         weather = id;
 }
 
+void weather_forecast_next()
+{
+  if ( weather == WEATHER_CLEAR )
+      if (weather_index_for_name >= WEATHER_SUNNY && weather_index_for_name <= WEATHER_AURORA)
+        weather_forecast_set( (WEATHER_ID)(((int32_t)weather_index_for_name + 1) % 20) );
+}
+
 
 void weather_init_manager()
 {

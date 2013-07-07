@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="/media/202/Games/th123/" />
+				<Option parameters="/media/files/Games/th123/" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -58,6 +58,10 @@
 		<Unit filename="chars/alice.h" />
 		<Unit filename="chars/alice_bullets.cpp" />
 		<Unit filename="chars/alice_bullets.h" />
+		<Unit filename="chars/cirno.cpp" />
+		<Unit filename="chars/cirno.h" />
+		<Unit filename="chars/cirno_bullets.cpp" />
+		<Unit filename="chars/cirno_bullets.h" />
 		<Unit filename="chars/marisa.cpp" />
 		<Unit filename="chars/marisa.h" />
 		<Unit filename="chars/marisa_bullets.cpp" />
@@ -66,8 +70,6 @@
 		<Unit filename="chars/utsuho.h" />
 		<Unit filename="crc32.cpp" />
 		<Unit filename="crc32.h" />
-		<Unit filename="effects.cpp" />
-		<Unit filename="effects.h" />
 		<Unit filename="file_read.cpp" />
 		<Unit filename="file_read.h" />
 		<Unit filename="framedata.cpp" />

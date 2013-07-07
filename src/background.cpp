@@ -68,7 +68,7 @@ void background::render_move(bkg_chunk *chunk, float x, float y)
     gr_setorigin_sprite(spr,chunk->ofx,chunk->ofy);
     gr_setscale_sprite(spr,chunk->sx,chunk->sy);
     gr_setcolor_sprite(spr,255,255,255,chunk->alpha*255);
-    gr_sprite_setuv(spr,x,y,x+1.0,y+1.0);
+    gr_sprite_skew(spr,x,y);
     gr_draw_sprite(spr,chunk->blend,2);
 }
 
@@ -283,7 +283,7 @@ background_4::~background_4()
 
 void background_4::draw_near()
 {
-    render_move(&cloud,posit / 2048.0,0);
+    render_move(&cloud,posit / 4.0  ,0);
 }
 
 void background_4::update()
@@ -762,8 +762,8 @@ void background_34::draw_back()
     render(&floor);
 }
 
-void background_34::draw_shadow(c_meta *chr)
-{
+void background_34::draw_shadow(c_meta */*chr*/)
+{ //no shadow in this location
     return;
 }
 

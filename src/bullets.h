@@ -35,6 +35,7 @@ class c_bullet : public c_meta
     int16_t field_360;
     int16_t field_368;
     int16_t field_36C;
+    int16_t field_36E;
     int16_t field_370;
     int16_t field_372;
     int16_t field_374;
@@ -45,7 +46,7 @@ class c_bullet : public c_meta
     float   field_388;
     int16_t field_394;
     int16_t field_396;
-    int16_t field_36E;
+
 
     c_bullet();
 
@@ -56,10 +57,14 @@ class c_bullet : public c_meta
 
     virtual void func10();
     virtual void set_seq_params(); //func15
+    virtual void func16();
     //virtual void func16();
     //virtual void func18();
     //virtual void func20();
-    virtual void draw(int8_t plane = 0);
+
+    virtual void draw_shadow(shd_trans *trans, gr_shader *shader = NULL);
+    virtual void draw(gr_shader *shader = NULL);
+
     virtual ~c_bullet();
 };
 
@@ -74,5 +79,6 @@ void bullets_init_common();
 
 #include "chars/marisa_bullets.h"
 #include "chars/alice_bullets.h"
+#include "chars/cirno_bullets.h"
 
 #endif // BULLETS_H_INCLUDED

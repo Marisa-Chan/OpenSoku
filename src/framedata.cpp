@@ -96,7 +96,7 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 
     f->read(4, &num_seq);
 
-    uint32_t lastid = -1;
+    int32_t lastid = -1;
 
     for (uint32_t i=0; i < num_seq && !f->eof(); i++)
     {
@@ -192,10 +192,10 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 frm->c_B = 255;
                 frm->blend_mode = 0;
 
-                uint32_t frame = 0;
+                int32_t frame = 0;
                 f->read(4, &frame);
 
-                if (frame < imgs.size() && frame >= 0)
+                if (frame >= 0 && (uint32_t)frame < imgs.size())
                     frm->img = imgs[frame];
                 else
                     frm->img = NULL;

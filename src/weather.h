@@ -125,5 +125,6 @@ void weather_init_manager();
 
 void weather_spawn_effects_by_id(WEATHER_ID wid);
 t_weather_manager *weather_manager_get();
+void weather_forecast_next();
 
 #endif // WEATHER_H_INCLUDED

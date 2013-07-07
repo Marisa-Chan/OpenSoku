@@ -12,7 +12,6 @@
 #include "mt.h"
 #include "bullets.h"
 #include "weather.h"
-#include "effects.h"
 
 #define VERT_SCALE    2.0
 #define SCR_WIDTH     640.0
@@ -27,11 +26,60 @@ c_scene_sp *img_sp = NULL;
 
 static sfxc *snds[MAX_GLB_SFX];
 
-
-
 mtwist randomm;
 
 c_scene *scn = NULL;
+
+
+GAME_TYPE  game_type = GAME_TYPE_P_VS_P;
+
+GAME_TYPE game_type_get()
+{
+    return game_type;
+}
+
+void game_type_set(GAME_TYPE type)
+{
+    game_type = type;
+}
+
+
+void draw_spell_images(spell_bkg_images *sbi)
+{
+    if (sbi->alpha != 255)
+    {
+        if (sbi->spell_image[0] == NULL)
+            sbi->spell_image[0] = sbi->spell_image[1];
+        if (sbi->spell_image[1] == NULL)
+            sbi->spell_image[1] = sbi->spell_image[0];
+
+        gr_tex_box box;
+        box.a = (255 - sbi->alpha ) * (3.0/8.0);
+        box.r = 255;
+        box.g = 255;
+        box.b = 255;
+        box.autosize = false;
+        box.x = 0;
+        box.y = 0;
+        box.w = 640;
+        box.h = 480;
+        box.overlay_tex = true;
+        box.skew_in_pix = false;
+        box.tex = sbi->spell_image[0];
+        box.skew_x = sbi->dx[0];
+        box.skew_y = sbi->dy[0];
+
+        if (box.tex)
+            gr_draw_tex_box(&box,gr_alpha,PLANE_GUI);
+
+        box.tex = sbi->spell_image[1];
+        box.skew_x = sbi->dx[1];
+        box.skew_y = sbi->dy[1];
+        if (box.tex)
+            gr_draw_tex_box(&box,gr_alpha,PLANE_GUI);
+    }
+}
+
 
 
 bool sub_479510(frame_box *a1, frame_box *a2, int32_t x, int32_t y)
@@ -154,7 +202,10 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     scn_p2[0] = 0;
     scn_p2[1] = 0;
 
-   // chrs[1]->controlling_type = 3;
+    chrs[0]->init_vars();
+    chrs[1]->init_vars();
+
+    // chrs[1]->controlling_type = 3;
 
     set_camera(chrs[0],chrs[1]);
     init_lvl_height();
@@ -165,11 +216,19 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
     if (!img_sp)
         img_sp = new c_scene_sp;
 
-    init_effects();
-
     weather_init_manager();
 
     w_man = weather_manager_get();
+
+    spell_images.alpha = 255;
+    spell_images.alpha = 255;
+    spell_images.spell_image[0] = NULL;
+    spell_images.spell_image[1] = NULL;
+    spell_images.alpha_delta = 0;
+    spell_images.dx[0] = 0.0;
+    spell_images.dy[0] = 0.0;
+    spell_images.dx[1] = 0.3;
+    spell_images.dy[1] = 0.3;
 
     //add_infoeffect(2,1);
     //weather_sp->addeffect(1,1);
@@ -189,11 +248,16 @@ void c_scene::draw_scene()
 
     bkg->draw_back();
 
+    draw_spell_images(&spell_images);
+
     for (uint32_t i=0; i < 2; i++)
         bkg->draw_shadow(chrs[i]);
 
     bkg->draw_mid();
     w_man->wfx_holder.draw(-1,1);
+
+    for (uint32_t i=0; i < 2; i++)
+        chrs[i]->stand_gfx->draw(PLANE_GUI);
 
     img_sp->draw(-1, 1);
 
@@ -211,7 +275,6 @@ void c_scene::draw_scene()
     for (uint32_t i=0; i < 2; i++)
         drawbullet(chrs[i],1);
 
-    draw_infoeffect(1);
 }
 
 void c_scene::update_char_anims()
@@ -231,8 +294,8 @@ void c_scene::players_input()
 
 void c_scene::func11(char_c *pl)
 {
-  if ( /*get_game_type() != 8 */ true)
-    pl->field_574 = 1;
+    if ( game_type_get() != GAME_TYPE_TRAINING)
+        pl->field_574 = 1;
 }
 
 
@@ -250,28 +313,68 @@ void c_scene::func12()
 
 }
 
-void c_scene::upd_practice_efx_wfx_bkg()
+void c_scene::c_scene_base_func15()
 {
-  //if ( chrs[0]->field_740 || chrs[1]->field_740 ) //HACK
-    //dword_8855C0->field_FC = -10;
-  //if ( get_game_type() != 4 )
-  //  if ( get_game_type() != 5 )
-  //    sub_429E80(practice_params);//HACK
+    if ( chrs[0]->field_740 || chrs[1]->field_740 )
+        spell_images.alpha_delta = -10;
+    //if ( game_type_get() != GAME_TYPE_HOST ) //HACK
+    //  if ( game_type_get() != GAME_TYPE_CLIENT )
+    //    sub_429E80(practice_params);//HACK
 
-  img_sp->update();
-  upd_wfx_bkg_sky(/*dword_8855C0*/);
-  time_count_inc();
+    img_sp->update();
+    upd_wfx_bkg_sky(/*dword_8855C0*/);
+    time_count_inc();
 }
 
 void c_scene::upd_wfx_bkg_sky()
-{ //HACK
+{
+    //HACK
     //NOT FULL CODE!!!
 
-    weather_spawn_effects_by_id(w_man->current_sky_weather);
+    WEATHER_ID wid;
 
-    w_man->wfx_holder.update();//HACK
+    if (spell_images.alpha_delta != 0)
+    {
+        int32_t tmp = spell_images.alpha_delta + spell_images.alpha;
+        if ( tmp <= 255 )
+        {
+            if ( tmp >= 60 )
+            {
+                spell_images.alpha = tmp;
+            }
+            else
+            {
+                spell_images.alpha = 60;
+                spell_images.alpha_delta = 0;
+            }
+        }
+        else
+        {
+            spell_images.alpha = 255;
+            spell_images.alpha_delta = 0;
+        }
+        wid = WEATHER_CLEAR;
+    }
+    else
+    {
+        if ( spell_images.alpha >= 245 )
+            spell_images.alpha = 255;
+        else
+            spell_images.alpha += 10;
 
-    for (int32_t i=w_man->sky_deque.size() - 1 ; i > 0; i--)
+        wid = w_man->current_sky_weather;
+    }
+
+    weather_spawn_effects_by_id(wid);
+
+    spell_images.dx[0] += 0.005;
+    spell_images.dx[1] -= 0.005;
+    spell_images.dy[0] += 0.005;
+    spell_images.dy[1] += 0.005;
+
+    w_man->wfx_holder.update();//from: update_sky_bkgs__and__wefx
+
+    for (int32_t i=w_man->sky_deque.size() - 1 ; i > 0; i--) //from: update_sky_bkgs__and__wefx
     {
         if (w_man->sky_deque[i].alpha > 15)
             w_man->sky_deque[i].alpha -= 15;
@@ -282,48 +385,48 @@ void c_scene::upd_wfx_bkg_sky()
 
 void c_scene::func15()
 {
-  //if ( this->field_88 == 2 ) //HACK
-  {
-    if ( weather_get() == WEATHER_CLEAR )
+    //if ( this->field_88 == 2 ) //HACK
     {
-        weather_time_add(1);
-      if ( weather_index_for_name_get() == WEATHER_CLEAR && weather_time_get() >= 0 )
-        weather_forecast_set((WEATHER_ID)scene_rand_rng(20));
-
-      else if ( weather_time_get() >= 999 )
-      {
-        weather_time_set(999);
-        weather_change(weather_index_for_name_get(), true);
-
-        switch ( weather_get() )
+        if ( weather_get() == WEATHER_CLEAR )
         {
-          case WEATHER_SPRING_HAZE:
-          case WEATHER_TEMPEST:
-              weather_time_mul(0.5);
-              break;
-          case WEATHER_SUNSHOWER:
-          case WEATHER_RIVER_MIST:
-          case WEATHER_TYPHOON:
-            weather_time_mul(0.75);
-              break;
-          default:
-            break;
-        }
-      }
-    }
-    else
-    {
-        if (time_count_get() & 1)
-            weather_time_sub(1);
+            weather_time_add(1);
+            if ( weather_index_for_name_get() == WEATHER_CLEAR && weather_time_get() >= 0 )
+                weather_forecast_set((WEATHER_ID)scene_rand_rng(20));
 
-      if ( weather_time_get() <= 0 )
-      {
-        weather_time_set(0);
-        weather_change(WEATHER_CLEAR, true);
-      }
+            else if ( weather_time_get() >= 999 )
+            {
+                weather_time_set(999);
+                weather_change(weather_index_for_name_get(), true);
+
+                switch ( weather_get() )
+                {
+                case WEATHER_SPRING_HAZE:
+                case WEATHER_TEMPEST:
+                    weather_time_mul(0.5);
+                    break;
+                case WEATHER_SUNSHOWER:
+                case WEATHER_RIVER_MIST:
+                case WEATHER_TYPHOON:
+                    weather_time_mul(0.75);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        else
+        {
+            if (time_count_get() & 1)
+                weather_time_sub(1);
+
+            if ( weather_time_get() <= 0 )
+            {
+                weather_time_set(0);
+                weather_change(WEATHER_CLEAR, true);
+            }
+        }
     }
-  }
-  upd_practice_efx_wfx_bkg();
+    c_scene_base_func15();
 }
 
 void c_scene::func16()
@@ -427,6 +530,8 @@ void c_scene::scene_subfunc2()
         list1[i].clear();
         list2[i].clear();
         list3[i].clear();
+        scn_p1[i] = 0;
+        scn_p2[i] = 0;
     }
 
     for(int32_t i=0; i < 2; i++)
@@ -523,7 +628,9 @@ void c_scene::scene_subfunc2()
                 chrs[i]->health = 1;
         }
         if (scn_p2[i] < 0)
+        {
             chrs[i]->sub_4689D0(-scn_p2[i]);
+        }
     }
 }
 
@@ -926,9 +1033,9 @@ void c_scene::scene_subfunc5()
 //HACK
     func15();
     //field_8 = 0;
-  //((void (*)(void))battle_manager->vtbl->bman_func4)();
-  //sub_428990(&transform_values__);
-  //sub_428BB0(&transform_values__);
+    //((void (*)(void))battle_manager->vtbl->bman_func4)();
+    //sub_428990(&transform_values__);
+    //sub_428BB0(&transform_values__);
 }
 
 void c_scene::update()
@@ -1360,14 +1467,15 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
         enm->reset_ofs();
 
         bool v10 = (frm2->fflags & FF_CH_ON_HIT) != 0 || (enm->field_56F && plr->chrt->combo_count == 0);
-        /*if ( get_game_type() == 8 ) //HACK
+
+        if ( game_type_get() == GAME_TYPE_TRAINING )
         {
-          if ( !practice_params->dummy_counter )
-          {
-            if ( plr->chrt->combo_count == 0)
-              v10 = 1;
-          }
-        }*/
+            /*if ( !practice_params->dummy_counter ) // HACK
+            {
+              if ( plr->chrt->combo_count == 0)
+                v10 = true;
+            }*/
+        }
 
         if ( plr->field_1A2 <= 0 || plr->chrt->combo_count != 0 )
         {
@@ -1464,18 +1572,18 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
         plr->chrt->correction |= 0x20u;
         enm->field_1A4 = frm->velocity_x * 1.5;
         enm->field_1A8 = frm->velocity_y * 1.5;
-        /*if ( weather == 16 ) //HACK
+
+        if (weather_get() == WEATHER_DUST_STORM)
         {
-            weather_time = 3 * weather_time / 4;
-            enm->field_4BA = (2 * v5->untech) * plr->selft_pointer1?->combo_rate;
+            weather_time_mul(3.0/4.0);
+            enm->field_4BA = (2 * frm->untech) * plr->chrt->combo_rate;
         }
-        else*/ //HACK
+        else
         {
             enm->field_4BA = (3 * frm->untech / 2) * plr->chrt->combo_rate;
         }
-        //v22 = sub_464240(plr);//HACK
-        //v23 = (plr->field_198 * (((5726623064i64 * v22) >> 32) + (((5726623064i64 * v22) >> 32) >> 31)));
-        dmg = plr->sub_464240();
+
+        dmg = plr->field_198 * (plr->sub_464240() / 3);
         scene_add_effect_ibox(54, plr->dir);
     }
     else
@@ -1493,8 +1601,7 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
     }
     else
     {
-        /*v27 = (&thisa->field_7C + enm->player_index); //HACK
-        *v27 -= (plr->chrt->field_554 * energ);*/
+        scn_p2[enm->player_index] -= plr->chrt->field_554 * plr->chrt->field_54C * (float)frm->card_energy;
     }
 
     plr->chrt->combo_count++;
@@ -1507,17 +1614,16 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
 
     if ( plr->chrt->field_550 > 0 )
     {
-        // v30 = (&thisa->field_74 + plr->chrt->player_index); //HACK
-        // *v30 += (plr->chrt->field_550 * dmg);
+        scn_p1[plr->chrt->player_index] += plr->chrt->field_550 * dmg;
     }
 
     if ( plr->chrt->field_558 > 0 )
     {
-        // v32 = (&thisa->field_74 + plr->selft_pointer1?->player_index); //HACK
-        // *v32 -= (dmg * plr->chrt->field_558);
+        scn_p1[plr->chrt->player_index] -= plr->chrt->field_558 * dmg;
     }
 
-    //*&enm->field_188 += (enm->field_55C * dmg); //HACK
+    enm->field_188 += (enm->field_55C * dmg);
+
     if ( enm->field_575 == 0 )
     {
         enm->health -= dmg;
@@ -1980,5 +2086,11 @@ c_scene *scene_get_scene()
 {
     return scn;
 }
+
+void scene_set_spell_img(uint8_t idx, gr_tex *img)
+{
+    scn->spell_images.spell_image[idx] = img;
+}
+
 
 

@@ -30,4 +30,5 @@ class c_scene_sp: public gfx_holder
     void addeffect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order);
 };
 
+
 #endif // SCENE_FX_H_INCLUDED

@@ -15,7 +15,24 @@ char_marisa::char_marisa(inp_ab *func, uint8_t pal):
     char_loadsfx("marisa");
     cards_load_cards(&chr_cards,"marisa");
     load_face("marisa");
+    load_spells("marisa");
+    stand_gfx->init(this,"marisa");
 }
+
+void char_marisa::init_vars()
+{
+    field_898 = 0.0;
+    field_890 = 0;
+    field_89C = 0.0;
+    field_892 = 0;
+    field_8A0 = 0.0;
+    field_894 = 0;
+    field_8A4 = 0.0;
+    field_8A8 = 0;
+    field_138 = -6.0;
+    char_c::init_vars();
+}
+
 
 void char_marisa::func10()
 {
@@ -1992,19 +2009,6 @@ void char_marisa::func10()
                     t[1] = 2;
                     t[2] = 4;
                     addbullet(this, NULL,803, 48*dir + x, y+104, dir, 1, t, 3);
-                    /*v1637 = 0.0;
-                    v1426 = &v1637;
-                    v1638 = 2.0;
-                    v1403 = 1;
-                    v1639 = 4.0;
-                    v1380 = v3->rend_cls.dir;
-                    v444 = v3->rend_cls.y_pos + 104.0;
-                    v1362 = v444;
-                    v445 = (48 * v1380) + v3->rend_cls.x_pos;
-                    v443 = v445;
-                    v446 = v443;
-                                     addbullet(v3, 803, v446, v1362, v1380, v1403, v1426, 3);
-                    */
                 }
             }
 
@@ -2813,6 +2817,56 @@ void char_marisa::func10()
                 v_force = 0.6;
         }
         break;
+    case 611:
+        if ( get_subseq() == 3 )
+          sub10func();
+
+        sub_46AB50(5, 2);
+        if ( get_subseq() == 1 || get_subseq() == 2 )
+        {
+            v_inerc -= v_force;
+            h_inerc += 0.75;
+          if ( h_inerc > -1.0 ) //HACK? LOL WHAT?
+                h_inerc = -1.0;
+          if ( h_inerc > 0.0 )
+            h_inerc = 0.0;
+          if ( char_on_ground_down() )
+          {
+              y = getlvl_height();
+              reset_forces();
+              set_subseq(3);
+          }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 9)
+        {
+              sub_4834E0(40);
+              scene_play_sfx(23);
+              scene_add_effect(this, 115, x - 23*dir, y + 94.0, dir, 1);
+              sub_469450(0, 0, 60);
+              sub_483570();
+              weather_forecast_next();
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+              {
+                play_sfx(20);
+                sub_486FD0(20.0, -20.0);
+
+                h_inerc = -25.0;
+                v_inerc = 10.0;
+                v_force = 0.5;
+
+                float tmp[4];
+                tmp[0] = field_7F0;
+                tmp[1] = 25.0;
+                tmp[2] = 0.0;
+                tmp[3] = 0.0;
+
+                addbullet(this, NULL, 861, x + dir * 73.0, y + 95.0,dir,1, tmp, 4);
+                scene_add_effect(this, 127, x + 200.0 * dir, y, dir, -1);
+              }
+        break;
     default:
         char_c::func10();
     }
@@ -2872,15 +2926,344 @@ void char_marisa::func20()
         {
             if (field_524 == 0)
             {
-                if (input->keyHit(INP_BC))
+                if (input->keyHit(INP_BC) && sub_468660(0) && field_836 == 0)
                 {
                     if (char_on_ground_flag())
                     {
+                        if (/* !sub_489F10(cprior) &&*/ seq299_300_field190_0_3()) //HACK
+                        {
+                            int32_t crd_id = cards_active[0]->id;
 
+                            if (cprior <= 50 && crd_id >= 100 && crd_id <= 199)
+                            {
+                                switch(crd_id)
+                                {
+                                case 100:
+                                    if ( field_800 == 0)
+                                    {
+                                        field_4C8++;
+                                        field_800 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(500, cprior);
+                                    return;
+                                case 101:
+                                    if ( field_801 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_801 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(520, cprior);
+                                    return;
+                                case 102:
+                                    if ( field_802 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_802 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(540, cprior);
+                                    return;
+                                case 103:
+                                    if ( field_803 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_803 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(560, cprior);
+                                    return;
+                                case 104:
+                                    if ( field_800 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_800 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(505, cprior);
+                                    return;
+                                case 105:
+                                    if ( field_801 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_801 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(525, cprior);
+                                    return;
+                                case 106:
+                                    if ( field_802 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_802 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(545, cprior);
+                                    return;
+                                case 107:
+                                    if ( field_803 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_803 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(565, cprior);
+                                    return;
+                                case 108:
+                                    if ( field_800 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_800 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(510, cprior);
+                                    return;
+                                case 109:
+                                    if ( field_801 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_801 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(530, cprior);
+                                    return;
+                                case 110:
+                                    if ( field_802 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_802 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(550, cprior);
+                                    return;
+                                case 111:
+                                    if ( field_803 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_803 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(570, cprior);
+                                    return;
+                                default:
+                                    break;
+                                }
+                            }
+                            else if (cprior <= 100 && crd_id >= 200 && crd_id <= 299 && gX(1) == 0)
+                            {
+                                switch(crd_id)
+                                {
+                                case 200:
+                                    sub_487370(600, cprior);
+                                    return;
+                                case 201:
+                                    sub_487370(601, cprior);
+                                    return;
+                                case 202:
+                                    sub_487370(602, cprior);
+                                    return;
+                                case 203:
+                                    sub_487370(603, cprior);
+                                    return;
+                                case 204:
+                                    sub_487370(604, cprior);
+                                    return;
+                                case 205:
+                                    sub_487370(605, cprior);
+                                    return;
+                                case 206:
+                                    sub_487370(606, cprior);
+                                    return;
+                                case 207:
+                                    sub_487370(607, cprior);
+                                    return;
+                                case 208:
+                                    sub_487370(608, cprior);
+                                    return;
+                                case 209:
+                                    sub_487370(609, cprior);
+                                    return;
+                                case 210:
+                                    sub_487370(610, cprior);
+                                    return;
+                                case 211:
+                                    sub_487370(611, cprior);
+                                    return;
+                                case 212:
+                                    sub_487370(612, cprior);
+                                    return;
+                                case 213:
+                                    sub_487370(613, cprior);
+                                    return;
+                                case 214:
+                                    sub_487370(614, cprior);
+                                    return;
+                                case 215:
+                                    if ( field_8A8 == 0 )
+                                    {
+                                        sub_487370(615, cprior);
+                                        return;
+                                    }
+                                    break;
+                                case 216:
+                                    sub_487370(616, cprior);
+                                    return;
+                                case 217:
+                                    sub_487370(617, cprior);
+                                    return;
+                                case 218:
+                                    sub_487370(618, cprior);
+                                    return;
+                                case 219:
+                                    sub_487370(619, cprior);
+                                    return;
+                                default:
+                                    break;
+                                }
+                            }
+                        }
                     }
                     else
                     {
+                        if (seq299_300_field190_0_3()) //HACK
+                        {
+                            int32_t crd_id = cards_active[0]->id;
 
+                            if (cprior <= 50 && crd_id >= 100 && crd_id <= 199)
+                            {
+                                switch(crd_id)
+                                {
+                                case 100:
+                                    if ( field_800 == 0)
+                                    {
+                                        field_4C8++;
+                                        field_800 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(500, cprior);
+                                    return;
+                                case 102:
+                                    if ( field_802 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_802 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(542, cprior);
+                                    return;
+                                case 103:
+                                    if ( field_803 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_803 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(562, cprior);
+                                    return;
+                                case 104:
+                                    if ( field_800 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_800 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(505, cprior);
+                                    return;
+                                case 106:
+                                    if ( field_802 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_802 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(547, cprior);
+                                    return;
+                                case 107:
+                                    if ( field_803 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_803 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(567, cprior);
+                                    return;
+                                case 108:
+                                    if ( field_800 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_800 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(512, cprior);
+                                    return;
+                                case 110:
+                                    if ( field_802 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_802 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(552, cprior);
+                                    return;
+                                case 111:
+                                    if ( field_803 == 0 )
+                                    {
+                                        field_4C8++;
+                                        field_803 = 1;
+                                    }
+                                    sub_4834F0();
+                                    sub_488E70();
+                                    sub_4873B0(572, cprior);
+                                    return;
+                                default:
+                                    break;
+                                }
+                            }
+                            else if (cprior <= 100 && crd_id >= 200 && crd_id <= 299 && gX(1) == 0)
+                            {
+                                switch(crd_id)
+                                {
+                                case 203:
+                                    sub_487370(603, cprior);
+                                    return;
+                                case 205:
+                                    sub_487370(605, cprior);
+                                    return;
+                                case 207:
+                                    sub_487370(607, cprior);
+                                    return;
+                                case 208:
+                                    sub_487370(608, cprior);
+                                    return;
+                                case 211:
+                                    sub_487370(611, cprior);
+                                    return;
+                                default:
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -2888,39 +3271,25 @@ void char_marisa::func20()
                 {
                     if (char_on_ground_flag())
                     {
-                        if ( spell200_seq299_300_field190_0_3() )
-
-                            if ( pres_comb & PCOMB_623C )
+                        if ( pres_comb & PCOMB_623C )
+                        {
+                            if ( skills_1[9] >= 1 )
                             {
-                                if ( skills_1[9] >= 1 )
+                                if ( cprior <= get_prior(531) || (sq >= 500 && sq <= 599 && field_801 == 0))
                                 {
-                                    if ( cprior <= get_prior(531) || (sq >= 500 && sq <= 599 && field_801 == 0))
+                                    if ( field_801 == 0 )
                                     {
-                                        if ( field_801 == 0 )
-                                        {
-                                            field_4C8++;
-                                            field_801 = 1;
-                                        }
-                                        sub_4834F0();
-                                        sub_4873B0( 531, cprior);
-                                        return;
+                                        field_4C8++;
+                                        field_801 = 1;
                                     }
+                                    sub_4834F0();
+                                    sub_4873B0( 531, cprior);
+                                    return;
                                 }
-                                if ( skills_1[5] >= 1 )
-                                {
-                                    if ( cprior <= get_prior(526) || (sq >= 500 && sq <= 599 && field_801 == 0))
-                                    {
-                                        if ( field_801 == 0)
-                                        {
-                                            field_4C8++;
-                                            field_801 = 1;
-                                        }
-                                        sub_4834F0();
-                                        sub_4873B0( 526, cprior);
-                                        return;
-                                    }
-                                }
-                                if ( cprior <= get_prior(521) || (sq >= 500 && sq <= 599 && field_801 == 0))
+                            }
+                            if ( skills_1[5] >= 1 )
+                            {
+                                if ( cprior <= get_prior(526) || (sq >= 500 && sq <= 599 && field_801 == 0))
                                 {
                                     if ( field_801 == 0)
                                     {
@@ -2928,10 +3297,22 @@ void char_marisa::func20()
                                         field_801 = 1;
                                     }
                                     sub_4834F0();
-                                    sub_4873B0( 521, cprior);
+                                    sub_4873B0( 526, cprior);
                                     return;
                                 }
                             }
+                            if ( cprior <= get_prior(521) || (sq >= 500 && sq <= 599 && field_801 == 0))
+                            {
+                                if ( field_801 == 0)
+                                {
+                                    field_4C8++;
+                                    field_801 = 1;
+                                }
+                                sub_4834F0();
+                                sub_4873B0( 521, cprior);
+                                return;
+                            }
+                        }
                         if ( pres_comb & PCOMB_623B )
                         {
                             if ( skills_1[9] >= 1 )
@@ -3551,7 +3932,7 @@ void char_marisa::func20()
                                 return;
                             }
                         }
-//                        if ( input->gY() <= 0)
+//                        if ( input->gY() <= 0) //HACK
 //                        {
 //                            if ( input->gX(dir) < 0)
 //                            {
@@ -3638,7 +4019,7 @@ void char_marisa::func20()
 
                     if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
                     {
-                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= get_prior(402) ) // 2B
+                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= get_prior(402) ) // 2B //HACK?
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -3744,7 +4125,7 @@ void char_marisa::func20()
                     }
                     if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
                     {
-                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= get_prior(412) ) // 2C
+                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= get_prior(412) ) // 2C //HACK?
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
@@ -3856,420 +4237,8 @@ void char_marisa::func20()
                     }
                 }
             }
-
-
         }
     }
-    /*
-      v10 = pressed_BC;
-      if ( !v9 )
-      {
-        if ( (v10 && v10 < 3 || is_pressed_BC_1) && sub_468660(v1, 0) && !field_836 )
-        {
-          cprior = v147;
-          if ( sub_489F10(v1, *&v147) )
-            return;
-          if ( *get_carduse_cost(&field_5E8, 0) >= 100 )
-          {
-            if ( *get_carduse_cost(&field_5E8, 0) <= 199 )
-            {
-              if ( v147 <= 50 )
-              {
-                if ( (v12 = playing_seq, v12 > 299) && (v13 = field_190, v13 != 3) && v13 || v12 < 300 )
-                {
-                  switch ( *get_carduse_cost(&field_5E8, 0) )
-                  {
-                    case 100:
-                      if ( !field_800 )
-                      {
-                        field_4C8++;
-                        field_800 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v14);
-                      sub_4873B0( 500, v147);
-                      break;
-                    case 101:
-                      if ( !field_801 )
-                      {
-                        field_4C8++;
-                        field_801 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v15);
-                      sub_4873B0( 520, v147);
-                      break;
-                    case 102:
-                      if ( !field_802 )
-                      {
-                        field_4C8++;
-                        field_802 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v16);
-                      sub_4873B0( 540, v147);
-                      break;
-                    case 103:
-                      if ( !field_803 )
-                      {
-                        field_4C8++;
-                        field_803 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v17);
-                      sub_4873B0( 560, v147);
-                      break;
-                    case 104:
-                      if ( !field_800 )
-                      {
-                        field_4C8++;
-                        field_800 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v18);
-                      sub_4873B0( 505, v147);
-                      break;
-                    case 105:
-                      if ( !field_801 )
-                      {
-                        field_4C8++;
-                        field_801 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v19);
-                      sub_4873B0( 525, v147);
-                      break;
-                    case 106:
-                      if ( !field_802 )
-                      {
-                        field_4C8++;
-                        field_802 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v20);
-                      sub_4873B0( 545, v147);
-                      break;
-                    case 107:
-                      if ( !field_803 )
-                      {
-                        field_4C8++;
-                        field_803 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v21);
-                      sub_4873B0( 565, v147);
-                      break;
-                    case 108:
-                      if ( !field_800 )
-                      {
-                        field_4C8++;
-                        field_800 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v22);
-                      sub_4873B0( 510, v147);
-                      break;
-                    case 109:
-                      if ( !field_801 )
-                      {
-                        field_4C8++;
-                        field_801 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v23);
-                      sub_4873B0( 530, v147);
-                      break;
-                    case 110:
-                      if ( !field_802 )
-                      {
-                        field_4C8++;
-                        field_802 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v24);
-                      sub_4873B0( 550, v147);
-                      break;
-                    case 111:
-                      if ( !field_803 )
-                      {
-                        field_4C8++;
-                        field_803 = 1;
-                      }
-                      sub_4834F0();
-                      sub_488E70(v1, v25);
-                      sub_4873B0( 570, v147);
-                      break;
-                    default:
-                      goto LABEL_77;
-                  }
-                  return;
-                }
-              }
-            }
-          }
-    LABEL_77:
-          if ( v147 <= 100 )
-          {
-            if ( *get_carduse_cost(&field_5E8, 0) >= 200 )
-            {
-              if ( *get_carduse_cost(&field_5E8, 0) <= 299 )
-              {
-                if ( !pressed_x_axis )
-                {
-                  if ( (v26 = playing_seq, v26 > 299) && (v27 = field_190) != 0 && v27 != 3 || v26 < 300 )
-                  {
-                    switch ( *get_carduse_cost(&field_5E8, 0) )
-                    {
-                      case 200:
-                        sub_487370(v1, 600, v147);
-                        break;
-                      case 201:
-                        sub_487370(v1, 601, v147);
-                        break;
-                      case 202:
-                        sub_487370(v1, 602, v147);
-                        break;
-                      case 203:
-                        sub_487370(v1, 603, v147);
-                        break;
-                      case 204:
-                        sub_487370(v1, 604, v147);
-                        break;
-                      case 205:
-                        sub_487370(v1, 605, v147);
-                        break;
-                      case 206:
-                        sub_487370(v1, 606, v147);
-                        break;
-                      case 207:
-                        sub_487370(v1, 607, v147);
-                        break;
-                      case 208:
-                        sub_487370(v1, 608, v147);
-                        break;
-                      case 209:
-                        sub_487370(v1, 609, v147);
-                        break;
-                      case 210:
-                        sub_487370(v1, 610, v147);
-                        break;
-                      case 211:
-                        sub_487370(v1, 611, v147);
-                        break;
-                      case 212:
-                        sub_487370(v1, 612, v147);
-                        break;
-                      case 213:
-                        sub_487370(v1, 613, v147);
-                        break;
-                      case 214:
-                        sub_487370(v1, 614, v147);
-                        break;
-                      case 215:
-                        if ( BYTE2(field_8A6) )
-                          goto LABEL_108;
-                        sub_487370(v1, 615, v147);
-                        break;
-                      case 216:
-                        sub_487370(v1, 616, v147);
-                        break;
-                      case 217:
-                        sub_487370(v1, 617, v147);
-                        break;
-                      case 218:
-                        sub_487370(v1, 618, v147);
-                        break;
-                      case 219:
-                        sub_487370(v1, 619, v147);
-                        break;
-                      default:
-                        goto LABEL_108;
-                    }
-                    return;
-                  }
-                }
-              }
-            }
-          }
-        }
-        else
-        {
-          cprior = cprior;
-        }
-    LABEL_108:
-
-        goto LABEL_503;
-      }
-      if ( (v10 && v10 < 3 || is_pressed_BC_1) && sub_468660(v1, 0) && !field_836 )
-      {
-        if ( *get_carduse_cost(&field_5E8, 0) < 100 || *get_carduse_cost(&field_5E8, 0) > 199 )
-        {
-          cprior = v147;
-        }
-        else
-        {
-          cprior = v147;
-          if ( v147 <= 50 )
-          {
-            if ( (v52 = playing_seq, v52 > 299) && (v53 = field_190, v53 != 3) && v53 || v52 < 300 )
-            {
-              switch ( *get_carduse_cost(&field_5E8, 0) )
-              {
-                case 100:
-                  if ( !field_800 )
-                  {
-                    field_4C8++;
-                    field_800 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v54);
-                  sub_4873B0( 500, v147);
-                  break;
-                case 102:
-                  if ( !field_802 )
-                  {
-                    field_4C8++;
-                    field_802 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v55);
-                  sub_4873B0( 542, v147);
-                  break;
-                case 103:
-                  if ( !field_803 )
-                  {
-                    field_4C8++;
-                    field_803 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v56);
-                  sub_4873B0( 562, v147);
-                  break;
-                case 104:
-                  if ( !field_800 )
-                  {
-                    field_4C8++;
-                    field_800 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v57);
-                  sub_4873B0( 505, v147);
-                  break;
-                case 106:
-                  if ( SBYTE2(field_6A8) < 1 )
-                    goto LABEL_341;
-                  if ( !field_802 )
-                  {
-                    field_4C8++;
-                    field_802 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v58);
-                  sub_4873B0( 547, v147);
-                  break;
-                case 107:
-                  if ( !field_803 )
-                  {
-                    field_4C8++;
-                    field_803 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v59);
-                  sub_4873B0( 567, v147);
-                  break;
-                case 108:
-                  if ( !field_800 )
-                  {
-                    field_4C8++;
-                    field_800 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v60);
-                  sub_4873B0( 512, v147);
-                  break;
-                case 110:
-                  if ( SBYTE2(field_6AC) < 1 )
-                    goto LABEL_341;
-                  if ( !field_802 )
-                  {
-                    field_4C8++;
-                    field_802 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v61);
-                  sub_4873B0( 552, v147);
-                  break;
-                case 111:
-                  if ( !field_803 )
-                  {
-                    field_4C8++;
-                    field_803 = 1;
-                  }
-                  sub_4834F0();
-                  sub_488E70(v1, v62);
-                  sub_4873B0( 572, v147);
-                  break;
-                default:
-                  goto LABEL_341;
-              }
-              return;
-            }
-          }
-        }
-    LABEL_341:
-        if ( cprior <= 100 )
-        {
-          if ( *get_carduse_cost(&field_5E8, 0) >= 200 )
-          {
-            if ( *get_carduse_cost(&field_5E8, 0) <= 299 )
-            {
-              if ( !pressed_x_axis )
-              {
-                if ( (v63 = playing_seq, v63 > 299) && (v64 = field_190) != 0 && v64 != 3 || v63 < 300 )
-                {
-                  switch ( *get_carduse_cost(&field_5E8, 0) )
-                  {
-                    case 203:
-                      sub_487370(v1, 603, cprior);
-                      break;
-                    case 205:
-                      sub_487370(v1, 605, cprior);
-                      break;
-                    case 207:
-                      sub_487370(v1, 607, cprior);
-                      break;
-                    case 208:
-                      sub_487370(v1, 658, cprior);
-                      break;
-                    case 211:
-                      sub_487370(v1, 611, cprior);
-                      break;
-                    default:
-                      goto LABEL_356;
-                  }
-                  return;
-                }
-              }
-            }
-          }
-        }
-      }
-      else
-      {
-        cprior = v147;
-      }
-    LABEL_356:
-      if ( sub_4870D0(v1) )
-      {
-
-      }
-    LABEL_503:
-      v8 = 200;
-      goto LABEL_504;
-    }
-      }
-    */
-
 }
 
 c_bullet *char_marisa::new_bullet()

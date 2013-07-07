@@ -214,7 +214,7 @@ void battle_ui_std::update()
                 pl->cardGaugeBigB[j]->renderable = (cost > j) && (crd_cnt > j);
                 pl->cardGaugeBigB2[j]->renderable = (cost <= j) && (crd_cnt > j);
 
-                if (j > cost)
+                if (j >= cost)
                     if (pl->cardBlink[j])
                     {
                         pl->cardBlink[j]->active = false;

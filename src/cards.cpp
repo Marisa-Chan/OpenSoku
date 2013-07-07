@@ -147,6 +147,6 @@ void cards_draw_card(s_card * card, int16_t x, int16_t y, float scale, uint8_t p
     gr_sprite spr(*card->tex);
     gr_setxy_sprite(&spr,x,y);
     gr_setscale_sprite(&spr,scale,scale);
-    gr_draw_sprite(&spr);
+    gr_draw_sprite(&spr,gr_alpha,plane);
 }
 

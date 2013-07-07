@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
     char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
 
-    sprintf(buf,"%s/profile/Zidane.pf",path);
+    sprintf(buf,"%s/profile/profile1p.pf",path);
     s_profile *prof = profile_load_from_file(buf);
     sprintf(buf,"%s/profile/profile2p.pf",path);
     s_profile *prof2 = profile_load_from_file(buf);
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     }
 
 
-    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),1);
+    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),0);
 
     if (prof2)
     {
@@ -129,6 +129,12 @@ int main(int argc, char *argv[])
     weather_change(WEATHER_CLEAR,1);
     weather_time_set(0);
 
+    marisa->add_card(211);
+    marisa->add_card();
+    marisa->add_card();
+
+    alice->add_card();
+    alice->add_card();
 
     while(!kb.rawPressed(kC_Escape))
     {

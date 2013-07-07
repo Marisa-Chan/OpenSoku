@@ -29,6 +29,23 @@ struct gr_info
     float h;
 };
 
+struct gr_tex_box
+{
+    float x;
+    float y;
+    float w;
+    float h;
+    bool autosize;
+    uint8_t r,g,b,a;
+    gr_tex *tex;
+    float skew_x;
+    float skew_y;
+    bool skew_in_pix;
+    bool overlay_tex;
+    float tex_scl_x;
+    float tex_scl_y;
+};
+
 void gr_init(uint32_t width, uint32_t height, const char *caption);
 
 void gr_clear(uint8_t r = 128, uint8_t g = 128, uint8_t b = 128);
@@ -85,4 +102,6 @@ void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2);
 void gr_sprite_skew(gr_sprite *spr, float x, float y);
 
 void debug_str(float x, float y, const char *str);
+void gr_draw_tex_box(gr_tex_box *box, gr_blend blend = gr_alpha, uint8_t plane = 0, gr_shader *shader = NULL);
 #endif // GRAPH_H_INCLUDED
+

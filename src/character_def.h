@@ -10,6 +10,7 @@
 
 enum CHAR_ID
 {
+    CHAR_ID_UNKNOW = -1,
     CHAR_ID_REIMU  = 0,
     CHAR_ID_MARISA = 1,
     CHAR_ID_SAKUYA = 2,
@@ -33,8 +34,17 @@ enum CHAR_ID
     CHAR_ID_NAMAZU = 21
 };
 
+enum CONTROL_TYPE
+{
+    CONTROL_PLAYER = 0,
+    CONTROL_PC = 1,
+    CONTROL_PC_STORY = 2,
+    CONTROL_DUMMY = 3
+};
+
 class c_bullet;
 class c_scene;
+class stand_graph;
 
 class char_c : public c_meta
 {
@@ -63,21 +73,18 @@ class char_c : public c_meta
 //-------------------------------------------
 
     //character_ID
-    CHAR_ID char_id = CHAR_ID_REIMU;  //0x34C
+    CHAR_ID char_id;  //0x34C
     int8_t  player_index;       //0x350
     //char pallete_number;
     //char field_352;
     //char field_353;
     gr_tex *player_face_tex;    //0x354
     gr_sprite *player_face;        //0x358 + 0x90
-    //stand_gfx stand_graph     //0x3EC + 0xA0
-    //int   field_48C
-    //int   field_490;
-    //int   field_494;
+    stand_graph *stand_gfx;     //0x3EC + 0xAC
     int16_t health_prev;    //0x498
     int8_t  field_49A;
     int8_t  air_dash_cnt;   //0x49B
-    //char  field_49C;
+    int8_t  field_49C;
     int8_t  field_49D;
     int16_t spell_energy;       //0x49E
     int16_t max_spell_energy;   //0x4A0
@@ -108,6 +115,7 @@ class char_c : public c_meta
     int8_t  field_4CE;
     float   speed_mult; //0x4D0
     int16_t field_4D4;
+    int16_t field_4D6;
     int8_t  field_4D8;
     //char field_4D9;
     //char field_4DA;
@@ -129,13 +137,13 @@ class char_c : public c_meta
     int32_t field_538;
     float   limit_multiply; //0x53C
     int32_t field_540;
-    int32_t field_544;
-    int32_t field_548;
+    float   field_544;
+    float   field_548;
     float   field_54C;
     float   field_550;
     float   field_554;
     float   field_558;
-    //float field_55C;
+    float   field_55C;
     int16_t field_560;
     float   field_564;
     float   field_568;
@@ -175,12 +183,12 @@ class char_c : public c_meta
     //graph_2dui graph_3;       //0x610 + 0x94
     int8_t  skills_1[32];       //0x6A4 - 0x6C3
     int8_t  skills_2[32];       //0x6C4 - 0x6E3
-    //int field_6E4;
-    //int field_6E8;
+    int32_t field_6E4;
+    int32_t field_6E8;
     int32_t field_6EC;
-    //int field_6F0;
-    //char field_6F4;
-    //char field_6F5;
+    int32_t field_6F0;
+    int8_t  field_6F4;
+    int8_t  field_6F5;
     //char field_6F6;
     //char field_6F7;
     bullist     bullets;    //0x6F8
@@ -188,16 +196,16 @@ class char_c : public c_meta
     int32_t field_710;
     //struc_714 struc714;   //0x714 + 0x10
     //int field_724;
-    //char field_728;
+    int8_t field_728;
     //char field_729;
     //char field_72A;
     //char field_72B;
-    //def_deque spell_images__vector_list;    //0x72C+0x14
+    deque<gr_tex *> spell_images;    //0x72C+0x14
     int16_t field_740;
-    //char field_742;
+    int8_t  field_742;
     //char field_743;
     float   field_744;
-    //float field_748;
+    float   field_748;
     float   field_74C;
     //input_structure *input_function;  //0x750
     //int pressed_x_axis;   //0x754
@@ -229,7 +237,7 @@ class char_c : public c_meta
     //def_deque input__input__deque;    //0x7B0 + 0x14
     uint32_t pres_move;             //0x7C4
     uint32_t pres_comb;             //0x7C8
-    int8_t  controlling_type;       //0x7CC
+    CONTROL_TYPE  controlling_type;       //0x7CC
     int16_t field_7D0;
     int16_t field_7D2;
     int16_t field_7D4;
@@ -243,11 +251,11 @@ class char_c : public c_meta
     float   field_7F0;
     int8_t  not_charge_attack;  //0x7F4
     bool    bbarrier_show;  //if true - block barrier showing  0x7F5
-    //char field_7F6;
+    int8_t  field_7F6;
     int8_t  damage_limited;     //0x7F7
     int16_t field_7F8;
     //__int16 field_7FA;
-    //float field_7FC;
+    float   field_7FC;
     int8_t  field_800;
     int8_t  field_801;
     int8_t  field_802;
@@ -263,21 +271,21 @@ class char_c : public c_meta
     //char field_80F;
     int32_t field_810;
     int32_t field_814;
-    //__int16 field_818;
-    //__int16 field_81A;
-    //__int16 field_81C;
-    //__int16 field_81E;
-    //__int16 field_820;
-    //__int16 field_822;
-    //__int16 field_824;
-    //__int16 field_826;
-    //__int16 field_828;
-    int16_t field_82A;
-    //int field_82C;
-    //int field_830;
+    int16_t field_818; //HENNA! ARRAY? 10 ?
+    int16_t field_81A;
+    int16_t field_81C;
+    int16_t field_81E;
+    int16_t field_820;
+    int16_t field_822;
+    int16_t field_824;
+    int16_t field_826;
+    int16_t field_828;
+    int16_t field_82A; //END OF ARRAY?
+    float   field_82C;
+    float   field_830;
     int16_t tengu_fan;  //by system spell card  //0x834
     int16_t field_836;
-    int32_t field_838;
+    float   field_838;
     int8_t  field_83C;
     //char field_83D;
     //__int16 field_83E;
@@ -293,14 +301,14 @@ class char_c : public c_meta
     float   field_85C;
     float   field_860;
     float   field_864;
-    //int8_t   field_868;
+    int8_t   field_868;
     //int8_t   field_869;
     int16_t field_86A;
-    //int   field_86C;
-    //int   field_870;
-    //int   field_874;
-    //int   field_878;
-    //int16 field_87C;
+    int32_t field_86C;
+    int32_t   field_870;
+    int32_t   field_874;
+    int32_t   field_878;
+    int16_t field_87C;
     //int8_t   field_87E;
     //int8_t   field_87F;
     int8_t  field_880;
@@ -309,53 +317,11 @@ class char_c : public c_meta
     int16_t field_884;
     int16_t field_886;
     int16_t field_888;
-    //__int16 field_88A;
+    int16_t field_88A;
     int16_t x_delta; //x_offset     //0x88C
     int16_t y_delta; //y_offset     //0x89E
-    int16_t field_890;
-    int16_t field_892;
-    int16_t field_894;
-    //__int16 field_896;
-    float   field_898;
-    float   field_89C;
-    //__int16 field_8A0;
-    //int field_8A2;
-    //int field_8A6;
-    //int field_8AA;
-    //int field_8AE;
-    //__int16 field_8B2;
-    //int field_8B4;
-    //int field_8B8;
-    //int field_8BC;
-    //int field_8C0;
-    //int field_8C4;
-    //float field_8C8;
-    //int field_8CC;
-    //int field_8D0;
-    //int field_8D4;
-    //int field_8D8;
-    //int field_8DC;
-    //int field_8E0;
-    //int field_8E4;
-    //int field_8E8;
-    //int field_8EC;
-    //int field_8F0;
-    //int field_8F4;
-    //int field_8F8;
-    //int field_8FC;
-    //int field_900;
-    //int field_904;
-    //int field_908;
-    //int field_90C;
-    //int field_910;
-    //int field_914;
-    //int field_918;
-    //float field_91C;
-    //int field_920;
 
 //-------------------------------------------
-
-
 
 
 
@@ -391,17 +357,30 @@ class char_c : public c_meta
     void sub_4834F0();
     void sub_4873B0(int32_t seq, int32_t smt);
     bool sub_469710();
+    void sub_4684F0();
+    bool sub_468660(int8_t card);
+    void sub_488E70();
+    void sub_487370(uint32_t seq_id, uint16_t cprior);
+    void sub_483570();
+    void sub_468330();
+    void sub_469450(int32_t id, int8_t _cost, int8_t efx);
+    void sub_4834E0(int16_t next_stop_time);
+    void sub_46AB50(int8_t img, int16_t time);
 
     bool spell200_seq299_300_field190_0_3();
+    bool seq299_300_field190_0_3();
 
     void spell_energy_spend(int32_t energy, int32_t stop_time);
     void crash_spell_borders(int8_t num);
+
+    void load_spells(const char *name);
 
     void sub_4689D0(int32_t);
 
     void add_card_energy(int32_t energy);
     void add_card_energy2(int32_t energy);
     void add_card();
+    void add_card(int32_t id);
 
     bool check_AB_pressed();
 
@@ -431,6 +410,9 @@ class char_c : public c_meta
     virtual void func16();
     virtual void func18();
     virtual void func20();
+    virtual void init_vars();
+
+    void init_vars_base();
 
     virtual c_bullet *new_bullet();
 
@@ -449,5 +431,26 @@ class char_c : public c_meta
 
 typedef list<char_c *> charlist;
 typedef list<char_c *>::iterator charlist_iter;
+
+class stand_graph
+{
+    private:
+    gr_tex *tex;
+    float   xpos;
+    int8_t  alpha;
+
+    char_c *player;
+    int8_t  disp_stage;
+    int32_t frames;
+
+    public:
+    stand_graph();
+    ~stand_graph();
+
+    void init(char_c *parent, const char *name);
+    void show();
+    void update();
+    void draw(int8_t plane = 0);
+};
 
 #endif // CHARACTER_DEF_H_INCLUDED

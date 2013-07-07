@@ -12,7 +12,25 @@ using namespace std;
 #define BKG_HOR_PAD   60.0
 #define BKG_VERT_POS  860.0
 
+enum GAME_TYPE
+{
+    GAME_TYPE_SCENARIO = 0,
+    GAME_TYPE_ARCADE = 1,
+    GAME_TYPE_P_VS_C = 2,
+    GAME_TYPE_P_VS_P = 3,
+    GAME_TYPE_HOST   = 4,
+    GAME_TYPE_CLIENT = 5,
+    GAME_TYPE_SPECTATE = 6,
+    GAME_TYPE_UNK      = 7,
+    GAME_TYPE_TRAINING = 8
+};
 
+enum RENDER_PLANE
+{
+    PLANE_GUI = 0,
+    PLANE_SCENE = 1,
+    PLANE_BKG = 2
+};
 
 struct s_camera
 {
@@ -24,7 +42,14 @@ struct s_camera
 class char_c;
 class background;
 
-
+struct spell_bkg_images
+{
+    gr_tex *spell_image[2];
+    uint8_t alpha;
+    float dx[2];
+    float dy[2];
+    int8_t alpha_delta;
+};
 
 class c_scene
 {
@@ -32,7 +57,7 @@ class c_scene
 
     s_camera cam;
 
-    void upd_practice_efx_wfx_bkg();
+    void c_scene_base_func15();
     void upd_wfx_bkg_sky();
 
     bool sub_47AD60(c_meta *plr, c_meta *enm);
@@ -85,6 +110,8 @@ class c_scene
     int32_t     scn_p1[2];
     int32_t     scn_p2[2];
 
+    spell_bkg_images spell_images;
+
     //c_scene();
 
     int32_t get_stage_id();
@@ -136,5 +163,10 @@ c_scene *scene_get_scene();
 
 bool sub_479510(frame_box *a1, frame_box *a2, int32_t x, int32_t y);
 bool sub_4795A0(int32_t x11, int32_t y11, int32_t x12, int32_t y12, int32_t x21, int32_t y21, int32_t x22, int32_t y22);
+
+GAME_TYPE game_type_get();
+void      game_type_set(GAME_TYPE type);
+
+void scene_set_spell_img(uint8_t idx, gr_tex *img);
 
 #endif // SCENE_H_INCLUDED

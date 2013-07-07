@@ -63,15 +63,16 @@ gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal)
 {
     gr_tex *tex = NULL;
 
-    struct header_t {
-			uint8_t bpp;
-			uint32_t width;
-			uint32_t height;
-			uint32_t pitch;
-			uint8_t  unknown;
-			uint16_t unknown2;
-			uint8_t  unknown3;
-		} __attribute__((packed)) hdr;
+    struct header_t
+    {
+        uint8_t bpp;
+        uint32_t width;
+        uint32_t height;
+        uint32_t pitch;
+        uint8_t  unknown;
+        uint16_t unknown2;
+        uint8_t  unknown3;
+    } __attribute__((packed)) hdr;
 
     f->read(1, &hdr.bpp);
     f->read(4, &hdr.width);
@@ -149,12 +150,12 @@ void gr_set_spr_box(gr_sprite *spr,int32_t x, int32_t y, int32_t w, int32_t h)
     spr->setTextureRect(sf::IntRect(x,y,w,h));
 }
 
-void gr_set_spr_box_perc(gr_sprite *spr,float x, float y, float x2, float y2)
+void gr_set_spr_box_perc(gr_sprite *spr,float x, float y, float w, float h)
 {
     sf::Vector2u a =  spr->getTexture()->getSize();
-    x2 -= x;
-    y2 -= y;
-    spr->setTextureRect(sf::IntRect(x*a.x,y*a.y,x2*a.x,y2*a.y));
+    w -= x;
+    h -= y;
+    spr->setTextureRect(sf::IntRect(x*a.x,y*a.y,w*a.x,h*a.y));
 }
 
 void gr_draw_sprite(gr_sprite *spr, float x, float y)
@@ -194,18 +195,18 @@ void gr_draw_sprite(gr_sprite *spr,gr_blend blend,uint8_t plane, gr_shader *shad
 
         switch(blend)
         {
-            case gr_add:
-                states[plane].blendMode = sf::BlendAdd;
-                break;
-            case gr_mult:
-                states[plane].blendMode = sf::BlendMultiply;
-                break;
-            case gr_alpha:
-                states[plane].blendMode = sf::BlendAlpha;
-                break;
-            case gr_none:
-                states[plane].blendMode = sf::BlendNone;
-                break;
+        case gr_add:
+            states[plane].blendMode = sf::BlendAdd;
+            break;
+        case gr_mult:
+            states[plane].blendMode = sf::BlendMultiply;
+            break;
+        case gr_alpha:
+            states[plane].blendMode = sf::BlendAlpha;
+            break;
+        case gr_none:
+            states[plane].blendMode = sf::BlendNone;
+            break;
         };
 
         states[plane].shader = shader;
@@ -273,7 +274,7 @@ void gr_setcolor_sprite(gr_sprite *spr, uint8_t R, uint8_t G, uint8_t B)
 void gr_load_shader(gr_shader *shd, const char *vertex, const char *pixel)
 {
     if (vertex != NULL && pixel != NULL)
-    shd->loadFromFile(vertex,pixel);
+        shd->loadFromFile(vertex,pixel);
     else if (vertex == NULL && pixel)
         shd->loadFromFile(pixel,sf::Shader::Fragment);
     else if (pixel == NULL && vertex)
@@ -283,7 +284,7 @@ void gr_load_shader(gr_shader *shd, const char *vertex, const char *pixel)
 void gr_load_shader_from_mem(gr_shader *shd, const char *vertex,const char *pixel)
 {
     if (vertex != NULL && pixel != NULL)
-    shd->loadFromMemory(vertex,pixel);
+        shd->loadFromMemory(vertex,pixel);
     else if (vertex == NULL && pixel)
         shd->loadFromMemory(pixel,sf::Shader::Fragment);
     else if (pixel == NULL && vertex)
@@ -358,7 +359,7 @@ void gr_sprite_setuv(gr_sprite *spr, float x1, float y1, float x2, float y2)
 void gr_sprite_skew(gr_sprite *spr, float x, float y)
 {
     sf::Vector2u sz = spr->getTexture()->getSize();
-    spr->setTextureRect(sf::IntRect(x, y, x + sz.x, y + sz.y));
+    spr->setTextureRect(sf::IntRect(x, y, sz.x, sz.y));
 }
 
 
@@ -379,4 +380,82 @@ void debug_str(float x, float y, const char *str)
     ttx->setString(str);
     ttx->setPosition(x,y);
     window->draw(*ttx);
+}
+
+void gr_draw_tex_box(gr_tex_box *box, gr_blend blend,uint8_t plane, gr_shader *shader)
+{
+
+    if (plane < MAX_STATES)
+    {
+        sf::BlendMode tmp = states[plane].blendMode;
+
+        switch(blend)
+        {
+        case gr_add:
+            states[plane].blendMode = sf::BlendAdd;
+            break;
+        case gr_mult:
+            states[plane].blendMode = sf::BlendMultiply;
+            break;
+        case gr_alpha:
+            states[plane].blendMode = sf::BlendAlpha;
+            break;
+        case gr_none:
+            states[plane].blendMode = sf::BlendNone;
+            break;
+        };
+
+        states[plane].shader = shader;
+
+        sf::Vector2u tx_sz =  box->tex->getSize();
+
+        float box_w, box_h;
+        if (box->autosize)
+        {
+            box_w = tx_sz.x;
+            box_h = tx_sz.y;
+        }
+        else
+        {
+            box_w = box->w;
+            box_h = box->h;
+        }
+
+        sf::RectangleShape sbox(sf::Vector2f(box_w,box_h));
+        sbox.setPosition(box->x,box->y);
+
+        sbox.setFillColor(sf::Color(box->r,box->g,box->b,box->a));
+        sbox.setTexture(box->tex);
+
+        float skew_x = box->skew_x;
+        float skew_y = box->skew_y;
+
+        if (!box->skew_in_pix)
+        {
+            skew_x *= tx_sz.x;
+            skew_y *= tx_sz.y;
+        }
+
+        float tex_scl_x = 1.0;
+        float tex_scl_y = 1.0;
+
+        if (box->overlay_tex)
+        {
+            tex_scl_x = box_w / tx_sz.x;
+            tex_scl_y = box_h / tx_sz.y;
+        }
+        else
+        {
+            tex_scl_x = box->tex_scl_x;
+            tex_scl_y = box->tex_scl_y;
+        }
+
+
+        sbox.setTextureRect(sf::IntRect(skew_x, skew_y, tx_sz.x * tex_scl_x,  tx_sz.y * tex_scl_y));
+
+        window->draw(sbox,states[plane]);
+
+        states[plane].blendMode = tmp;
+        states[plane].shader = NULL;
+    }
 }

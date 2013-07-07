@@ -81,7 +81,7 @@ void drawbullet(char_c *chr, int8_t order)
 
     for(bullist_iter i=lst->begin(); i != lst->end(); i++)
         if ((*i)->order == order)
-            (*i)->draw(1);
+            (*i)->draw();
 }
 
 c_bullet::c_bullet()
@@ -105,6 +105,11 @@ c_bullet::~c_bullet()
         (*it)->bul_parent = NULL;
         it++;
     }
+}
+
+void c_bullet::func16()
+{
+
 }
 
 void c_bullet::init(char_c *_parent, c_bullet *bul, int32_t idx, float _x, float _y, int8_t _dir, int8_t _order, float *addit, int8_t num, char_graph *_pgp)
@@ -1478,7 +1483,25 @@ void c_bullet::set_seq_params()
     }
 }
 
-void c_bullet::draw(int8_t plane)
+void c_bullet::draw_shadow(shd_trans *trans, gr_shader *shader)
+{
+    float rx,ry,rz;
+    euler_mult(0,0,-angZ,trans->ax,trans->ay,trans->az,rx,ry,rz);
+
+    if (trans->sx < 0)
+        sprite.setRotate(rx,ry,-rz*dir);
+    else
+        sprite.setRotate(rx,ry,rz*dir);
+
+    sprite.setScale(trans->sx*dir,trans->sy);
+    sprite.setXY(trans->x,trans->y);
+    sprite.setOrigin(-x_off ,-y_off);
+    sprite.setColor(trans->r,trans->g,trans->b,trans->a);
+    sprite.draw(PLANE_SCENE,shader);
+}
+
+
+void c_bullet::draw(gr_shader *shader)
 {
     if (active)
     {
@@ -1497,7 +1520,7 @@ void c_bullet::draw(int8_t plane)
 
         // scale_real = false;
 
-        sprite.draw(plane);
+        sprite.draw(PLANE_SCENE,shader);
 
         /*for (int32_t i = 0; i<5; i++)
             //if (atk_area_2o[i])

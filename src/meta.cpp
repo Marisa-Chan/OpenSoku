@@ -9,16 +9,38 @@
 c_meta::c_meta(char_graph *_pgp)
 {
     pgp  = _pgp;
-    chrt = NULL;
 
-    cust_box  = NULL;
-    parent_mlist = NULL;
+    //field_154 = NULL; //HACK
+    //field_134 = 0;    //HACK
+    has_shadow = 0;
+    atk_area_of[0] = NULL;
+    atk_area_of[1] = NULL;
+    atk_area_of[2] = NULL;
+    atk_area_of[3] = NULL;
+    atk_area_of[4] = NULL;
+    hit_area_flags[0] = NULL;
+    hit_area_flags[1] = NULL;
+    hit_area_flags[2] = NULL;
+    hit_area_flags[3] = NULL;
+    hit_area_flags[4] = NULL;
+    hit_area_flags[5] = NULL;
     atk_box_cnt = 0;
     hit_box_cnt = 0;
+    cust_box  = NULL;
+    field_190 = 0;
+    field_194 = 0;
+    hit_stop = 0;
     field_1A0 = 0;
     field_1A1 = 0;
+    field_188 = 0;
+    field_18C = -1;
+    field_1AC = 1;
+    chrt = NULL;
+    enemy = NULL;
+    parent_mlist = NULL;
+
+    //additional params init
     field_1A2 = 0;
-    has_shadow = 1;
 }
 
 c_meta::c_meta():
@@ -129,13 +151,14 @@ uint16_t c_meta::get_prior(uint32_t idx)
         return 0xFFFF;
 }
 
-void c_meta::draw_shadow(shd_trans *trans, gr_shader *shader)
+void c_meta::draw_shadow(shd_trans */*trans*/, gr_shader */*shader*/)
 {
 }
 
-void c_meta::draw(gr_shader *shader)
+void c_meta::draw(gr_shader */*shader*/)
 {
 }
+
 
 
 void c_meta::set_mlist_hitflag(int8_t flag )
