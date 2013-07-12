@@ -1461,6 +1461,142 @@ void marisa_bullets::func10()
             if (process())
                 active = false;
         break;
+    case 861:
+        if ( field_190 == 5 )
+        {
+            active = false;
+            break;
+        }
+        if ( get_subseq() == 0 )
+        {
+            angZ += field_378;
+            field_378 += 0.1;
+            set_vec_speed(addition[0],addition[1]);
+            if ( x > 1380.0 || x < -100.0 || y > 1060.0 || y < -100.0)
+            {
+                active = false;
+                break;
+            }
+            if ( get_elaps_frames() % 10 == 0 )
+            {
+                float tmp[4];
+
+                tmp[0] = addition[0];
+                tmp[1] = 0.0;
+                tmp[2] = 1.0;
+                tmp[3] = 0.0;
+
+                addbullet(chrt, this, 861, x, y, dir, 1, tmp, 4);
+            }
+            sub_48C5F0(0);
+            if ( field_190 != 0 )
+            {
+                if ( field_194 <= 0 )
+                {
+                    active = false;
+                    chrt->play_sfx(21);
+
+                    for(int32_t i=0; i<12; i++)
+                    {
+                        float tmp[4];
+
+                        tmp[0] = 0.0;
+                        tmp[1] = 0.0;
+                        tmp[2] = 2.0;
+                        tmp[3] = 0.0;
+
+                        addbullet(chrt, NULL, 861, x, y, dir, 1, tmp, 4);
+                    }
+                    break;
+                }
+                if ( field_190 == 4 )
+                    field_194 = 0;
+                field_190 = 0;
+            }
+            x += h_inerc * dir;
+            y += v_inerc;
+        }
+        if ( get_subseq() == 1 )
+        {
+            if ( bul_parent )
+            {
+                x = bul_parent->x;
+                y = bul_parent->y;
+                hit_stop = bul_parent->hit_stop;
+
+                if (c_A < 20)
+                {
+                    active = false;
+                    break;
+                }
+
+                c_A -= 20;
+                scaleX += 0.1;
+                scaleY += 0.1;
+            }
+            else
+            {
+                if (c_A <= 30)
+                {
+                    active = false;
+                    break;
+                }
+
+                c_A -= 30;
+                scaleX += 0.25;
+                scaleY += 0.25;
+            }
+        }
+        if ( get_subseq() == 2 )
+        {
+            addition[1] -= 0.5;
+            if (addition[1] < 0.0)
+                addition[1] = 0.0;
+
+            set_vec_speed(addition[0], addition[1]);
+            angZ += field_378;
+            if (c_A <= 10)
+            {
+                active = false;
+                break;
+            }
+            scaleX += 0.005;
+            scaleY += 0.005;
+            c_A -= 10;
+            x += h_inerc * dir;
+            y += v_inerc;
+        }
+        if ( get_subseq() == 3 )
+        {
+            if (c_A <= 8)
+            {
+                active = false;
+                break;
+            }
+            scaleY = scaleX += cos_deg(3 * get_elaps_frames()) * 0.25;
+            c_A -= 8;
+        }
+        if ( get_subseq() == 4 )
+        {
+            if ( bul_parent == NULL )
+            {
+                active = false;
+                break;
+            }
+            hit_stop = bul_parent->hit_stop;
+            angZ -= field_378;
+            field_378 += 0.1;
+            if (c_A <= 128)
+                c_A = 128;
+            else
+                c_A -= 20;
+            x = bul_parent->x;
+            y = bul_parent->y;
+            scaleY = scaleX = cos_deg(20 * get_elaps_frames()) * 0.1 + 1.2;
+        }
+        if (process())
+            active = false;
+        break;
     case 998:
         angZ += 5.0;
         if ( get_subseq() == 0)
@@ -1538,12 +1674,11 @@ void marisa_bullets::set_seq_params()
         field_194 = 1;
         set_subseq(addition[2]);
 
-        if ( get_subseq() == 0 )
+        if ( get_subseq() == 0 || get_subseq() == 1)
         {
-            /*sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(20.0), 6, 2, 2);*/
-        }
-        else if ( get_subseq() == 1 )
-        {
+            seq * sq = pgp->get_seq(989);
+            char_frame *frm = sq->subseqs[0].frames[0];
+            tail = new c_tail(frm->img, 255,255,255,255,20.0,6,2,gr_add);
             /*sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(20.0), 6, 2, 2);*/
         }
         else if ( get_subseq() == 2 )
@@ -1682,6 +1817,43 @@ void marisa_bullets::set_seq_params()
             field_194 = 5;
         }
 
+        break;
+    case 861:
+        set_subseq(addition[2]);
+        set_frame(addition[3]);
+        if ( get_subseq() == 0 )
+        {
+            field_378 = 5.0;
+            field_194 = 6;
+
+            float tmp[4];
+            tmp[0] = addition[0];
+            tmp[1] = 0.0;
+            tmp[2] = 3.0;
+            tmp[3] = 0.0;
+
+            addbullet(chrt, NULL, 861, x, y, dir, 1, tmp, 4);
+
+            tmp[2] = 4.0;
+            tmp[3] = 0.0;
+
+            addbullet(chrt, this, 861, x ,y ,dir, 1, tmp, 4);
+        }
+        else if ( get_subseq() == 1 )
+            angZ = addition[0];
+        else if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rng(360);
+            scaleY = scaleX = scene_rand_rng(100) * 0.01 + 0.5;
+            addition[0] = scene_rand_rng(360);
+            addition[1] = scene_rand_rng(30) + 10;
+            field_378 = scene_rand_rng(20) - 10.0;
+            field_37C = scene_rand_rng(20) + 5.0;
+        }
+        else if (get_subseq() == 3)
+            angZ = addition[0];
+        else if (get_subseq() == 4)
+            field_378 = 5.0;
         break;
     case 998:
         angZ = 0;

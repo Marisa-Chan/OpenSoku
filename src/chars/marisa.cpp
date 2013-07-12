@@ -726,21 +726,21 @@ void char_marisa::func10()
 
                     if ( field_7D4 > 0 )
                     {
-                        if ( weather_id != 0 )
+                        if ( weather_id != WEATHER_SUNNY )
                             dash_angle += 0.5;
                         else
                             dash_angle += 1.5;
                     }
                     else if ( field_7D4 < 0 )
                     {
-                        if ( weather_id != 0 )
+                        if ( weather_id != WEATHER_SUNNY )
                             dash_angle -= 0.5;
                         else
                             dash_angle -= 1.5;
                     }
 
-                    h_inerc = cos(dash_angle * 3.1415/180.0) * field_7DC;
-                    v_inerc = sin(dash_angle * 3.1415/180.0) * field_7DC;
+                    h_inerc = cos_deg(dash_angle) * field_7DC;
+                    v_inerc = sin_deg(dash_angle) * field_7DC;
 
                     if ( y > 680.0 )
                         if ( v_inerc > 0.0 )
@@ -776,8 +776,8 @@ void char_marisa::func10()
 
                     if ( get_elaps_frames() % 5 == 1 )
                     {
-                        float yy = sin(dash_angle * 3.1415/180.0) * 100.0 + y + 100.0;
-                        float xx = cos(dash_angle * 3.1415/180.0) * 100.0 * dir + x;
+                        float yy = sin_deg(dash_angle) * 100.0 + y + 100.0;
+                        float xx = cos_deg(dash_angle) * 100.0 * dir + x;
                         scene_add_effect(this, 125, xx, yy, dir, 1);
                     }
                     if ( (input->keyDown(INP_D) == 0 && field_7D6 > 10) || spell_energy <= 0 )
@@ -864,7 +864,338 @@ void char_marisa::func10()
         if ( process())
             set_seq(0);
         break;
+    case 217:
+        if ( process())
+            set_seq(9);
+        else
+        {
+            if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+                scene_play_sfx(31);
+
+            if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 6)
+            {
+                set_seq(9);
+                break;
+            }
+
+            field_7D2 = atan2_deg(enemy->y + 100.0 - y, enemy->x - x * dir);
+            if (get_subseq() == 5 || get_subseq() == 6)
+                v_inerc -= v_force;
+            if (get_subseq() > 0 && get_subseq() < 5)
+            {
+                field_7D6++;
+                field_7D4 = field_7D2 - dash_angle;
+                if (field_7D4 > 180)
+                    field_7D4 -= 360;
+                else if (field_7D4 < -180)
+                    field_7D4 += 360;
+
+                if ( field_7D4 > 0 )
+                {
+                    if ( weather_id != WEATHER_SUNNY )
+                        dash_angle += 0.25;
+                    else
+                        dash_angle += 0.75;
+                }
+                else if ( field_7D4 < 0 )
+                {
+                    if ( weather_id != WEATHER_SUNNY )
+                        dash_angle -= 0.25;
+                    else
+                        dash_angle -= 0.75;
+                }
+
+                h_inerc = cos_deg(dash_angle) * field_7DC;
+                v_inerc = sin_deg(dash_angle) * field_7DC;
+
+                if ( y > 680.0 )
+                    if ( v_inerc > 0.0 )
+                        v_inerc = 0.0;
+
+                field_7DC += 0.3;
+                if ( field_7DC > 12.0 )
+                    field_7DC = 12.0;
+
+                if (weather_id == WEATHER_SUNNY)
+                    spell_energy_spend(10, 1);
+                else
+                    spell_energy_spend(15, 60);
+
+                angZ = -dash_angle;
+
+                if ( h_inerc < 0.0 )
+                    angZ = 180 -angZ;
+                //angZ = 180.0 + dash_angle;
+
+                if ( h_inerc < 0.0 )
+                    if ( get_subseq() == 1 )
+                        set_subseq(3);
+
+                if ( h_inerc >= 0 )
+                    if ( get_subseq() == 3 )
+                        set_subseq(1);
+
+                if ( h_inerc < 0.0 )
+                    if ( get_subseq() == 2 )
+                        set_subseq(4);
+
+                if ( h_inerc >= 0)
+                    if ( get_subseq() == 4 )
+                        set_subseq(2);
+
+                if ( get_elaps_frames() % 5 == 1 )
+                {
+                    float yy = sin_deg(dash_angle) * 100.0 + y + 100.0;
+                    float xx = cos_deg(dash_angle) * 100.0 * dir + x;
+                    scene_add_effect(this, 125, xx, yy, dir, 1);
+                }
+
+                if ( (keyDown(INP_D) == 0 && field_7D6 > 20) || spell_energy <= 0 )
+                {
+                    reset_ofs();
+
+                    if ( get_subseq() == 1 || get_subseq() == 2 )
+                    {
+                        if ( dir == 1 )
+                        {
+                            if ( enemy->x >= x )
+                                set_subseq(5);
+                            else
+                            {
+                                dir = -dir;
+                                h_inerc = -h_inerc;
+                                set_subseq(6);
+                            }
+                        }
+                        else
+                        {
+                            if ( enemy->x <= x )
+                                set_subseq(5);
+                            else
+                            {
+                                dir = -dir;
+                                h_inerc = -h_inerc;
+                                set_subseq(6);
+                            }
+                        }
+                    }
+                    else if ( get_subseq() == 3 || get_subseq() == 4 )
+                    {
+                        if ( dir == 1 )
+                        {
+                            if ( enemy->x >= x )
+                                set_subseq(6);
+                            else
+                            {
+                                dir = -dir;
+                                h_inerc = -h_inerc;
+                                set_subseq(5);
+                            }
+                        }
+                        else
+                        {
+                            if ( enemy->x <= x )
+                                set_subseq(6);
+                            else
+                            {
+                                dir = -dir;
+                                h_inerc = -h_inerc;
+                                set_subseq(5);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            if ( char_on_ground_down() )
+            {
+                y = getlvl_height();
+                v_force = 0.0;
+                v_inerc = 0.0;
+                if ( get_subseq() < 5 )
+                {
+                    reset_ofs();
+                    angZ = 0;
+                    set_seq(215);
+                }
+                else
+                {
+                    set_seq(10);
+                    reset_forces();
+                }
+            }
+        }
+        break;
+    case 220:
+        if ( get_subseq() == 0 )
+            sub10func();
+
+        if ( char_on_ground_down() )
+        {
+            set_seq(10);
+            y = getlvl_height();
+            reset_forces();
+        }
+        else
+        {
+            if ( char_on_ground_flag() || v_inerc > 0.0 )
+                field_522 = 2;
+            if ( get_subseq() > 0 )
+            {
+                v_inerc -= v_force;
+                if (v_inerc < -20.0)
+                    v_inerc = -20.0;
+            }
+
+            if ( get_subseq() == 1 && v_inerc < 4.0 )
+                set_subseq(2);
+
+            process();
+
+            if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+            {
+                char_h_move(0.0);
+                v_inerc = 22.5;
+                v_force = 0.85;
+                field_49A = 0;
+
+                scene_add_effect(this, 63, x, y, dir, 1);
+            }
+        }
+        break;
+    case 223:
+        sub10func();
+        field_49A = 1;
+        process();
+        if (get_subseq() == 1)
+        {
+            if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && field_7D0 == 0)
+            {
+                char_h_move(7.5);
+                scene_add_effect(this, 125, x + 80.0 * dir, y + 80.0, dir, 1);
+                scene_add_effect(this, 126, x, y + 80.0, dir, 1);
+                scene_play_sfx(31);
+            }
+
+            if ( get_elaps_frames() % 5 == 0 )
+                scene_add_effect(this, 124, x + 50.0 - scene_rand_rngf(100), y + scene_rand_rngf(200), dir, 1);
+            field_7D0++;
+
+            if ( (gX(dir) <= 0 && field_7D0 > 15) || field_7D0 > 45)
+                set_seq(204);
+        }
+        break;
+    case 224:
+        if ( get_subseq() == 0 || get_subseq() == 3 )
+            sub10func();
+
+        if ( get_subseq() == 3 )
+        {
+            h_inerc += 2.0;
+            if (h_inerc > 0.0)
+                h_inerc = 0.0;
+        }
+        if (!char_on_ground_flag() && get_elaps_frames() % 5 == 0)
+            scene_add_effect(this, 124, x + 50.0 - scene_rand_rngf(100), y + scene_rand_rngf(200), dir, 1);
+
+        if ( get_subseq() < 3 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                v_inerc = 0.0;
+                v_force = 0.0;
+                y = getlvl_height();
+                set_subseq(3);
+                break;
+            }
+        }
+        if ( process() )
+        {
+            set_seq(0);
+            h_inerc = 0.0;
+            v_force = 0.0;
+        }
+        else
+        {
+            if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+                if (field_7D0 == 0)
+                {
+                    field_7D0 = 1;
+                    char_h_move(-14.0);
+                    v_inerc = 4.0;
+                    v_force = 0.5;
+
+                    scene_add_effect(this, 125, x, y + 80.0, dir, 1);
+                    scene_add_effect(this, 126, x, y + 80.0, dir, 1);
+                    scene_play_sfx(31);
+                }
+        }
+        break;
+    case 225:
+        if ( get_subseq() >= 1 )
+            v_inerc -= v_force;
+        if ( char_on_ground_down() )
+        {
+            reset_forces();
+            y = getlvl_height();
+            set_seq(10);
+        }
+        else
+        {
+            if (get_subseq() >= 2 && get_elaps_frames() % 5 == 0)
+                scene_add_effect(this, 124, x + 50.0 - scene_rand_rngf(100), y + scene_rand_rngf(200), dir, 1);
+
+            if ( process() )
+                set_seq(9);
+
+            if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+            {
+                char_h_move(-11.0);
+                v_inerc = 4.0;
+                v_force = 0.5;
+                scene_add_effect(this, 125, x, y + 120.0, dir, 1);
+                scene_add_effect(this, 126, x, y + 120.0, dir, 1);
+                scene_play_sfx(31);
+            }
+        }
+        break;
+    case 226:
+        v_inerc -= v_force;
+        if ( char_on_ground_down() )
+        {
+            reset_forces();
+            y = getlvl_height();
+            set_seq(10);
+        }
+        else
+        {
+            if ( get_subseq() == 1 && get_elaps_frames() % 5 == 0)
+                scene_add_effect(this, 124, x + 50.0 - scene_rand_rngf(100), y + scene_rand_rngf(200), dir, 1);
+
+            if ( process() )
+                set_seq(9);
+
+            if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0)
+            {
+                if (get_subseq() == 1)
+                {
+                    field_7D0 = 0;
+                    char_h_move(11.0);
+                    v_inerc = 4.0;
+                    v_force = 0.5;
+
+                    scene_add_effect(this, 125, x + 80.0 * dir, y + 110.0, dir, 1);
+                    scene_add_effect(this, 126, x, y + 110.0, dir, 1);
+                    scene_play_sfx(31);
+                }
+                else if (get_subseq() == 2)
+                    flip_with_force();
+            }
+        }
+        break;
     case 300: //near A-attack
+    case 330:
         sub10func();
         stopping_posit(0.5);
 
@@ -1295,7 +1626,37 @@ void char_marisa::func10()
             }
         }
         break;
+    case 310:
+        if (get_subseq() == 2 )
+        {
+            h_inerc -= 1.0;
+            if ( h_inerc < 0.0 )
+                h_inerc = 0.0;
 
+            sub10func();
+        }
+        else
+        {
+            v_inerc -= v_force;
+            if (char_on_ground_down())
+            {
+                set_subseq(2);
+                y = getlvl_height();
+                v_inerc = 0.0;
+                v_force = 0.0;
+                field_190 = 1;
+            }
+        }
+        if ( process() )
+        {
+            if (gY() >= 0 )
+                set_seq(3);
+            else
+                set_seq(2);
+        }
+        else if (get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 7)
+            scene_play_sfx(29);
+        break;
     case 320:
         sub10func();
         if ( get_frame() > 1 )
@@ -1988,19 +2349,6 @@ void char_marisa::func10()
                     t[1] = 2;
                     t[2] = 4;
                     addbullet(this, NULL,803, 48*dir + x, y+104, dir, 1, t, 3);
-                    /*v1790 = 0.0;
-                    v1426 = &v1790;
-                    v1791 = 2.0;
-                    v1403 = 1;
-                    v1792 = 4.0;
-                    v1380 = v3->rend_cls.dir;
-                    v441 = v3->rend_cls.y_pos + 104.0;
-                    v1362 = v441;
-                    v442 = (48 * v1380) + v3->rend_cls.x_pos;
-                    v443 = v442;
-                    v446 = v443;
-                                     addbullet(v3, 803, v446, v1362, v1380, v1403, v1426, 3);
-                    */
                 }
                 else
                 {
@@ -2086,6 +2434,145 @@ void char_marisa::func10()
             {
                 scene_play_sfx(29);
                 field_49A = 0;
+            }
+        }
+        break;
+    case 420:
+        sub10func();
+        if ( process() )
+            set_seq(0);
+
+        if ( get_subseq() == 1 && get_elaps_frames() >= 2 )
+            next_subseq();
+        else if (get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2)
+        {
+            field_190 = 1;
+            field_894 = 40;
+            field_890 = 1;
+            field_7D0 = 1;
+            spell_energy_spend(200, 45);
+        }
+        break;
+    case 421:
+        sub10func();
+        if ( process() )
+            set_seq(2);
+        else if (get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2)
+        {
+            field_190 = 1;
+            field_894 = 40;
+            field_890 = 1;
+            field_7D0 = 1;
+            spell_energy_spend(200, 45);
+        }
+        break;
+    case 422:
+        if ( get_subseq() == 3 )
+            sub10func();
+
+        v_inerc -= v_force;
+        if ( char_on_ground_down() && get_subseq() < 3 )
+        {
+            set_subseq(3);
+            air_dash_cnt = 0;
+            y = getlvl_height();
+            reset_forces();
+        }
+        else
+        {
+            if ( process() )
+                set_seq(0);
+
+            if ( get_subseq() == 1 && get_elaps_frames() >= 2 )
+                next_subseq();
+            else
+            {
+                if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2 )
+                {
+                    field_190 = 1;
+                    h_inerc = -6.0;
+                    v_inerc = 6.0;
+                    v_force = 0.5;
+                    field_894 = 40;
+                    field_890 = 1;
+                    field_7D0 = 1;
+                    spell_energy_spend(200, 45);
+                }
+                if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 3)
+                    set_seq(9);
+            }
+        }
+        break;
+    case 430:
+        sub10func();
+        if ( get_subseq() < 2  && keyDown(INP_C) == 0 )
+            not_charge_attack = 0;
+
+        if ( get_subseq() == 2  && get_frame() == 2 && get_frame_time() == 0)
+        {
+            spell_energy_spend(200, 60);
+            field_894 = 60;
+            field_890 = 8;
+            field_190 = 1;
+            add_card_energy(50);
+        }
+
+        if ( process() )
+            set_seq(0);
+
+        if ( (get_subseq() == 1 || get_subseq() == 3) && get_elaps_frames() > 10 )
+            next_subseq();
+        break;
+    case 431:
+        sub10func();
+        if ( process() )
+            set_seq(2);
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2)
+        {
+            field_190 = 1;
+            field_894 = 60;
+            field_890 = 8;
+            field_7D0 = 1;
+            spell_energy_spend(200,60);
+        }
+        if ( get_subseq() == 3 && get_elaps_frames() > 10)
+            next_subseq();
+
+        break;
+    case 432:
+        if ( get_subseq() == 5 )
+            sub10func();
+
+        v_inerc -= v_force;
+        if (char_on_ground_down() && get_subseq() < 5)
+        {
+            set_subseq(5);
+            air_dash_cnt = 0;
+            y = getlvl_height();
+            reset_forces();
+        }
+        else
+        {
+            if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2)
+            {
+                spell_energy_spend(200, 60);
+                field_190 = 1;
+                field_894 = 60;
+                field_890 = 8;
+                add_card_energy(50);
+            }
+            if ( process() )
+                set_seq(0);
+            if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 5)
+                set_seq(9);
+            else
+            {
+                v_inerc -= 0.01;
+
+                if ((get_subseq() == 1 && get_elaps_frames() > 10) || (get_subseq() == 3 && get_elaps_frames() > 20) )
+                    next_subseq();
+                else if (get_subseq() == 4 && get_frame_time() == 0 && get_frame() == 5)
+                    v_force = 0.6;
             }
         }
         break;
@@ -2182,9 +2669,205 @@ void char_marisa::func10()
             if (skills_1[0] >= 1)
                 next_subseq();
         break;
+    case 505:
+        if ( get_subseq() == 3 )
+            sub10func();
+        field_18C = 4;
+
+        if ( get_subseq() == 1 || get_subseq() == 2 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                y = getlvl_height();
+                reset_forces();
+                set_subseq(3);
+            }
+        }
+        if ( process() )
+            set_seq(0);
+
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            add_card_energy(50);
+
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 27.5;
+            if (skills_1[4] >= 3)
+                tmp[1] = 35.0;
+            tmp[2] = 0.0;
+
+            addbullet(this, NULL, 811, x + 109.0 * dir, y + 84.0, dir, 1, tmp, 3);
+
+            scene_add_effect(this, 127, x + 200.0 * dir, y, dir, -1);
+
+            h_inerc = -7.5;
+            v_inerc = 10.0;
+            v_force = 0.55;
+            spell_energy_spend(200, 120);
+            play_sfx(26);
+        }
+        break;
+    case 506:
+        if ( get_subseq() == 3 )
+            sub10func();
+        field_18C = 4;
+        if ( get_subseq() == 1 || get_subseq() == 2 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                y = getlvl_height();
+                reset_forces();
+                set_subseq(3);
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            add_card_energy(50);
+
+            float t[3];
+            t[0] = -20.0;
+            if ( getlvl_height() < y )
+                t[0] = 30.0;
+            t[1] = 27.5;
+            if (skills_1[4] >= 3)
+                t[1] = 35;
+            t[2] = 0.0;
+
+            addbullet(this, NULL,811, x + 109.0 * dir, y + 84.0, dir, 1, t, 3);
+            scene_add_effect(this, 127, x + 200.0*dir, y, dir, -1);
+
+            h_inerc = -7.5;
+            v_inerc = 10.0;
+            v_force = 0.55;
+            spell_energy_spend(200,120);
+            play_sfx(26);
+        }
+        break;
+    case 510:
+    case 512:
+        if ( get_subseq() == 4 )
+            sub10func();
+        field_18C = 8;
+        if ( get_subseq() == 1 || get_subseq() == 2 || get_subseq() == 3 )
+        {
+            h_inerc -= 0.75;
+            if (h_inerc < 2.0)
+                h_inerc = 2.0;
+
+            v_inerc -= v_force;
+
+            if (get_subseq() == 1 && v_inerc <= -1.0)
+                v_inerc = -1.0;
+
+            if (char_on_ground_down())
+            {
+                y = getlvl_height();
+                reset_forces();
+                set_subseq(4);
+                angZ = 0.0;
+            }
+            if (get_subseq() == 1)
+            {
+                field_7DC += 2.0;
+                angZ -= 25.0;
+                if (angZ < -1080.0)
+                {
+                    next_subseq();
+                    angZ = 0.0;
+                    break;
+                }
+            }
+            if (get_subseq() == 3 && get_elaps_frames() >= 24)
+            {
+                set_seq(9);
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+        {
+            float t[3];
+            t[0] = 75.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+            if (skills_1[8] >= 4)
+                t[2] = 6.0;
+            addbullet(this, NULL, 812, x, y + 135.0, dir, 1, t, 3);
+            h_inerc = 17.5;
+            v_inerc = 11.0;
+            v_force = 0.45;
+            spell_energy_spend(200,120);
+            add_card_energy(50);
+            play_sfx(6);
+            setOrigin(0, 135);
+        }
+        break;
+    case 511:
+    case 513:
+        if ( get_subseq() == 1 || get_subseq() == 2 || get_subseq() == 3 )
+        {
+            h_inerc -= 0.75;
+            if ( h_inerc < 2.0 )
+                h_inerc = 2.0;
+
+            v_inerc -= v_force;
+            if ( get_subseq() == 1 && v_inerc <= -1.0 )
+                v_inerc = -1.0;
+
+            if ( char_on_ground_down() )
+            {
+                y = getlvl_height();
+                reset_forces();
+                set_subseq(4);
+                angZ = 0.0;
+            }
+            if ( get_subseq() == 1 )
+            {
+                field_7DC += 2.0;
+                angZ -= 25.0;
+                if ( angZ < -1080.0 )
+                {
+                    next_subseq();
+                    angZ = 0.0;
+                    break;
+                }
+            }
+            if ( get_subseq() == 3 && get_elaps_frames() >= 24 )
+            {
+                set_seq(9);
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+
+        if (get_elaps_frames() == 0 && get_frame() == 0 && get_frame_time() == 0 && get_subseq() == 1)
+        {
+            float t[3];
+            t[0] = 75.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+            if ( skills_1[8] >= 4 )
+                t[2] = 6.0;
+            addbullet(this, NULL, 812, x, y + 135.0, dir, 1, t ,3);
+
+            h_inerc = 25.0;
+            v_inerc = 12.5;
+            v_force = 0.45;
+            spell_energy_spend(200, 120);
+            add_card_energy(50);
+            play_sfx(6);
+            setOrigin(0, 135.0);
+        }
+        break;
     case 520:
     {
-
         uint32_t sq = get_subseq();
 
         if ( sq == 0 || sq == 4 )
@@ -2312,6 +2995,170 @@ void char_marisa::func10()
 
     }
     break;
+    case 525:
+        if ( get_subseq() == 0 || get_subseq() == 4 )
+            sub10func();
+
+        field_18C = 5;
+        if ( get_subseq() == 1 )
+        {
+            if ( get_elaps_frames() > 20 )
+            {
+                next_subseq();
+                v_inerc *= 0.5;
+            }
+            if ( get_elaps_frames() % 3 == 0 )
+            {
+                float t[3];
+                t[0] = scene_rand_rng(60) + 95.0 - 30.0;
+                t[1] = scene_rand_rngf(50)* 0.1 + 5.0;
+                t[2] = 3.0;
+
+                addbullet(this, NULL, 810, x + 40.0 * dir, y + 51.0, dir, 1, t, 3);
+            }
+        }
+        if ( get_subseq() > 0 && get_subseq() < 4 )
+        {
+            v_inerc -= 0.55;
+            h_inerc -= 0.5;
+            if (h_inerc < 0.0)
+                h_inerc = 0;
+        }
+        if ( get_subseq() == 3 && char_on_ground_down() )
+        {
+            next_subseq();
+            y = getlvl_height();
+            reset_forces();
+        }
+        if ( process() )
+            set_seq(0);
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+        {
+            float t[3];
+            t[0] = -85.0;
+            t[1] = 0.0;
+            if (skills_1[5] >= 4)
+                t[2] = 5.0;
+            if (skills_1[5] <= 3)
+                t[2] = 4.0;
+            if (skills_1[5] <= 1)
+                t[2] = 3.0;
+
+            addbullet(this, NULL, 849, x + 61.0 * dir, y + 232.0, dir, 1, t, 3);
+            scene_add_effect(this, 127, x, y, dir, -1);
+            play_sfx(28);
+            spell_energy_spend(200,120);
+            add_card_energy(50);
+            h_inerc = 7.0;
+            v_inerc = 17.5;
+            v_force = 0.5;
+            field_190 = 1;
+        }
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 3)
+            field_190 = 1;
+        break;
+    case 526:
+        if ( get_subseq() == 0 || get_subseq() == 4 )
+            sub10func();
+
+        field_18C = 5;
+        if ( get_subseq() == 1 )
+        {
+            if ( get_elaps_frames() > 30 )
+            {
+                next_subseq();
+                v_inerc *= 0.5;
+            }
+            if ( get_elaps_frames() % 3 == 0 )
+            {
+                float t[3];
+                t[0] = scene_rand_rng(60) + 95.0 - 30.0;
+                t[1] = scene_rand_rngf(50)* 0.1 + 5.0;
+                t[2] = 3.0;
+
+                addbullet(this, NULL, 810, x + 40.0 * dir, y + 51.0, dir, 1, t, 3);
+            }
+        }
+        if ( get_subseq() > 0 && get_subseq() < 4 )
+        {
+            v_inerc -= 0.55;
+            h_inerc -= 0.5;
+            if (h_inerc < 0.0)
+                h_inerc = 0;
+        }
+        if ( get_subseq() == 3 && char_on_ground_down() )
+        {
+            next_subseq();
+            y = getlvl_height();
+            reset_forces();
+        }
+        if ( process() )
+            set_seq(0);
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+        {
+            if ( get_subseq() == 1 )
+            {
+                float t[3];
+                t[0] = -85.0;
+                t[1] = 0.0;
+                if ( skills_1[5] <= 4 )
+                    t[2] = 4.0;
+                if ( skills_1[5] <= 2 )
+                    t[2] = 3.0;
+
+                addbullet(this, NULL, 849, x + 61.0 * dir, y + 232.0, dir, 1, t, 3);
+                scene_add_effect(this, 127, x, y, dir, -1);
+                play_sfx(28);
+                spell_energy_spend(200,120);
+                add_card_energy(50);
+
+                h_inerc = 25.0;
+                v_inerc = 20.0;
+                v_force = 0.5;
+                field_190 = 1;
+            }
+        }
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 3)
+            field_190 = 1;
+        break;
+    case 530:
+        sub10func();
+        field_18C = 9;
+        if ( process() )
+            set_seq(0);
+        if (get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 5)
+        {
+            float t[3];
+            t[0] = -70.0;
+            t[1] = 30.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 817, x + 18.0 * dir, y + 164.0, dir, 1, t, 3);
+            scene_add_effect(this, 127, x, y, dir, -1);
+            play_sfx(30);
+            spell_energy_spend(200, 120);
+            add_card_energy(50);
+            field_190 = 1;
+        }
+        break;
+    case 531:
+        sub10func();
+        field_18C = 9;
+        if ( process() )
+            set_seq(0);
+        if (get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 5)
+        {
+            float t[3];
+            t[0] = -40.0;
+            t[1] = 50.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 817, x + 74.0 * dir, y + 164.0, dir, 1, t, 3);
+            scene_add_effect(this, 127, x, y, dir, -1);
+            play_sfx(30);
+            spell_energy_spend(200, 120);
+            add_card_energy(50);
+            field_190 = 1;
+        }
+        break;
     case 540:
         sub10func();
         field_18C = 2;
@@ -2464,6 +3311,248 @@ void char_marisa::func10()
                 else
                     next_subseq();
             }
+        }
+        break;
+    case 545:
+        sub10func();
+        field_18C = 6;
+        if ( process() )
+            set_seq(0);
+        if (get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2)
+        {
+            add_card_energy(50);
+            spell_energy_spend(200, 120);
+            field_190 = 1;
+
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 6.0;
+            t[2] = 4.5;
+
+            addbullet(this, NULL, 821, x + 96.0 * dir, y + 114.0, dir, 1, t, 3);
+            play_sfx(7);
+        }
+        break;
+    case 546:
+        sub10func();
+        field_18C = 6;
+        if ( process() )
+            set_seq(0);
+        if (get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2)
+        {
+            add_card_energy(50);
+            spell_energy_spend(200, 120);
+            field_190 = 1;
+
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 16.0;
+            t[2] = 4.5;
+
+            addbullet(this, NULL, 821, x + 96.0 * dir, y + 114.0, dir, 1, t, 3);
+            play_sfx(7);
+        }
+        break;
+    case 547:
+        if ( get_subseq() == 1 )
+            sub10func();
+        field_18C = 6;
+        if ( get_subseq() < 1 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                reset_forces();
+                set_subseq(1);
+                y = getlvl_height();
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            set_seq(9);
+            break;
+        }
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 6)
+        {
+            play_sfx(7);
+            h_inerc = -4.0;
+            v_inerc = 8.0;
+            v_force = 0.5;
+            field_190 = 1;
+
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 3.0;
+            t[2] = -20.0;
+            addbullet(this, NULL, 821, x + dir * 30.0, y + 62.0, dir, 1, t, 3);
+            spell_energy_spend( 200, 120);
+            add_card_energy( 50);
+        }
+        break;
+    case 548:
+        if ( get_subseq() == 1 )
+            sub10func();
+        field_18C = 6;
+        if ( get_subseq() < 1 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                reset_forces();
+                set_subseq(1);
+                y = getlvl_height();
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            set_seq(9);
+            break;
+        }
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 6)
+        {
+            play_sfx(7);
+            h_inerc = -4.0;
+            v_inerc = 8.0;
+            v_force = 0.5;
+            field_190 = 1;
+
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 13.0;
+            t[2] = -20.0;
+            addbullet( this, NULL, 821, x + dir * 30.0, y + 62.0 , dir, 1, t, 3);
+            spell_energy_spend(200, 120);
+            add_card_energy(50);
+        }
+        break;
+    case 550:
+        sub10func();
+        field_18C = 10;
+        if ( !keyDown(INP_B) )
+            not_charge_attack = 0;
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 3)
+        {
+            add_card_energy(50);
+            spell_energy_spend(200, 120);
+            field_190 = 1;
+            char_frame *frm = get_pframe();
+
+            float t[3];
+            t[0] = 3.0;
+            t[1] = 6.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 822, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 3);
+            play_sfx(36);
+        }
+        if ( get_subseq() == 1 && get_elaps_frames() >= 4 )
+            next_subseq();
+        break;
+    case 551:
+        sub10func();
+        field_18C = 10;
+        if ( !keyDown(INP_B) )
+            not_charge_attack = 0;
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 3)
+        {
+            add_card_energy(50);
+            spell_energy_spend(200, 120);
+            field_190 = 1;
+            char_frame *frm = get_pframe();
+
+            float t[3];
+            t[0] = 7.0;
+            t[1] = 8.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 822, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 3);
+            play_sfx(36);
+        }
+        if ( get_subseq() == 1 && get_elaps_frames() >= 10 )
+            next_subseq();
+        break;
+    case 552:
+        if ( get_subseq() == 1 )
+            sub10func();
+        field_18C = 10;
+        if ( get_subseq() < 1 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                reset_forces();
+                set_subseq(1);
+                y = getlvl_height();
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+            set_seq(9);
+        else if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 6 )
+        {
+            h_inerc = -4.0;
+            v_inerc = 8.0;
+            v_force = 0.5;
+            field_190 = 1;
+            char_frame *frm = get_pframe();
+
+            float t[3];
+            t[0] = 7.0;
+            t[1] = -8.0;
+            t[2] = 0.0;
+
+            addbullet(this, NULL, 822, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 3);
+            play_sfx(36);
+            spell_energy_spend(200, 120);
+            add_card_energy(50);
+        }
+        break;
+    case 553:
+        if ( get_subseq() == 1 )
+            sub10func();
+        field_18C = 10;
+        if ( get_subseq() < 1 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                reset_forces();
+                set_subseq(1);
+                y = getlvl_height();
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+            set_seq(9);
+        else if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 6 )
+        {
+            h_inerc = -4.0;
+            v_inerc = 8.0;
+            v_force = 0.5;
+            field_190 = 1;
+            char_frame *frm = get_pframe();
+
+            float t[3];
+            t[0] = 14.0;
+            t[1] = -8.0;
+            t[2] = 0.0;
+
+            addbullet(this, NULL, 822, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 3);
+            spell_energy_spend(200, 120);
+            add_card_energy(50);
+            play_sfx(36);
         }
         break;
     case 560:
@@ -2817,55 +3906,599 @@ void char_marisa::func10()
                 v_force = 0.6;
         }
         break;
+    case 565:
+        sub10func();
+        field_18C = 7;
+        if ( get_subseq() < 2 && !keyDown(INP_B) )
+            not_charge_attack = 0;
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0)
+        {
+            add_card_energy(50);
+            field_190 = 1;
+            play_sfx(29);
+            field_7D4 = -atan2_deg(enemy->y - y, (enemy->x - x)* dir);
+            if ( field_7D4 < -10 )
+                field_7D4 = -10;
+            if ( field_7D4 > 10 )
+                field_7D4 = 10;
+            play_sfx(4);
+            spell_energy_spend(200, 120);
+
+            float t[3];
+            t[0] = 1.75;
+            t[1] = skills_1[7] * 10.0 + 25.0;
+            t[2] = 10.0;
+            if (skills_1[7] <= 3)
+                t[0] = 1.5;
+            addbullet(this, NULL, 826, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+        }
+        if ( process() )
+            set_seq(0);
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+        {
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+
+            addbullet(this, NULL, 826, x - 24.0 * dir, y + 95.0, dir, 1, t, 3);
+        }
+
+        if (get_subseq() == 1 && get_elaps_frames() >=8 && ( not_charge_attack == 0 || get_elaps_frames() > 25 ))
+            next_subseq();
+        if ( get_subseq() == 3 && get_elaps_frames() > 40)
+            next_subseq();
+        break;
+    case 566:
+        sub10func();
+        field_18C = 7;
+        if ( get_subseq() < 2 && !keyDown(INP_C) )
+            not_charge_attack = 0;
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0)
+        {
+            add_card_energy(50);
+            field_190 = 1;
+            play_sfx(29);
+            field_7D4 = -atan2_deg(enemy->y - y, (enemy->x - x)* dir);
+            if ( field_7D4 < -10 )
+                field_7D4 = -10;
+            if ( field_7D4 > 10 )
+                field_7D4 = 10;
+            play_sfx(4);
+            spell_energy_spend(200, 120);
+
+            float t[3];
+            t[0] = 1.75;
+            t[1] = skills_1[7] * 10.0 + 25.0;
+            t[2] = 10.0;
+            if (skills_1[7] <= 3)
+                t[0] = 1.5;
+            addbullet(this, NULL, 826, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+        }
+        if ( process() )
+            set_seq(0);
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+        {
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+
+            addbullet(this, NULL, 826, x - 24.0 * dir, y + 95.0, dir, 1, t, 3);
+        }
+
+        if (get_subseq() == 1 && get_elaps_frames() >=8 && ( not_charge_attack == 0 || get_elaps_frames() > 25 ))
+            next_subseq();
+        if ( get_subseq() == 3 && get_elaps_frames() > 40)
+            next_subseq();
+        break;
+    case 567:
+        if ( get_subseq() == 5 )
+            sub10func();
+        field_18C = 7;
+        v_inerc -= v_force;
+        if ( char_on_ground_down() && get_subseq() < 5 )
+        {
+            set_subseq(5);
+            air_dash_cnt = 0;
+            y = getlvl_height();
+            reset_forces();
+            break;
+        }
+        if ( get_subseq() < 2  && !keyDown(INP_B) )
+            not_charge_attack = 0;
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            add_card_energy(50);
+            field_190 = 1;
+            play_sfx(29);
+            field_7D4 = -atan2_deg(enemy->y - y, (enemy->x - x)*dir);
+            if ( field_7D4 < -10 )
+                field_7D4 = -10;
+            if ( field_7D4 > 10 )
+                field_7D4 = 10;
+            play_sfx(4);
+            spell_energy_spend(200, 120);
+            float t[3];
+            t[0] = 1.75;
+            t[1] = skills_1[7] * 5.0 + 25.0;
+            t[2] = 10.0;
+            if ( skills_1[7] <= 3 )
+                t[0] = 1.5;
+
+            addbullet(this, NULL, 826, x + 44.0*dir, y + 104.0, dir, 1, t, 3);
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+
+            addbullet(this, NULL, 826, x - 48.0 * dir, y + 104.0, dir, 1, t, 3);
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 5 )
+        {
+            set_seq(9);
+            break;
+        }
+        if ( get_subseq() == 1 && get_elaps_frames() >= 8 && (!not_charge_attack || get_elaps_frames() > 25) )
+            next_subseq();
+        if ( get_subseq() == 3 && get_elaps_frames() > 40)
+            next_subseq();
+        if (get_subseq() == 4 && get_frame_time() == 0 && get_frame() == 5)
+            v_force = 0.6;
+        break;
+    case 568:
+        if ( get_subseq() == 5 )
+            sub10func();
+        field_18C = 7;
+        v_inerc = v_inerc - v_force;
+
+        if ( char_on_ground_down() && get_subseq() < 5 )
+        {
+            set_subseq(5);
+            air_dash_cnt = 0;
+            y = getlvl_height();
+            reset_forces();
+            break;
+        }
+
+        if ( get_subseq() < 2  && !keyDown(INP_C) )
+            not_charge_attack = 0;
+
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            add_card_energy(50);
+            field_190 = 1;
+            play_sfx(29);
+            field_7D4 = -atan2_deg(enemy->y - y, (enemy->x - x)*dir);
+            if ( field_7D4 < -10 )
+                field_7D4 = -10;
+            if ( field_7D4 > 10 )
+                field_7D4 = 10;
+            play_sfx(4);
+            spell_energy_spend(200, 120);
+
+            float t[3];
+            t[0] = 1.75;
+            t[1] = skills_1[7] * 5.0 + 25.0;
+            t[2] = 10.0;
+            if ( skills_1[7] <= 3 )
+                t[0] = 1.5;
+
+            addbullet(this, NULL, 826, x + 44.0*dir, y + 104.0, dir, 1, t, 3);
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+
+            addbullet(this, NULL, 826, x - 48.0 * dir, y + 104.0, dir, 1, t, 3);
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 5 )
+        {
+            set_seq(9);
+            break;
+        }
+        if ( get_subseq() == 1 && get_elaps_frames() >= 8 && (!not_charge_attack || get_elaps_frames() > 25) )
+            next_subseq();
+        if ( get_subseq() == 3 && get_elaps_frames() > 40)
+            next_subseq();
+        if (get_subseq() == 4 && get_frame_time() == 0 && get_frame() == 5)
+            v_force = 0.6;
+        break;
+    case 570:
+        sub10func();
+        field_18C = 11;
+        if ( get_subseq() < 2  && !keyDown(INP_C) )
+            not_charge_attack = 0;
+        if ( get_subseq() == 2  && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            add_card_energy(50);
+            field_190 = 1;
+            play_sfx(34);
+            spell_energy_spend(200, 120);
+
+            float t[3];
+            t[0] = 30.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+
+            if ( field_7D8 == 1 ) //HACK? WHAT DIFF?
+            {
+                addbullet(this,NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                for (int8_t i = 0; i < 3; i++)
+                {
+                    t[1] = i * 5.0 + 10.0;
+                    if (skills_1[11] > 3)
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this,NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                }
+                for (int8_t i = 0; i < 3; i++)
+                {
+                    t[1] = -i * 5.0 - 10.0;
+                    if (skills_1[11] > 3)
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this,NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                }
+            }
+            else
+            {
+                addbullet(this,NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                for (int8_t i = 0; i < 3; i++)
+                {
+                    t[1] = i * 5.0 + 10.0;
+                    if (skills_1[11] > 3)
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this,NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                }
+                for (int8_t i = 0; i < 3; i++)
+                {
+                    t[1] = -i * 5.0 - 10.0;
+                    if (skills_1[11] > 3)
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this,NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                }
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 1 && get_elaps_frames() > 2)
+            next_subseq();
+        if (get_subseq() == 3 && get_elaps_frames() > 10 )
+            next_subseq();
+        break;
+    case 571:
+        sub10func();
+        field_18C = 11;
+        if ( get_subseq() < 2  && !keyDown(INP_C) )
+            not_charge_attack = 0;
+        if ( get_subseq() == 2  && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            add_card_energy(50);
+            field_190 = 1;
+            play_sfx( 34);
+            spell_energy_spend(200, 120);
+
+            float t[3];
+            t[0] = 45.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+
+            if ( field_7D8 == 1 ) //HACK? WHAT DIFF?
+            {
+                addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = i * 5.0 + 20.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                }
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = -i * 5.0 - 20.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                }
+            }
+            else
+            {
+                addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = i * 5.0 + 20.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                }
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = -i * 5.0 - 20.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                }
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 1 && get_elaps_frames() > 2 )
+            next_subseq();
+        if ( get_subseq() == 3 && get_elaps_frames() > 20)
+            next_subseq();
+        break;
+    case 572:
+        if ( get_subseq() == 5 )
+            sub10func();
+        field_18C = 11;
+        v_inerc -= v_force;
+        if ( char_on_ground_down() && get_subseq() < 5 )
+        {
+            set_subseq(5);
+            air_dash_cnt = 0;
+            y = getlvl_height();
+            reset_forces();
+            break;
+        }
+        if ( get_subseq() < 2 && !keyDown(INP_C))
+            not_charge_attack = 0;
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            add_card_energy( 50);
+            field_190 = 1;
+            play_sfx( 34);
+            spell_energy_spend( 200, 120);
+            float t[3];
+            t[0] = 30.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+
+            if ( field_7D8 == 1 ) //HACK? WHAT DIFF?
+            {
+                addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = i * 5.0 + 10.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 48.0 * dir, y + 104.0, dir, 1, t, 3);
+                }
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = -i * 5.0 - 10.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 48.0 * dir, y + 104.0, dir, 1, t, 3);
+                }
+            }
+            else
+            {
+                addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = i * 5.0 + 10.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 48.0 * dir, y + 104.0, dir, 1, t, 3);
+                }
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = -i * 5.0 - 10.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 48.0 * dir, y + 104.0, dir, 1, t, 3);
+                }
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 5)
+        {
+            set_seq(9);
+            break;
+        }
+
+        if ( get_subseq() == 1 && get_elaps_frames() > 2 )
+            next_subseq();
+        if (get_subseq() == 3 && get_elaps_frames() > 10)
+            next_subseq();
+        if ( get_subseq() == 4 && get_frame_time() == 0 && get_frame() == 5 )
+            v_force = 0.6;
+        break;
+    case 573:
+        if ( get_subseq() == 5 )
+            sub10func();
+        field_18C = 11;
+        v_inerc -= v_force;
+        if ( char_on_ground_down() && get_subseq() < 5 )
+        {
+            set_subseq(5);
+            air_dash_cnt = 0;
+            y = getlvl_height();
+            reset_forces();
+            break;
+        }
+        if ( get_subseq() < 2  && !keyDown(INP_C) )
+            not_charge_attack = 0;
+
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            add_card_energy( 50);
+            field_190 = 1;
+            play_sfx( 34);
+            spell_energy_spend( 200, 120);
+            float t[3];
+            t[0] = 45.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+
+            if ( field_7D8 == 1 ) //HACK? WHAT DIFF?
+            {
+                addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = i * 5.0 + 20.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 48.0 * dir, y + 104.0, dir, 1, t, 3);
+                }
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = -i * 5.0 - 20.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 48.0 * dir, y + 104.0, dir, 1, t, 3);
+                }
+            }
+            else
+            {
+                addbullet(this, NULL, 827, x + 44.0 * dir, y + 85.0, dir, 1, t, 3);
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = i * 5.0 + 20.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 48.0 * dir, y + 104.0, dir, 1, t, 3);
+                }
+                for(int8_t i=0; i<3; i++)
+                {
+                    t[1] = -i * 5.0 - 20.0;
+                    if ( skills_1[11] > 3 )
+                        t[2] = 6.0;
+                    else
+                        t[2] = 0.0;
+                    addbullet(this, NULL, 827, x + 48.0 * dir, y + 104.0, dir, 1, t, 3);
+                }
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 5)
+        {
+            set_seq(9);
+            break;
+        }
+        if ( get_subseq() == 1 && get_elaps_frames() > 2 )
+            next_subseq();
+        if (get_subseq() == 3 && get_elaps_frames() > 20)
+            next_subseq();
+        if ( get_subseq() == 4 && get_frame_time() == 0 && get_frame() == 5 )
+            v_force = 0.6;
+        break;
+    case 599:
+        if ( field_7D0 > 0 && field_7D0 < 12 && get_frame() < 7 )
+        {
+            field_7D4 = scene_rand_rng(35);
+            float t[3];
+            t[0] = -20 - field_7D4;
+            t[1] = scene_rand() % 5 + 10;
+            t[2] = 0.0;
+
+            addbullet(this,NULL, 807, x + (field_7D0 + 1)*dir*20.0, y, dir, 1, t, 3);
+            t[0] = scene_rand() % 360;
+            t[1] = 0.0;
+            t[2] = 1.0;
+            addbullet(this,NULL, 801, x + (field_7D0 + 1)*dir*20.0, y, dir, 1, t, 3);
+            if ( field_7D0 == 1 )
+            {
+                play_sfx(0);
+                spell_energy_spend( 200, 120);
+            }
+            field_7D0++;
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_frame_time() == 0 && get_frame() == 5)
+            field_7D0 = 1;
+        break;
     case 611:
         if ( get_subseq() == 3 )
-          sub10func();
+            sub10func();
 
         sub_46AB50(5, 2);
         if ( get_subseq() == 1 || get_subseq() == 2 )
         {
             v_inerc -= v_force;
             h_inerc += 0.75;
-          if ( h_inerc > -1.0 ) //HACK? LOL WHAT?
+            if ( h_inerc > -1.0 ) //HACK? LOL WHAT?
                 h_inerc = -1.0;
-          if ( h_inerc > 0.0 )
-            h_inerc = 0.0;
-          if ( char_on_ground_down() )
-          {
-              y = getlvl_height();
-              reset_forces();
-              set_subseq(3);
-          }
+            if ( h_inerc > 0.0 )
+                h_inerc = 0.0;
+            if ( char_on_ground_down() )
+            {
+                y = getlvl_height();
+                reset_forces();
+                set_subseq(3);
+            }
         }
         if ( process() )
             set_seq(0);
         if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 9)
         {
-              sub_4834E0(40);
-              scene_play_sfx(23);
-              scene_add_effect(this, 115, x - 23*dir, y + 94.0, dir, 1);
-              sub_469450(0, 0, 60);
-              sub_483570();
-              weather_forecast_next();
+            sub_4834E0(40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x - 23*dir, y + 94.0, dir, 1);
+            sub_469450(0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
         }
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
-              {
-                play_sfx(20);
-                sub_486FD0(20.0, -20.0);
+        {
+            play_sfx(20);
+            sub_486FD0(20.0, -20.0);
 
-                h_inerc = -25.0;
-                v_inerc = 10.0;
-                v_force = 0.5;
+            h_inerc = -25.0;
+            v_inerc = 10.0;
+            v_force = 0.5;
 
-                float tmp[4];
-                tmp[0] = field_7F0;
-                tmp[1] = 25.0;
-                tmp[2] = 0.0;
-                tmp[3] = 0.0;
+            float tmp[4];
+            tmp[0] = field_7F0;
+            tmp[1] = 25.0;
+            tmp[2] = 0.0;
+            tmp[3] = 0.0;
 
-                addbullet(this, NULL, 861, x + dir * 73.0, y + 95.0,dir,1, tmp, 4);
-                scene_add_effect(this, 127, x + 200.0 * dir, y, dir, -1);
-              }
+            addbullet(this, NULL, 861, x + dir * 73.0, y + 95.0,dir,1, tmp, 4);
+            scene_add_effect(this, 127, x + 200.0 * dir, y, dir, -1);
+        }
         break;
     default:
         char_c::func10();
@@ -2930,7 +4563,7 @@ void char_marisa::func20()
                 {
                     if (char_on_ground_flag())
                     {
-                        if (/* !sub_489F10(cprior) &&*/ seq299_300_field190_0_3()) //HACK
+                        if ( !sub_489F10(cprior) && seq299_300_field190_0_3()) //HACK
                         {
                             int32_t crd_id = cards_active[0]->id;
 
@@ -4507,6 +6140,12 @@ void char_marisa::set_seq_params()
         field_190 = 0;
         field_49A = 0;
         field_7D0 = 0;
+        break;
+    case 611:
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_190 = 1;
+        reset_forces();
         break;
     default:
         char_c::set_seq_params();

@@ -459,3 +459,86 @@ void gr_draw_tex_box(gr_tex_box *box, gr_blend blend,uint8_t plane, gr_shader *s
         states[plane].shader = NULL;
     }
 }
+
+
+gr_tristrip *gr_tristrip_new(uint32_t cnt)
+{
+    gr_tristrip *tmp = new gr_tristrip;
+    tmp->privat.setPrimitiveType(sf::TrianglesStrip);
+    tmp->privat.resize(cnt);
+    tmp->a = 255;
+    tmp->r = 255;
+    tmp->g = 255;
+    tmp->b = 255;
+    tmp->tex = NULL;
+    return tmp;
+}
+
+void gr_tristrip_free(gr_tristrip *strip)
+{
+    delete strip;
+}
+
+void gr_tristrip_set_color(gr_tristrip *strip, uint8_t a, uint8_t r, uint8_t g, uint8_t b)
+{
+    strip->a = a;
+    strip->r = r;
+    strip->g = g;
+    strip->b = b;
+    sf::Color clr(r,g,b,a);
+    for(uint32_t i=0; i<strip->privat.getVertexCount(); i++)
+        strip->privat[i].color = clr;
+}
+void gr_tristrip_set_tex(gr_tristrip *strip, gr_tex *tex)
+{
+    strip->tex = tex;
+}
+
+void gr_tristrip_set_vtx(gr_tristrip *strip, int32_t idx, float x, float y)
+{
+    strip->privat[idx].position = sf::Vector2f(x,y);
+}
+
+void gr_tristrip_set_vtx(gr_tristrip *strip, int32_t idx, float x, float y, float u, float v)
+{
+    if (strip->tex)
+    {
+        sf::Vector2u sz = strip->tex->getSize();
+        strip->privat[idx].texCoords = sf::Vector2f(sz.x * u, sz.y * v);
+    }
+    else
+        strip->privat[idx].texCoords = sf::Vector2f(u,v);
+    strip->privat[idx].position = sf::Vector2f(x,y);
+}
+
+void gr_tristrip_draw(gr_tristrip *strip, gr_blend blend , uint8_t plane , gr_shader *shader)
+{
+        if (plane < MAX_STATES)
+    {
+        gr_state tmp = states[plane];
+
+        switch(blend)
+        {
+        case gr_add:
+            tmp.blendMode = sf::BlendAdd;
+            break;
+        case gr_mult:
+            tmp.blendMode = sf::BlendMultiply;
+            break;
+        case gr_alpha:
+            tmp.blendMode = sf::BlendAlpha;
+            break;
+        case gr_none:
+            tmp.blendMode = sf::BlendNone;
+            break;
+        };
+
+        tmp.shader = shader;
+
+        if (strip->tex)
+            tmp.texture = strip->tex;
+
+        window->draw(strip->privat,tmp);
+    }
+}
+

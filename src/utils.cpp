@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include "utils.h"
 
 
 float atan2_deg(float h, float w)
@@ -250,3 +251,33 @@ char * TrimRight(char *buf)
     return str;
 }
 
+
+
+void vec2d_hermit(vec2d *pOut, const vec2d *pV1, const vec2d *pT1, const vec2d *pV2, const vec2d *pT2, float s)
+{
+    float tmp[4];
+
+    tmp[0] = 2.0 * s*s*s - 3.0 * s*s + 1.0;
+    tmp[1] = s*s*s - 2.0 * s*s + s;
+    tmp[2] = -2.0 * s*s*s + 3.0 * s*s;
+    tmp[3] = s*s*s - s*s;
+
+    pOut->x = tmp[0] * pV1->x + tmp[1] * pT1->x + tmp[2] * pV2->x + tmp[3] * pT2->x;
+    pOut->y = tmp[0] * pV1->y + tmp[1] * pT1->y + tmp[2] * pV2->y + tmp[3] * pT2->y;
+}
+
+void vec2d_normolize(vec2d *pOut, const vec2d *pV)
+{
+    float l = sqrt(pV->x * pV->x + pV->y * pV->y);
+
+    if (l != 0.0)
+    {
+        pOut->x = pV->x / l;
+        pOut->y = pV->y / l;
+    }
+    else
+    {
+        pOut->x = 0.0;
+        pOut->y = 0.0;
+    }
+}

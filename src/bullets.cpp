@@ -60,8 +60,8 @@ void updatebullet(char_c *chr)
             else
             {
                 blt->func10();
-                /*if (blt->field_354)
-                  sub_4335A0(blt->field_354);*/ //HACK
+                if (blt->tail)
+                    blt->tail->update(blt->x, blt->y);
             }
         }
 
@@ -81,7 +81,12 @@ void drawbullet(char_c *chr, int8_t order)
 
     for(bullist_iter i=lst->begin(); i != lst->end(); i++)
         if ((*i)->order == order)
+        {
             (*i)->draw();
+            if ((*i)->tail)
+                (*i)->tail->draw();
+        }
+
 }
 
 c_bullet::c_bullet()
@@ -91,6 +96,7 @@ c_bullet::c_bullet()
     bul_parent = NULL;
     //  parent = NULL;
     //pgp = _pgp;
+    tail = NULL;
 }
 
 c_bullet::~c_bullet()

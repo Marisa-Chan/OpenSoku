@@ -113,8 +113,6 @@ int main(int argc, char *argv[])
     srand(time(NULL));
     background  *bkg = bkg_create(0);
 
-
-
     c_scene *scn = scene_new_scene(bkg,marisa,alice);
 
 //    int32_t ii = 0;
@@ -138,7 +136,6 @@ int main(int argc, char *argv[])
 
     while(!kb.rawPressed(kC_Escape))
     {
-
         aa++;
         if (aa > 30 && kb.rawPressed(kC_Q))
         {

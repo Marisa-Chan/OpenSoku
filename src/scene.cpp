@@ -502,8 +502,8 @@ void c_scene::scene_subfunc1()
                     else
                     {
                         blt->func10();
-                        /*if (blt->field_354)
-                          sub_4335A0(blt->field_354);*/ //HACK
+                        if (blt->tail)
+                          blt->tail->update(blt->x, blt->y);
                     }
                 }
 

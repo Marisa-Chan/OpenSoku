@@ -366,6 +366,7 @@ class char_c : public c_meta
     void sub_469450(int32_t id, int8_t _cost, int8_t efx);
     void sub_4834E0(int16_t next_stop_time);
     void sub_46AB50(int8_t img, int16_t time);
+    bool sub_489F10(uint16_t cprior);
 
     bool spell200_seq299_300_field190_0_3();
     bool seq299_300_field190_0_3();
@@ -437,7 +438,7 @@ class stand_graph
     private:
     gr_tex *tex;
     float   xpos;
-    int8_t  alpha;
+    uint8_t  alpha;
 
     char_c *player;
     int8_t  disp_stage;

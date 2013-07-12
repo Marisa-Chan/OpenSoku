@@ -4591,6 +4591,179 @@ void char_c::sub_463200()
     }
 }
 
+bool char_c::sub_489F10(uint16_t cprior)
+{
+    if ( gX(1) || gY() )
+    {
+        if (cprior <= get_prior(690))
+        {
+            if (cards_active[0]->id >= 100 && cards_active[0]->id <= 199)
+                if (seq299_300_field190_0_3())
+                {
+                    angZ = 0.0;
+                    //input_push_pressed_to_buf(v3);
+                    set_seq(690);
+                    return true;
+                }
+        }
+    }
+    if ( cards_active[0]->id == 2 || cards_active[0]->id == 4 || cards_active[0]->id == 5 ||
+            cards_active[0]->id == 6 || cards_active[0]->id == 10 || cards_active[0]->id == 14 ||
+            cards_active[0]->id == 17 || cards_active[0]->id == 18 || cards_active[0]->id == 19 )
+    {
+        if ( cprior<= 0 && seq299_300_field190_0_3())
+        {
+            angZ = 0.0;
+            field_7D0 = cards_active[0]->id;
+            //input_push_pressed_to_buf(v3); //HACK
+            set_seq(691);
+            sub_469450(0, 0, 60);
+            sub_483570();
+            scene_add_effect(this, 71, x, y + 100.0, dir, 1);
+            return true;
+        }
+    }
+    if ( cards_active[0]->id == 7 || cards_active[0]->id == 16 || cards_active[0]->id == 17 || cards_active[0]->id == 20 )
+    {
+        if ( cprior<= 50 && seq299_300_field190_0_3())
+        {
+            angZ = 0.0;
+            field_7D0 = cards_active[0]->id;
+            //input_push_pressed_to_buf(v3); //HACK
+            set_seq(691);
+            sub_469450(0, 0, 60);
+            sub_483570();
+            scene_add_effect(this, 71, x, y + 100.0, dir, 1);
+            return true;
+        }
+    }
+    if ( cards_active[0]->id == 8 )
+    {
+        if ( cprior<= 50 && seq299_300_field190_0_3() )
+        {
+            angZ = 0.0;
+            field_7D0 = cards_active[0]->id;
+            //input_push_pressed_to_buf(v3); //HACK
+            set_seq(697);
+            sub_469450(0, 0, 60);
+            sub_483570();
+            return true;
+        }
+    }
+    if ( cards_active[0]->id == 11 )
+    {
+        if ( cprior<= 50 && seq299_300_field190_0_3() )
+        {
+            angZ = 0.0;
+            field_7D0 = cards_active[0]->id;
+            //input_push_pressed_to_buf(v3); //HACK?
+            set_seq(698);
+            sub_469450(0, 0, 60);
+            sub_483570();
+            scene_add_effect(this, 71, x, y + 100.0, dir, 1);
+            return true;
+        }
+    }
+    if ( cards_active[0]->id == 3 )
+    {
+        if ( cprior<= 50 && seq299_300_field190_0_3() )
+        {
+            angZ = 0.0;
+            field_7D0 = cards_active[0]->id;
+            //input_push_pressed_to_buf(v3); //HACK?
+            set_seq(200);
+            spell_energy_spend(400, 300);
+            sub_469450(0, 0, 60);
+            sub_483570();
+            scene_add_effect(this, 71, x, y + 100.0, dir, 1);
+            field_836 = 1;
+            return true;
+        }
+    }
+    if ( cprior<= get_prior(696) && cards_active[0]->id == 13 )
+        if (get_seq() >= 150 && get_seq() <= 157 && seq299_300_field190_0_3())
+        {
+            angZ = 0.0;
+            sub_469450(0, 0, 60);
+            sub_483570();
+            //input_push_pressed_to_buf(v3); //HACK
+            set_seq(696);
+            return true;
+        }
+
+    if ( field_83C == 0 && cards_active[0]->id == 12 && get_seq() < 150 && get_seq() > 158 && seq299_300_field190_0_3() )
+    {
+        //input_push_pressed_to_buf(v3); //HACK
+
+        int32_t stp_tm = 160;
+        if (cards_added > 0)
+            for(int32_t i=0; i<cards_added; i++)
+                if (cards_active[i]->id == 12)
+                    stp_tm -= 20;
+
+        if (stp_tm < 80)
+            stp_tm = 80;
+        spell_energy_spend(200, stp_tm);
+        field_838 = 15.0;
+        field_83C = 1;
+        if ( get_seq() >= 154 && get_seq() <= 157 )
+            scene_add_effect(this, 71, x, y + 50.0, dir, 1);
+        else
+            scene_add_effect(this, 71, x, y + 100.0, dir, 1);
+
+        return true;
+    }
+    else
+    {
+        if ( cprior <= get_prior(695) && cards_active[0]->id == 0 && seq299_300_field190_0_3() )
+        {
+            angZ = 0.0;
+            //input_push_pressed_to_buf(v3); //HACK
+            sub_469450(0, 0, 60);
+            sub_483570();
+            set_seq(695);
+            return true;
+        }
+        if ( cprior > 50 )
+            return false;
+
+        if ( cards_active[0]->id == 1 && seq299_300_field190_0_3() )
+        {
+            angZ = 0.0;
+            sub_469450(0, 0, 60);
+            sub_483570();
+            //input_push_pressed_to_buf(v3); //HACK
+            set_seq(694);
+            return true;
+        }
+        if ( cards_active[0]->id == 15 && seq299_300_field190_0_3() )
+        {
+            angZ = 0.0;
+            sub_469450(0, 0, 60);
+            sub_483570();
+            //input_push_pressed_to_buf(v3); //HACK
+            set_seq(693);
+            return true;
+        }
+
+        if ( cards_active[0]->id == 9 && seq299_300_field190_0_3() )
+        {
+            angZ = 0.0;
+            sub_469450(0, 0, 60);
+            sub_483570();
+            //input_push_pressed_to_buf(v3); //HACK
+            set_seq(692);
+            return true;
+        }
+        else
+            return false;
+    }
+    return false;
+}
+
+
+
+
 
 
 

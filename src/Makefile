@@ -45,12 +45,12 @@ OBJS =  \
 	meta.cpp\
 	gui.cpp\
 	text.cpp\
-	effects.cpp\
 	weather.cpp\
 	infoeffect.cpp\
 	profile.cpp\
 	cards.cpp\
-	battle_ui.cpp
+	battle_ui.cpp\
+	tail.cpp
 
 linux: $(OBJS)
 	$(CXX) -O3 -Os --std=c++11 -pedantic -o $(TARGET) $(OBJS) $(LIBS) -I /usr/include/ 

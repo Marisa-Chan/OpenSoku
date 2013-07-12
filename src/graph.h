@@ -13,6 +13,13 @@ typedef sf::fxSprite  gr_sprite;
 typedef sf::RenderStates gr_state;
 typedef sf::Shader gr_shader;
 
+struct gr_tristrip
+{
+    sf::VertexArray privat;
+    uint8_t a,r,g,b;
+    gr_tex *tex;
+};
+
 enum gr_blend
 {
     gr_alpha  = 0,
@@ -103,5 +110,15 @@ void gr_sprite_skew(gr_sprite *spr, float x, float y);
 
 void debug_str(float x, float y, const char *str);
 void gr_draw_tex_box(gr_tex_box *box, gr_blend blend = gr_alpha, uint8_t plane = 0, gr_shader *shader = NULL);
+
+
+gr_tristrip *gr_tristrip_new(uint32_t cnt);
+void gr_tristrip_free(gr_tristrip *strip);
+void gr_tristrip_set_color(gr_tristrip *strip, uint8_t a, uint8_t r, uint8_t g, uint8_t b);
+void gr_tristrip_set_tex(gr_tristrip *strip, gr_tex *tex);
+void gr_tristrip_set_vtx(gr_tristrip *strip, int32_t idx, float x, float y);
+void gr_tristrip_set_vtx(gr_tristrip *strip, int32_t idx, float x, float y, float u, float v);
+void gr_tristrip_draw(gr_tristrip *strip, gr_blend blend = gr_alpha, uint8_t plane = 0, gr_shader *shader = NULL);
+
 #endif // GRAPH_H_INCLUDED
 
