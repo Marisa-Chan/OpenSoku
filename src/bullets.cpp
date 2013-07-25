@@ -795,8 +795,8 @@ void c_bullet::func10()
 
         if (process())
             active = false;
-        //if (get_subseq() == 1) // HACK
-        //  sub_438450(this, 0.0, 0.0, field_37C, 8.0);
+        if (get_subseq() == 1)
+          sub_438450(0.0, 0.0, field_37C, 8.0);
 
         if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 3)
             active = false;
@@ -1515,9 +1515,9 @@ void c_bullet::draw(gr_shader *shader)
         sprite.setColor(c_R,c_G,c_B,c_A);
 
         if (scaleX < 0)
-            sprite.setRotate(angX,angY,-angZ * dir);
+            sprite.setRotate(angX,-angY,-angZ * dir);
         else
-            sprite.setRotate(angX,angY,angZ * dir);
+            sprite.setRotate(angX,-angY,angZ * dir);
 
         if (scale_real)
             sprite.setAScale(dir*rs_w*scaleX,rs_h*scaleY);
@@ -1528,9 +1528,9 @@ void c_bullet::draw(gr_shader *shader)
 
         sprite.draw(PLANE_SCENE,shader);
 
-        /*for (int32_t i = 0; i<5; i++)
+//        for (int32_t i = 0; i<5; i++)
             //if (atk_area_2o[i])
-        {
+        /*{
             frame_box *bx = &atk_area_2o[i];
             gr_draw_box(bx->x1,
                         bx->y1,
@@ -1633,6 +1633,11 @@ void c_bullet::sub_48C4B0(float p1, float p2, float p3)
     else
         addition[0] = tmp;
 
+}
+
+void c_bullet::sub_438450(int32_t x, int32_t y, int32_t w, int32_t h)
+{
+    set_real_size(w,h);
 }
 
 void bul_follow_char(c_bullet *bul, int32_t h_inerc, int32_t v_inerc)

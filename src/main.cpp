@@ -122,14 +122,16 @@ int main(int argc, char *argv[])
     ui->link(marisa,alice);
 
     int32_t aa = 0;
-    int32_t bb = WEATHER_SUNNY;
+    int32_t bb = 0;
 
     weather_change(WEATHER_CLEAR,1);
     weather_time_set(0);
 
-    marisa->add_card(211);
-    marisa->add_card();
-    marisa->add_card();
+    marisa->add_card(0);
+    marisa->add_card(1);
+    marisa->add_card(2);
+    marisa->add_card(3);
+    marisa->add_card(4);
 
     alice->add_card();
     alice->add_card();
@@ -137,16 +139,16 @@ int main(int argc, char *argv[])
     while(!kb.rawPressed(kC_Escape))
     {
         aa++;
-        if (aa > 30 && kb.rawPressed(kC_Q))
+        if (aa > 10 && kb.rawPressed(kC_Q))
         {
             aa = 0;
-            weather_time_set(999);
-            weather_change((WEATHER_ID)bb,true);
+            marisa->add_card(bb);
+            //weather_time_set(999);
+            //weather_change((WEATHER_ID)bb,true);
 
             bb++;
-            bb %= WEATHER_ID_COUNT;
+            bb %= 21;
         }
-
 
         //if (kb.rawPressed(kC_Q))
           //  ii++;

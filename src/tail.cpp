@@ -117,7 +117,7 @@ void c_tail::update(float x, float y)
         break;
         default:
             {
-                vec2d lastv;
+                vec2d lastv = {0,0};
 
                 for (int32_t i=0; i < sz - 1; i++)
                 {

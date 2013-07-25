@@ -13,6 +13,7 @@ class c_bullet : public c_meta
 {
     friend void updatebullet(char_c *chr);
     friend void drawbullet(char_c *chr, int8_t order);
+    friend class marisa_bullets;
 
     protected:
 
@@ -32,6 +33,7 @@ class c_bullet : public c_meta
     bool sub_48C6A0(int32_t p1, int32_t p2, int32_t p3);
     void sub_48C4B0(float p1, float p2, float p3);
     bool sub_48C5F0(int32_t a2);
+    void sub_438450(int32_t x, int32_t y, int32_t w, int32_t h);
 
     c_tail *tail;
 

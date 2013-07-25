@@ -8,6 +8,9 @@
 #include "weather.h"
 #include <math.h>
 
+int32_t dword_8841B4 = 3; //HACK
+int8_t dummy_block_type = 0; //HACK
+
 char_c::char_c(inp_ab *func)
 {
     if (!pgp)
@@ -374,18 +377,20 @@ void char_c::draw_shadow(shd_trans *trans, gr_shader *shader)
 
 void char_c::draw(gr_shader *shader)
 {
+    sprite.setOrigin(-x_off,-y_off);
+
+    sprite.setScale(dir*scaleX,scaleY);
+
     if (scaleX < 0)
         sprite.setRotate(-angZ*dir);
     else
         sprite.setRotate(angZ*dir);
 
     sprite.setColor(255,255,255,255);
-
-    sprite.setScale(dir*scaleX,scaleY);
     // }
 
     sprite.setXY(x,y+y_off);
-    sprite.setOrigin(-x_off,-y_off);
+
     sprite.draw(1,shader);
 
     //setOrigin(-x_off,-y_off);
@@ -1877,7 +1882,7 @@ void char_c::func16()
         {
           if ( get_seq() <= 149 )
           {
-            sub_4685C0(this, enemy, 0); //HACK
+            sub_4685C0(this, 0); //HACK
             sub_46AB50(this, v12, 0, 0);
           }
         }
@@ -3338,6 +3343,7 @@ void char_c::set_seq_params()
         reset_forces();
         break;
     default:
+        printf("set_seq_params() unknown id: %d\n",get_seq());
         break;
     }
 }
@@ -4002,9 +4008,6 @@ void char_c::char_xy_pos_calculation()
 }
 
 
-int32_t dword_8841B4 = 3; //HACK
-int8_t dummy_block_type = 0; //HACK
-
 int8_t char_c::sub_469750(uint32_t enemu_aflags)
 {
     if ( enemu_aflags & AF_U_HIT )
@@ -4589,6 +4592,38 @@ void char_c::sub_463200()
                 spell_energy = max_spell_energy;
         }
     }
+}
+
+void char_c::sub_4685C0(int a2)
+{
+    //HACK
+
+//  char_c *v2; // esi@1
+//  int v3; // eax@3
+//  int v4; // ST08_4@5
+//  int v5; // ST04_4@5
+//  int v6; // ST00_4@5
+//  int v7; // eax@5
+//  added_card_stru *v8; // eax@6
+//
+//  v2 = a1;
+//  if ( a1->cards_added )
+//  {
+//    if ( a2 )
+//    {
+//      v3 = a1->field_6F0;
+//      if ( v3 >= 0 )
+//        a1->field_6EC = v3;
+//      v4 = get_added_card_by_id((def_deque *)&a1->cards_active, 0)->id;
+//      v5 = v2->char_id;
+//      v6 = v2->meta.enemy->char_id;
+//      v7 = sub_43D120();
+//      sub_42F060((void *)v7, v6, v5, v4);
+//      stand_graph::show(&v2->stand_gfx);
+//    }
+//    v8 = get_added_card_by_id((def_deque *)&v2->cards_active, 0);
+//    sub_435B70(&battle_manager->unks[v2->player_index], v8->id, a2);
+//  }
 }
 
 bool char_c::sub_489F10(uint16_t cprior)

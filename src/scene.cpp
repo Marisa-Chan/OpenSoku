@@ -610,10 +610,10 @@ void c_scene::scene_subfunc2()
         {
             c_meta *meta = *mt;
 
-            sub_47BE70(meta,enm);
+            sub_47BE70(meta,enm); //BUllet collide with player enemy
 
             if (meta->get_pframe()->aflags & AF_HITSALL)
-                sub_47BE70(meta,enm);
+                sub_47BE70(meta,chrs[i]); //BUllet collide with player
         }
     }
 
@@ -1333,7 +1333,7 @@ bool c_scene::sub_479BC0(c_meta *p1, c_meta *p2)
     {
         if (p1->atk_area_of[i] != NULL)
         {
-            for (int32_t j=0; j< p2->atk_box_cnt; j++)
+            for (int32_t j=0; j< p2->hit_box_cnt; j++)
             {
                 if (p2->hit_area_flags[j] != NULL)
                     hit |= sub_479720(&p1->atk_area_2o[i], p1->atk_area_of[i], &p2->hit_area_2o[j], p2->hit_area_flags[j]);

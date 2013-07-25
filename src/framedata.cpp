@@ -342,8 +342,10 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 
                 if (pat_version == 5)
                 {
-                    f->read(24, frm->extra1);
-                    f->read(6, frm->unk22);
+                    for(int8_t k=0; k<6; k++)
+                        f->read(4, &frm->extra1[k]);
+                    for(int8_t k=0; k<3; k++)
+                        f->read(2, &frm->unk22[k]);
                 }
 
                 ssq.frames[j] = frm;

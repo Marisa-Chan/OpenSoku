@@ -62,6 +62,13 @@ bool cards_load_cards(s_cards *cards, const char *charname)
                 nxt = strtok(NULL,",");
                 tmp.cost = atoi(nxt);
 
+                if (tmp.cost > 5)
+                    tmp.cost = 5;
+                if (tmp.cost < 1)
+                    tmp.cost = 1;
+                if (tmp.type == 1)
+                    tmp.cost = 1;
+
                 nxt = strtok(NULL,",");
                 strcpy(tmp.description, nxt);
 

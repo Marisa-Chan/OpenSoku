@@ -56,6 +56,7 @@ void c_meta::set_seq(uint32_t idx)
         {
             index = idx;
             sprite.set_seq(pgp->get_seq(idx));
+            setOrigin(0,0); //Hacky
         }
 }
 

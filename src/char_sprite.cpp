@@ -219,7 +219,23 @@ void char_sprite::setOrigin(float x, float y)
 {
     if (pframe)
     {
-        gr_setorigin_sprite(sprite,pframe->x_offset+x/pframe->scale_x,pframe->y_offset+y/pframe->scale_y);
+        if (x != 0.0 || y != 0.0)
+        {
+        if (pframe->angle_z)
+        {
+            float cz = cos_deg(pframe->angle_z);
+            float sz = sin_deg(pframe->angle_z);
+            float px = x/pframe->scale_x;
+            float py = y/pframe->scale_y;
+            float xx = px * cz + py * sz;
+            float yy = -px * sz + py * cz;
+            gr_setorigin_sprite(sprite,pframe->x_offset+xx,pframe->y_offset+yy);
+        }
+        else
+            gr_setorigin_sprite(sprite,pframe->x_offset+x/pframe->scale_x,pframe->y_offset+y/pframe->scale_y);
+        }
+        else
+            gr_setorigin_sprite(sprite,pframe->x_offset,pframe->y_offset);
     }
     else
         gr_setorigin_sprite(sprite,x,y);

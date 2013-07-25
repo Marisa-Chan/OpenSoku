@@ -82,7 +82,7 @@ struct char_frame
 	vector<frame_box> box_atk;
 	vector<frame_box *> box_unk_atk;
 
-    float    extra1[6];
+    int32_t  extra1[6];
     uint16_t unk22[3];
 };
 

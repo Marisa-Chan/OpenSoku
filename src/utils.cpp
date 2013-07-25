@@ -19,6 +19,15 @@ float sin_deg(float angl)
     return sin(angl * 3.1415926 / 180.0);
 }
 
+float tan_deg(float angl)
+{
+    float cs = cos_deg(angl);
+    if (cs != 0.0)
+        return sin_deg(angl) / cs;
+    else
+        return  0.0;
+}
+
 inline void euler2matrix(float x, float y, float z, float (*m)[3])
 {
     if (x != 0 && y != 0 && z != 0)
@@ -147,6 +156,16 @@ inline void euler2matrix(float x, float y, float z, float (*m)[3])
 
 void euler_mult(float x1, float y1, float z1, float x2, float y2, float z2, float &rx,float &ry,float &rz)
 {
+    if (((x1 || x2 ) && y1 == 0 && y2 == 0 && z1 ==0 && z2 ==0) ||
+        ((y1 || y2 ) && x1 == 0 && x2 == 0 && z1 ==0 && z2 ==0) ||
+        ((z1 || z2 ) && y1 == 0 && y2 == 0 && x1 ==0 && x2 ==0))
+    { // if only one axis
+        rx = x1 + x2;
+        ry = y1 + y2;
+        rz = z1 + z2;
+        return;
+    }
+
     if (x1 != 0 || y1 != 0 || z1 != 0)
     {
         if (x2 != 0 || y2 != 0 || z2 != 0)

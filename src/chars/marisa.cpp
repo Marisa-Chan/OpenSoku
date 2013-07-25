@@ -1411,7 +1411,7 @@ void char_marisa::func10()
                     get_frame_time() ==0 )
                 scene_play_sfx(27);
         }
-        return;
+        break;
 
     case 307:
         if ( input->keyDown(INP_A) == 0 )
@@ -1471,7 +1471,7 @@ void char_marisa::func10()
                             {
                                 set_subseq(0);
                                 set_frame(3);
-                                return;
+                                break;
                             }
 
                             if ( get_elaps_frames() == 5 )
@@ -1557,7 +1557,7 @@ void char_marisa::func10()
                             {
                                 set_subseq(0);
                                 set_frame(3);
-                                return;
+                                break;
                             }
 
                             if ( get_elaps_frames() == 5 )
@@ -2930,7 +2930,7 @@ void char_marisa::func10()
             field_51C = 0;
         }
     }
-    return;
+    break;
     case 521:
     {
         uint32_t sq = get_subseq();
@@ -4450,6 +4450,637 @@ void char_marisa::func10()
         if ( get_frame_time() == 0 && get_frame() == 5)
             field_7D0 = 1;
         break;
+    case 600:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( get_subseq() == 1 )
+        {
+            if ( get_elaps_frames() > 60 )
+            {
+                next_subseq();
+                break;
+            }
+            if ( (get_elaps_frames() % 10) == 0 )
+                scene_add_effect(this, 127, x - 100.0 * dir, y, dir, -1);
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x - 23.0 * dir, y + 94.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            addbullet(this, NULL, 990, x - 80.0*dir, y+130.0, dir, 1, NULL, 0);
+            play_sfx(10);
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 0.0;
+
+            addbullet(this, NULL, 850, x + 25.0 * dir, y + 87.0, dir, 1, t, 3);
+            t[2] = 2.0;
+            addbullet(this, NULL, 850, x + 25.0 * dir, y + 87.0, dir, 1, t, 3);
+            t[2] = 4.0;
+            addbullet(this, NULL, 850, x + 25.0 * dir, y + 87.0, dir, 1, t, 3);
+        }
+        break;
+    case 601:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( get_subseq() != 1 )
+        {
+            if ( get_elaps_frames() > 90 )
+            {
+                next_subseq();
+                break;
+            }
+            if ( (get_elaps_frames() % 10) == 0 )
+                scene_add_effect(this, 127, x - 100.0 * dir, y, dir, -1);
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x - 23.0 * dir, y + 94.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            addbullet(this, NULL, 990, x - 80.0*dir, y+130.0, dir, 1, NULL, 0);
+            play_sfx(10);
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 2.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 851, x + 25.0 * dir, y+87.0, dir, 1, t, 3);
+            t[1] = -2.0;
+            addbullet(this, NULL, 851, x + 25.0 * dir, y+87.0, dir, 1, t, 3);
+            t[1] = 0.0;
+            t[2] = 2.0;
+            addbullet(this, NULL, 851, x + 25.0 * dir, y+87.0, dir, 1, t, 3);
+        }
+        break;
+    case 602:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( get_subseq() == 1 )
+        {
+            if ( (get_elaps_frames() % 10) == 0 && get_elaps_frames() <= 90 )
+            {
+                float t[3];
+                t[0] = 0.0;
+                t[1] = 0.0;
+                t[2] = 5.0;
+                addbullet(this, NULL, 852, x + 25.0 * dir, y + 150.0, dir, 1, t, 3);
+                scene_add_effect(this, 127, x - 100.0 * dir, y, dir, -1);
+            }
+            if ( get_elaps_frames() > 120 )
+            {
+                next_subseq();
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame() == 3 && get_frame_time() == 0 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x + 18 * dir, y + 83.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            addbullet(this, NULL, 990, x - 80.0*dir, y + 130.0, dir, 1, NULL, 0);
+            play_sfx(11);
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 852, x + 25.0 * dir, y + 150.0, dir, 1, t, 3);
+            t[2] = 2.0;
+            addbullet(this, NULL, 852, x + 25.0 * dir, y + 150.0, dir, 1, t, 3);
+            t[2] = 4.0;
+            addbullet(this, NULL, 852, x + 25.0 * dir, y + 150.0, dir, 1, t, 3);
+        }
+        break;
+    case 603:
+        if ( get_subseq() == 6 )
+            sub10func();
+        sub_46AB50( 5, 2);
+        if ( get_subseq() == 1 )
+            v_inerc -= v_force;
+        if ( get_subseq() == 3 )
+        {
+            if ( (get_elaps_frames() % 10) == 0 && get_elaps_frames() <= 90 )
+            {
+                float t[3];
+                t[0] = field_7DC;
+                t[1] = 0.0;
+                t[2] = 5.0;
+                addbullet(this, NULL, 853, x + 30.0 * dir, y + 53.0, dir, 1, t, 3);
+            }
+            if ( gX(dir) > 0 || gY() > 0 )
+                field_7DC -= 0.2;
+            if ( gX(dir) < 0 || gY() < 0 )
+                field_7DC += 0.2;
+            h_inerc = cos_deg(180.0 - field_7DC) * 3.0;
+            v_inerc = sin_deg(180.0 - field_7DC) * 3.0;
+            if ( get_elaps_frames() > 120 )
+            {
+                next_subseq();
+                break;
+            }
+        }
+        if ( get_subseq() == 4 || get_subseq() == 5)
+        {
+            v_inerc -= v_force;
+            if (char_on_ground_down())
+            {
+                reset_forces();
+                y = getlvl_height();
+                set_subseq(6);
+                break;
+            }
+        }
+
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame() == 3 && get_frame_time() == 0 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x + 18.0 * dir, y + 83.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+        if ( get_subseq() == 1 )
+        {
+            if ( get_frame_time() == 0 && get_frame() == 0 )
+            {
+                h_inerc = -4.0;
+                v_inerc = 23.0;
+                v_force = 0.60000002;
+            }
+            if ( get_frame_time() == 0 && get_frame() == 9 )
+            {
+                h_inerc *= 0.2;
+                v_inerc *= 0.2;
+                v_force = 0.0;
+                reset_forces();
+            }
+        }
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2 )
+        {
+            play_sfx( 12);
+            field_7DC = 60.0;
+            float t[3];
+            t[0] = 60.0;
+            t[1] = 0.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 853, x + 30.0 * dir, y + 53.0, dir, 1, t, 3);
+            t[2] = 2.0;
+            addbullet(this, NULL, 853, x + 30.0 * dir, y + 53.0, dir, 1, t, 3);
+            t[2] = 4.0;
+            addbullet(this, NULL, 853, x + 30.0 * dir, y + 53.0, dir, 1, t, 3);
+        }
+        if ( get_subseq() == 4 && get_frame_time() == 0 && get_frame() == 1 )
+            v_force = 0.5;
+        break;
+    case 604:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            char_frame *frm = get_pframe();
+            scene_add_effect(this, 115, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+        if ( get_subseq() == 2 )
+        {
+            if ( get_frame_time() == 0 && get_frame() == 2 )
+            {
+                play_sfx(39);
+                for (int8_t i=0; i < 5; i++)
+                {
+                    float t[3];
+                    t[0] = 72.0 * i;
+                    t[1] = 0.0;
+                    t[2] = i;
+                    int8_t ord = 1 - 2 * (cos_deg(-t[0]) > 0 );
+                    char_frame *frm = get_pframe();
+
+                    addbullet(this, NULL, 854, x + frm->extra1[4]*dir, y - frm->extra1[5], dir, ord, t, 3);
+
+                }
+            }
+            if ( get_frame() > 2)
+            {
+                field_7DC += dash_angle;
+                if ( field_7DC <= 35.0 )
+                    dash_angle += 0.025;
+                else
+                {
+                    dash_angle -= 0.025;
+                    if ( dash_angle < 0.0 )
+                        dash_angle = 0.0;
+                }
+            }
+        }
+        if ( get_subseq() == 3 )
+        {
+            if ( get_elaps_frames() >= 0 )
+            {
+                if ( field_7DC > 35.0 )
+                {
+                    field_7DC += dash_angle;
+                    dash_angle -= 0.025;
+                    if ( dash_angle < 0.0 )
+                        dash_angle = 0.0;
+                }
+                else
+                {
+                    field_7DC += dash_angle;
+                    dash_angle += 0.025;
+                }
+            }
+            if ( get_elaps_frames() >= 120 )
+                next_subseq();
+        }
+        else if ( get_subseq() == 4 && get_elaps_frames() >= 20 )
+            next_subseq();
+        break;
+    case 605:
+        if ( get_subseq() == 4 )
+            sub10func();
+        if ( get_subseq() < 2 )
+            sub_46AB50( 5, 2);
+        if ( field_190 == 1 && field_7D2 == 0)
+        {
+            field_7D2 = 1;
+            play_sfx(15);
+        }
+        if ( get_subseq() == 1 )
+        {
+            if ( (get_border_near() && field_190 != 1 && ((dir == 1 && x > 640.0)
+                    || (dir == -1 && x < 640.0))) || (field_194 == 0 && field_190 == 2)) //HACK  NOT UNDERSTAND
+            {
+                next_subseq();
+                h_inerc = -2.5;
+                v_inerc = 15.0;
+                v_force = 0.5;
+            }
+            float t[3];
+            t[0] = scene_rand() % 60 - 30.0;
+            t[1] = scene_rand() % 10 + 15.0;
+            t[2] = 2.0;
+            addbullet(this, NULL, 810, x - 90 * dir, y + 95.0, -dir, 1, t, 3);
+        }
+        if ( get_subseq() == 2 || get_subseq() == 3 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                reset_forces();
+                y = getlvl_height();
+                set_subseq(4);
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 2 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+            scene_add_effect(this, 115, x, y + 70.0, dir, 1);
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            field_194 = 20;
+            h_inerc = 30.0;
+            play_sfx(13);
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 855, x, y, dir, 1, t, 3);
+            if ( char_on_ground_flag() )
+                scene_add_effect(this, 127, x, 0.0, dir, 1);
+        }
+        if ( get_subseq() == 1 && get_frame_time() == 0 )
+        {
+            if ( field_190 == 0 )
+                h_inerc = 25.0;
+            else
+                h_inerc = 10.0;
+
+            field_190 = 0;
+        }
+        break;
+    case 606:
+        if ( get_subseq() == 0 || get_subseq() == 4 )
+            sub10func();
+        sub_46AB50( 5, 2);
+        if ( get_subseq() == 1 )
+        {
+            if ( get_elaps_frames() > 40 )
+                next_subseq();
+            if ( (get_elaps_frames() % 3) == 0 )
+            {
+                float t[3];
+                t[0] = scene_rand() % 60 + 95.0 - 30;
+                t[1] = 15.0;
+                t[2] = scene_rand() & 3;
+                addbullet(this, NULL, 810, x + 40 * dir, y + 51.0, dir, 1, t, 3);
+            }
+            if ( field_190 )
+            {
+                field_7D0++;
+                if ( field_7D0 > 3 )
+                {
+                    field_7D0 = 0;
+                    field_190 = 0;
+                }
+            }
+        }
+        if ( get_subseq() > 0 && get_subseq() < 4 )
+        {
+            v_inerc -= 0.85;
+            h_inerc -= 0.35;
+            if ( h_inerc < 0.0 )
+                h_inerc = 0.0;
+        }
+        if ( get_subseq() == 3 && char_on_ground_down() )
+        {
+            next_subseq();
+            y = getlvl_height();
+            reset_forces();
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 3 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(0x17u);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+            scene_add_effect(this, 115, x + 66.0 * dir, y + 81.0, dir, 1);
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            float t[3];
+            t[0] = -80.0;
+            t[1] = 0.0;
+            t[2] = 2.0;
+            addbullet(this, NULL, 849, x + 61.0 * dir, y + 232.0, dir, 1, t, 3);
+            scene_add_effect(this, 127, x, y, dir, -1);
+            play_sfx(15);
+            h_inerc = 15.0;
+            v_inerc = 32.5;
+            v_force = 0.6;
+        }
+        break;
+    case 607:
+        if ( get_subseq() == 4 )
+            sub10func();
+        if ( get_subseq() < 3 )
+            sub_46AB50( 5, 2);
+        if ( get_subseq() == 1  && get_elaps_frames() > 60 )
+        {
+            next_subseq();
+            play_sfx(16);
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 3.0;
+            addbullet(this, NULL, 857, x - 200.0 * dir, y + 275.0, dir, 1, t, 3);
+            t[2] = 4.0;
+            addbullet(this, NULL, 857, x - 200.0 * dir, y + 275.0, dir, 1, t, 3);
+        }
+        if ( get_subseq() == 2 && field_7D0 == 1 )
+        {
+            next_subseq();
+            reset_forces();
+            v_force = 0.5;
+            y = 1600.0;
+        }
+        if ( get_subseq() == 3 )
+        {
+            v_inerc -= 0.5;
+            if ( char_on_ground_down() )
+            {
+                next_subseq();
+                y = getlvl_height();
+                reset_forces();
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 1.0;
+            addbullet(this, NULL, 857, x, y, dir, 1, t, 3);
+            sub_4834E0(40);
+            scene_play_sfx(23);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+            scene_add_effect(this, 115, x + 66.0 * dir, y + 81.0, dir, 1);
+            h_inerc = -30.0;
+        }
+        break;
+    case 608:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( get_subseq() < 5 )
+        {
+            if ( field_7D0 > 0 )
+            {
+                if ( get_subseq() <= 3 )
+                {
+                    if ( field_7D0 % 4 == 1 )
+                    {
+                        play_sfx(19);
+                        float t[4];
+                        t[0] = sin_deg(field_7DC) * 20.0;
+                        t[1] = 10.0;
+                        t[2] = scene_rand_rngf(4);
+                        t[3] = 0.0;
+                        addbullet(this, NULL, 858, x + 25.0 * dir, y + 87.0, dir, 1, t, 4);
+                    }
+                }
+                field_7D0++;
+                if (field_7DC < 0)
+                    field_7DC = -(-30 + field_7DC);
+                else
+                    field_7DC = -( 30 + field_7DC);
+            }
+        }
+        if ( (get_subseq() == 1 && get_elaps_frames() > 40)
+                || (get_subseq() == 3 && get_elaps_frames() > 40) )
+        {
+            next_subseq();
+            break;
+        }
+        if ( process() )
+            set_seq(0);
+        if (get_subseq() == 5)
+        {
+            set_seq(0);
+            break;
+        }
+        if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
+            {
+                sub_4834E0( 40);
+                scene_play_sfx(23);
+                scene_add_effect(this, 115, x - 23.0 * dir, y + 94.0, dir, 1);
+                sub_469450( 0, 0, 60);
+                sub_483570();
+                weather_forecast_next();
+            }
+
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 6 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x - 25.0 * dir, y + 106.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
+            field_7D0 = 1;
+
+        if ( get_subseq() == 7 && get_frame() == 2 && get_frame_time() == 0 )
+            field_7D0 = 1;
+        break;
+    case 609:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            char_frame *frm = get_pframe();
+            scene_add_effect(this, 115, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1);
+            sub_469450(0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+        if ( get_subseq() == 2  && get_frame_time() == 0 && get_frame() == 4 )
+        {
+            play_sfx(20);
+            char_frame *frm = get_pframe();
+            float t[3];
+            t[0] = -90.0;
+            t[1] = 60.0;
+            t[2] = 5.0;
+            addbullet(this, NULL, 859, x + frm->extra1[4] * dir, y - frm->extra1[5],dir, 1, t, 3);
+            scene_add_effect(this, 127, x + 200.0*dir, y ,dir, -1);
+            scene_add_effect(this, 127, x - 200.0*dir, y ,-dir, -1);
+            for (int8_t i=0; i< 18; i++)
+            {
+                float t[3];
+                t[0] = scene_rand_rngf(10) + i * 20.0;
+                t[1] = scene_rand_rngf(75)* 0.1 + 15.0;
+                t[2] = 8.0;
+                char_frame *frm = get_pframe();
+                int8_t ord = 1 - 2 *(sin_deg(-t[0]) > 0);
+                addbullet(this, NULL, 859, x + frm->extra1[4] * dir, y, dir, ord, t, 3);
+            }
+        }
+        break;
+    case 610:
+        sub10func();
+        if ( get_subseq() == 1 )
+        {
+            float t[4];
+            t[0] = 6.0 * (field_7D0 + 15.0 * field_7D2);
+            t[1] = 10.0;
+            t[2] = field_7D2 % 4;
+            t[3] = 0.0;
+            addbullet(this, NULL, 861, x + 28.0 * dir, y + 185.0, dir, 1, t, 4);
+            field_7D2++;
+            field_7D0++;
+
+            if ( get_elaps_frames() > 60 )
+            {
+                next_subseq();
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 5 )
+        {
+            set_seq(0);
+            break;
+        }
+        if ( get_subseq() == 0 && get_frame() == 2 && get_frame_time() == 0 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x + 20.0 * dir, y + 80.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 6 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x - 25.0*dir, y + 106.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+
+        if ( get_subseq() == 0 && get_frame() == 5 && get_frame_time() == 0 )
+        {
+            field_7D0 = 1;
+            float t[4];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+            t[3] = 0.0;
+            addbullet(this, NULL, 861, x + 28.0 * dir, y + 185.0, dir, 1, t, 4);
+            t[2] = 5.0;
+            t[3] = 0.0;
+            addbullet(this, NULL, 861, x + 28.0 * dir, y + 185.0, dir, 1, t, 4);
+        }
+        if ( get_subseq() == 7 && get_frame() == 2 && get_frame_time() == 0 )
+            field_7D0 = 1;
+        break;
     case 611:
         if ( get_subseq() == 3 )
             sub10func();
@@ -4500,6 +5131,1200 @@ void char_marisa::func10()
             scene_add_effect(this, 127, x + 200.0 * dir, y, dir, -1);
         }
         break;
+    case 612:
+        sub_46AB50( 5, 2);
+        sub10func();
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2 )
+        {
+            play_sfx( 36);
+
+            for (int8_t i=0; i < 5; i++)
+            {
+                float t[4];
+                t[0] = scene_rand_rngf(20) * 0.1 + 2.0 + 4.5 * i;
+                t[1] = i * 1.5 + 3.0;
+                t[2] = 0.0;
+                t[3] = 0.0;
+                char_frame *frm = get_pframe();
+                addbullet(this, NULL, 862, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 4);
+            }
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            char_frame *frm = get_pframe();
+            scene_add_effect(this, 115, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+        break;
+    case 613:
+        sub_46AB50( 5, 2);
+        if ( get_subseq() == 2 )
+            sub10func();
+
+        if ( get_subseq() <= 2 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down())
+            {
+                reset_forces();
+                set_subseq(2);
+                y = getlvl_height();
+                break;
+            }
+        }
+        if ( get_subseq() == 1 && get_elaps_frames() > 20 )
+        {
+            set_seq(9);
+            break;
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame_time() == 0 )
+        {
+            if ( get_frame() == 3 )
+            {
+                h_inerc = 0.0;
+                v_inerc = 0.0;
+                v_force = 0.0;
+                sub_4834E0( 40);
+                scene_play_sfx(23);
+                scene_add_effect(this, 115, x - 46 * dir, y + 150.0, dir, 1);
+                sub_469450( 0, 0, 60);
+                sub_483570();
+                weather_forecast_next();
+            }
+            if ( get_frame() == 6 )
+            {
+                play_sfx( 7u);
+                h_inerc = -4.0;
+                v_inerc = 8.0;
+                v_force = 0.5;
+                float t[4];
+                t[0] = 0.0;
+                t[1] = 0.0;
+                t[2] = 1.0;
+                t[3] = 0.0;
+                addbullet(this, NULL, 863, x + 30.0 * dir, y + 62.0, dir, 1, t, 4);
+            }
+        }
+        break;
+    case 614:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( process() )
+            set_seq(0);
+        if ( get_frame_time() == 0 )
+        {
+            if ( get_frame() == 4 )
+            {
+                sub_4834E0( 40);
+                scene_play_sfx(23);
+                char_frame *frm = get_pframe();
+                scene_add_effect(this, 115, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1);
+                sub_469450( 0, 0, 60);
+                sub_483570();
+                weather_forecast_next();
+            }
+            if ( get_frame() == 7 )
+            {
+                float t[3];
+                t[0] = 3.0;
+                t[1] = 6.0;
+                t[2] = 0.0;
+                char_frame *frm = get_pframe();
+                addbullet(this, NULL, 864, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 3);
+                play_sfx( 36);
+            }
+        }
+        break;
+    case 615:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+            set_seq(0);
+
+        if ( get_subseq() == 0 && get_frame_time() == 0 )
+        {
+            if ( get_frame() == 3 )
+            {
+                sub_4834E0( 40);
+                scene_play_sfx(23);
+                scene_add_effect(this, 115, x - 36.0 * dir, y + 83.0, dir, 1);
+                sub_469450( 0, 0, 60);
+                sub_483570();
+                weather_forecast_next();
+            }
+            if ( get_frame() == 7 )
+            {
+                play_sfx( 24);
+                field_892 = 600;
+                field_890 = 0;
+                for (int8_t i=0; i < 4; i++)
+                {
+                    float t[3];
+                    t[0] = 90.0 * i;
+                    t[1] = 0.0;
+                    t[2] = i + 0.0;
+                    addbullet(this, NULL, 865, x, y + 100.0, dir, -1, t, 3);
+                }
+                for (int16_t i=0; i < 360; i+= 45)
+                {
+                    float t[3];
+                    t[0] = scene_rand_rng(40) + i + 30.0;
+                    t[1] = 13.0;
+                    t[2] = 2.0;
+                    if (t[0] < 0.0 || t[0] > 180.0)
+                        addbullet(this, NULL, 848, x, y, dir, -1, t, 3);
+                    else
+                        addbullet(this, NULL, 848, x, y, dir, 1, t, 3);
+                }
+            }
+        }
+        if ( get_subseq() == 1 && get_frame_time() == 0 )
+        {
+            if ( get_frame() == 3 )
+            {
+                sub_4834E0( 40);
+                scene_play_sfx(23);
+                scene_add_effect(this, 115, x + 61.0 * dir, y + 95.0, dir, 1);
+                sub_469450( 0, 0, 60);
+                sub_483570();
+                weather_forecast_next();
+            }
+            if ( get_frame() == 5 )
+            {
+                play_sfx( 24);
+                field_890 = 50;
+                sub_486FD0( 20.0, -20.0);
+                float t[3];
+                t[0] = field_7F0;
+                t[1] = 15.0;
+                t[2] = 22.0;
+
+                addbullet(this, NULL, 865, x, y + 100.0, dir, -1, t, 3);
+                field_8A0 = x;
+                field_8A4 = y + 100.0;
+            }
+        }
+        break;
+    case 619:
+        sub10func();
+        sub_46AB50( 5, 2);
+        if ( (get_subseq() == 1 && get_elaps_frames() >= 45)
+                || (get_subseq() == 4 && get_elaps_frames() >= 90)
+                || (get_subseq() == 5 && get_elaps_frames() >= 40) )
+        {
+            next_subseq();
+            break;
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 4 )
+            addbullet(this, NULL, 990, x - 80.0 * dir, y + 130.0, dir, 1, NULL, 0);
+
+        if ( get_subseq() == 0 &&  get_frame_time() == 0 )
+        {
+            if ( get_frame() == 3 )
+            {
+                sub_4834E0( 40);
+                scene_play_sfx(23);
+                scene_add_effect(this, 115, x - 16.0 * dir, y + 100.0, dir, 1);
+                sub_469450( 0, 0, 60);
+                sub_483570();
+                weather_forecast_next();
+            }
+            if ( get_frame() == 5 )
+            {
+                float t[3];
+                t[0] = 0.0;
+                t[1] = 0.0;
+                t[2] = 11.0;
+                addbullet(this, NULL, 869, x + 100.0 * dir, y + 105.0, dir, 1, t, 3);
+                play_sfx(10);
+                field_7D2++;
+            }
+        }
+        break;
+    case 658:
+        if ( get_subseq() == 5 )
+            sub10func();
+        else
+            sub_46AB50( 5, 2);
+        if ( field_7D0 > 0 )
+        {
+            if ( get_subseq() <= 3 && field_7D0 % 4 == 1 )
+            {
+                play_sfx( 19);
+                float t[4];
+                t[0] = sin_deg(field_7DC) * 20.0;
+                t[1] = 10.0;
+                t[2] = scene_rand_rngf(4);
+                t[3] = 0.0;
+                addbullet(this, NULL, 858, x + 25.0 * dir, y + 107.0, dir, 1, t, 4);
+            }
+            if (field_7DC < 0.0)
+                field_7DC = -(-30 + field_7DC);
+            else
+                field_7DC = -(30 + field_7DC);
+            field_7D0++;
+        }
+        if ( (get_subseq() == 1 && get_elaps_frames() > 40)
+                || (get_subseq() == 3 && get_elaps_frames() > 40) )
+        {
+            next_subseq();
+            break;
+        }
+        if ( get_subseq() == 4 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                set_subseq(5);
+                reset_forces();
+                y = getlvl_height();
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 5 )
+        {
+            set_seq(9);
+            break;
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x - 23.0 * dir, y + 106.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
+        if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
+            field_7D0 = 1;
+        if ( get_subseq() == 4 && get_frame_time() == 0 && get_frame() == 5 )
+            v_force = 0.3;
+        break;
+    case 695:
+        sub10func();
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 4 )
+        {
+            scene_play_sfx(55);
+            scene_add_effect(this, 140, x, y + 100.0, dir, 1);
+            scene_add_effect(this, 140, x, y + 100.0, dir, 1);
+            scene_add_effect(this, 140, x, y + 100.0, dir, 1);
+            scene_add_effect(this, 141, x, y + 100.0, dir, -1);
+            scene_add_effect(this, 142, x, y, dir, -1);
+        }
+        break;
+    case 696:
+        sub10func();
+        if ( get_frame() > 5 )
+        {
+            h_inerc -= 3.0;
+            if ( h_inerc < 0.0 )
+                h_inerc = 0.0;
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_frame_time() == 0 )
+        {
+            if ( get_frame() == 4 )
+            {
+                float t[3];
+                t[0] = 0.0;
+                t[1] = 0.0;
+                t[2] = 0.0;
+                h_inerc = 15.0;
+                addbullet(this, NULL, 848, x, y, dir, 1, t, 3);
+            }
+            if ( get_frame() == 5 )
+            {
+                scene_play_sfx(29);
+                field_49A = 0;
+            }
+        }
+        break;
+    case 707:
+        sub10func();
+        if ( h_inerc > 12.0 )
+        {
+            h_inerc -= 0.5;
+            if ( h_inerc < 12.0 )
+                h_inerc = 12.0;
+        }
+        if ( process() )
+        {
+            set_seq(700);
+            break;
+        }
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 3 )
+        {
+            h_inerc = 15.0;
+            scene_add_effect(this, 125, x + 80.0 * dir, y + 80.0, dir, 1);
+            scene_add_effect(this, 126, x, y + 80.0, dir, 1);
+            scene_play_sfx(31);
+        }
+        if ( get_subseq() == 1 )
+        {
+            if ( get_elaps_frames() % 5 == 0 )
+                scene_add_effect(this, 124, x + 50.0 - scene_rand_rngf(100), y + scene_rand_rngf(200), dir, 1);
+
+            if ( get_elaps_frames() > 30 )
+            {
+                next_subseq();
+                break;
+            }
+        }
+        if ( get_subseq() == 2 )
+        {
+            h_inerc -= 0.5;
+            if ( h_inerc < 0.0 )
+                h_inerc = 0.0;
+        }
+        break;
+    case 708:
+        if ( get_subseq() == 0 || get_subseq() == 2 )
+            sub10func();
+
+        if ( get_subseq() == 2 )
+        {
+            h_inerc += 2.0;
+            if ( h_inerc > 0 )
+                h_inerc = 0;
+        }
+        if ( !char_on_ground_flag() )
+        {
+            if ( get_elaps_frames() % 5 == 0 )
+                scene_add_effect(this, 124, x + 50.0 - scene_rand_rngf(100), y + scene_rand_rngf(200), -dir, 1);
+
+            v_inerc -= 0.5;
+            if ( getlvl_height() >= v_inerc + y )
+            {
+                if ( v_inerc < 0.0 )
+                {
+                    v_inerc = 0.0;
+                    y = getlvl_height();
+                    set_subseq(2);
+                    break;
+                }
+            }
+        }
+        if ( process() )
+        {
+            set_seq(700);
+            break;
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            h_inerc = -14.0;
+            v_inerc = 4.0;
+            scene_add_effect(this, 125, x, y + 80.0, -dir, 1);
+            scene_add_effect(this, 126, x, y + 80.0, -dir, 1);
+            scene_play_sfx(31);
+        }
+        break;
+    case 710:
+        sub10func();
+        if ( get_subseq() == 0 && get_elaps_frames() % 10 == 0 )
+        {
+            float t[3];
+            t[0] = scene_rand_rngf(360);
+            t[1] = scene_rand_rngf(400) + 200.0;
+            t[2] = scene_rand_rngf(100) >= 50;
+
+            char_frame *frm = get_pframe();
+
+            float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+            float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+            addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+        }
+        if ( get_subseq() == 1 )
+        {
+            if ( get_elaps_frames() % 10 == 0 &&  (int32_t)get_elaps_frames() <= field_7D0 - 30 )
+            {
+                float t[3];
+                t[0] = scene_rand_rngf(360);
+                t[1] = scene_rand_rngf(400) + 200.0;
+                t[2] = scene_rand_rngf(8);
+
+                char_frame *frm = get_pframe();
+
+                float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+                float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+                addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+            }
+            if ( get_elaps_frames() % 3 == 0 && (int32_t)get_elaps_frames() <= field_7D2 )
+            {
+                float t[4];
+                t[0] = field_7E8;
+                t[1] = scene_rand_rngf(25) + 100.0;
+                t[2] = scene_rand_rngf(4);
+                t[3] = scene_rand_rngf(field_7D4) * 0.1 + field_7E4;
+
+                char_frame *frm = get_pframe();
+
+                float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+                float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+
+                addbullet(this, NULL, 900, xx, yy, dir, 1, t, 4);
+                field_7E8 -= 23.0;
+            }
+            if ( (int32_t)get_elaps_frames() >= field_7D0 )
+            {
+                next_subseq();
+                flip_with_force();
+                break;
+            }
+        }
+        if ( get_subseq() == 3 && (int32_t)get_elaps_frames() > field_7D0 )
+        {
+            next_subseq();
+            break;
+        }
+        if ( process() )
+            set_seq(0);
+
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0)
+        {
+            if (get_subseq() == 1)
+            {
+                switch ( dword_8841B4 )
+                {
+                case 3:
+                    field_7D0 = 300;
+                    field_7D2 = 290;
+                    field_7D4 = 45;
+                    field_7E4 = 0.25;
+                    field_7E8 = 0.0;
+                    break;
+                case 2:
+                    field_7D0 = 300;
+                    field_7D2 = 270;
+                    field_7D4 = 30;
+                    field_7E4 = 0.5;
+                    field_7E8 = 0.0;
+                    break;
+                case 1:
+                    field_7D0 = 300;
+                    field_7D2 = 240;
+                    field_7D4 = 20;
+                    field_7E4 = 1.0;
+                    field_7E8 = 0.0;
+                    break;
+                case 0:
+                    field_7D0 = 300;
+                    field_7D2 = 120;
+                    field_7D4 = 10;
+                    field_7E4 = 1.5;
+                    field_7E8 = 0.0;
+                    break;
+                default:
+                    break;
+                }
+            }
+            if ( get_subseq() == 3 )
+            {
+                play_sfx( 21);
+                switch ( dword_8841B4 )
+                {
+                case 3:
+                    field_7D0 = 90;
+                    break;
+                case 0:
+                case 1:
+                    field_7D0 = 150;
+                    break;
+                case 2:
+                    field_7D0 = 120;
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        break;
+    case 720:
+        sub10func();
+        if ( get_subseq() == 0 && get_elaps_frames() % 10 == 0 )
+        {
+            float t[3];
+            t[0] = scene_rand_rngf(360);
+            t[1] = scene_rand_rngf(400) + 200.0;
+            t[2] = scene_rand_rngf(100) >= 50;
+
+            char_frame *frm = get_pframe();
+
+            float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+            float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+
+            addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+        }
+        if ( get_subseq() == 1 )
+        {
+            if ( get_elaps_frames() % 2 == 0  &&  (int32_t)get_elaps_frames() <= field_7D0 - 30 )
+            {
+                float t[3];
+                t[0] = scene_rand_rngf(360);
+                t[1] = scene_rand_rngf(400) + 200.0;
+                t[2] = scene_rand_rngf(8);
+
+                char_frame *frm = get_pframe();
+
+                float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+                float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+                addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+            }
+            if ( (int32_t)get_elaps_frames() >= field_7D0 )
+            {
+                next_subseq();
+                flip_with_force();
+                break;
+            }
+        }
+        if ( get_subseq() == 3 && (int32_t)get_elaps_frames() > field_7D0 )
+        {
+            next_subseq();
+            break;
+        }
+        if ( process() )
+            set_seq(0);
+
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            switch ( dword_8841B4 )
+            {
+            case 3:
+                field_7D0 = 120;
+                field_7DC = 5.0;
+                dash_angle = 40.0;
+                break;
+            case 2:
+                field_7D0 = 120;
+                field_7DC = 4.0;
+                dash_angle = 40.0;
+                break;
+            case 1:
+                field_7D0 = 150;
+                field_7DC = 3.0;
+                dash_angle = 45.0;
+                break;
+            case 0:
+                field_7D0 = 180;
+                field_7DC = 3.0;
+                dash_angle = 45.0;
+                break;
+            default:
+                break;
+            }
+        }
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2 )
+        {
+            play_sfx(29);
+            sub_486FD0(45.0, -45.0);
+            for (int32_t i=0; i< field_7DC; i++)
+            {
+                float t[3];
+                t[0] = i * dash_angle - (field_7DC - 1.0) * dash_angle * 0.5 + field_7F0;
+                t[1] = scene_rand_rngf(20) * 0.1 + 8.0;
+                t[2] = 0.0;
+
+                char_frame *frm = get_pframe();
+
+                float xx = (cos_deg(-t[0]) * 50.0 + frm->extra1[4]) * dir + x;
+                float yy = sin_deg(-t[0]) * 50.0 + y - frm->extra1[5];
+                addbullet(this, NULL, 910, xx, yy, dir, 1, t, 3);
+            }
+            switch ( dword_8841B4 )
+            {
+            case 0:
+            case 1:
+                field_7D0 = 150;
+                break;
+            case 3:
+                field_7D0 = 90;
+                break;
+            case 2:
+                field_7D0 = 120;
+                break;
+            default:
+                break;
+            }
+        }
+        break;
+    case 721:
+        if ( get_subseq() != 0 && get_subseq() != 8 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                y = getlvl_height();
+                set_subseq(8);
+                reset_forces();
+                break;
+            }
+        }
+        else
+            sub10func();
+
+        if ( get_subseq() == 3 )
+        {
+            h_inerc *= 0.98;
+            v_inerc *= 0.98;
+
+            if ( get_elaps_frames() % 2 == 0 && (int32_t)get_elaps_frames() <= field_7D0 - 30 )
+            {
+                float t[3];
+                t[0] = scene_rand_rngf(360);
+                t[1] = scene_rand_rngf(400) + 200.0;
+                t[2] = scene_rand_rngf(8);
+
+                char_frame *frm = get_pframe();
+
+                float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+                float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+                addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+            }
+
+            if ( (int32_t)get_elaps_frames() >= field_7D0 )
+            {
+                flip_with_force();
+                next_subseq();
+                flip_with_force();
+                break;
+            }
+        }
+        if ( get_subseq() == 5 && get_elaps_frames() > 60 )
+        {
+            next_subseq();
+            break;
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            h_inerc = -3.0;
+            v_inerc = 15.0;
+            v_force = 0.4;
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 )
+        {
+            if ( get_subseq() == 3 )
+            {
+                v_force = 0.0;
+                switch ( dword_8841B4 )
+                {
+                case 3:
+                    field_7D0 = 120;
+                    field_7DC = 5.0;
+                    dash_angle = 40.0;
+                    break;
+                case 2:
+                    field_7D0 = 120;
+                    field_7DC = 4.0;
+                    dash_angle = 40.0;
+                    break;
+                case 1:
+                    field_7D0 = 150;
+                    field_7DC = 3.0;
+                    dash_angle = 45.0;
+                    break;
+                case 0:
+                    field_7D0 = 180;
+                    field_7DC = 3.0;
+                    dash_angle = 45.0;
+                    break;
+                default:
+                    break;
+                }
+            }
+            if ( get_subseq() == 5 )
+            {
+                play_sfx( 29);
+                sub_486FD0( 90.0, 45.0);
+                h_inerc = -6.0;
+                v_inerc = 10.0;
+                v_force = 0.35;
+
+                for (int32_t i=0; i< field_7DC; i++)
+                {
+                    float t[3];
+                    t[0] = i * dash_angle - (field_7DC - 1.0) * dash_angle * 0.5 + field_7F0;
+                    t[1] = scene_rand_rngf(20) * 0.1 + 8.0;
+                    t[2] = 0.0;
+
+                    char_frame *frm = get_pframe();
+
+                    float xx = (cos_deg(-t[0]) * 50.0 + frm->extra1[4]) * dir + x;
+                    float yy = sin_deg(-t[0]) * 50.0 + y - frm->extra1[5];
+                    addbullet(this, NULL, 910, xx, yy, dir, 1, t, 3);
+                }
+                switch ( dword_8841B4 )
+                {
+                case 0:
+                case 1:
+                    field_7D0 = 150;
+                    break;
+                case 3:
+                    field_7D0 = 90;
+                    break;
+                case 2:
+                    field_7D0 = 120;
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        break;
+    case 730:
+        if ( get_subseq() <= 1 || get_subseq() == 6 )
+            sub10func();
+        else
+        {
+            v_inerc -= v_force;
+            if ( get_subseq() == 5 && char_on_ground_down() )
+            {
+                y = getlvl_height();
+                reset_forces();
+                next_subseq();
+                break;
+            }
+        }
+        if ( get_subseq() == 0 && get_elaps_frames() % 10 == 0 )
+        {
+            float t[3];
+            t[0] = scene_rand_rngf(360);
+            t[1] = scene_rand_rngf(400) + 200.0;
+            t[2] = scene_rand_rngf(8);
+
+            char_frame *frm = get_pframe();
+
+            float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+            float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+            addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+        }
+        if ( get_subseq() == 1 )
+        {
+            if ( get_elaps_frames() % 2 == 0 && (int32_t)get_elaps_frames() <= field_7D0 - 30 )
+            {
+                float t[3];
+                t[0] = scene_rand_rngf(360);
+                t[1] = scene_rand_rngf(400) + 200.0;
+                t[2] = scene_rand_rngf(8);
+
+                char_frame *frm = get_pframe();
+
+                float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+                float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+                addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+            }
+            if ( (int32_t)get_elaps_frames() >= field_7D0 )
+            {
+                next_subseq();
+                flip_with_force();
+                break;
+            }
+        }
+        if ( get_subseq() == 3 )
+        {
+            if ( dir == 1 )
+                h_inerc += x > 320.0 ? -0.05 : -0.05;
+            else
+                h_inerc += x < 960.0 ? -0.05 : -0.05;
+
+            if ( h_inerc > 12.0 )
+                h_inerc = 12.0;
+            if ( h_inerc < -12.0 )
+                h_inerc = -12.0;
+
+            v_inerc += y >= 150.0 ? -0.025 : 0.025 ;
+
+            if ( v_inerc > 4.5 )
+                v_inerc = 4.5;
+            if ( v_inerc < -4.5 )
+                v_inerc = -4.5;
+            if ( (int32_t)get_elaps_frames() <= field_7D0 )
+            {
+                next_subseq();
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
+        {
+            switch ( dword_8841B4 )
+            {
+            case 3:
+                field_7D0 = 120;
+                field_7DC = 2.0;
+                break;
+            case 2:
+                field_7D0 = 150;
+                field_7DC = 1.5;
+                break;
+            case 1:
+                field_7D0 = 180;
+                field_7DC = 1.0;
+                break;
+            case 0:
+                field_7D0 = 240;
+                field_7DC = 1.0;
+                break;
+            default:
+                break;
+            }
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 4.0;
+            char_frame *frm = get_pframe();
+
+            addbullet(this, NULL, 920, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 3);
+        }
+        if ( get_subseq() == 2 && get_frame_time() == 0 && get_frame() == 2 )
+        {
+            play_sfx( 10);
+            float t[4];
+            t[0] = 0.0;
+            t[1] = 25.0;
+            t[2] = 10.0;
+            t[3] = field_7DC;
+
+            char_frame *frm = get_pframe();
+
+            addbullet(this, NULL, 920, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 4);
+
+            switch ( dword_8841B4 )
+            {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                field_7D0 = 180;
+                break;
+            default:
+                break;
+            }
+        }
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 5 )
+        {
+            set_seq(733);
+            set_subseq(2);
+        }
+        break;
+    case 733:
+        if ( get_subseq() <= 1 || get_subseq() == 8 )
+            sub10func();
+        else
+        {
+            v_inerc -= v_force;
+            if ( get_subseq() == 7 && char_on_ground_down() )
+            {
+                y = getlvl_height();
+                reset_forces();
+                next_subseq();
+                angZ = 0.0;
+                break;
+            }
+        }
+        if ( get_subseq() == 2 || get_subseq() == 3 )
+        {
+            h_inerc *= 0.98;
+            v_inerc *= 0.98;
+        }
+        if ( get_subseq() == 2 && get_elaps_frames() % 10 == 0 )
+        {
+            float t[3];
+            t[0] = scene_rand_rngf(360);
+            t[1] = scene_rand_rngf(400) + 200.0;
+            t[2] = scene_rand_rngf(100) >= 50;
+
+            char_frame *frm = get_pframe();
+
+            float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+            float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+            addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+        }
+        if ( get_subseq() == 3 )
+        {
+            if ( get_elaps_frames() % 2 == 0 && (int32_t)get_elaps_frames() <= field_7D0 - 30 )
+            {
+                float t[3];
+                t[0] = scene_rand_rngf(360);
+                t[1] = scene_rand_rngf(400) + 200.0;
+                t[2] = scene_rand_rngf(8);
+
+                char_frame *frm = get_pframe();
+
+                float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
+                float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
+                addbullet(this, NULL, 970, xx, yy, dir, 1, t, 3);
+            }
+            if ( (int32_t)get_elaps_frames() >= field_7D0 )
+            {
+                next_subseq();
+                flip_with_force();
+                break;
+            }
+        }
+        if ( get_subseq() == 3 && (int32_t)get_elaps_frames() > field_7D0 )
+        {
+            next_subseq();
+            break;
+        }
+        if ( get_subseq() == 5 )
+        {
+            dash_angle += 0.02;
+            if ( dash_angle > 3.0 )
+                dash_angle = 3.0;
+
+            char_frame *frm = get_pframe();
+            setOrigin(frm->extra1[4], -frm->extra1[5]); // HACK? signs??
+            angZ += dash_angle;
+
+            if ( x <= 640.0)
+            {
+                if (dir == 1)
+                    h_inerc += 0.04;
+                else
+                    h_inerc -= 0.04;
+            }
+            else
+            {
+                if (dir != 1)
+                    h_inerc += 0.04;
+                else
+                    h_inerc -= 0.04;
+            }
+
+            if ( h_inerc > 6.0 )
+                h_inerc = 6.0;
+            if ( h_inerc < -6.0 )
+                h_inerc = -6.0;
+
+            if ( y >= 270.0 )
+                v_inerc -= 0.0125;
+            else
+                v_inerc += 0.0125;
+
+            if ( v_inerc > 2.5 )
+                v_inerc = 2.5;
+            if ( v_inerc < -2.5 )
+                v_inerc = -2.5;
+
+            if ( (int32_t)get_elaps_frames() > field_7D0 )
+            {
+                v_inerc = 7.5;
+                v_force = 0.25;
+                angZ = ((int32_t)angZ % 360 ) - 720.0;
+                next_subseq();
+                break;
+            }
+        }
+
+        if ( get_subseq() == 6 || get_subseq() == 7 )
+            angZ *= 0.92;
+        if ( process() )
+            set_seq(0);
+        if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 )
+        {
+            if ( get_subseq() == 3 )
+            {
+                switch ( dword_8841B4 )
+                {
+                case 3:
+                    field_7D0 = 60;
+                    field_7DC = 2.0;
+                    break;
+                case 2:
+                    field_7D0 = 90;
+                    field_7DC = 1.5;
+                    break;
+                case 1:
+                    field_7D0 = 120;
+                    field_7DC = 1.0;
+                    break;
+                case 0:
+                    field_7D0 = 180;
+                    field_7DC = 1.0;
+                    break;
+                default:
+                    break;
+                }
+            }
+            if ( get_subseq() == 5 )
+            {
+                play_sfx( 10 );
+                float t[4];
+                t[0] = 0.0;
+                t[1] = 25.0;
+                t[2] = 12.0;
+                t[3] = field_7DC;
+
+                char_frame *frm = get_pframe();
+                addbullet(this, NULL, 920, x + 200.0 + frm->extra1[4], y - frm->extra1[5], dir, 1, t, 4);
+                switch ( dword_8841B4 )
+                {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    field_7D0 = 240;
+                    break;
+                default:
+                    break;
+                }
+                field_7D0 += scene_rand_rng(150);
+            }
+        }
+        break;
+    case 770:
+        if ( process() )
+            set_seq(0);
+        if ( get_subseq() == 0 && get_frame_time() == 0 && get_frame() == 5 )
+        {
+            field_6F5 = 1;
+            sub_4685C0(-1);
+            sub_46AB50( 2, -1);
+            field_188 = 0;
+            health_to_max();
+            field_868 = 1;
+            field_820 = 0;
+            field_81E = 1;
+            field_81A = 0;
+            field_81C = 0;
+            field_818 = 0;
+            scene_play_sfx(23);
+            field_882 = 1;
+            field_86A = 1;
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 0.0;
+            addbullet(this, NULL, 1201, 180.0, 130.0, 1, 2, t, 3);
+            t[2] = 1.0;
+            addbullet(this, NULL, 1202, x, y + 100.0, dir, -1, t, 3);
+        }
+        break;
+    case 788:
+        if ( process() )
+            set_seq(700);
+        break;
+    case 795:
+        if ( get_subseq() != 0 && process() )
+        {
+            set_seq(700);
+            break;
+        }
+        v_inerc -= 0.3;
+        if (!char_on_ground_down() && process() )
+        {
+            set_seq(700);
+            break;
+        }
+        set_subseq(1);
+        y = getlvl_height();
+        reset_forces();
+        break;
+    case 797:
+        if ( get_subseq() == 0 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                next_subseq();
+                y = getlvl_height();
+                v_inerc = 0.0;
+                break;
+            }
+        }
+        if ( get_subseq() == 1 )
+        {
+            h_inerc -= 0.75;
+            if ( h_inerc <= 0)
+            {
+                h_inerc = 0;
+                field_7D0++;
+                if ( field_7D0 >= 2 )
+                {
+                    next_subseq();
+                    h_inerc = -5.0;
+                    v_inerc = 5.0;
+                }
+            }
+        }
+        if (get_subseq() == 2 || get_subseq() == 3)
+        {
+            v_inerc -= 0.25;
+            if (char_on_ground_down())
+            {
+                reset_forces();
+                y = getlvl_height();
+                set_subseq(4);
+                scene_play_sfx(30);
+                x = 480.0;
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(0);
+        break;
+    case 798:
+        if ( get_subseq() == 0 )
+        {
+            v_inerc -= v_force;
+            if ( char_on_ground_down() )
+            {
+                next_subseq();
+                y = getlvl_height();
+                v_inerc = 0.0;
+                break;
+            }
+        }
+        if ( get_subseq() == 1 )
+        {
+            h_inerc -= 0.75;
+            if ( h_inerc <= 0 )
+            {
+                h_inerc = 0;
+                field_7D0++;
+                if ( field_7D0 >= 2 )
+                {
+                    next_subseq();
+                    h_inerc = -5.0;
+                    v_inerc = 5.0;
+                }
+            }
+        }
+        if (get_subseq() == 2 || get_subseq() == 3)
+        {
+            v_inerc -= 0.25;
+            if (char_on_ground_down())
+            {
+                reset_forces();
+                y = getlvl_height();
+                set_subseq(4);
+                scene_play_sfx(30);
+                x = 800.0;
+                break;
+            }
+        }
+        if ( process() )
+            set_seq(700);
+        break;
     default:
         char_c::func10();
     }
@@ -4508,16 +6333,6 @@ void char_marisa::func10()
 
 void char_marisa::func20()
 {
-
-
-    /*v1 = a1;
-      v2 = a1->current_frame_params;
-      v3 = v2->fflags;
-      v147 = a1->current_seq_frames_vector->cprior;
-      v4 = v2->fflags & FF_CANCELLEABLE;
-      v148 = v2->fflags & FF_CANCELLEABLE;
-      v5 = v3 & FF_UNK200000;*/
-
     uint16_t cprior = get_cprior();
     uint32_t fflags = get_pframe()->fflags;
 
@@ -4530,7 +6345,7 @@ void char_marisa::func20()
         if ( cc || cu )
         {
             /*
-             if ( pres_comb >= 700 && pres_comb < 800 )
+             if ( pres_comb >= 700 && pres_comb < 800 ) //HACK?
              {
                //class->func2_set_seq(v1, LOWORD(pres_comb));
                return;
@@ -4887,7 +6702,7 @@ void char_marisa::func20()
                                     sub_487370(607, cprior);
                                     return;
                                 case 208:
-                                    sub_487370(608, cprior);
+                                    sub_487370(658, cprior);
                                     return;
                                 case 211:
                                     sub_487370(611, cprior);
@@ -5885,7 +7700,14 @@ void char_marisa::set_seq_params()
 
     switch(get_seq())
     {
+    case 4:
+        h_inerc = 6.0;
+        break;
+    case 5:
+        h_inerc = -5.0;
+        break;
     case 214:
+    case 217:
         reset_ofs();
         field_7D6 = 0;
         v_inerc = 0.0;
@@ -5942,6 +7764,12 @@ void char_marisa::set_seq_params()
         field_190 = 0;
         not_charge_attack = 1;
         break;
+    case 310:
+        field_7D0 = 0;
+        v_force = 0.5;
+        field_190 = 0;
+        field_194 = 1;
+        break;
     case 320:
         field_49A = 0;
         field_190 = 0;
@@ -5976,6 +7804,13 @@ void char_marisa::set_seq_params()
         field_7D0 = 0;
         field_190 = 0;
         v_inerc = 0.0;
+        field_194 = 1;
+        break;
+    case 409:
+        field_49A = 0;
+        v_force = 0.35;
+        field_7D0 = 0;
+        field_190 = 0;
         field_194 = 1;
         break;
     case 410:
@@ -6020,6 +7855,50 @@ void char_marisa::set_seq_params()
         field_190 = 0;
         field_194 = 1;
         break;
+    case 420:
+    case 421:
+        field_190 = 0;
+        reset_forces();
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_894 = 0;
+        field_890 = 0;
+        break;
+    case 422:
+        v_force = 0.0;
+        field_190 = 0;
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_894 = 0;
+        field_890 = 0;
+        h_inerc *= 0.2;
+        v_inerc *= 0.2;
+        break;
+    case 430:
+    case 431:
+        field_190 = 0;
+        reset_forces();
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_7D8 = 0;
+        field_894 = 0;
+        field_890 = 0;
+        break;
+    case 432:
+        v_force = 0.0;
+        field_190 = 0;
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_7D8 = 0;
+        field_894 = 0;
+        field_890 = 0;
+        h_inerc *= 0.2;
+        v_inerc *= 0.2;
+        break;
     case 500:
         field_18C = 0;
         reset_forces();
@@ -6042,6 +7921,26 @@ void char_marisa::set_seq_params()
             field_190 = 1;
         else
             field_190 = 0;
+        break;
+    case 505:
+    case 506:
+        field_18C = 4;
+        reset_forces();
+        field_49A = 0;
+        field_7D0 = 0;
+        field_194 = 1;
+        field_190 = 1;
+        break;
+    case 510:
+    case 511:
+    case 512:
+    case 513:
+        field_18C = 8;
+        reset_forces();
+        field_7DC = 0.0;
+        field_194 = 0;
+        field_190 = 0;
+        field_49A = 0;
         break;
     case 520:
         field_18C = 1;
@@ -6110,6 +8009,44 @@ void char_marisa::set_seq_params()
         addbullet(this, NULL, 820, x, y, dir, -1, tmp, 3);
     }
     break;
+    case 545:
+    case 546:
+        field_18C = 6;
+        field_190 = 0;
+        reset_forces();
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_7D8 = 0;
+        not_charge_attack = 0;
+        break;
+    case 547:
+    case 548:
+        field_18C = 6;
+        field_190 = 0;
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_7D8 = 0;
+        not_charge_attack = 0;
+        break;
+    case 550:
+    case 551:
+        field_18C = 10;
+        field_190 = 0;
+        reset_forces();
+        not_charge_attack = 0;
+        break;
+    case 552:
+    case 553:
+        field_18C = 10;
+        field_190 = 0;
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_7D8 = 0;
+        not_charge_attack = 0;
+        break;
     case 560:
     case 561:
         field_18C = 3;
@@ -6134,6 +8071,96 @@ void char_marisa::set_seq_params()
         h_inerc *= 0.2;
         v_inerc *= 0.2;
         break;
+    case 565:
+    case 566:
+        field_18C = 7;
+        field_190 = 0;
+        reset_forces();
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        not_charge_attack = 1;
+        break;
+    case 567:
+    case 568:
+        field_18C = 7;
+        v_force = 0.0;
+        field_190 = 0;
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        not_charge_attack = 1;
+        h_inerc *= 0.2;
+        v_inerc *= 0.2;
+        break;
+    case 570:
+    case 571:
+        field_18C = 11;
+        field_190 = 0;
+        reset_forces();
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        not_charge_attack = 1;
+        break;
+    case 572:
+    case 573:
+        field_18C = 11;
+        v_force = 0.0;
+        field_190 = 0;
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        not_charge_attack = 1;
+        h_inerc *= 0.2;
+        v_inerc *= 0.2;
+        break;
+    case 599:
+        field_190 = 1;
+        reset_forces();
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_7D8 = 0;
+        break;
+    case 600:
+    case 601:
+    case 602:
+    case 610:
+    case 611:
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_190 = 1;
+        reset_forces();
+        break;
+    case 603:
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_190 = 1;
+        reset_forces();
+        if ( !char_on_ground_down() )
+        {
+            float t[3];
+            t[0] = 0.0;
+            t[1] = 0.0;
+            t[2] = 10.0;
+            addbullet(this, NULL, 853, x, y, dir, -1, t, 3);
+        }
+        break;
+    case 604:
+        field_7DC = 0.0;
+        field_190 = 0;
+        dash_angle = 0.0;
+        reset_forces();
+        break;
+    case 605:
+        field_7D0 = 0;
+        field_190 = 0;
+        field_194 = 6;
+        reset_forces();
+        field_7D2 = 0;
+        field_7D4 = 0;
+        break;
     case 606:
         reset_forces();
         field_194 = 99;
@@ -6141,22 +8168,86 @@ void char_marisa::set_seq_params()
         field_49A = 0;
         field_7D0 = 0;
         break;
-    case 611:
+    case 607:
+        reset_forces();
+        field_49A = 0;
+        field_7D0 = 0;
+        break;
+    case 608:
+    case 658:
+        field_7DC = 0.0;
         field_7D0 = 0;
         field_7D2 = 0;
         field_190 = 1;
         reset_forces();
+        break;
+    case 609:
+        reset_forces();
+        field_49A = 0;
+        break;
+    case 612:
+        field_190 = 1;
+        reset_forces();
+        break;
+    case 613:
+        field_190 = 0;
+        not_charge_attack = 1;
+        break;
+    case 614:
+        field_190 = 0;
+        reset_forces();
+        break;
+    case 615:
+        field_190 = 1;
+        reset_forces();
+        field_7D0 = 0;
+        field_7D2 = 0;
+        field_7D6 = 0;
+        field_7D8 = 0;
+        not_charge_attack = 1;
+        if ( field_892 > 0  )
+            next_subseq();
+        break;
+    case 619:
+        field_7D0 = 0;
+        field_7D2 = 0;
+        reset_forces();
+        break;
+    case 707:
+    case 720:
+    case 721:
+    case 722:
+    case 730:
+        reset_forces();
+        break;
+    case 708:
+        reset_forces();
+        field_7D0 = 0;
+        break;
+    case 710:
+    case 711:
+        reset_forces();
+        flip_with_force();
+        break;
+    case 733:
+        field_7D0 = 0;
+        field_7DC = 0.0;
+        field_7D2 = 0;
+        break;
+    case 797:
+        field_7D0 = 0;
+        play_sfx( 5);
+        break;
+    case 798:
+        play_sfx( 5);
+        reset_forces();
+        h_inerc = 15.0;
+        field_7D0 = 0;
+        v_inerc = 0.0;
+        v_force = 0.5;
         break;
     default:
         char_c::set_seq_params();
         break;
     }
 }
-
-
-
-
-
-
-
-
