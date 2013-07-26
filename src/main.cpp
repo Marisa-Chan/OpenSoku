@@ -127,11 +127,11 @@ int main(int argc, char *argv[])
     weather_change(WEATHER_CLEAR,1);
     weather_time_set(0);
 
-    marisa->add_card(0);
-    marisa->add_card(1);
-    marisa->add_card(2);
-    marisa->add_card(3);
-    marisa->add_card(4);
+    marisa->add_card();
+    marisa->add_card();
+    marisa->add_card();
+    marisa->add_card();
+    marisa->add_card();
 
     alice->add_card();
     alice->add_card();

@@ -439,7 +439,7 @@ class stand_graph
     private:
     gr_tex *tex;
     float   xpos;
-    int8_t  alpha;
+    uint8_t  alpha;
 
     char_c *player;
     int8_t  disp_stage;

@@ -1151,12 +1151,12 @@ void char_c::func10()
 
         if ( gX(dir) > 0 )
         {
-            if ( keyHit(INP_A) || keyHit(INP_B) || keyHit(INP_C) || keyHit(INP_D)  )
+            if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D)  )
                 field_7D0 = 1;
         }
         else if ( gX(dir) < 0 )
         {
-            if ( keyHit(INP_A) || keyHit(INP_B) || keyHit(INP_C) || keyHit(INP_D)  )
+            if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D)  )
                 field_7D0 = 2;
         }
 
@@ -1205,12 +1205,12 @@ void char_c::func10()
         {
             if ( gX(dir) > 0 )
             {
-                if ( keyHit(INP_A) || keyHit(INP_B) || keyHit(INP_C) || keyHit(INP_D)  )
+                if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D)  )
                     field_7D0 = 1;
             }
             else if ( gX(dir) < 0  )
             {
-                if ( keyHit(INP_A) || keyHit(INP_B) || keyHit(INP_C) || keyHit(INP_D)  )
+                if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D)  )
                     field_7D0 = 2;
             }
         }
@@ -2764,7 +2764,7 @@ void char_c::set_seq_params()
             reset_forces();
         break;
     case 6:
-        if ( (pres_move & PMOVE_N08) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) != 0 ))
+        if ( (pres_move & PMOVE_N08) == 0  && (keyDown(INP_D) == 0 || gY() <= 0 || gX(dir) != 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -2775,7 +2775,7 @@ void char_c::set_seq_params()
 
         break;
     case 7:
-        if ( (pres_move & PMOVE_N09) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) <= 0 ))
+        if ( (pres_move & PMOVE_N09) == 0  && (keyDown(INP_D) == 0 || gY() <= 0 || gX(dir) <= 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -2786,7 +2786,7 @@ void char_c::set_seq_params()
 
         break;
     case 8:
-        if ( (pres_move & PMOVE_N07) == 0  && (input->keyDown(INP_D) == 0 || input->gY() <= 0 || input->gX(dir) >= 0 ))
+        if ( (pres_move & PMOVE_N07) == 0  && (keyDown(INP_D) == 0 || gY() <= 0 || gX(dir) >= 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();

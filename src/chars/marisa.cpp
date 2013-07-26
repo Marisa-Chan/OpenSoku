@@ -409,7 +409,7 @@ void char_marisa::func10()
                 if ( get_subseq() == 0 && get_frame() == 4 && get_frame_time() == 0)
                 {
                     v_inerc = 6.0;
-                    h_inerc = 14.5;
+                    h_inerc = -14.5;
                     v_force = 0.5;
                 }
             }

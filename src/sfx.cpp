@@ -47,7 +47,6 @@ void sfx_play(sfxc *snd)
     if (t >= 0)
     {
         chnls[t].setBuffer(*snd);
-        chnls[t].setVolume(0.75);
         chnls[t].play();
     }
 
