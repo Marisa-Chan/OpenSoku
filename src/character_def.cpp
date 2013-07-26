@@ -1069,8 +1069,8 @@ void char_c::func10()
     case 88:
         if ( char_on_ground_down() )
         {
-            field_7D0 = 100 * h_inerc;
-            field_7D2 = 100 * v_inerc;
+            field_7D0 = 100.0 * h_inerc;
+            field_7D2 = 100.0 * v_inerc;
 
             reset_forces();
 
@@ -1119,8 +1119,8 @@ void char_c::func10()
             v_inerc -= v_force;
             if (char_on_ground_down())
             {
-                field_7D0 = 100 * h_inerc;
-                field_7D2 = 100 * v_inerc;
+                field_7D0 = 100.0 * h_inerc;
+                field_7D2 = 100.0 * v_inerc;
                 reset_forces();
 
                 y = getlvl_height();
@@ -1129,19 +1129,17 @@ void char_c::func10()
                 //shake_camera(2.0); //HACK
                 reset_ofs();
                 scene_play_sfx(22);
+                break;
             }
         }
-        else
+        process();
+        if (get_elaps_frames() == 0 && get_frame_time() ==0 && get_frame() == 0 && get_subseq() == 1)
         {
-            process();
-            if (get_elaps_frames() == 0 && get_frame_time() ==0 && get_frame() == 0 && get_subseq() == 1)
-            {
-                h_inerc = field_7D0 * 0.0025;
-                v_inerc = -field_7D2 * 0.0025;
-                v_force = 0.25;
-                x_off = x_delta;
-                y_off = y_delta;
-            }
+            h_inerc = field_7D0 * 0.0025;
+            v_inerc = -field_7D2 * 0.0025;
+            v_force = 0.25;
+            x_off = x_delta;
+            y_off = y_delta;
         }
         break;
     case 96:

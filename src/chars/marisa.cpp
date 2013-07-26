@@ -7353,7 +7353,19 @@ void char_marisa::func20()
                                 return;
                             }
                         }
-                        else if (input->gY() == 0)
+                        else if ( gY() <= 0 )
+                        {
+                            if ( gX(dir) < 0) // 4a
+                                if ( cprior <= get_prior(330) || sq == 330 )
+                                {
+                                    angZ = 0;
+                                    set_seq(330);
+                                    input->zero_input();
+                                    return;
+                                }
+                        }
+
+                        if (input->gY() == 0)
                         {
                             if ( input->gX(dir) > 0 && cprior <= get_prior(302) ) // 6A
                             {
@@ -7372,17 +7384,7 @@ void char_marisa::func20()
                                 input->zero_input();
                                 return;
                             }
-                        }
-                        if ( gY() <= 0 && gX(dir) < 0) // 4a
-                                if ( cprior <= get_prior(330) || sq == 330 )
-                                {
-                                    angZ = 0;
-                                    set_seq(330);
-                                    input->zero_input();
-                                    return;
-                                }
 
-                        if (gY() == 0)
                             if(cprior <= get_prior(300)) //near A
                             {
                                 angZ = 0;
@@ -7390,6 +7392,7 @@ void char_marisa::func20()
                                 input->zero_input();
                                 return;
                             }
+                        }
                     }
                     if ( field_190 != 0 && field_190 != 3 )
                     {
