@@ -3602,7 +3602,7 @@ void marisa_bullets::func10()
                     t[0] = scene_rand_rngf(360);
                     t[1] = scene_rand_rngf(10) + 10.0;
                     t[2] = 9.0;
-                    // addbullet(chrt, NULL, 859, x,y, dir, 1, t, 3);
+                    addbullet(chrt, NULL, 859, x,y, dir, 1, t, 3);
                 }
                 if ( field_190 )
                 {

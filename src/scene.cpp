@@ -12,6 +12,7 @@
 #include "mt.h"
 #include "bullets.h"
 #include "weather.h"
+#include "c_scene_one.h"
 
 #define VERT_SCALE    2.0
 #define SCR_WIDTH     640.0
@@ -177,41 +178,20 @@ void c_scene::upd_camera(char_c *p1,char_c *p2)
                p2->x, p2->y);
 }
 
-c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
+c_scene::c_scene()
 {
-    bkg = bg;
-    chrs[0] = p1;
-    chrs[1] = p2;
+    field_904 = 0;
+    frames = 0;
+    cur_game_state = 0;
+    game_state = 0;
+    field_8 = 0;
 
-    chrs[0]->x = 480;
-    chrs[0]->y = 0;
-    chrs[1]->x = 800;
-    chrs[1]->y = 0;
-
-    chrs[0]->dir = 1.0;
-    chrs[1]->dir = -1.0;
-
-    chrs[0]->enemy = chrs[1];
-    chrs[1]->enemy = chrs[0];
-
-    chrs[0]->player_index = 0;
-    chrs[1]->player_index = 1;
-
-    scn_p1[0] = 0;
-    scn_p1[1] = 0;
-    scn_p2[0] = 0;
-    scn_p2[1] = 0;
-
-    chrs[0]->init_vars();
-    chrs[1]->init_vars();
-
-    // chrs[1]->controlling_type = 3;
-
-    set_camera(chrs[0],chrs[1]);
     init_lvl_height();
 
-    randomm.set_seed(time(NULL));
     reset_ibox();
+
+    randomm.set_seed(time(NULL));
+
 
     if (!img_sp)
         img_sp = new c_scene_sp;
@@ -232,6 +212,12 @@ c_scene::c_scene(background *bg, char_c *p1, char_c *p2)
 
     //add_infoeffect(2,1);
     //weather_sp->addeffect(1,1);
+
+}
+
+c_scene::~c_scene()
+{
+
 }
 
 void c_scene::draw_scene()
@@ -277,25 +263,13 @@ void c_scene::draw_scene()
 
 }
 
-void c_scene::update_char_anims()
-{
-    // for (uint32_t i=0; i < 2; i++)
-    //  chrs[i]->process(true);
-}
-
 void c_scene::players_input()
 {
     for (uint32_t i=0; i < 2; i++)
+    {
         chrs[i]->input_update();
-
-    for (uint32_t i=0; i < 2; i++)
         chrs[i]->check_seq_input();
-}
-
-void c_scene::func11(char_c *pl)
-{
-    if ( game_type_get() != GAME_TYPE_TRAINING)
-        pl->field_574 = 1;
+    }
 }
 
 
@@ -308,12 +282,12 @@ int32_t c_scene::get_stage_id()
     return bkg->get_idx();
 }
 
-void c_scene::func12()
+void c_scene::func14()
 {
-
+    draw_scene();
 }
 
-void c_scene::c_scene_base_func15()
+void c_scene::func15()
 {
     if ( chrs[0]->field_740 || chrs[1]->field_740 )
         spell_images.alpha_delta = -10;
@@ -381,57 +355,6 @@ void c_scene::upd_wfx_bkg_sky()
         else
             w_man->sky_deque.erase(w_man->sky_deque.begin() + i);
     }
-}
-
-void c_scene::func15()
-{
-    //if ( this->field_88 == 2 ) //HACK
-    {
-        if ( weather_get() == WEATHER_CLEAR )
-        {
-            weather_time_add(1);
-            if ( weather_index_for_name_get() == WEATHER_CLEAR && weather_time_get() >= 0 )
-                weather_forecast_set((WEATHER_ID)scene_rand_rng(20));
-
-            else if ( weather_time_get() >= 999 )
-            {
-                weather_time_set(999);
-                weather_change(weather_index_for_name_get(), true);
-
-                switch ( weather_get() )
-                {
-                case WEATHER_SPRING_HAZE:
-                case WEATHER_TEMPEST:
-                    weather_time_mul(0.5);
-                    break;
-                case WEATHER_SUNSHOWER:
-                case WEATHER_RIVER_MIST:
-                case WEATHER_TYPHOON:
-                    weather_time_mul(0.75);
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
-        else
-        {
-            if (time_count_get() & 1)
-                weather_time_sub(1);
-
-            if ( weather_time_get() <= 0 )
-            {
-                weather_time_set(0);
-                weather_change(WEATHER_CLEAR, true);
-            }
-        }
-    }
-    c_scene_base_func15();
-}
-
-void c_scene::func16()
-{
-
 }
 
 void c_scene::reset_ibox()
@@ -1036,19 +959,6 @@ void c_scene::scene_subfunc5()
     //((void (*)(void))battle_manager->vtbl->bman_func4)();
     //sub_428990(&transform_values__);
     //sub_428BB0(&transform_values__);
-}
-
-void c_scene::update()
-{
-    bkg->update();
-    //draw_weather_bkg(3);
-    func16();
-    scene_subfunc1();
-    scene_subfunc2();
-    scene_check_collisions();
-    scene_subfunc4();
-    scene_subfunc5();
-    func12();
 }
 
 bool c_scene::sub_479720(frame_box *a1, frame_box *a2, frame_box *b1, frame_box *b2)
@@ -2078,7 +1988,8 @@ c_scene *scene_new_scene(background *bg, char_c *p1, char_c *p2)
 {
     if (scn)
         delete scn;
-    scn = new c_scene(bg, p1, p2);
+    scn = new c_scene_one;
+    scn->init(bg, p1, p2);
     return scn;
 }
 

@@ -350,3 +350,5 @@ void battle_ui_std::spawneffect(int32_t idx, float x, float y, int8_t dir, int8_
 {
     inf_eff.addeffect(idx, x, y, dir, order);
 }
+
+

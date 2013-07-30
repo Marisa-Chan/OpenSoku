@@ -50,7 +50,8 @@ OBJS =  \
 	profile.cpp\
 	cards.cpp\
 	battle_ui.cpp\
-	tail.cpp
+	tail.cpp\
+	c_scene_one.cpp
 
 linux: $(OBJS)
 	$(CXX) -O3 -Os --std=c++11 -pedantic -o $(TARGET) $(OBJS) $(LIBS) -I /usr/include/ 

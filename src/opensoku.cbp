@@ -68,6 +68,8 @@
 		<Unit filename="chars/marisa_bullets.h" />
 		<Unit filename="chars/utsuho.cpp" />
 		<Unit filename="chars/utsuho.h" />
+		<Unit filename="c_scene_one.cpp" />
+		<Unit filename="c_scene_one.h" />
 		<Unit filename="crc32.cpp" />
 		<Unit filename="crc32.h" />
 		<Unit filename="file_read.cpp" />

@@ -53,11 +53,14 @@ struct spell_bkg_images
 
 class c_scene
 {
-    private:
+    protected:
 
     s_camera cam;
+    int32_t game_state;
+    int32_t frames;
+    int32_t field_8;
+    int32_t cur_game_state;
 
-    void c_scene_base_func15();
     void upd_wfx_bkg_sky();
 
     bool sub_47AD60(c_meta *plr, c_meta *enm);
@@ -96,7 +99,8 @@ class c_scene
 
     public:
 
-    c_scene(background *bg, char_c *p1, char_c *p2);
+    c_scene();
+    virtual ~c_scene();
 
     t_weather_manager *w_man;
 
@@ -109,6 +113,7 @@ class c_scene
     metalst     list3[2];
     int32_t     scn_p1[2];
     int32_t     scn_p2[2];
+    int8_t      field_904;
 
     spell_bkg_images spell_images;
 
@@ -125,17 +130,24 @@ class c_scene
     void reset_ibox();
 
     void draw_scene();
-    void update_char_anims();
     void players_input();
 
-    void func11(char_c *pl);
-    void func12();
-    void func15();
-    void func16();
-    void update();
+    virtual void init(background *bg, char_c *p1, char_c *p2) = 0;
+    virtual int8_t update() = 0;        //Func3
+    virtual int8_t state0_update() = 0; //Func4
+    virtual int8_t state1_update() = 0; //Func5
+    virtual int8_t state2_update() = 0; //Func6
+    virtual int8_t state3_update() = 0; //Func7
+    virtual int8_t state5_update() = 0; //Func8
+    virtual int8_t state6_update() = 0; //Func9
+    virtual int8_t state7_update() = 0; //Func10
+    virtual void func11(char_c *pl) = 0;
+    virtual void func12() = 0;
+    virtual void func13(int32_t val) = 0;
+    virtual void func14();
+    virtual void func15();
+    virtual void func16() = 0;
 };
-
-
 
 
 bool char_on_ground_flag(char_c *chr);

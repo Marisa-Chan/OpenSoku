@@ -1242,7 +1242,7 @@ void char_c::func10()
                 if ( cards_added > 0 && controlling_type == CONTROL_PC_STORY && cards_active[0]->id >= 248 )
                 {
                     health_to_max();
-                    //field_867 = 0; //HACK
+                    field_868 = 0;
                 }
                 set_seq(199);
                 field_574 = 0;
@@ -3243,7 +3243,7 @@ void char_c::set_seq_params()
             field_844++;
             if ( field_844 > 4.0 )
                 field_844 = 4.0;
-            scene_add_effect(this, field_844 +130, x, y, dir, 1);
+            scene_add_effect(this, field_844 +130, x, y, 1, 1);
             break;
         case 19:
             if ( field_850 < 3 )

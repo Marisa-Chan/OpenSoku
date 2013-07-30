@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
     weather_change(WEATHER_CLEAR,1);
     weather_time_set(0);
 
-    marisa->add_card();
+    marisa->add_card(18);
     marisa->add_card();
     marisa->add_card();
     marisa->add_card();
@@ -164,8 +164,6 @@ int main(int argc, char *argv[])
         scn->update();
 
         scn->draw_scene();
-
-        scn->update_char_anims();
 
 
         //menu_call();
