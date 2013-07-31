@@ -192,6 +192,9 @@ public:
     //clear all down states
     void zero_input();
 
+    //clear only one key
+    void zero_input(inp_keys key);
+
     //check if pressed sq seq of num frames with care of direction
     int8_t check_input_seq(const char *sq, uint8_t frames, int8_t direction);
 

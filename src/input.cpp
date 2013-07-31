@@ -29,7 +29,16 @@ inp_ab::inp_ab()
 void inp_ab::zero_input()
 {
     for (uint32_t i=0; i<INP_KEYS; i++)
+    {
         key_dn[i] = false;
+        pr_key_dn[i] = false;
+    }
+}
+
+void inp_ab::zero_input(inp_keys key)
+{
+    key_dn[key] = false;
+    pr_key_dn[key] = false;
 }
 
 void inp_ab::flush_cur()

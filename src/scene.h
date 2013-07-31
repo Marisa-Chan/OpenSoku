@@ -4,6 +4,7 @@
 #include "framedata.h"
 #include "scene_fx.h"
 #include "weather.h"
+#include "battle_ui.h"
 
 using namespace std;
 
@@ -55,6 +56,8 @@ class c_scene
 {
     protected:
 
+    btl_ui *ui;
+
     s_camera cam;
     int32_t game_state;
     int32_t frames;
@@ -90,6 +93,8 @@ class c_scene
     bool scene_collid(box_box *b1, box_box *b2);
     void sub_47C180();
     void sub_47C430();
+    void clear_action_keys();
+    void clear_all_keys();
 
     void scene_subfunc1();
     void scene_subfunc2();
@@ -126,6 +131,7 @@ class c_scene
     void set_camera(char_c *p1,char_c *p2);
     void upd_camera(char_c *p1,char_c *p2);
     void apply_camera();
+    void set_start_flag(int8_t flag);
 
     void reset_ibox();
 

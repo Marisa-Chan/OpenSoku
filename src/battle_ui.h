@@ -26,20 +26,37 @@ struct btl_std_plr
     int32_t    health_prev;
 };
 
-class battle_ui_std
+class btl_ui
 {
     protected:
-
+    c_infoef_sp inf_eff;
     btl_std_plr player[2];
 
     gui_holder upper;
     gui_holder under;
     gui_holder combo;
 
-    c_infoef_sp inf_eff;
-
     gui_el_t6 *weatherFont001;
     gui_el_t6 *weatherFont000;
+
+
+    public:
+    btl_ui();
+    virtual ~btl_ui();
+
+    virtual void link(char_c *p1, char_c *p2) = 0;
+    virtual void update() = 0;
+    virtual void draw() = 0;
+    virtual void init() = 0;
+    virtual void spawneffect(int32_t idx, float x, float y, int8_t dir, int8_t order);
+    virtual void spawneffect(int32_t idx);
+
+    void spawn_orb_effect(int32_t idx, uint8_t player, uint8_t orb);
+};
+
+class battle_ui_std: public btl_ui
+{
+    protected:
 
     void init();
 
@@ -51,11 +68,12 @@ class battle_ui_std
     void link(char_c *p1, char_c *p2);
     void update();
     void draw();
-    void spawneffect(int32_t idx, float x, float y, int8_t dir, int8_t order);
 };
 
-battle_ui_std * get_battle_ui();
-battle_ui_std * init_new_battle_ui();
+btl_ui * get_battle_ui();
+battle_ui_std * init_new_battle_ui_std();
 void battle_ui_effect(int32_t idx, float x, float y, int8_t dir, int8_t order);
+
+void battle_ui_orbeffect(int32_t idx, uint8_t pl_id, uint8_t orb_id);
 
 #endif // BATTLE_UI_H_INCLUDED

@@ -64,9 +64,7 @@ class c_bullet : public c_meta
     virtual void func10();
     virtual void set_seq_params(); //func15
     virtual void func16();
-    //virtual void func16();
-    //virtual void func18();
-    //virtual void func20();
+
 
     virtual void draw_shadow(shd_trans *trans, gr_shader *shader = NULL);
     virtual void draw(gr_shader *shader = NULL);

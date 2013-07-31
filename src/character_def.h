@@ -368,6 +368,7 @@ class char_c : public c_meta
     void sub_46AB50(int8_t img, int16_t time);
     bool sub_489F10(uint16_t cprior);
     void sub_4685C0(int a2);
+    void sub_46AC00();
 
     bool spell200_seq299_300_field190_0_3();
     bool seq299_300_field190_0_3();
@@ -426,8 +427,10 @@ class char_c : public c_meta
     bool keyHit(inp_keys key);
     int8_t gX(int8_t dir);
     int8_t gY();
-    void   setgX(int8_t dir);
-    void   setgY(int8_t dir);
+    void setgX(int8_t dir);
+    void setgY(int8_t dir);
+    void clear_key(inp_keys key);
+    void clear_key();
     void set_input_profile(s_profile *prof);
 };
 

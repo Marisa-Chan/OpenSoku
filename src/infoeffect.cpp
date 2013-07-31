@@ -52,9 +52,9 @@ c_infoef_fx::c_infoef_fx(int32_t idx, gfx_seq *sq, float _x, float _y, int8_t _d
     set_seq_params();
 }
 
-void sub_6DC5E0(int8_t)
+void sub_6DC5E0(int8_t flag)
 {
-    //HACK
+    scene_get_scene()->set_start_flag(flag);
 }
 
 void c_infoef_fx::func10()
@@ -87,6 +87,7 @@ void c_infoef_fx::func10()
             scaleY -= 0.001;
             if (get_elaps_frames() == 90)
             {
+                battle_ui_effect(15, x, y, 1, 1);
                 battle_ui_effect(21, x, y, 1, 1);
                 active = false;
             }

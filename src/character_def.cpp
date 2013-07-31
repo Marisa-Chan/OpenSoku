@@ -2711,6 +2711,16 @@ void char_c::play_sfx(uint32_t idx)
         sfx_play(sfx[idx % MAX_CHR_SFX]);
 }
 
+void char_c::clear_key(inp_keys key)
+{
+    input->zero_input(key);
+}
+
+void char_c::clear_key()
+{
+    input->zero_input();
+}
+
 bool char_c::keyDown(inp_keys key)
 {
     return input->keyDown(key);
@@ -4222,8 +4232,7 @@ void char_c::crash_spell_borders(int8_t num)
 
             spell_energy = max_spell_energy;
             spell_energy_stop = 0;
-
-            //battle_manager->vtbl->bman_func6)(1, player_index, chr->spell_energy / 200); //HACK
+            battle_ui_orbeffect(1, player_index, spell_energy / 200);
         }
 }
 
@@ -4524,11 +4533,7 @@ void char_c::sub_463200()
                 }
                 if ( crshd_sp_brdrs_timer >= 4800 )
                 {
-                    //HACK
-                    /*(*(void (__stdcall **)(_DWORD, _DWORD, _DWORD))(*(_DWORD *)battle_manager + 24))(
-                      2,
-                      player_index,
-                      v2 / 200);*/
+                    battle_ui_orbeffect(2, player_index, spell_energy / 200);//HACK
                     max_spell_energy += 200;
                     crshd_sp_brdrs_timer = 0;
                 }
@@ -4622,6 +4627,15 @@ void char_c::sub_4685C0(int a2)
 //    v8 = get_added_card_by_id((def_deque *)&v2->cards_active, 0);
 //    sub_435B70(&battle_manager->unks[v2->player_index], v8->id, a2);
 //  }
+}
+
+void char_c::sub_46AC00()
+{
+    max_spell_energy = 1000;
+    spell_energy = 1000;
+    spell_energy_stop = 0;
+    crshd_sp_brdrs_timer = 0;
+    field_740 = 0;
 }
 
 bool char_c::sub_489F10(uint16_t cprior)

@@ -2,10 +2,13 @@
 #define C_SCENE_ONE_H_INCLUDED
 
 #include "scene.h"
+#include "battle_ui.h"
 
 class c_scene_one: public c_scene
 {
     public:
+    c_scene_one();
+
     virtual void init(background *bg, char_c *p1, char_c *p2);
     virtual int8_t update();
     virtual int8_t state0_update();
@@ -21,6 +24,10 @@ class c_scene_one: public c_scene
     virtual void func14();
     virtual void func15();
     virtual void func16();
+
+    protected:
+
+    int8_t field_904;
 };
 
 #endif // C_SCENE_ONE_H_INCLUDED

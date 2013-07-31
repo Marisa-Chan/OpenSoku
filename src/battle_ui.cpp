@@ -1,20 +1,23 @@
 #include "global_types.h"
 #include "battle_ui.h"
 
-battle_ui_std * battle_ui = NULL;
+btl_ui * battle_ui = NULL;
 
-battle_ui_std * get_battle_ui()
+btl_ui * get_battle_ui()
 {
     return battle_ui;
 }
 
-battle_ui_std * init_new_battle_ui()
+battle_ui_std * init_new_battle_ui_std()
 {
-    if (!battle_ui)
+    if (battle_ui)
         delete battle_ui;
 
-    battle_ui = new battle_ui_std;
-    return battle_ui;
+    battle_ui_std *tmp = new battle_ui_std;
+
+    battle_ui = tmp;
+
+    return tmp;
 }
 
 void battle_ui_effect(int32_t idx, float x, float y, int8_t dir, int8_t order)
@@ -23,11 +26,16 @@ void battle_ui_effect(int32_t idx, float x, float y, int8_t dir, int8_t order)
         battle_ui->spawneffect(idx, x, y, dir, order);
 }
 
+void battle_ui_orbeffect(int32_t idx, uint8_t pl_id, uint8_t orb_id)
+{
+    if (battle_ui)
+        battle_ui->spawn_orb_effect(idx, pl_id, orb_id);
+}
+
 
 battle_ui_std::battle_ui_std()
 {
     init();
-    inf_eff.addeffect(313,200,100,1,0);
 }
 
 battle_ui_std::~battle_ui_std()
@@ -346,9 +354,30 @@ void battle_ui_std::draw()
     inf_eff.draw(0,0);
 }
 
-void battle_ui_std::spawneffect(int32_t idx, float x, float y, int8_t dir, int8_t order)
+
+
+btl_ui::btl_ui()
+{
+
+}
+
+btl_ui::~btl_ui()
+{
+
+}
+
+void btl_ui::spawneffect(int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
     inf_eff.addeffect(idx, x, y, dir, order);
 }
 
+void btl_ui::spawneffect(int32_t idx)
+{
+    inf_eff.addeffect(idx, 320, 240, 1, 0);
+}
 
+void btl_ui::spawn_orb_effect(int32_t idx, uint8_t pl_id, uint8_t orb)
+{
+    if (player[pl_id].borderGaugeB[orb])
+        inf_eff.addeffect(idx, player[pl_id].borderGaugeB[orb]->getX(), player[pl_id].borderGaugeB[orb]->getY(), 1 - 2 * pl_id, 1);
+}

@@ -7,9 +7,16 @@
 #include "bullets.h"
 #include "weather.h"
 
+
+c_scene_one::c_scene_one()
+{
+    ui = init_new_battle_ui_std();
+    field_904 = 0;
+}
+
 void c_scene_one::init(background *bg, char_c *p1, char_c *p2)
 {
-        bkg = bg;
+    bkg = bg;
     chrs[0] = p1;
     chrs[1] = p2;
 
@@ -34,6 +41,8 @@ void c_scene_one::init(background *bg, char_c *p1, char_c *p2)
 
     chrs[0]->init_vars();
     chrs[1]->init_vars();
+
+    ui->link(chrs[0],chrs[1]);
 
     // chrs[1]->controlling_type = 3;
 
@@ -79,28 +88,28 @@ int8_t c_scene_one::update()
 int8_t c_scene_one::state0_update()
 {
     scene_subfunc1();
-  scene_check_collisions();
-  scene_subfunc4();
-  scene_subfunc5();
-  if ( frames > 60 )
-  {
-    //play_music_(0); //HACK
-    func13(1);
-  }
-  return 0;
+    scene_check_collisions();
+    scene_subfunc4();
+    scene_subfunc5();
+    if ( frames > 60 )
+    {
+        //play_music_(0); //HACK
+        func13(1);
+    }
+    return 0;
 }
 
 int8_t c_scene_one::state1_update()
 {
     func16();
-  //sub_478D00(v2); //Zero input HACK
-  scene_subfunc1();
-  scene_check_collisions();
-  scene_subfunc4();
-  scene_subfunc5();
-  //if ( field_8 )
-    func13(2);
-  return 0;
+    clear_action_keys();
+    scene_subfunc1();
+    scene_check_collisions();
+    scene_subfunc4();
+    scene_subfunc5();
+    if ( field_8 )
+        func13(2);
+    return 0;
 }
 
 int8_t c_scene_one::state2_update()
@@ -117,61 +126,61 @@ int8_t c_scene_one::state2_update()
 
 int8_t c_scene_one::state3_update()
 {
-  if ( frames > 120 || (frames & 3) == 0)
-  {
-    func16();
-    //if ( frames > 120 )
-      //sub_478D00(v2); //HACK ZERO ABCD INPUT
-    scene_subfunc1();
-    if ( chrs[0]->field_577 == 0|| chrs[1]->field_577 == 0)
-      scene_subfunc2();
-    scene_check_collisions();
-    scene_subfunc4();
-  }
-  scene_subfunc5();
-  if ( chrs[0]->field_577 && chrs[1]->field_577 )
-    func13(1);
+    if ( frames > 120 || (frames & 3) == 0)
+    {
+        func16();
+        if ( frames > 120 )
+            clear_action_keys();
+        scene_subfunc1();
+        if ( chrs[0]->field_577 == 0|| chrs[1]->field_577 == 0)
+            scene_subfunc2();
+        scene_check_collisions();
+        scene_subfunc4();
+    }
+    scene_subfunc5();
+    if ( chrs[0]->field_577 && chrs[1]->field_577 )
+        func13(1);
 
-  return 0;
+    return 0;
 }
 
 int8_t c_scene_one::state5_update()
 {
-  if ( frames > 180 || (frames & 3) == 0 )
-  {
-      func16();
-    //if ( frames > 180 )
-      //sub_478D00(v2); //HACK ZERO ABCD INPUT
-    scene_subfunc1();
-    scene_subfunc2();
-    scene_check_collisions();
-    scene_subfunc4();
-  }
-  scene_subfunc5();
-  if ( frames > 360 )
-  {
-    /*if ( gameplay_type_get() == GAMEPLAY_REPLAY )
-      return result;*/
+    if ( frames > 180 || (frames & 3) == 0 )
+    {
+        func16();
+        if ( frames > 180 )
+            clear_action_keys();
+        scene_subfunc1();
+        scene_subfunc2();
+        scene_check_collisions();
+        scene_subfunc4();
+    }
+    scene_subfunc5();
+    if ( frames > 360 )
+    {
+        /*if ( gameplay_type_get() == GAMEPLAY_REPLAY ) //HACK
+          return result;*/
 
-      func13(6);
-  }
-  return 0;
+        func13(6);
+    }
+    return 0;
 }
 
 int8_t c_scene_one::state6_update()
 {
     func16();
-  //sub_478D90(v2); //HACK ZERO ALL INPUT
-  /*if ( battle_manager->field_494 < 30 ) //HACK
-    ++battle_manager->field_494;
-  if ( (char)((int (__thiscall *)(batman **))v2->battle_manager->pat_infoeffect.pat_objects.vtbl)(&v2->battle_manager) <= 0 )
-    ((void (__thiscall *)(c_scene *, signed int))v2->base.vtbl->scene_func_13)(v2, 7);*/
+    clear_all_keys();
+    /*if ( battle_manager->field_494 < 30 ) //HACK
+      ++battle_manager->field_494;
+    if ( (char)((int (__thiscall *)(batman **))v2->battle_manager->pat_infoeffect.pat_objects.vtbl)(&v2->battle_manager) <= 0 )
+      ((void (__thiscall *)(c_scene *, signed int))v2->base.vtbl->scene_func_13)(v2, 7);*/
     func13(7);//HACK
-  scene_subfunc1();
-  scene_check_collisions();
-  scene_subfunc4();
-  scene_subfunc5();
-  return 0;
+    scene_subfunc1();
+    scene_check_collisions();
+    scene_subfunc4();
+    scene_subfunc5();
+    return 0;
 }
 
 int8_t c_scene_one::state7_update()
@@ -188,63 +197,63 @@ void c_scene_one::func11(char_c *pl)
 
 void c_scene_one::func12()
 {
-  if ( chrs[0]->field_574 )
-  {
-    if ( chrs[1]->field_574 )
+    if ( chrs[0]->field_574 )
     {
-      chrs[0]->win_count++;
-      chrs[1]->win_count++;
-      field_904 = 2;
-      if ( chrs[0]->win_count == chrs[1]->win_count )
-      {
-        chrs[1]->win_count = 1;
-        chrs[0]->win_count = 1;
-        func13(3);
-      }
-      else
-      {
-        if ( chrs[0]->win_count == 2 )
-          chrs[1]->field_576 = 1;
-        else
-            chrs[0]->field_576 = 1;
+        if ( chrs[1]->field_574 )
+        {
+            chrs[0]->win_count++;
+            chrs[1]->win_count++;
+            field_904 = 2;
+            if ( chrs[0]->win_count == chrs[1]->win_count )
+            {
+                chrs[1]->win_count = 1;
+                chrs[0]->win_count = 1;
+                func13(3);
+            }
+            else
+            {
+                if ( chrs[0]->win_count == 2 )
+                    chrs[1]->field_576 = 1;
+                else
+                    chrs[0]->field_576 = 1;
 
-        func13(5);
-      }
+                func13(5);
+            }
+        }
+        else
+        {
+            chrs[1]->win_count++;
+            if ( chrs[1]->win_count == 2 )
+            {
+                chrs[0]->field_576 = 1;
+                field_904 = 2;
+                func13(5);
+            }
+            else
+            {
+                field_904++;
+                func13(3);
+            }
+        }
     }
     else
     {
-      chrs[1]->win_count++;
-      if ( chrs[1]->win_count == 2 )
-      {
-        chrs[0]->field_576 = 1;
-        field_904 = 2;
-        func13(5);
-      }
-      else
-      {
-          field_904++;
-          func13(3);
-      }
+        if ( chrs[1]->field_574 )
+        {
+            chrs[0]->win_count++;
+            if ( chrs[0]->win_count == 2 )
+            {
+                chrs[1]->field_576 = 1;
+                field_904 = 2;
+                func13(5);
+            }
+            else
+            {
+                field_904++;
+                func13(3);
+            }
+        }
     }
-  }
-  else
-  {
-    if ( chrs[1]->field_574 )
-    {
-      chrs[0]->win_count++;
-      if ( chrs[0]->win_count == 2 )
-      {
-        chrs[1]->field_576 = 1;
-        field_904 = 2;
-        func13(5);
-      }
-      else
-      {
-        field_904++;
-        func13(3);
-      }
-    }
-  }
 }
 
 
@@ -255,19 +264,99 @@ void c_scene_one::func13(int32_t val)
     switch(val)
     {
     case 1:
-    chrs[0]->health = chrs[0]->max_health;
-    chrs[1]->health = chrs[1]->max_health;
+        chrs[0]->sub_46AC00();
+        chrs[1]->sub_46AC00();
+        ui->spawneffect(field_904 + 10);
+        //if ( field_904 == 0)
+        //    sub_47D390(battle_manager, 390.0); //HACK SPAWN MUSIC TRACK TITLE
+        chrs[0]->health = chrs[0]->max_health;
+        chrs[1]->health = chrs[1]->max_health;
+        break;
+    case 2:
+      chrs[0]->field_577 = 0;
+      chrs[0]->field_577 = 0;
+      break;
     case 3:
         for(int8_t i=0; i< 2; i++)
             chrs[i]->field_577 = chrs[i]->field_574 == 0;
-        printf("DOWN\n");
+        ui->spawneffect(16);
+        //printf("DOWN\n");
         break;
     case 5:
         for(int8_t i=0; i< 2; i++)
             if (chrs[i]->win_count >= 2)
                 chrs[i]->field_577 = chrs[i]->field_574 == 0;
-        printf("Knock Out\n");
+        ui->spawneffect(17);
+        //printf("Knock Out\n");
         break;
+    case 6:
+        //HACK SHOW FINALE CHAR IMAGES AND TEXTS
+//      v5 = this->base.chars[0];
+//      if ( v5->field_576 )
+//      {
+//        v6 = v5->char_id;
+//        v7 = sub_43D120();
+//        sub_431910((void *)v7, v6);
+//      }
+//      v8 = v2->base.chars[1];
+//      if ( v8->field_576 )
+//      {
+//        v9 = v8->char_id;
+//        v10 = sub_43D120();
+//        sub_431910((void *)v10, v9);
+//      }
+//      switch ( game_type_get() )
+//      {
+//        case 2:
+//        case 4:
+//          v11 = v2->base.chars[0];
+//          v12 = (int)&v11->cards_used;
+//          v13 = v11->char_id;
+//          v14 = sub_43D120();
+//          sub_431A20((void *)v14, v13, v12);
+//          v15 = v2->base.chars[1];
+//          v16 = (int)&v15->cards_used;
+//          v17 = v15->char_id;
+//          v18 = sub_43D120();
+//          sub_431CC0((void *)v18, v17, v16);
+//          sub_481100(v2);
+//          goto LABEL_26;
+//        case 3:
+//          v19 = v2->base.chars[0];
+//          v20 = (int)&v19->cards_used;
+//          v21 = v19->char_id;
+//          v22 = sub_43D120();
+//          sub_431A20((void *)v22, v21, v20);
+//          goto LABEL_20;
+//        case 5:
+//          v23 = v2->base.chars[0];
+//          v24 = (int)&v23->cards_used;
+//          v25 = v23->char_id;
+//          v26 = sub_43D120();
+//          sub_431CC0((void *)v26, v25, v24);
+//LABEL_20:
+//          v27 = v2->base.chars[1];
+//          v28 = (int)&v27->cards_used;
+//          v29 = v27->char_id;
+//          v30 = sub_43D120();
+//          sub_431A20((void *)v30, v29, v28);
+//          break;
+//        default:
+//          break;
+//      }
+//      sub_481100(v2);
+      break;
+    case 7:
+        //HACK SHOW RESULTS
+//        v31 = (void *)operator new(0x44u);
+//      v33 = 0;
+//      if ( v31 )
+//        v32 = (unsigned int)sub_448DC0(v31, (int)v2);
+//      else
+//        v32 = 0;
+//      v33 = -1;
+//      sub_43D300(v32);
+      break;
     default:
         break;
     }

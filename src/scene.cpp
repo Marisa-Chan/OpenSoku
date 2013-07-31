@@ -180,7 +180,6 @@ void c_scene::upd_camera(char_c *p1,char_c *p2)
 
 c_scene::c_scene()
 {
-    field_904 = 0;
     frames = 0;
     cur_game_state = 0;
     game_state = 0;
@@ -285,6 +284,7 @@ int32_t c_scene::get_stage_id()
 void c_scene::func14()
 {
     draw_scene();
+    ui->draw();
 }
 
 void c_scene::func15()
@@ -302,8 +302,7 @@ void c_scene::func15()
 
 void c_scene::upd_wfx_bkg_sky()
 {
-    //HACK
-    //NOT FULL CODE!!!
+    //HACK   NOT FULL CODE!!!
 
     WEATHER_ID wid;
 
@@ -355,6 +354,8 @@ void c_scene::upd_wfx_bkg_sky()
         else
             w_man->sky_deque.erase(w_man->sky_deque.begin() + i);
     }
+
+    bkg->update();
 }
 
 void c_scene::reset_ibox()
@@ -426,7 +427,7 @@ void c_scene::scene_subfunc1()
                     {
                         blt->func10();
                         if (blt->tail)
-                          blt->tail->update(blt->x, blt->y);
+                            blt->tail->update(blt->x, blt->y);
                     }
                 }
 
@@ -955,7 +956,8 @@ void c_scene::scene_subfunc5()
 {
 //HACK
     func15();
-    //field_8 = 0;
+    field_8 = 0;
+    ui->update();
     //((void (*)(void))battle_manager->vtbl->bman_func4)();
     //sub_428990(&transform_values__);
     //sub_428BB0(&transform_values__);
@@ -1906,6 +1908,28 @@ bool c_scene::sub_47ABE0(c_meta *plr, c_meta *enm)
     return false;
 }
 
+void c_scene::clear_action_keys()
+{
+    for (int8_t i=0; i<2; i++)
+    {
+        chrs[i]->clear_key(INP_A);
+        chrs[i]->clear_key(INP_B);
+        chrs[i]->clear_key(INP_C);
+        chrs[i]->clear_key(INP_BC);
+        chrs[i]->pres_comb = 0;
+    }
+}
+
+void c_scene::clear_all_keys()
+{
+    for (int8_t i=0; i<2; i++)
+    {
+        chrs[i]->clear_key();
+        chrs[i]->pres_comb = 0;
+        chrs[i]->pres_move = 0;
+    }
+}
+
 void scene_load_sounds()
 {
     char buf[CHRBUF];
@@ -1947,6 +1971,11 @@ void c_scene::scene_add_effect_ibox(int32_t idx, int8_t dir)
     float x = (ibox.x1 + ibox.x2) / 2.0;
     float y = -(ibox.y1 + ibox.y2) / 2.0;
     img_sp->addeffect(NULL,idx,x,y,dir,1);
+}
+
+void c_scene::set_start_flag(int8_t flag)
+{
+    field_8 = flag;
 }
 
 

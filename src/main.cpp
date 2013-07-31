@@ -111,16 +111,11 @@ int main(int argc, char *argv[])
     marisa->set_seq(0);
     alice->set_seq(0);
     srand(time(NULL));
-    background  *bkg = bkg_create(0);
+    background  *bkg = bkg_create(2);
 
     c_scene *scn = scene_new_scene(bkg,marisa,alice);
 
 //    int32_t ii = 0;
-
-    battle_ui_std *ui = init_new_battle_ui();
-
-    ui->link(marisa,alice);
-
     int32_t aa = 0;
     int32_t bb = 0;
 
@@ -163,7 +158,7 @@ int main(int argc, char *argv[])
 
         scn->update();
 
-        scn->draw_scene();
+        scn->func14();
 
 
         //menu_call();
@@ -171,9 +166,6 @@ int main(int argc, char *argv[])
         //debug_str(100,100,"фы");
 
         //printf("hp %d %d\n",alice->health, alice->max_spell_energy);
-
-        ui->update();
-        ui->draw();
 
         gr_flip();
 
