@@ -416,5 +416,10 @@ void c_scene_one::func15()
 
 void c_scene_one::func16()
 {
-
+    //HACK
+    for(int8_t i=0; i<2; i++)
+    {
+        chrs[i]->input_update();
+        chrs[i]->check_seq_input();
+    }
 }

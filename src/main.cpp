@@ -144,33 +144,18 @@ int main(int argc, char *argv[])
             bb++;
             bb %= 21;
         }
-
-        //if (kb.rawPressed(kC_Q))
-          //  ii++;
-
         kb.update();
+
+
 
         gr_clear(126,206,244);
 
-        scn->players_input();
-
-        //bkg->update();
 
         scn->update();
 
         scn->func14();
 
-
-        //menu_call();
-
-        //debug_str(100,100,"фы");
-
-        //printf("hp %d %d\n",alice->health, alice->max_spell_energy);
-
         gr_flip();
-
-        //scene_add_effect(marisa,103,marisa->x,marisa->y,marisa->dir,1);
-
     }
 
     delete bkg;

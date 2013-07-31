@@ -187,4 +187,6 @@ void      game_type_set(GAME_TYPE type);
 
 void scene_set_spell_img(uint8_t idx, gr_tex *img);
 
+int32_t get_game_difficulty();
+
 #endif // SCENE_H_INCLUDED

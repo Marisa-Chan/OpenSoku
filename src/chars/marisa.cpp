@@ -5600,7 +5600,7 @@ void char_marisa::func10()
         {
             if (get_subseq() == 1)
             {
-                switch ( dword_8841B4 )
+                switch ( get_game_difficulty() )
                 {
                 case 3:
                     field_7D0 = 300;
@@ -5637,7 +5637,7 @@ void char_marisa::func10()
             if ( get_subseq() == 3 )
             {
                 play_sfx( 21);
-                switch ( dword_8841B4 )
+                switch ( get_game_difficulty() )
                 {
                 case 3:
                     field_7D0 = 90;
@@ -5703,7 +5703,7 @@ void char_marisa::func10()
 
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
         {
-            switch ( dword_8841B4 )
+            switch ( get_game_difficulty() )
             {
             case 3:
                 field_7D0 = 120;
@@ -5746,7 +5746,7 @@ void char_marisa::func10()
                 float yy = sin_deg(-t[0]) * 50.0 + y - frm->extra1[5];
                 addbullet(this, NULL, 910, xx, yy, dir, 1, t, 3);
             }
-            switch ( dword_8841B4 )
+            switch ( get_game_difficulty() )
             {
             case 0:
             case 1:
@@ -5823,7 +5823,7 @@ void char_marisa::func10()
             if ( get_subseq() == 3 )
             {
                 v_force = 0.0;
-                switch ( dword_8841B4 )
+                switch ( get_game_difficulty() )
                 {
                 case 3:
                     field_7D0 = 120;
@@ -5870,7 +5870,7 @@ void char_marisa::func10()
                     float yy = sin_deg(-t[0]) * 50.0 + y - frm->extra1[5];
                     addbullet(this, NULL, 910, xx, yy, dir, 1, t, 3);
                 }
-                switch ( dword_8841B4 )
+                switch ( get_game_difficulty() )
                 {
                 case 0:
                 case 1:
@@ -5965,7 +5965,7 @@ void char_marisa::func10()
             set_seq(0);
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
         {
-            switch ( dword_8841B4 )
+            switch ( get_game_difficulty() )
             {
             case 3:
                 field_7D0 = 120;
@@ -6007,7 +6007,7 @@ void char_marisa::func10()
 
             addbullet(this, NULL, 920, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 4);
 
-            switch ( dword_8841B4 )
+            switch ( get_game_difficulty() )
             {
             case 0:
             case 1:
@@ -6143,7 +6143,7 @@ void char_marisa::func10()
         {
             if ( get_subseq() == 3 )
             {
-                switch ( dword_8841B4 )
+                switch ( get_game_difficulty() )
                 {
                 case 3:
                     field_7D0 = 60;
@@ -6176,7 +6176,7 @@ void char_marisa::func10()
 
                 char_frame *frm = get_pframe();
                 addbullet(this, NULL, 920, x + 200.0 + frm->extra1[4], y - frm->extra1[5], dir, 1, t, 4);
-                switch ( dword_8841B4 )
+                switch ( get_game_difficulty() )
                 {
                 case 0:
                 case 1:

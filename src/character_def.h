@@ -458,6 +458,4 @@ class stand_graph
     void draw(int8_t plane = 0);
 };
 
-extern int32_t dword_8841B4;
-
 #endif // CHARACTER_DEF_H_INCLUDED

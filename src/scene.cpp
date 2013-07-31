@@ -31,6 +31,9 @@ mtwist randomm;
 
 c_scene *scn = NULL;
 
+//0 - easy, 3 - Lunatic
+int32_t game_difficulty = 3;
+
 
 GAME_TYPE  game_type = GAME_TYPE_P_VS_P;
 
@@ -42,6 +45,11 @@ GAME_TYPE game_type_get()
 void game_type_set(GAME_TYPE type)
 {
     game_type = type;
+}
+
+int32_t get_game_difficulty()
+{
+    return game_difficulty;
 }
 
 

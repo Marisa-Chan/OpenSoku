@@ -8,7 +8,6 @@
 #include "weather.h"
 #include <math.h>
 
-int32_t dword_8841B4 = 3; //HACK
 int8_t dummy_block_type = 0; //HACK
 
 char_c::char_c(inp_ab *func)
@@ -2195,9 +2194,9 @@ void char_c::func16()
 
     /*if ( controlling_type == 2 ) // HACK
     {
-        if ( dword_8841B4 <= 3 )
+        if ( get_game_difficulty() <= 3 )
         {
-            switch ( dword_8841B4 )
+            switch ( get_game_difficulty() )
             {
             case 0:
                 field_530 = 0.94999999;
@@ -4047,12 +4046,12 @@ int8_t char_c::sub_469750(uint32_t enemu_aflags)
                     return 0;
             }*/
         }
-        else if ( dword_8841B4 == 1 && scene_rand_rng(100) >= 95 )
+        else if ( get_game_difficulty() == 1 && scene_rand_rng(100) >= 95 )
         {
             if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
                 return 0;
         }
-        else if ( dword_8841B4 == 0 && scene_rand_rng(100) >= 70 )
+        else if ( get_game_difficulty() == 0 && scene_rand_rng(100) >= 70 )
         {
             if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
                 return 0;

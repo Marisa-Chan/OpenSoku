@@ -4987,7 +4987,7 @@ void marisa_bullets::func10()
                 addbullet(chrt, NULL, 910, x, y, dir, 1, t, 3);
             }
             int32_t v700, v701;
-            switch ( dword_8841B4 )
+            switch ( get_game_difficulty() )
             {
             case 3:
                 v700 = 4;
@@ -5052,7 +5052,7 @@ void marisa_bullets::func10()
                 t[0] = 0.0;
                 t[1] = 0.0;
                 t[2] = 5.0;
-                switch ( dword_8841B4 )
+                switch ( get_game_difficulty() )
                 {
                 case 3:
                     t[2] = 7.0;
@@ -5416,7 +5416,7 @@ void marisa_bullets::func10()
             int32_t frames;
             frames = 1;
             t[3] = 0.0;
-            switch ( dword_8841B4 )
+            switch ( get_game_difficulty() )
             {
             case 3:
                 frames = 2;
@@ -5544,7 +5544,7 @@ void marisa_bullets::func10()
                 int32_t frames = 0;
                 float t[4];
                 t[3] = 0.0;
-                switch ( dword_8841B4 )
+                switch ( get_game_difficulty() )
                 {
                 case 3:
                     frames = 2;
@@ -6570,7 +6570,7 @@ void marisa_bullets::set_seq_params()
         }
         if ( get_subseq()== 12 )
         {
-            switch ( dword_8841B4 )
+            switch ( get_game_difficulty() )
             {
             case 3:
                 field_36E = 240;
