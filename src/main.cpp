@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
     srand(time(NULL));
     background  *bkg = bkg_create(2);
 
-    c_scene *scn = scene_new_scene(bkg,marisa,alice);
+    scene_new_scene(bkg,marisa,alice);
 
 //    int32_t ii = 0;
     int32_t aa = 0;
@@ -131,8 +131,21 @@ int main(int argc, char *argv[])
     alice->add_card();
     alice->add_card();
 
-    while(!kb.rawPressed(kC_Escape))
+
+    screen *scr = NULL;
+    id_screen scr_id = SCREEN_UNK;
+    id_screen scr_next_id = SCREEN_GAMEPLAY;
+
+    fader       glob_fader;
+    menu_fader  loc_fader;
+
+    bool game_run = true;
+
+    while(game_run)
     {
+        if (kb.rawPressed(kC_Escape))
+            game_run = false;
+
         aa++;
         if (aa > 10 && kb.rawPressed(kC_Q))
         {
@@ -147,13 +160,40 @@ int main(int argc, char *argv[])
         kb.update();
 
 
+        if (scr_id == scr_next_id)
+        {
+            loc_fader.update();
+            glob_fader.fade_in();
 
-        gr_clear(126,206,244);
+            if (scr)
+                scr_next_id = scr->update();
+        }
 
+        if (scr_next_id != SCREEN_UNK)
+        {
+            if (scr_id != scr_next_id)
+            if (glob_fader.fade_out())
+            {
+                delete scr;
+                scr = screen_create(scr_next_id);
+                scr_id = scr_next_id;
+            }
 
-        scn->update();
+            bool scr_drawed = false;
 
-        scn->func14();
+            if (scr)
+                scr_drawed = scr->draw();
+
+            loc_fader.draw();
+
+            if (scr_drawed)
+                glob_fader.draw();
+        }
+        else
+        {
+            game_run = false;
+            continue;
+        }
 
         gr_flip();
     }

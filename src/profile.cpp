@@ -16,7 +16,7 @@ kCode dx2sfml_lookup[256] =
     kC_Num6,
     kC_Num7,
     kC_Num8,
-    kC_Num9,
+    kC_Num9,   //10
     kC_Num0,
     kC_Dash,
     kC_Equal,
@@ -26,7 +26,7 @@ kCode dx2sfml_lookup[256] =
     kC_W,
     kC_E,
     kC_R,
-    kC_T,
+    kC_T,      //20
     kC_Y,
     kC_U,
     kC_I,
@@ -36,7 +36,7 @@ kCode dx2sfml_lookup[256] =
     kC_RBracket,
     kC_Return,
     kC_LControl,
-    kC_A,
+    kC_A,      //30
     kC_S,
     kC_D,
     kC_F,
@@ -46,7 +46,7 @@ kCode dx2sfml_lookup[256] =
     kC_K,
     kC_L,
     kC_SemiColon,
-    kC_Quote,
+    kC_Quote,  //40
     kC_Tilde,
     kC_LShift,
     kC_BackSlash,
@@ -56,7 +56,7 @@ kCode dx2sfml_lookup[256] =
     kC_V,
     kC_B,
     kC_N,
-    kC_M,
+    kC_M,      //50
     kC_Comma,
     kC_Period,
     kC_Slash,
@@ -66,7 +66,7 @@ kCode dx2sfml_lookup[256] =
     kC_Space,
     kC_Escape, // CAPITAL
     kC_F1,
-    kC_F2,
+    kC_F2,     //60
     kC_F3,
     kC_F4,
     kC_F5,
@@ -76,7 +76,7 @@ kCode dx2sfml_lookup[256] =
     kC_F9,
     kC_F10,
     kC_Escape, //NUMLOCK
-    kC_Escape, //SCROLL
+    kC_Escape, //SCROLL //70
     kC_Numpad7,
     kC_Numpad8,
     kC_Numpad9,
@@ -86,7 +86,7 @@ kCode dx2sfml_lookup[256] =
     kC_Numpad6,
     kC_Add,
     kC_Numpad1,
-    kC_Numpad2,
+    kC_Numpad2, //80
     kC_Numpad3,
     kC_Numpad0,
     kC_Escape, //DECIMAL

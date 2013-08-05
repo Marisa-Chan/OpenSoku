@@ -32,6 +32,7 @@ OBJS =  \
 	chars/utsuho.cpp\
 	menu/menus.cpp\
 	menu/title.cpp\
+	menu/gameplay.cpp\
 	main.cpp\
 	sfx.cpp\
 	scene_fx.cpp\

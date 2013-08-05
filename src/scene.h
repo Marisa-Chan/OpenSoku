@@ -26,13 +26,6 @@ enum GAME_TYPE
     GAME_TYPE_TRAINING = 8
 };
 
-enum RENDER_PLANE
-{
-    PLANE_GUI = 0,
-    PLANE_SCENE = 1,
-    PLANE_BKG = 2
-};
-
 struct s_camera
 {
     float x;
