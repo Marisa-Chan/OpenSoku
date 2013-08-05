@@ -96,7 +96,7 @@ bool menu_isempty();
 
 screen *screen_create(id_screen);
 
-
+#include "title.h"
 #include "gameplay.h"
 
 #endif // MENUS_H_INCLUDED

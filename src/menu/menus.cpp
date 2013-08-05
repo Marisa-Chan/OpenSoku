@@ -143,10 +143,12 @@ screen *screen_create(id_screen scrn)
     switch (scrn)
     {
         case SCREEN_GAMEPLAY:
-        return new screen_gameplay;
+            return new screen_gameplay;
+
+        case SCREEN_TITLE:
+            return new screen_title;
 
         case SCREEN_UNK:
-        case SCREEN_TITLE:
         case SCREEN_MAIN:
         default:
         return new screen_exit;

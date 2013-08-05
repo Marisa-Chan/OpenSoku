@@ -65,6 +65,7 @@ gr_tex * gr_create_tex(uint32_t width, uint32_t height);
 
 gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal);
 gr_tex *gr_load_cv2(const char *filename, uint32_t *pal);
+void gr_delete_tex(gr_tex *tex);
 
 gr_sprite * gr_create_sprite();
 

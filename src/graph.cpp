@@ -125,6 +125,11 @@ gr_tex *gr_load_cv2(filehandle *f, uint32_t *pal)
     return tex;
 }
 
+void gr_delete_tex(gr_tex *tex)
+{
+    delete tex;
+}
+
 gr_sprite * gr_create_sprite()
 {
     return new gr_sprite;

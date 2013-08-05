@@ -1,7 +1,59 @@
 #include "../global_types.h"
+#include "../scene.h"
 #include "../input.h"
 #include "../gui.h"
-#include "title.h"
+#include "menus.h"
+
+
+screen_title::screen_title()
+{
+    img = gr_load_cv2("data/scene/logo/0000.cv2",NULL);
+    time = 0;
+}
+
+screen_title::~screen_title()
+{
+    if (img)
+        gr_delete_tex(img);
+}
+
+id_screen screen_title::update()
+{
+    time++;
+    if (time >= 180)
+        return SCREEN_GAMEPLAY; //HACK
+
+    return SCREEN_TITLE;
+}
+
+bool screen_title::draw()
+{
+    gr_tex_box box;
+    box.a = 255;
+    box.r = 255;
+    box.g = 255;
+    box.b = 255;
+    box.autosize = true;
+    box.overlay_tex = false;
+    box.tex = img;
+    box.x = 0;
+    box.y = 0;
+    box.skew_x = 0;
+    box.skew_y = 0;
+    box.tex_scl_x = 1.0;
+    box.tex_scl_y = 1.0;
+
+
+    gr_draw_tex_box(&box, gr_alpha,PLANE_GUI);
+    return true;
+}
+
+id_screen screen_title::getID()
+{
+    return SCREEN_TITLE;
+}
+
+
 
 bool is_load = false;
 
@@ -182,3 +234,4 @@ void menu_title_call()
     draw_title();
 
 }
+

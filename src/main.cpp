@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     }
 
 
-    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),0);
+    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),7);
 
     if (prof2)
     {
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 
     screen *scr = NULL;
     id_screen scr_id = SCREEN_UNK;
-    id_screen scr_next_id = SCREEN_GAMEPLAY;
+    id_screen scr_next_id = SCREEN_TITLE;
 
     fader       glob_fader;
     menu_fader  loc_fader;
