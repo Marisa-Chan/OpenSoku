@@ -60,6 +60,46 @@ char_c::char_c(inp_ab *func)
     field_1BC = 1;
 }
 
+char_c::~char_c()
+{
+    for (int32_t i=0; i<MAX_CHR_SFX; i++)
+        if (sfx[i])
+            sfx_delete(sfx[i]);
+
+    if (player_face_tex)
+        gr_delete_tex(player_face_tex);
+
+    if (player_face)
+        gr_delete_sprite(player_face);
+
+    if (stand_gfx)
+        delete stand_gfx;
+
+    if (pgp)
+        delete pgp; //DELETE ONLY IN CHARACTER
+
+    bullist_iter iter = bullets.begin();
+    while(iter != bullets.end())
+    {
+        c_bullet *blt = *iter;
+        delete blt;
+
+        iter++;
+    }
+
+    bullets.clear();
+
+    deque<gr_tex *>::iterator spit = spell_images.begin();
+    while(spit != spell_images.end())
+    {
+        gr_delete_tex( *spit);
+        spit++;
+    }
+
+    spell_images.clear();
+
+}
+
 void char_c::init_vars()
 {
     init_vars_base();
@@ -3633,15 +3673,7 @@ void char_c::char_loadsfx(const char *name)
     {
         sprintf(buf,"data/se/%s/%3.3d.cv3",name,i);
 
-        filehandle *ft = arc_get_file(buf);
-
-        sfx[i] = NULL;
-
-        if (ft)
-        {
-            sfx[i] = sfx_load_cv3(ft);
-            delete ft;
-        }
+        sfx[i] = sfx_load_cv3(buf);
     }
 }
 
@@ -4825,8 +4857,8 @@ stand_graph::stand_graph()
 
 stand_graph::~stand_graph()
 {
-    //if (tex)
-    //gr
+    if (tex)
+        gr_delete_tex(tex);
 }
 
 void stand_graph::init(char_c *parent, const char *name)

@@ -44,6 +44,7 @@ class gui_element
     const int32_t guid;
 
     gui_element(int32_t guid);
+    virtual ~gui_element();
 
     void setXY(float x, float y);
     void setDXDY(float x, float y);
@@ -89,6 +90,7 @@ class gui_el_t6: public gui_element
 
     gui_el_t6(gui_tex *tex, int32_t w, int32_t h, int32_t frames, int32_t dx, int32_t intg, int32_t flt);
     gui_el_t6(int32_t _guid, gui_tex *tex, int32_t w, int32_t h, int32_t frames, int32_t dx, int32_t intg, int32_t flt);
+    ~gui_el_t6();
     void draw(int8_t plane);
     void draw(float dx, float dy, int8_t plane);
 
@@ -109,6 +111,7 @@ class gui_el_t1: public gui_element
     public:
     gui_el_t1();
     gui_el_t1(int32_t _guid);
+    ~gui_el_t1();
     void draw(int8_t plane);
     void draw(float dx, float dy, int8_t plane);
     void draw(float x, float y, float w, float h, int8_t plane);
@@ -135,6 +138,7 @@ class gui_el_t0: public gui_element
 
     gui_el_t0(gui_tex *tex);
     gui_el_t0(int32_t _guid, gui_tex *tex);
+    ~gui_el_t0();
     void draw(int8_t plane);
     void draw(float dx, float dy, int8_t plane);
 
@@ -155,7 +159,7 @@ class gui_holder
 
     public:
     //gui_holder();
-    //~gui_holder();
+    ~gui_holder();
 
     bool load_dat(const char *path, const char *file);
 

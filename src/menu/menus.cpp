@@ -148,8 +148,10 @@ screen *screen_create(id_screen scrn)
         case SCREEN_TITLE:
             return new screen_title;
 
-        case SCREEN_UNK:
         case SCREEN_MAIN:
+            return new screen_main;
+
+        case SCREEN_UNK:
         default:
         return new screen_exit;
     }

@@ -25,6 +25,7 @@ class c_tail
 
     void update(float x, float y);
     void draw();
+    void set_alpha(uint8_t a);
 };
 
 

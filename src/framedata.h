@@ -108,7 +108,6 @@ struct seq
 class char_sprite
 {
     protected:
-        //gr_sprite  *sprite;
     gr_blend    blend;
 
     seq        *cur_seq;
@@ -127,7 +126,7 @@ class char_sprite
 
     public:
 
-    gr_sprite  *sprite; //HACK
+    gr_sprite  *sprite;
 
     char_sprite();
     ~char_sprite();
@@ -177,18 +176,10 @@ class char_graph
     mapseq seqs;
 
     bool load_pal_pal(const char *file, uint32_t *pal);
-    //bool load_pal_bmp(const char *file, uint32_t *pal);
-
-
 
     public:
 
     bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
-
-//    virtual void set_seq(uint32_t idx);
-
-
-
 
     uint16_t get_cprior(uint32_t idx);
     uint16_t get_prior(uint32_t idx);
@@ -196,7 +187,7 @@ class char_graph
     seq *get_seq(uint32_t idx);
 
     //char_graph();
-  //  ~char_graph();
+    ~char_graph();
 };
 
 

@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     marisa->set_seq(0);
     alice->set_seq(0);
     srand(time(NULL));
-    background  *bkg = bkg_create(2);
+    background  *bkg = bkg_create(12);
 
     scene_new_scene(bkg,marisa,alice);
 
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
     weather_change(WEATHER_CLEAR,1);
     weather_time_set(0);
 
-    marisa->add_card(18);
+    marisa->add_card(111);
     marisa->add_card();
     marisa->add_card();
     marisa->add_card();

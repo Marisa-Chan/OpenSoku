@@ -70,7 +70,7 @@ class gfx_sprite
     public:
 
     gfx_sprite();
-    ~gfx_sprite();
+    virtual ~gfx_sprite();
 
     uint32_t get_cur_subseq();
     uint32_t get_cur_frame();
@@ -157,6 +157,7 @@ class gfx_holder
     vector<gr_tex *> imgs;
 
     public:
+    virtual ~gfx_holder();
 
     gfx_seq *get_seq(uint32_t idx);
 

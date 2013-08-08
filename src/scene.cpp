@@ -490,7 +490,7 @@ void c_scene::scene_subfunc2()
                     hit_sz++;
             }
 
-            if (!bul->parent_mlist)
+            if (!bul->parent)
             {
                 if (atk_sz && bul->field_190 == 0 && bul->field_194 > 0)
                 {

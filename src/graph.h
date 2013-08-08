@@ -68,7 +68,7 @@ gr_tex *gr_load_cv2(const char *filename, uint32_t *pal);
 void gr_delete_tex(gr_tex *tex);
 
 gr_sprite * gr_create_sprite();
-
+void gr_delete_sprite(gr_sprite *spr);
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex);
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex,int32_t x, int32_t y, int32_t w, int32_t h);
 void gr_set_spr_box(gr_sprite *spr,int32_t x, int32_t y, int32_t w, int32_t h);

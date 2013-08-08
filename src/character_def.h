@@ -67,6 +67,7 @@ class char_c : public c_meta
     sfxc *sfx[MAX_CHR_SFX];
 
     char_c(inp_ab *func);
+    virtual ~char_c();
 
 
 

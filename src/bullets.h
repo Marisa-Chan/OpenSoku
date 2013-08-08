@@ -34,6 +34,8 @@ class c_bullet : public c_meta
     void sub_48C4B0(float p1, float p2, float p3);
     bool sub_48C5F0(int32_t a2);
     void sub_438450(int32_t x, int32_t y, int32_t w, int32_t h);
+    void tail_add(int32_t idx, float width, int32_t segments, int32_t seg_subd, gr_blend blending);
+    void tail_alpha(uint8_t a);
 
     c_tail *tail;
 
@@ -55,6 +57,7 @@ class c_bullet : public c_meta
 
 
     c_bullet();
+    virtual ~c_bullet();
 
     //call this after creation
     void init(char_c *parent,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num, char_graph *pgp = NULL);
@@ -68,8 +71,6 @@ class c_bullet : public c_meta
 
     virtual void draw_shadow(shd_trans *trans, gr_shader *shader = NULL);
     virtual void draw(gr_shader *shader = NULL);
-
-    virtual ~c_bullet();
 };
 
 

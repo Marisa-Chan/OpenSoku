@@ -135,6 +135,11 @@ gr_sprite * gr_create_sprite()
     return new gr_sprite;
 }
 
+void gr_delete_sprite(gr_sprite *spr)
+{
+    delete spr;
+}
+
 void gr_set_spr_tex(gr_sprite *spr, gr_tex *tex)
 {
     if (tex != NULL)

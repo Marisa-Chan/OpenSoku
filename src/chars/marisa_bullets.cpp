@@ -2387,8 +2387,8 @@ void marisa_bullets::func10()
         switch ( get_subseq() )
         {
         case 0:
-            // if ( get_elaps_frames() == 0 )
-            // tail_add(a1, 989, COERCE_UNSIGNED_INT(5.0), 30, 1, 2);
+            if ( get_elaps_frames() == 0 )
+                tail_add(989, 5.0, 30, 1, gr_add);
             addition[0] -= 1.5;
             h_inerc = addition[0];
             v_inerc = cos_deg(field_378) * addition[1];
@@ -2411,7 +2411,7 @@ void marisa_bullets::func10()
                     active = false;
                     break;
                 }
-                //sub_4B0720((int)v1, (signed int)field_37C); //HACK
+                tail_alpha(field_37C);
                 field_37C -= 20.0;
             }
             x += dir * h_inerc;
@@ -2553,7 +2553,7 @@ void marisa_bullets::func10()
                     active = false;
                     break;
                 }
-                //sub_4B0720(v1, field_37C); //HACK
+                tail_alpha(field_37C);
                 field_37C -= 20.0;
             }
             x += dir * h_inerc;
@@ -2644,7 +2644,7 @@ void marisa_bullets::func10()
                 angZ += field_37C;
                 scaleY = scaleX +=0.02;
 
-                if ( get_elaps_frames() >= 0 )
+                /*if ( get_elaps_frames() >= 0 )*/ //SIGN HACK
                 {
                     if ( c_A <= 5 )
                     {
@@ -5858,7 +5858,7 @@ void marisa_bullets::set_seq_params()
         if ( get_subseq() == 0 )
         {
             //if ( addition[3] != 0 )
-            //sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(15.0), 5, 1, 2); //HACK
+            //tail_add(v2, 989, COERCE_UNSIGNED_INT(15.0), 5, 1, 2); //HACK
         }
 
         if ( get_subseq() > 1 && get_subseq() < 6)
@@ -5877,10 +5877,7 @@ void marisa_bullets::set_seq_params()
 
         if ( get_subseq() == 0 || get_subseq() == 1)
         {
-            seq * sq = pgp->get_seq(989); //HACK
-            char_frame *frm = sq->subseqs[0].frames[0];
-            tail = new c_tail(frm->img, 255,255,255,255,20.0,6,2,gr_add);
-            /*sub_4B0780(v2, 989, COERCE_UNSIGNED_INT(20.0), 6, 2, 2);*/
+            tail_add(989, 20.0, 6, 2, gr_add);
         }
         else if ( get_subseq() == 2 )
         {
@@ -6113,7 +6110,7 @@ void marisa_bullets::set_seq_params()
         field_194 = 1;
         set_subseq(addition[2]);
         //if ( addition[2] <= 3 )
-        //sub_4B0780(v2, addition[2] + 991, COERCE_UNSIGNED_INT(20.0), 6, 2, 2); //HACK
+        //tail_add(v2, addition[2] + 991, COERCE_UNSIGNED_INT(20.0), 6, 2, 2); //HACK
         field_36C = 0;
         break;
     case 826:

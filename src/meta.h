@@ -135,6 +135,7 @@ class c_meta : public moveable
 
     c_meta(char_graph *pgp);
     c_meta();
+    virtual ~c_meta();
 
 
 //-------------------------------------------
@@ -167,7 +168,7 @@ class c_meta : public moveable
     char_c  *chrt;  //for char classes - it's self, for bullets - char caster  0x168
     //char_class_vars *selft_pointer1?; //0x16C
     char_c  *enemy;          //0x170
-    c_meta  *parent_mlist;  //0x174
+    c_meta  *parent;  //0x174
     metalst childs;         //0x178 + 0xC
     int16_t health;         //0x184
     int16_t max_health;     //0x186
@@ -217,7 +218,7 @@ class c_meta : public moveable
 
     char_sprite sprite;
 
-    frame_box *pcoll_box;
+    frame_box *pcoll_box; //hit_area_flags[5] !!! HACK? $%%@#$
 
     bool process(bool ignore_loop = false);
     void reset_seq();

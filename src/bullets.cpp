@@ -111,6 +111,9 @@ c_bullet::~c_bullet()
         (*it)->bul_parent = NULL;
         it++;
     }
+
+    if (tail)
+        delete tail;
 }
 
 void c_bullet::func16()
@@ -1635,10 +1638,27 @@ void c_bullet::sub_48C4B0(float p1, float p2, float p3)
 
 }
 
-void c_bullet::sub_438450(int32_t x, int32_t y, int32_t w, int32_t h)
+void c_bullet::sub_438450(int32_t /*x*/, int32_t /*y*/, int32_t w, int32_t h)
 {
     set_real_size(w,h);
 }
+
+void c_bullet::tail_add(int32_t idx, float width, int32_t segments, int32_t seg_subd, gr_blend blending)
+{
+    seq * sq = pgp->get_seq(idx);
+    if (sq)
+    {
+        char_frame *frm = sq->subseqs[0].frames[0];
+        tail = new c_tail(frm->img, 255,255,255,255,width,segments,seg_subd,blending);
+    }
+}
+
+void c_bullet::tail_alpha(uint8_t a)
+{
+    if (tail)
+        tail->set_alpha(a);
+}
+
 
 void bul_follow_char(c_bullet *bul, int32_t h_inerc, int32_t v_inerc)
 {

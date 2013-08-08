@@ -12,8 +12,12 @@ background::background()
 background::~background()
 {
     for (uint32_t i = 0; i < imgs.size(); i++)
-        delete imgs[i].tex;
-    delete spr;
+        if (imgs[i].tex)
+            gr_delete_tex(imgs[i].tex);
+
+    imgs.clear();
+
+    gr_delete_sprite(spr);
 }
 
 void background::update()
@@ -87,11 +91,9 @@ void background::loadbkg_t1(int32_t id, float y_off)
         bkg_chunk chunk;
         char buf[CHRBUF];
         sprintf(buf,"data/background/bg%02d/0000_%02d.cv2",id,i);
-        filehandle *f = arc_get_file(buf);
-        if (f)
+        chunk.tex = gr_load_cv2(buf,NULL);
+        if (chunk.tex)
         {
-            chunk.tex = gr_load_cv2(f,NULL);
-            delete f;
             chunk.x = (i % 6) * 256;
             chunk.y = y_off + (i / 6) * 256.0;
             chunk.ax = 0;
@@ -115,11 +117,9 @@ void background::loadbkg_t2(int32_t id, float y_off)
         bkg_chunk chunk;
         char buf[CHRBUF];
         sprintf(buf,"data/background/bg%02d/0000[%02d][%02d].cv2",id, (i/6) + 1, (i%6) + 1);
-        filehandle *f = arc_get_file(buf);
-        if (f)
+        chunk.tex = gr_load_cv2(buf,NULL);
+        if (chunk.tex)
         {
-            chunk.tex = gr_load_cv2(f,NULL);
-            delete f;
             chunk.x = (i % 6) * 256;
             chunk.y = y_off + (i / 6) * 256.0;
             chunk.ax = 0;
@@ -165,9 +165,7 @@ background_2::background_2()
         bkg_chunk chunk;
         char buf[CHRBUF];
         sprintf(buf,"data/background/bg02/left/a%02d.cv2",i);
-        filehandle *f = arc_get_file(buf);
-        chunk.tex = gr_load_cv2(f,NULL);
-        delete f;
+        chunk.tex = gr_load_cv2(buf,NULL);
         chunk.x = BKG_WIDTH/2 + BKG_HOR_PAD - 332.0;
         chunk.y = BKG_VERT_POS -472.0;
         chunk.ax = 0;
@@ -185,9 +183,7 @@ background_2::background_2()
         bkg_chunk chunk;
         char buf[CHRBUF];
         sprintf(buf,"data/background/bg02/center/b%02d.cv2",i);
-        filehandle *f = arc_get_file(buf);
-        chunk.tex = gr_load_cv2(f,NULL);
-        delete f;
+        chunk.tex = gr_load_cv2(buf,NULL);
         chunk.x = BKG_WIDTH/2 + BKG_HOR_PAD + 54.0;
         chunk.y = BKG_VERT_POS -472.0;
         chunk.ax = 0;
@@ -205,9 +201,7 @@ background_2::background_2()
         bkg_chunk chunk;
         char buf[CHRBUF];
         sprintf(buf,"data/background/bg02/right/c%02d.cv2",i);
-        filehandle *f = arc_get_file(buf);
-        chunk.tex = gr_load_cv2(f,NULL);
-        delete f;
+        chunk.tex = gr_load_cv2(buf,NULL);
         chunk.x = BKG_WIDTH/2 + BKG_HOR_PAD + 312.0;
         chunk.y = BKG_VERT_POS -472.0;
         chunk.ax = 0;
@@ -225,11 +219,11 @@ background_2::background_2()
 background_2::~background_2()
 {
     for(uint32_t i=0; i<left.size(); i++)
-        delete left[i].tex;
+        gr_delete_tex(left[i].tex);
     for(uint32_t i=0; i<center.size(); i++)
-        delete center[i].tex;
+        gr_delete_tex(center[i].tex);
     for(uint32_t i=0; i<right.size(); i++)
-        delete right[i].tex;
+        gr_delete_tex(right[i].tex);
 }
 
 void background_2::draw_back()
@@ -259,9 +253,7 @@ background_4::background_4()
 
     posit = 0;
 
-    filehandle *f = arc_get_file("data/background/bg04/cloud2.cv2");
-    cloud.tex = gr_load_cv2(f,NULL);
-    delete f;
+    cloud.tex = gr_load_cv2("data/background/bg04/cloud2.cv2",NULL);
     cloud.x = BKG_WIDTH/2 + BKG_HOR_PAD;
     cloud.y = BKG_VERT_POS;
     cloud.ax = 0;
@@ -278,7 +270,7 @@ background_4::background_4()
 
 background_4::~background_4()
 {
-    delete cloud.tex;
+    gr_delete_tex(cloud.tex);
 }
 
 void background_4::draw_near()
@@ -321,9 +313,8 @@ background_12::background_12()
     angle = 0;
     loadbkg_t1(12,-86);
 
-    filehandle *f = arc_get_file("data/background/bg12/tori1.cv2");
     bkg_chunk chunk;
-    chunk.tex = gr_load_cv2(f, NULL);
+    chunk.tex = gr_load_cv2("data/background/bg12/tori1.cv2", NULL);
     chunk.x = BKG_WIDTH/2 + BKG_HOR_PAD + 492;
     chunk.y = BKG_VERT_POS - 401;
     chunk.ax = 0;
@@ -334,18 +325,17 @@ background_12::background_12()
     chunk.sx = 1.0;
     chunk.sy = 1.0;
     chunk.blend = gr_alpha;
-    delete f;
+
     decor.push_back(chunk);
-    f = arc_get_file("data/background/bg12/tori2.cv2");
-    chunk.tex = gr_load_cv2(f, NULL);
-    delete f;
+
+    chunk.tex = gr_load_cv2("data/background/bg12/tori2.cv2", NULL);
     decor.push_back(chunk);
 }
 
 background_12::~background_12()
 {
     for (uint32_t i = 0; i < decor.size(); i++)
-        delete decor[i].tex;
+        gr_delete_tex(decor[i].tex);
 }
 
 void background_12::draw_back()
@@ -358,24 +348,15 @@ void background_12::draw_back()
     }
 }
 
-void background_12::update() //HACK
+void background_12::update()
 {
-    /*
-    int v1; // edx@2
-
-    if ( weather != 14 )
+    if (weather_get() != WEATHER_CALM)
     {
-      ++this->field_64;
-      v1 = weather;
-      if ( weather == 10 || weather == 11 )
-      {
-        this->field_64 += 3;
-        v1 = weather;
-      }
-      if ( v1 == 13 )
-        this->field_64 += 10;
-    }*/
-    angle += 3;
+        if (weather_get() == WEATHER_TEMPEST || weather_get() == WEATHER_MOUNTAIN_VAPOR)
+            angle += 3;
+        else if (weather_get() == WEATHER_TYPHOON)
+            angle += 10;
+    }
 }
 
 background_13::background_13()
@@ -402,9 +383,8 @@ background_16::background_16()
     angle = 0;
     loadbkg_t1(16,0);
 
-    filehandle *f = arc_get_file("data/background/bg16/0001.cv2");
     bkg_chunk chunk;
-    chunk.tex = gr_load_cv2(f, NULL);
+    chunk.tex = gr_load_cv2("data/background/bg16/0001.cv2", NULL);
     chunk.x = BKG_WIDTH/2 + BKG_HOR_PAD;
     chunk.y = BKG_VERT_POS;
     chunk.ax = 86.4;
@@ -416,23 +396,19 @@ background_16::background_16()
     chunk.sy = 3.5;
     chunk.blend = gr_add;
     gr_set_smoth(chunk.tex,true);
-    delete f;
+
     decor.push_back(chunk);
 
 
 
-    f = arc_get_file("data/background/bg16/0002.cv2");
-    chunk.tex = gr_load_cv2(f, NULL);
-    delete f;
+    chunk.tex = gr_load_cv2("data/background/bg16/0002.cv2", NULL);
     chunk.sx = 4.0;
     chunk.sy = 4.0;
     gr_set_smoth(chunk.tex,true);
     decor.push_back(chunk);
 
 
-    f = arc_get_file("data/background/bg16/0003.cv2");
-    chunk.tex = gr_load_cv2(f, NULL);
-    delete f;
+    chunk.tex = gr_load_cv2("data/background/bg16/0003.cv2", NULL);
     chunk.ax = 0;
     chunk.ay = 0;
     chunk.az = 0;
@@ -445,9 +421,7 @@ background_16::background_16()
     decor.push_back(chunk);
 
 
-    f = arc_get_file("data/background/bg16/0004.cv2");
-    chunk.tex = gr_load_cv2(f, NULL);
-    delete f;
+    chunk.tex = gr_load_cv2("data/background/bg16/0004.cv2", NULL);
     chunk.ofx = 32;
     chunk.ofy = 32;
     chunk.alpha = 1.0;
@@ -458,10 +432,10 @@ background_16::background_16()
 background_16::~background_16()
 {
     for (uint32_t i = 0; i < decor.size(); i++)
-        delete decor[i].tex;
+        gr_delete_tex(decor[i].tex);
 }
 
-void background_16::update() //HACK
+void background_16::update()
 {
     angle++;
 }
@@ -549,9 +523,7 @@ background_33::background_33()
     loadbkg_t2(33,0);
     posit = 0;
 
-    filehandle *f = arc_get_file("data/background/bg33/0001.cv2");
-    floor.tex = gr_load_cv2(f,NULL);
-    delete f;
+    floor.tex = gr_load_cv2("data/background/bg33/0001.cv2",NULL);
     floor.x = BKG_WIDTH/2 + BKG_HOR_PAD;
     floor.y = BKG_VERT_POS;
     floor.ax = 0;
@@ -563,9 +535,7 @@ background_33::background_33()
     floor.sy = 1.0;
     floor.blend = gr_alpha;
 
-    f = arc_get_file("data/background/bg33/0002.cv2");
-    effect.tex = gr_load_cv2(f,NULL);
-    delete f;
+    effect.tex = gr_load_cv2("data/background/bg33/0002.cv2",NULL);
     effect.x = BKG_WIDTH/2 + BKG_HOR_PAD;
     effect.y = BKG_VERT_POS;
     effect.ax = 0;
@@ -580,8 +550,8 @@ background_33::background_33()
 
 background_33::~background_33()
 {
-    delete floor.tex;
-    delete effect.tex;
+    gr_delete_tex(floor.tex);
+    gr_delete_tex(effect.tex);
 }
 
 void background_33::update()
@@ -617,11 +587,9 @@ background_34::background_34()
         bkg_chunk chunk;
         char buf[CHRBUF];
         sprintf(buf,"data/background/bg%02d/0001[%02d][%02d].cv2",34, (i/6) + 1, (i%6) + 1);
-        filehandle *f = arc_get_file(buf);
-        if (f)
+        chunk.tex = gr_load_cv2(buf,NULL);
+        if (chunk.tex)
         {
-            chunk.tex = gr_load_cv2(f,NULL);
-            delete f;
             chunk.x = (i % 6) * 256;
             chunk.y =  ((i / 6) - 1) * 256.0;
             chunk.ax = 0;
@@ -637,9 +605,7 @@ background_34::background_34()
     }
     frame = 0;
 
-    filehandle *f = arc_get_file("data/background/bg34/0001.cv2");
-    floor.tex = gr_load_cv2(f,NULL);
-    delete f;
+    floor.tex = gr_load_cv2("data/background/bg34/0001.cv2",NULL);
     floor.x = BKG_WIDTH/2 + BKG_HOR_PAD;
     floor.y = BKG_VERT_POS;
     floor.ax = 0;
@@ -651,9 +617,7 @@ background_34::background_34()
     floor.sy = 1.0;
     floor.blend = gr_alpha;
 
-    f = arc_get_file("data/background/bg34/0002.cv2");
-    effect.tex = gr_load_cv2(f,NULL);
-    delete f;
+    effect.tex = gr_load_cv2("data/background/bg34/0002.cv2",NULL);
     effect.x = BKG_WIDTH/2 + BKG_HOR_PAD;
     effect.y = BKG_VERT_POS;
     effect.ax = 0;
@@ -665,9 +629,7 @@ background_34::background_34()
     effect.sy = 2.0;
     effect.blend = gr_add;
 
-    f = arc_get_file("data/background/bg34/0003.cv2");
-    shadow.tex = gr_load_cv2(f,NULL);
-    delete f;
+    shadow.tex = gr_load_cv2("data/background/bg34/0003.cv2",NULL);
     shadow.x = BKG_WIDTH/2 + BKG_HOR_PAD;
     shadow.y = BKG_VERT_POS;
     shadow.ax = 0;
@@ -680,9 +642,7 @@ background_34::background_34()
     shadow.alpha = 0.5;
     shadow.blend = gr_alpha;
 
-    f = arc_get_file("data/background/bg34/0004.cv2");
-    gradient.tex = gr_load_cv2(f,NULL);
-    delete f;
+    gradient.tex = gr_load_cv2("data/background/bg34/0004.cv2",NULL);
     gradient.x = BKG_WIDTH/2 + BKG_HOR_PAD;
     gradient.y = BKG_VERT_POS + 32;
     gradient.ax = 0;
@@ -700,11 +660,9 @@ background_34::background_34()
         bkg_chunk chunk;
         char buf[CHRBUF];
         sprintf(buf,"data/background/bg34/object/objectFa0%02d.cv2",i);
-        filehandle *f = arc_get_file(buf);
-        if (f)
+        chunk.tex = gr_load_cv2(buf,NULL);
+        if (chunk.tex)
         {
-            chunk.tex = gr_load_cv2(f,NULL);
-            delete f;
             chunk.x = BKG_WIDTH/2 + BKG_HOR_PAD;
             chunk.y = BKG_VERT_POS;
             chunk.ax = 0;
@@ -722,12 +680,12 @@ background_34::background_34()
 
 background_34::~background_34()
 {
-    delete floor.tex;
-    delete effect.tex;
-    delete shadow.tex;
-    delete gradient.tex;
+    gr_delete_tex(floor.tex);
+    gr_delete_tex(effect.tex);
+    gr_delete_tex(shadow.tex);
+    gr_delete_tex(gradient.tex);
     for (uint32_t i = 0; i < reaction.size(); i++)
-        delete reaction[i].tex;
+        gr_delete_tex(reaction[i].tex);
 }
 
 void background_34::update()
@@ -774,9 +732,8 @@ background_36::background_36()
 
     angle = 0;
 
-    filehandle *f = arc_get_file("data/background/bg36/tori1.cv2");
     bkg_chunk chunk;
-    chunk.tex = gr_load_cv2(f, NULL);
+    chunk.tex = gr_load_cv2("data/background/bg36/tori1.cv2", NULL);
     chunk.x = BKG_WIDTH/2 + BKG_HOR_PAD + 492;
     chunk.y = BKG_VERT_POS - 401;
     chunk.ax = 0;
@@ -787,19 +744,16 @@ background_36::background_36()
     chunk.sx = 1.0;
     chunk.sy = 1.0;
     chunk.blend = gr_alpha;
-    delete f;
+
     tori[0] = chunk;
 
-    f = arc_get_file("data/background/bg36/tori2.cv2");
-    chunk.tex = gr_load_cv2(f, NULL);
-    delete f;
+    chunk.tex = gr_load_cv2("data/background/bg36/tori2.cv2", NULL);
     tori[1] = chunk;
 
     pos[0] = -400;
     pos[1] = -300;
 
-    f = arc_get_file("data/background/bg36/clowd_l.cv2");
-    cloud[0].tex = gr_load_cv2(f, NULL);
+    cloud[0].tex = gr_load_cv2("data/background/bg36/clowd_l.cv2", NULL);
     cloud[0].x = BKG_WIDTH/2 + BKG_HOR_PAD;
     cloud[0].y = BKG_VERT_POS - 750;
     cloud[0].ax = 0;
@@ -810,10 +764,8 @@ background_36::background_36()
     cloud[0].sx = 1.0;
     cloud[0].sy = 1.0;
     cloud[0].blend = gr_alpha;
-    delete f;
 
-    f = arc_get_file("data/background/bg36/clowd_s.cv2");
-    cloud[1].tex = gr_load_cv2(f, NULL);
+    cloud[1].tex = gr_load_cv2("data/background/bg36/clowd_s.cv2", NULL);
     cloud[1].x = BKG_WIDTH/2 + BKG_HOR_PAD;
     cloud[1].y = BKG_VERT_POS - 320;
     cloud[1].ax = 0;
@@ -824,15 +776,14 @@ background_36::background_36()
     cloud[1].sx = 1.0;
     cloud[1].sy = 1.0;
     cloud[1].blend = gr_alpha;
-    delete f;
 }
 
 background_36::~background_36()
 {
     for (uint32_t i = 0; i < 2; i++)
     {
-        delete cloud[i].tex;
-        delete tori[i].tex;
+        gr_delete_tex(cloud[i].tex);
+        gr_delete_tex(tori[i].tex);
     }
 }
 
@@ -872,9 +823,8 @@ background_37::background_37()
 
     angle = 0;
 
-    filehandle *f = arc_get_file("data/background/bg37/tori1.cv2");
     bkg_chunk chunk;
-    chunk.tex = gr_load_cv2(f, NULL);
+    chunk.tex = gr_load_cv2("data/background/bg37/tori1.cv2", NULL);
     chunk.x = BKG_WIDTH/2 + BKG_HOR_PAD + 492;
     chunk.y = BKG_VERT_POS - 401;
     chunk.ax = 0;
@@ -885,15 +835,14 @@ background_37::background_37()
     chunk.sx = 1.0;
     chunk.sy = 1.0;
     chunk.blend = gr_alpha;
-    delete f;
+
     tori = chunk;
 
 
     pos[0] = -400;
     pos[1] = -300;
 
-    f = arc_get_file("data/background/bg37/clowd_l.cv2");
-    cloud[0].tex = gr_load_cv2(f, NULL);
+    cloud[0].tex = gr_load_cv2("data/background/bg37/clowd_l.cv2", NULL);
     cloud[0].x = BKG_WIDTH/2 + BKG_HOR_PAD;
     cloud[0].y = BKG_VERT_POS - 750;
     cloud[0].ax = 0;
@@ -904,10 +853,8 @@ background_37::background_37()
     cloud[0].sx = 1.0;
     cloud[0].sy = 1.0;
     cloud[0].blend = gr_alpha;
-    delete f;
 
-    f = arc_get_file("data/background/bg37/clowd_s.cv2");
-    cloud[1].tex = gr_load_cv2(f, NULL);
+    cloud[1].tex = gr_load_cv2("data/background/bg37/clowd_s.cv2", NULL);
     cloud[1].x = BKG_WIDTH/2 + BKG_HOR_PAD;
     cloud[1].y = BKG_VERT_POS - 320;
     cloud[1].ax = 0;
@@ -918,15 +865,14 @@ background_37::background_37()
     cloud[1].sx = 1.0;
     cloud[1].sy = 1.0;
     cloud[1].blend = gr_alpha;
-    delete f;
 }
 
 background_37::~background_37()
 {
-    delete tori.tex;
+    gr_delete_tex(tori.tex);
 
     for (uint32_t i = 0; i < 2; i++)
-        delete cloud[i].tex;
+        gr_delete_tex(cloud[i].tex);
 }
 
 void background_37::update()
@@ -962,8 +908,7 @@ background_38::background_38()
     pos[0] = -400;
     pos[1] = -300;
 
-    filehandle *f = arc_get_file("data/background/bg38/clowd_l.cv2");
-    cloud[0].tex = gr_load_cv2(f, NULL);
+    cloud[0].tex = gr_load_cv2("data/background/bg38/clowd_l.cv2", NULL);
     cloud[0].x = BKG_WIDTH/2 + BKG_HOR_PAD;
     cloud[0].y = BKG_VERT_POS - 750;
     cloud[0].ax = 0;
@@ -974,10 +919,8 @@ background_38::background_38()
     cloud[0].sx = 1.0;
     cloud[0].sy = 1.0;
     cloud[0].blend = gr_alpha;
-    delete f;
 
-    f = arc_get_file("data/background/bg38/clowd_s.cv2");
-    cloud[1].tex = gr_load_cv2(f, NULL);
+    cloud[1].tex = gr_load_cv2("data/background/bg38/clowd_s.cv2", NULL);
     cloud[1].x = BKG_WIDTH/2 + BKG_HOR_PAD;
     cloud[1].y = BKG_VERT_POS - 320;
     cloud[1].ax = 0;
@@ -988,13 +931,12 @@ background_38::background_38()
     cloud[1].sx = 1.0;
     cloud[1].sy = 1.0;
     cloud[1].blend = gr_alpha;
-    delete f;
 }
 
 background_38::~background_38()
 {
     for (uint32_t i = 0; i < 2; i++)
-        delete cloud[i].tex;
+        gr_delete_tex(cloud[i].tex);
 }
 
 void background_38::update()

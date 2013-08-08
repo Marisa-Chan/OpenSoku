@@ -21,6 +21,10 @@ static void delete_seq(seq *sq)
     {
         for (uint32_t j = 0; j < sq->subseqs[i].frames.size(); j++)
         {
+            for (uint32_t k = 0; k < sq->subseqs[i].frames[j]->box_unk_atk.size(); k++)
+                if (sq->subseqs[i].frames[j]->box_unk_atk[k])
+                    delete sq->subseqs[i].frames[j]->box_unk_atk[k];
+
             delete sq->subseqs[i].frames[j];
         }
     }
@@ -78,18 +82,9 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
         char buf2[CHRBUF];
         sprintf(buf2,"data/character/%s/%s",name,buf);
 
-        filehandle *ft = arc_get_file(buf2);
-        if (!ft)
-        {
-            imgs[i] = NULL;
-            continue;
-        }
-
-        gr_tex *tex = gr_load_cv2(ft, plt);
+        gr_tex *tex = gr_load_cv2(buf2, plt);
 
         imgs[i] = tex;
-
-        delete ft;
     }
 
     uint32_t num_seq = 0;
@@ -403,6 +398,19 @@ bool char_graph::load_pal_pal(const char *file,uint32_t *pal)
 //{
 //    index = -1;
 //}
+
+char_graph::~char_graph()
+{
+    for(uint32_t i=0; i<imgs.size(); i++)
+        gr_delete_tex(imgs[i]);
+
+    imgs.clear();
+
+    for(mapseq::iterator tmp = seqs.begin(); tmp != seqs.end(); tmp++)
+        delete_seq(tmp->second);
+
+    seqs.clear();
+}
 
 //void char_graph::set_seq(uint32_t idx)
 //{

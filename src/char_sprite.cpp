@@ -18,7 +18,7 @@ char_sprite::char_sprite()
 
 char_sprite::~char_sprite()
 {
-    delete sprite;
+    gr_delete_sprite(sprite);
 }
 
 uint32_t char_sprite::get_frame()

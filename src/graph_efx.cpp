@@ -21,7 +21,7 @@ gfx_sprite::gfx_sprite()
 
 gfx_sprite::~gfx_sprite()
 {
-    delete sprite;
+    gr_delete_sprite(sprite);
 }
 
 uint32_t gfx_sprite::get_cur_frame()
@@ -459,19 +459,12 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
         char buf2[CHRBUF];
         sprintf(buf2,"%s/%s",dir,buf);
 
-        filehandle *ft = arc_get_file(buf2);
-        if (!ft)
-        {
-            imgs[i] = NULL;
-            continue;
-        }
+        gr_tex *tex = gr_load_cv2(buf2, plt);
 
-        gr_tex *tex = gr_load_cv2(ft, plt);
-        gr_set_repeate(tex, true);
+        if (tex)
+            gr_set_repeate(tex, true);
 
         imgs[i] = tex;
-
-        delete ft;
     }
 
     uint32_t num_seq = 0;
@@ -694,4 +687,18 @@ void gfx_holder::draw(int8_t order,int8_t plane)
     for(uint32_t i=0; i<fx.size(); i++)
         if (fx[i]->order == order)
             fx[i]->draw(plane);
+}
+
+
+gfx_holder::~gfx_holder()
+{
+    for(uint32_t i=0; i<imgs.size(); i++)
+        gr_delete_tex(imgs[i]);
+
+    imgs.clear();
+
+    for(map_gfx_seq::iterator tmp = seqs.begin(); tmp != seqs.end(); tmp++)
+        delete_seq(tmp->second);
+
+    seqs.clear();
 }

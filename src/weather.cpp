@@ -1121,7 +1121,8 @@ c_weather_bg::c_weather_bg()
 c_weather_bg::~c_weather_bg()
 {
     for (int8_t i=0; i<20; i++)
-        delete bg[i];
+        if (bg[i])
+            gr_delete_tex(bg[i]);
 }
 
 void c_weather_bg::draw(int8_t weather, int8_t plane)

@@ -2653,7 +2653,7 @@ void char_marisa::func10()
             sub10func();
 
         field_18C = 0;
-        if ( get_subseq() >= 0 && get_subseq() <= 2 )
+        if ( /*get_subseq() >= 0 && */get_subseq() <= 2 ) //SIGN HACK
         {
             v_inerc -= v_force;
             if ( char_on_ground_down() )
@@ -4710,7 +4710,7 @@ void char_marisa::func10()
         }
         if ( get_subseq() == 3 )
         {
-            if ( get_elaps_frames() >= 0 )
+           /* if ( get_elaps_frames() >= 0 )*/ //SIGN HACK
             {
                 if ( field_7DC > 35.0 )
                 {

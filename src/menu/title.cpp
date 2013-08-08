@@ -21,7 +21,7 @@ id_screen screen_title::update()
 {
     time++;
     if (time >= 180)
-        return SCREEN_GAMEPLAY; //HACK
+        return SCREEN_MAIN; //HACK
 
     return SCREEN_TITLE;
 }
@@ -55,42 +55,33 @@ id_screen screen_title::getID()
 
 
 
-bool is_load = false;
 
-gui_holder *title = NULL;
 
-gui_el_t1 *bkg[5];
-gr_tex    *bkg_imgs[5];
 
-static int32_t t_frms = 0;
 
-float  bkgs[3];
 
-int8_t title_punkt = 0;
-int8_t title_stage = 1;
-int8_t menu_frames = 0;
-float menu_pos = 0;
 
-gr_tex *moji1_tex;
-gr_tex *moji2_tex;
 
-gui_el_t1 *moji1;
-gui_el_t1 moji2;
 
-gui_el_t0 *men_bkg;
-gui_el_t0 *cop;
-gui_el_t0 *titl;
 
-static gr_tex *gear_tex;
-static gui_el_t1 *gear;
-static gui_el_t0 *cursor;
 
-float cur_pos = 0;
 
-inp_kb kb;
 
-void init_menu()
+
+
+
+
+
+screen_main::screen_main()
 {
+    t_frms = 0;
+    title_punkt = 0;
+    title_stage = 1;
+    menu_frames = 0;
+    menu_pos = 0;
+
+    cur_pos = 0;
+
     title = new gui_holder;
     title->load_dat("data/scene/title","title.dat");
 
@@ -133,12 +124,50 @@ void init_menu()
 
     titl = title->get_gui_t0(400);
     cop = title->get_gui_t0(410);
-
-    is_load = true;
 }
 
-void draw_title()
+screen_main::~screen_main()
 {
+
+}
+
+id_screen screen_main::update()
+{
+
+    inp.update();
+
+    if (inp.keyHit(INP_DOWN))
+        title_punkt++;
+    if (inp.keyHit(INP_UP))
+        title_punkt--;
+
+    if (inp.keyHit(INP_A))
+    {
+        if (title_stage < 2)
+            title_stage++;
+        else
+        {
+            switch (title_punkt)
+            {
+                case 3:
+                return SCREEN_GAMEPLAY;
+
+                case 11:
+                return SCREEN_UNK;
+
+                default:
+                break;
+            }
+        }
+    }
+
+
+    if (title_punkt < 0)
+        title_punkt +=12;
+    else if (title_punkt >= 12)
+        title_punkt %= 12;
+
+
     t_frms++;
 
     if (title_stage == 2)
@@ -179,6 +208,11 @@ void draw_title()
 
     bkg[0]->draw(0);
 
+    return SCREEN_MAIN;
+}
+
+bool screen_main::draw()
+{
     if (bkgs[0] < 128)
         bkg[1]->draw(bkgs[0] + 512,0,0);
     bkg[1]->draw(bkgs[0],0,0);
@@ -208,30 +242,11 @@ void draw_title()
         moji1->draw_frame((menu_pos - 1.0) * 160,i * 24, 0,i,0);
 
     moji2.draw_frame((menu_pos - 1.0) * 160,title_punkt * 24, 0,title_punkt,0);
+
+    return true;
 }
 
-void menu_title_call()
+id_screen screen_main::getID()
 {
-    if (!is_load)
-        init_menu();
-
-    kb.update();
-
-    if (kb.keyHit(INP_DOWN))
-        title_punkt++;
-    if (kb.keyHit(INP_UP))
-        title_punkt--;
-
-    if (kb.keyHit(INP_A))
-        if (title_stage < 2)
-            title_stage++;
-
-    if (title_punkt < 0)
-        title_punkt +=12;
-    else if (title_punkt >= 12)
-        title_punkt %= 12;
-
-    draw_title();
-
+    return SCREEN_MAIN;
 }
-

@@ -1,5 +1,6 @@
 #include "global_types.h"
 #include "file_read.h"
+#include "archive.h"
 #include "sfx.h"
 
 #define SFX_CHANNELS    32
@@ -86,4 +87,19 @@ sfxc *sfx_load_cv3(filehandle *f)
     return tmp;
 }
 
+sfxc *sfx_load_cv3(const char *filename)
+{
+    filehandle *f = arc_get_file(filename);
+    if (f)
+    {
+        sfxc *tmp = sfx_load_cv3(f);
+        delete f;
+        return tmp;
+    }
+    return NULL;
+}
 
+void sfx_delete(sfxc *sfx)
+{
+    delete sfx;
+}

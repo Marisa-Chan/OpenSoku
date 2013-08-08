@@ -5,6 +5,20 @@
 
 //#define GUI_DEBUG   1
 
+gui_holder::~gui_holder()
+{
+    for(uint32_t i=0; i<imgs.size(); i++)
+        if (imgs[i].tex)
+            gr_delete_tex(imgs[i].tex);
+
+    imgs.clear();
+
+    for(uint32_t i=0; i<elmnt.size(); i++)
+        delete elmnt[i];
+
+    elmnt.clear();
+}
+
 bool gui_holder::load_dat(const char *path, const char *file)
 {
     char buf[CHRBUF];
@@ -52,14 +66,7 @@ bool gui_holder::load_dat(const char *path, const char *file)
 
         sprintf(buf, "%s/%s", path, name);
 
-        tmp.tex = NULL;
-
-        filehandle *ft = arc_get_file(buf);
-        if (ft)
-        {
-            tmp.tex = gr_load_cv2(ft, NULL);
-            delete ft;
-        }
+        tmp.tex = gr_load_cv2(buf, NULL);
 
         f->read(4, &tmp.l);
         f->read(4, &tmp.t);
@@ -226,6 +233,11 @@ gui_element::gui_element(int32_t _guid):
     sprite = gr_create_sprite();
 }
 
+gui_element::~gui_element()
+{
+    gr_delete_sprite(sprite);
+}
+
 void gui_element::setScale(float x, float y)
 {
     sx = x;
@@ -314,6 +326,10 @@ gui_el_t6::gui_el_t6(int32_t _guid, gui_tex *_tex, int32_t _w, int32_t _h, int32
     gr_info inf = gr_get_info(tex->tex);
     tex_h = inf.h;
     tex_w = inf.w;
+}
+
+gui_el_t6::~gui_el_t6()
+{
 }
 
 void gui_el_t6::draw_d(float _dx, float _dy, int8_t plane)
@@ -463,6 +479,11 @@ gui_el_t0::gui_el_t0(int32_t _guid, gui_tex *_tex):
     tex_w = inf.w;
 }
 
+gui_el_t0::~gui_el_t0()
+{
+
+}
+
 void gui_el_t0::draw(int8_t plane)
 {
     draw(0,0,plane);
@@ -500,6 +521,12 @@ gui_el_t1::gui_el_t1():
     gui_el_t1(0)
 {
 
+}
+
+gui_el_t1::~gui_el_t1()
+{
+    if (tex)
+        delete tex;
 }
 
 void gui_el_t1::draw(int8_t plane)

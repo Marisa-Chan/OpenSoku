@@ -37,7 +37,7 @@ c_meta::c_meta(char_graph *_pgp)
     field_1AC = 1;
     chrt = NULL;
     enemy = NULL;
-    parent_mlist = NULL;
+    parent = NULL;
 
     //additional params init
     field_1A2 = 0;
@@ -46,6 +46,23 @@ c_meta::c_meta(char_graph *_pgp)
 c_meta::c_meta():
     c_meta(NULL)
 {
+}
+
+c_meta::~c_meta()
+{
+    if (cust_box)
+        delete cust_box;
+
+    if (parent)
+        parent->childs.remove(this);
+
+
+    metalst_iter it = childs.begin();
+    while(it != childs.end())
+    {
+        (*it)->parent = NULL;
+        it++;
+    }
 }
 
 void c_meta::set_seq(uint32_t idx)
@@ -165,8 +182,8 @@ void c_meta::draw(gr_shader */*shader*/)
 void c_meta::set_mlist_hitflag(int8_t flag )
 {
     c_meta *mt = this;
-    while (mt->parent_mlist)
-        mt = mt->parent_mlist;
+    while (mt->parent)
+        mt = mt->parent;
 
     mt->field_190 = flag;
     mt->field_194 = mt->field_1BC - 1;
@@ -213,8 +230,8 @@ void c_meta::sub_464890(c_meta *enm)
 {
 
     c_meta *mt = this;
-    while (mt->parent_mlist)
-        mt = mt->parent_mlist;
+    while (mt->parent)
+        mt = mt->parent;
 
     dir *= -1;
     chrt = enm->chrt;
