@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="FrameDisplayDialog">
+		<title>wxWidgets app</title>
+		<size>298,332</size>
+		<object class="wxTreeCtrl" name="ID_TREECTRL1" variable="TreeCtrl1" member="yes">
+			<image_list>&lt;none&gt;</image_list>
+			<tree_items>
+				<item>TreeCtrl1</item>
+				<item>&lt;none&gt;</item>
+			</tree_items>
+			<items_text>
+				<item2>TreeCtrl1</item2>
+				<item2>&lt;none&gt;</item2>
+			</items_text>
+			<pos>8,8</pos>
+			<size>280,320</size>
+			<handler function="OnTreeCtrl1BeginDrag" entry="EVT_TREE_BEGIN_DRAG" />
+		</object>
+	</object>
+</wxsmith>
