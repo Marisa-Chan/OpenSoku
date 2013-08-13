@@ -799,7 +799,7 @@ void c_bullet::func10()
         if (process())
             active = false;
         if (get_subseq() == 1)
-          sub_438450(0.0, 0.0, field_37C, 8.0);
+            sub_438450(0.0, 0.0, field_37C, 8.0);
 
         if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 3)
             active = false;
@@ -1532,7 +1532,7 @@ void c_bullet::draw(gr_shader *shader)
         sprite.draw(PLANE_SCENE,shader);
 
 //        for (int32_t i = 0; i<5; i++)
-            //if (atk_area_2o[i])
+        //if (atk_area_2o[i])
         /*{
             frame_box *bx = &atk_area_2o[i];
             gr_draw_box(bx->x1,
@@ -1657,6 +1657,49 @@ void c_bullet::tail_alpha(uint8_t a)
 {
     if (tail)
         tail->set_alpha(a);
+}
+
+
+void c_bullet::sub_48BF60(int32_t angle)
+{
+    angle %= 360;
+    if ( angle < 60 )
+    {
+        c_B = 0;
+        c_R = 255;
+        c_G = (angle / 60.0) * 255.0;
+    }
+    else if (angle < 120)
+    {
+        c_B = 0;
+        c_G = 255;
+        c_R = ((angle - 60.0)/ 60.0) * 255.0;
+
+    }
+    else if (angle < 180)
+    {
+        c_R = 0;
+        c_G = 255;
+        c_B = ((angle - 120.0) / 60.0) * 255.0;
+    }
+    else if (angle < 240)
+    {
+        c_R = 0;
+        c_B = 255;
+        c_G = ((angle - 180.0) / 60.0) * 255.0;
+    }
+    else if (angle < 300)
+    {
+        c_G = 0;
+        c_B = 255;
+        c_R = ((angle - 240.0) / 60.0) * 255.0;
+    }
+    else if (angle < 360)
+    {
+        c_G = 0;
+        c_R = 255;
+        c_B = ((angle - 300.0) / 60.0) * 255.0;
+    }
 }
 
 

@@ -36,6 +36,7 @@ class c_bullet : public c_meta
     void sub_438450(int32_t x, int32_t y, int32_t w, int32_t h);
     void tail_add(int32_t idx, float width, int32_t segments, int32_t seg_subd, gr_blend blending);
     void tail_alpha(uint8_t a);
+    void sub_48BF60(int32_t angle);
 
     c_tail *tail;
 
