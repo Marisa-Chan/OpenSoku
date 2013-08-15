@@ -118,8 +118,8 @@ void marisa_bullets::func10()
         }
         else if (get_subseq() == 7 )
         {
-            h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
-            v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
+            h_inerc = cos_deg(addition[0]) * addition[1];
+            v_inerc = -sin_deg(addition[0]) * addition[1];
 
             addition[1] -= 0.4;
             if ( addition[1] < 0.5 )
@@ -501,8 +501,8 @@ void marisa_bullets::func10()
         }
         else if (get_subseq() == 2)
         {
-            h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
-            v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
+            h_inerc = cos_deg(addition[0]) * addition[1];
+            v_inerc = -sin_deg(addition[0]) * addition[1];
 
             addition[1] -= 0.75;
             if ( addition[1] < 0.25 )
@@ -528,8 +528,8 @@ void marisa_bullets::func10()
         }
         else if (get_subseq() == 3)
         {
-            h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
-            v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
+            h_inerc = cos_deg(addition[0]) * addition[1];
+            v_inerc = -sin_deg(addition[0]) * addition[1];
 
             addition[1] -= 0.25;
             if ( addition[1] < 0.5 )
@@ -630,8 +630,8 @@ void marisa_bullets::func10()
             }
             angZ = scene_rand_rng(360);
 
-            x = cos((-bul_parent->angZ) * 3.1415926/180.0) * bul_parent->field_37C * bul_parent->dir + bul_parent->x;
-            y = sin((-bul_parent->angZ) * 3.1415926/180.0) * bul_parent->field_37C * bul_parent->dir + bul_parent->y;
+            x = cos_deg(-bul_parent->angZ) * bul_parent->field_37C * bul_parent->dir + bul_parent->x;
+            y = sin_deg(-bul_parent->angZ) * bul_parent->field_37C * bul_parent->dir + bul_parent->y;
 
             if ( bul_parent->field_36C != 0 )
             {
@@ -756,8 +756,8 @@ void marisa_bullets::func10()
     case 804:
         if ( get_subseq() == 0 )
         {
-            h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
-            v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
+            h_inerc = cos_deg(addition[0]) * addition[1];
+            v_inerc = -sin_deg(addition[0]) * addition[1];
             x += dir * h_inerc;
             y += v_inerc;
             scaleY = scaleX = scene_rand_rng(60) * 0.01 + 0.7;
@@ -2631,8 +2631,8 @@ void marisa_bullets::func10()
             }
             else if (get_subseq() == 2)
             {
-                h_inerc = cos(addition[0] * 3.1415/180.0) * addition[1];
-                v_inerc = -sin(addition[0] * 3.1415/180.0) * addition[1];
+                h_inerc = cos_deg(addition[0]) * addition[1];
+                v_inerc = -sin_deg(addition[0]) * addition[1];
 
                 addition[1] -= 0.5;
                 if ( addition[1] < 0.5 )

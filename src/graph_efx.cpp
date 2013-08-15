@@ -591,13 +591,22 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
                     f->read(1, &frm->c_G);
                     f->read(1, &frm->c_B);
 
-                    int16_t tscale = 0;
-                    f->read(2, &tscale);
-                    frm->scale_x = tscale / 100.0;
+                    if (pat_version < 5) //th105
+                    {
+                        int16_t tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_y = frm->scale_x = tscale / 100.0;
+                    }
+                    else
+                    {
+                        int16_t tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_x = tscale / 100.0;
 
-                    tscale = 0;
-                    f->read(2, &tscale);
-                    frm->scale_y = tscale / 100.0;
+                        tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_y = tscale / 100.0;
+                    }
 
                     f->read(2, &frm->angle_x);
                     f->read(2, &frm->angle_y);

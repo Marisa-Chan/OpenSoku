@@ -163,6 +163,8 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
             {
                 sq->prior = ssq.prior;
                 sq->prior_for_cancel = ssq.prior_for_cancel;
+                if (ssq.prior > 200 || ssq.prior_for_cancel > 200)
+                    printf("id %d\n",lastid);
             }
 
             uint32_t nframes = 0;
@@ -215,13 +217,22 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                     f->read(1, &frm->c_G);
                     f->read(1, &frm->c_B);
 
-                    int16_t tscale = 0;
-                    f->read(2, &tscale);
-                    frm->scale_x = tscale / 100.0;
+                    if (pat_version < 5) //th105
+                    {
+                        int16_t tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_y = frm->scale_x = tscale / 100.0;
+                    }
+                    else
+                    {
+                        int16_t tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_x = tscale / 100.0;
 
-                    tscale = 0;
-                    f->read(2, &tscale);
-                    frm->scale_y = tscale / 100.0;
+                        tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_y = tscale / 100.0;
+                    }
 
                     f->read(2, &frm->angle_x);
                     f->read(2, &frm->angle_y);

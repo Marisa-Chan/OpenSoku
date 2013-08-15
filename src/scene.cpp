@@ -1153,7 +1153,7 @@ bool c_scene::sub_47AD60(c_meta *plr, c_meta *enm)
     {
         if ( enm->get_cprior() != 0 )
         {
-            if ( enm->get_prior() < 0 )
+            if ( enm->get_prior() < 0 ) //HACK? REALLY?
             {
                 enm->set_mlist_hitflag(4);
             }

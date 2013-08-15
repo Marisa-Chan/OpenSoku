@@ -1618,7 +1618,7 @@ void c_bullet::sub_48C4B0(float p1, float p2, float p3)
 {
     c_meta *enemy = chrt->enemy;
 
-    float tmp = p1 - atan2(enemy->getY() + p3 - y, (enemy->getX() - x) * dir) * 180.0/3.1415926;
+    float tmp = p1 - atan2_deg(enemy->getY() + p3 - y, (enemy->getX() - x) * dir);
     int angl = (int)(tmp - addition[0]) % 360;
 
     if (angl > 180)

@@ -215,13 +215,22 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                     f->read(1, &frm->c_G);
                     f->read(1, &frm->c_B);
 
-                    int16_t tscale = 0;
-                    f->read(2, &tscale);
-                    frm->scale_x = tscale / 100.0;
+                    if (pat_version < 5) //th105
+                    {
+                        int16_t tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_y = frm->scale_x = tscale / 100.0;
+                    }
+                    else
+                    {
+                        int16_t tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_x = tscale / 100.0;
 
-                    tscale = 0;
-                    f->read(2, &tscale);
-                    frm->scale_y = tscale / 100.0;
+                        tscale = 0;
+                        f->read(2, &tscale);
+                        frm->scale_y = tscale / 100.0;
+                    }
 
                     f->read(2, &frm->angle_x);
                     f->read(2, &frm->angle_y);
@@ -427,7 +436,7 @@ seq *char_graph::get_seq(uint32_t idx)
 {
     mapseq::iterator tmp = seqs.find(idx);
     if (tmp != seqs.end())
-       return(tmp->second);
+        return(tmp->second);
 
     return NULL;
 }
@@ -436,13 +445,13 @@ uint16_t char_graph::get_prior(uint32_t idx)
 {
     seq *tmp = get_seq(idx);
     if (tmp)
-       return tmp->prior;
+        return tmp->prior;
     return 0xFFFF;
 }
 uint16_t char_graph::get_cprior(uint32_t idx)
 {
     seq *tmp = get_seq(idx);
     if (tmp)
-       return tmp->prior_for_cancel;
+        return tmp->prior_for_cancel;
     return 0xFFFF;
 }

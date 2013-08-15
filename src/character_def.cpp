@@ -2239,7 +2239,7 @@ void char_c::func16()
             switch ( get_game_difficulty() )
             {
             case 0:
-                field_530 = 0.94999999;
+                field_530 = 0.95;
                 break;
             case 1:
                 field_530 = 1.0;
@@ -2312,7 +2312,7 @@ void char_c::func16()
             if ( field_4CC == 0 )
             {
                 field_4CC = 1;
-//                sub_469280(v2, v15); //HACK
+                mountain_vapor_shuffle();
             }
             break;
 
@@ -3972,17 +3972,15 @@ void char_c::load_face(const char *name)
 
 void shuffle_cards(card_deq *crd)
 {
-    uint32_t sz = crd->size()-1;
+    uint32_t sz = crd->size();
     if (sz > 0)
-    {
         for (int32_t i=0; i < 100; i++)
         {
-            uint32_t id = scene_rand() % sz;
-            s_card *tmp = (*crd)[sz];
-            (*crd)[sz] = (*crd)[id];
-            (*crd)[id] = tmp;
+            uint32_t id = scene_rand_rng(sz);
+            s_card *tmp = (*crd)[id];
+            crd->erase(crd->begin() + id);
+            crd->push_front(tmp);
         }
-    }
 }
 
 void char_c::set_cards_deck(s_profile *prof, uint32_t deck_id)
@@ -4290,8 +4288,8 @@ void char_c::add_card()
         {
             current_card_energy = 0;
 
-            s_card *card = cards_shuffle.back();
-            cards_shuffle.pop_back();
+            s_card *card = cards_shuffle.front();
+            cards_shuffle.pop_front();
             if (card)
                 cards_active.push_back(card);
             cards_added = cards_active.size();
@@ -4667,6 +4665,22 @@ void char_c::sub_46AC00()
     spell_energy_stop = 0;
     crshd_sp_brdrs_timer = 0;
     field_740 = 0;
+}
+
+void char_c::mountain_vapor_shuffle()
+{
+    int32_t sz = cards_active.size();
+    if (sz)
+    {
+        for(int32_t i=0; i<sz; i++)
+            cards_shuffle.push_front(cards_active[i]);
+
+        cards_active.clear();
+
+        shuffle_cards(&cards_shuffle);
+        for(int32_t i=0; i<sz; i++)
+            add_card();
+    }
 }
 
 bool char_c::sub_489F10(uint16_t cprior)

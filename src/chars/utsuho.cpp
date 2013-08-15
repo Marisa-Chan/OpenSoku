@@ -339,8 +339,8 @@ void char_utsuho::func10()
                             dash_angle -= 1.5;
                     }
 
-                    h_inerc = cos(dash_angle * 3.1415/180.0) * field_7DC;
-                    v_inerc = sin(dash_angle * 3.1415/180.0) * field_7DC;
+                    h_inerc = cos_deg(dash_angle) * field_7DC;
+                    v_inerc = sin_deg(dash_angle) * field_7DC;
 
                     if ( y > 680.0 )
                         if ( v_inerc > 0.0 )
@@ -376,8 +376,8 @@ void char_utsuho::func10()
 
                     if ( get_elaps_frames() % 5 == 1 )
                     {
-                        float yy = sin(dash_angle * 3.1415/180.0) * 100.0 + y + 100.0;
-                        float xx = cos(dash_angle * 3.1415/180.0) * 100.0 * dir + x;
+                        float yy = sin_deg(dash_angle) * 100.0 + y + 100.0;
+                        float xx = cos_deg(dash_angle) * 100.0 * dir + x;
                         scene_add_effect(this, 125, xx, yy, dir, 1);
                     }
                     if ( (input->keyDown(INP_D) == 0 && field_7D6 > 10) || spell_energy <= 0 )

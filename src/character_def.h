@@ -370,6 +370,7 @@ class char_c : public c_meta
     bool sub_489F10(uint16_t cprior);
     void sub_4685C0(int a2);
     void sub_46AC00();
+    void mountain_vapor_shuffle();
 
     bool spell200_seq299_300_field190_0_3();
     bool seq299_300_field190_0_3();
