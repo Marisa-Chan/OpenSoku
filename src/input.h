@@ -114,7 +114,8 @@ enum kCode
     kC_F13,
     kC_F14,
     kC_F15,
-    kC_Pause
+    kC_Pause,
+    kCode_COUNT //not key
 };
 
 enum inp_axis
@@ -216,6 +217,8 @@ private:
     sf::Keyboard kbd;
 
     uint32_t map[INP_KEYS];
+    int32_t  timeouts[kCode_COUNT];
+    bool     rawhit[kCode_COUNT];
 
 public:
     inp_kb();
@@ -223,7 +226,8 @@ public:
     void load_profile(s_profile * prof);
     void load_def_profile();
     //get raw pressed keyboard key (any key)
-    bool rawPressed(uint32_t key);
+    bool rawPressed(uint32_t key, int32_t timeout = 6);
+    bool rawHit(uint32_t key);
     void update();
     void set_devid(uint32_t);
 };
@@ -273,6 +277,8 @@ class inp_both: public inp_ab
     public:
     void load_profile(s_profile * prof);
     void load_def_profile();
+    bool rawPressed(uint32_t key, int32_t timeout = 6);
+    bool rawHit(uint32_t key);
     void update();
     void set_devid(uint32_t);
 };

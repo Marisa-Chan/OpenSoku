@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 //    uint32_t i = 0;
 //
 
-    inp_kb kb;
+    inp_both *inp = get_global_input();
 
     marisa->set_seq(0);
     alice->set_seq(0);
@@ -137,17 +137,19 @@ int main(int argc, char *argv[])
     id_screen scr_next_id = SCREEN_TITLE;
 
     fader       glob_fader;
-    menu_fader  loc_fader;
+    menu_fader  *loc_fader = menu_get_fader();
 
     bool game_run = true;
 
     while(game_run)
     {
-        if (kb.rawPressed(kC_Escape))
+        inp->update();
+
+        if (inp->rawPressed(kC_F1))
             game_run = false;
 
         aa++;
-        if (aa > 10 && kb.rawPressed(kC_Q))
+        if (aa > 10 && inp->rawPressed(kC_Q))
         {
             aa = 0;
             marisa->add_card(bb);
@@ -157,12 +159,11 @@ int main(int argc, char *argv[])
             bb++;
             bb %= 21;
         }
-        kb.update();
 
 
         if (scr_id == scr_next_id)
         {
-            loc_fader.update();
+            loc_fader->update();
             glob_fader.fade_in();
 
             if (scr)
@@ -174,9 +175,14 @@ int main(int argc, char *argv[])
             if (scr_id != scr_next_id)
             if (glob_fader.fade_out())
             {
-                delete scr;
+                if (scr)
+                {
+                    scr->onExit();
+                    delete scr;
+                }
                 scr = screen_create(scr_next_id);
                 scr_id = scr_next_id;
+                scr->onStart();
             }
 
             bool scr_drawed = false;
@@ -184,7 +190,7 @@ int main(int argc, char *argv[])
             if (scr)
                 scr_drawed = scr->draw();
 
-            loc_fader.draw();
+            loc_fader->draw();
 
             if (scr_drawed)
                 glob_fader.draw();
@@ -203,3 +209,4 @@ int main(int argc, char *argv[])
 
     return EXIT_SUCCESS;
 }
+

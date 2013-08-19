@@ -32,10 +32,10 @@ mtwist randomm;
 c_scene *scn = NULL;
 
 //0 - easy, 3 - Lunatic
-int32_t game_difficulty = 3;
-
-
+GAME_DIFF_TYPE game_difficulty = GAME_DIFF_LUNA;
 GAME_TYPE  game_type = GAME_TYPE_P_VS_P;
+GAMEPLAY_TYPE gameplay_type = GAMEPLAY_NORMAL;
+
 
 GAME_TYPE game_type_get()
 {
@@ -47,9 +47,24 @@ void game_type_set(GAME_TYPE type)
     game_type = type;
 }
 
-int32_t get_game_difficulty()
+GAME_DIFF_TYPE get_game_difficulty()
 {
     return game_difficulty;
+}
+
+void set_game_difficulty(GAME_DIFF_TYPE diff)
+{
+    game_difficulty = diff;
+}
+
+GAMEPLAY_TYPE gameplay_type_get()
+{
+    return gameplay_type;
+}
+
+void gameplay_type_set(GAMEPLAY_TYPE type)
+{
+    gameplay_type = type;
 }
 
 
@@ -1153,11 +1168,11 @@ bool c_scene::sub_47AD60(c_meta *plr, c_meta *enm)
     {
         if ( enm->get_cprior() != 0 )
         {
-            if ( enm->get_prior() < 0 ) //HACK? REALLY?
-            {
-                enm->set_mlist_hitflag(4);
-            }
-            else
+            //if ( enm->get_prior() < 0 ) //SIGN HACK? REALLY?
+            //{
+            //    enm->set_mlist_hitflag(4);
+            //}
+            //else
             {
                 plr->set_mlist_hitflag(5);
                 enm->set_mlist_hitflag(8);

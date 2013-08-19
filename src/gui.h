@@ -169,6 +169,7 @@ class gui_holder
     gui_el_t0 *get_gui_t0(int32_t id);
     gui_el_t6 *get_gui_t6(int32_t id);
     gui_el_t1 *get_gui_t1(int32_t id);
+    gui_element  *get_gui(int32_t id);
 
 };
 

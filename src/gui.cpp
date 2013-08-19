@@ -226,6 +226,16 @@ gui_el_t1 * gui_holder::get_gui_t1(int32_t id)
     return NULL;
 }
 
+gui_element * gui_holder::get_gui(int32_t id)
+{
+    for (uint32_t i=0; i< elmnt.size(); i++)
+        if (elmnt[i])
+            if (elmnt[i]->guid == id)
+                return elmnt[i];
+
+    return NULL;
+}
+
 
 gui_element::gui_element(int32_t _guid):
     guid (_guid)

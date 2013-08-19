@@ -6,6 +6,7 @@
 #include "background.h"
 #include "bullets.h"
 #include "weather.h"
+#include "menu/menus.h"
 
 
 c_scene_one::c_scene_one()
@@ -53,35 +54,58 @@ void c_scene_one::init(background *bg, char_c *p1, char_c *p2)
 
 int8_t c_scene_one::update()
 {
+    if (!menu_isempty())
+        return game_state;
+
+    if (get_global_input()->rawHit(kC_Escape))
+    {
+        scene_play_sfx(41);
+        if (gameplay_type_get() == GAMEPLAY_REPLAY)
+            return 2;
+        if (game_type_get() != GAME_TYPE_TRAINING)
+        {
+            menu_add(new pause_menu(this));
+        }
+
+        return 0;
+    }
+
     frames++;
     int32_t ret = 0;
-    switch(cur_game_state)
+    int32_t num_updates = 1; //for fast forward in replay
+    for (int32_t i=0; i< num_updates; i++)
     {
-    case 0:
-        ret = state0_update();
-        break;
-    case 1:
-        ret = state1_update();
-        break;
-    case 2:
-        ret = state2_update();
-        break;
-    case 3:
-        ret = state3_update();
-        break;
-    case 5:
-        ret = state5_update();
-        break;
-    case 6:
-        ret = state6_update();
-        break;
-    case 7:
-        ret = state7_update();
-        break;
-    default:
-        ret = 0;
-        break;
+        switch(cur_game_state)
+        {
+        case 0:
+            ret = state0_update();
+            break;
+        case 1:
+            ret = state1_update();
+            break;
+        case 2:
+            ret = state2_update();
+            break;
+        case 3:
+            ret = state3_update();
+            break;
+        case 5:
+            ret = state5_update();
+            break;
+        case 6:
+            ret = state6_update();
+            break;
+        case 7:
+            ret = state7_update();
+            break;
+        default:
+            ret = 0;
+            break;
+        }
+        if (ret)
+            break;
     }
+
     return ret;
 }
 
@@ -159,8 +183,8 @@ int8_t c_scene_one::state5_update()
     scene_subfunc5();
     if ( frames > 360 )
     {
-        /*if ( gameplay_type_get() == GAMEPLAY_REPLAY ) //HACK
-          return result;*/
+        if ( gameplay_type_get() == GAMEPLAY_REPLAY )
+          return 2;
 
         func13(6);
     }
@@ -273,9 +297,9 @@ void c_scene_one::func13(int32_t val)
         chrs[1]->health = chrs[1]->max_health;
         break;
     case 2:
-      chrs[0]->field_577 = 0;
-      chrs[0]->field_577 = 0;
-      break;
+        chrs[0]->field_577 = 0;
+        chrs[0]->field_577 = 0;
+        break;
     case 3:
         for(int8_t i=0; i< 2; i++)
             chrs[i]->field_577 = chrs[i]->field_574 == 0;
@@ -345,7 +369,7 @@ void c_scene_one::func13(int32_t val)
 //          break;
 //      }
 //      sub_481100(v2);
-      break;
+        break;
     case 7:
         //HACK SHOW RESULTS
 //        v31 = (void *)operator new(0x44u);
@@ -356,7 +380,7 @@ void c_scene_one::func13(int32_t val)
 //        v32 = 0;
 //      v33 = -1;
 //      sub_43D300(v32);
-      break;
+        break;
     default:
         break;
     }

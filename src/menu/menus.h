@@ -20,8 +20,8 @@ class screen
     virtual id_screen update() = 0; //func1, Return next screen ID
     virtual bool draw() = 0; //func2
     //virtual void func3();
-    //virtual void func4();
-    //virtual void func5();
+    virtual void onStart(); //func4
+    virtual void onExit(); //func5
     virtual id_screen getID() = 0;
 };
 
@@ -86,6 +86,7 @@ class menu_fader
         int32_t get_count();
         void add_menu(ingame_menu *menu);
         bool isempty();
+        void clear_list();
 };
 
 menu_fader *menu_get_fader();
@@ -95,8 +96,10 @@ bool menu_isempty();
 
 
 screen *screen_create(id_screen);
+inp_both *get_global_input();
 
 #include "title.h"
 #include "gameplay.h"
+#include "pause.h"
 
 #endif // MENUS_H_INCLUDED

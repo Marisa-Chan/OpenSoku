@@ -26,6 +26,20 @@ enum GAME_TYPE
     GAME_TYPE_TRAINING = 8
 };
 
+enum GAMEPLAY_TYPE
+{
+    GAMEPLAY_NORMAL = 1,
+    GAMEPLAY_REPLAY = 2
+};
+
+enum GAME_DIFF_TYPE
+{
+    GAME_DIFF_EASY = 0,
+    GAME_DIFF_NORMAL = 1,
+    GAME_DIFF_HARD = 2,
+    GAME_DIFF_LUNA = 3
+};
+
 struct s_camera
 {
     float x;
@@ -45,9 +59,12 @@ struct spell_bkg_images
     int8_t alpha_delta;
 };
 
+class pause_menu;
+
 class c_scene
 {
     protected:
+    friend pause_menu;
 
     btl_ui *ui;
 
@@ -175,11 +192,17 @@ c_scene *scene_get_scene();
 bool sub_479510(frame_box *a1, frame_box *a2, int32_t x, int32_t y);
 bool sub_4795A0(int32_t x11, int32_t y11, int32_t x12, int32_t y12, int32_t x21, int32_t y21, int32_t x22, int32_t y22);
 
+void scene_set_spell_img(uint8_t idx, gr_tex *img);
+
+
 GAME_TYPE game_type_get();
 void      game_type_set(GAME_TYPE type);
 
-void scene_set_spell_img(uint8_t idx, gr_tex *img);
+GAME_DIFF_TYPE get_game_difficulty();
+void set_game_difficulty(GAME_DIFF_TYPE diff);
 
-int32_t get_game_difficulty();
+GAMEPLAY_TYPE gameplay_type_get();
+void gameplay_type_set(GAMEPLAY_TYPE type);
+
 
 #endif // SCENE_H_INCLUDED

@@ -274,13 +274,50 @@ void inp_kb::update()
     fill_kframes();
 }
 
-bool inp_kb::rawPressed(uint32_t key)
+bool inp_kb::rawPressed(uint32_t key, int32_t timeout)
 {
-    return kbd.isKeyPressed((sf::Keyboard::Key)key);
+    bool prs = kbd.isKeyPressed((sf::Keyboard::Key)key);
+    if (!prs)
+    {
+        timeouts[key] = 0;
+    }
+    else
+    {
+        if (timeout <= 0)
+            timeout = 1;
+        timeouts[key] %= timeout;
+        if (timeouts[key] == 0)
+            return true;
+
+        timeouts[key]++;
+    }
+
+    return false;
+}
+
+bool inp_kb::rawHit(uint32_t key)
+{
+    bool prs = kbd.isKeyPressed((sf::Keyboard::Key)key);
+    if (prs)
+    {
+        if (!rawhit[key])
+        {
+            rawhit[key] = true;
+            return true;
+        }
+    }
+    else
+    {
+        rawhit[key] = false;
+    }
+
+    return false;
 }
 
 inp_kb::inp_kb()
 {
+    for (int32_t i=0; i<kCode_COUNT; i++)
+        timeouts[i] = 0;
     load_def_profile();
 }
 
@@ -313,8 +350,8 @@ void inp_kb::load_def_profile()
     map[INP_A]     = kC_Z;
     map[INP_B]     = kC_X;
     map[INP_C]     = kC_C;
-    map[INP_D]     = kC_S;
-    map[INP_AB]    = kC_A;
+    map[INP_D]     = kC_A;
+    map[INP_AB]    = kC_S;
     map[INP_BC]    = kC_D;
     map[INP_ST]    = kC_Q;
 }
@@ -378,9 +415,9 @@ void inp_js::load_def_profile()
     map[INP_B]     = 1;
     map[INP_C]     = 2;
     map[INP_D]     = 3;
-    map[INP_AB]    = 5;
-    map[INP_BC]    = 6;
-    map[INP_ST]    = 4;
+    map[INP_AB]    = 4;
+    map[INP_BC]    = 5;
+    map[INP_ST]    = 6;
 }
 
 void inp_js::set_devid(uint32_t id)
@@ -433,6 +470,16 @@ bool inp_js::key_chk(uint32_t key)
     {
         return js.isButtonPressed(joy_id, key & 0x1F);
     }
+}
+
+bool inp_both::rawPressed(uint32_t key, int32_t timeout)
+{
+    return kb.rawPressed(key, timeout);
+}
+
+bool inp_both::rawHit(uint32_t key)
+{
+    return kb.rawHit(key);
 }
 
 

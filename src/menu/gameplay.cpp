@@ -13,9 +13,10 @@ id_screen screen_gameplay::update()
     switch (t)
     {
         case 1:
-        /*if ( gameplay_type_get() == GAMEPLAY_REPLAY ) //HACK
-    return 2;
-  if ( !game_type_get() || (v3 = game_type_get() == GAME_TYPE_ARCADE, result = 3, v3) )
+        if ( gameplay_type_get() == GAMEPLAY_REPLAY )
+            return SCREEN_MAIN;
+    /*
+  if ( !game_type_get() || (v3 = game_type_get() == GAME_TYPE_ARCADE, result = 3, v3) )//HACK
     result = 16;
   return result;*/
         return SCREEN_MAIN; // HACK
@@ -42,6 +43,12 @@ bool screen_gameplay::draw()
 
     return false;
 }
+
+void screen_gameplay::onExit()
+{
+    menu_get_fader()->clear_list();
+}
+
 
 
 id_screen screen_gameplay::getID()

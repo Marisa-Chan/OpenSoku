@@ -1,10 +1,20 @@
 #include "../global_types.h"
 #include "../scene.h"
+#include "../input.h"
 #include "menus.h"
 #include "title.h"
 
 
 screen::~screen()
+{
+
+}
+
+void screen::onExit()
+{
+
+}
+void screen::onStart()
 {
 
 }
@@ -110,6 +120,18 @@ bool menu_fader::isempty()
     return menu_stack.empty();
 }
 
+void menu_fader::clear_list()
+{
+    menu_list_it it = menu_stack.begin();
+    while (it != menu_stack.end())
+    {
+        delete *it;
+        it++;
+    }
+
+    menu_stack.clear();
+}
+
 
 
 static menu_fader *global_menu_fader = NULL;
@@ -159,3 +181,13 @@ screen *screen_create(id_screen scrn)
 }
 
 
+
+inp_both *global_input = NULL;
+
+inp_both *get_global_input()
+{
+    if (!global_input)
+        global_input = new inp_both;
+
+    return global_input;
+}

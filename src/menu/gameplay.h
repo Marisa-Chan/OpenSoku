@@ -11,6 +11,8 @@ class screen_gameplay: public screen
     virtual id_screen update(); //func1, Return next screen ID
     virtual bool draw(); //func2
 
+    virtual void onExit(); //func5
+
     virtual id_screen getID();
 };
 

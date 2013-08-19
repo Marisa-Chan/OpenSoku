@@ -96,6 +96,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="menu/gameplay.cpp" />
 		<Unit filename="menu/gameplay.h" />
+		<Unit filename="menu/pause.cpp" />
+		<Unit filename="menu/pause.h" />
 		<Unit filename="menu/menus.cpp" />
 		<Unit filename="menu/menus.h" />
 		<Unit filename="menu/title.cpp" />
