@@ -28,6 +28,7 @@ pause_menu::pause_menu(c_scene *scn)
         else
         {
             gui.load_dat("data/menu/battle","pause.dat");
+            id_elements.push_back(0);
             id_elements.push_back(1);
             id_elements.push_back(2);
             id_elements.push_back(3);
@@ -132,6 +133,8 @@ int32_t pause_menu::update()
 
 void pause_menu::draw()
 {
+    gui_element *elm = gui_elements[cur_pos];
+    menu_get_fader()->draw_cursor(elm->getX(), elm->getY() + 5.0, 256.0);
     gui.draw_all(PLANE_GUI);
 }
 

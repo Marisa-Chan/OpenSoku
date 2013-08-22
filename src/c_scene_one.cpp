@@ -54,7 +54,7 @@ void c_scene_one::init(background *bg, char_c *p1, char_c *p2)
 
 int8_t c_scene_one::update()
 {
-    if (!menu_isempty())
+    if (menu_get_fader()->is_not_empty())
         return game_state;
 
     if (get_global_input()->rawHit(kC_Escape))

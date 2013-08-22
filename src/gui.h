@@ -58,6 +58,7 @@ class gui_element
     float getY();
     int32_t getTexW();
     int32_t getTexH();
+    gui_tex *getTex();
 
 
     virtual void draw(int8_t plane) = 0;
@@ -164,7 +165,9 @@ class gui_holder
     bool load_dat(const char *path, const char *file);
 
     void draw_all(int8_t plane);
+    void draw_all_dx_dy(int8_t plane,float dx, float dy);
     void draw_by_id(int32_t id, bool rendcare, int8_t plane);
+    void setColor(uint8_t a,uint8_t r,uint8_t g,uint8_t b);
 
     gui_el_t0 *get_gui_t0(int32_t id);
     gui_el_t6 *get_gui_t6(int32_t id);

@@ -2,6 +2,7 @@
 #define MENUS_H_INCLUDED
 
 #include <list>
+#include <deque>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ enum id_screen
 
 class screen
 {
-    public:
+public:
     virtual ~screen();
     virtual id_screen update() = 0; //func1, Return next screen ID
     virtual bool draw() = 0; //func2
@@ -27,7 +28,7 @@ class screen
 
 class screen_exit: public screen
 {
-    public:
+public:
     id_screen update()
     {
         return SCREEN_UNK;
@@ -44,7 +45,7 @@ class screen_exit: public screen
 
 class ingame_menu
 {
-    public:
+public:
     virtual ~ingame_menu();
 
     //virtual void func1() = 0;
@@ -54,10 +55,10 @@ class ingame_menu
 
 class fader
 {
-    protected:
+protected:
     uint8_t a,r,g,b;
 
-    public:
+public:
     fader();
     void init();        //func0
     void   fade_in();   //func2
@@ -68,31 +69,61 @@ class fader
 typedef list<screen *>              scrn_list;
 typedef list<screen *>::iterator    scrn_list_it;
 
-typedef list<ingame_menu *>              menu_list;
-typedef list<ingame_menu *>::iterator    menu_list_it;
+typedef deque<ingame_menu *>              menu_list;
+typedef deque<ingame_menu *>::iterator    menu_list_it;
 
 class menu_fader
 {
-    protected:
+protected:
     menu_list  menu_stack;
     bool todelete;
 
-    public:
-        menu_fader();
+    uint32_t  saved_menus;
 
-        void update(); //func2
-        void draw();   //func3
+    float fade_alpha;
+    float fade_alpha_delta;
 
-        int32_t get_count();
-        void add_menu(ingame_menu *menu);
-        bool isempty();
-        void clear_list();
+    float main_gear_angle;
+
+    int32_t context_alpha;
+
+    gr_tex *doors[2];
+
+    gr_tex *cursor_tex[3];
+    gr_sprite *cursor[3];
+
+    gui_holder menuProfile;
+    gui_element *uiProfileNames[2];
+
+    gui_holder gearUpper;
+    gui_holder gearLower;
+
+    gui_element *uiGears[40];
+    float gearAngles[40];
+    gui_element *uiGearRail[2];
+
+public:
+
+    menu_fader();
+    ~menu_fader();
+
+    void update(); //func2
+    void draw();   //func3
+    void gears_update();
+    void draw_context();
+    void draw_doors(int32_t alpha);
+    void draw_gears(int32_t alpha);
+    void draw_cursor(float x, float y, float width);
+
+    int32_t get_count();
+    void add_menu(ingame_menu *menu);
+    bool is_not_empty();
+    void clear_list();
 };
 
 menu_fader *menu_get_fader();
 int32_t menu_get_count();
 void menu_add(ingame_menu *menu);
-bool menu_isempty();
 
 
 screen *screen_create(id_screen);

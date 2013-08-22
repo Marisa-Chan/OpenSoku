@@ -178,6 +178,31 @@ void gui_holder::draw_all(int8_t plane)
     }
 }
 
+void gui_holder::draw_all_dx_dy(int8_t plane,float dx, float dy)
+{
+    for (uint32_t i=0; i<elmnt.size(); i++)
+    {
+        if (elmnt[i])
+        {
+            if (elmnt[i]->renderable)
+                elmnt[i]->draw(dx,dy,plane);
+#ifdef GUI_DEBUG
+            char buf[32];
+            sprintf(buf,"%d t%d",elmnt[i]->guid,elmnt[i]->get_type());
+            debug_str(elmnt[i]->x+20,elmnt[i]->y,buf);
+#endif // GUI_DEBUG
+        }
+
+    }
+}
+
+void gui_holder::setColor(uint8_t a,uint8_t r,uint8_t g,uint8_t b)
+{
+    for (uint32_t i=0; i<elmnt.size(); i++)
+        if (elmnt[i])
+            elmnt[i]->setColor(a,r,g,b);
+}
+
 void gui_holder::draw_by_id(int32_t id, bool rendcare, int8_t plane)
 {
     for (uint32_t i=0; i<elmnt.size(); i++)
@@ -290,6 +315,11 @@ float gui_element::getX()
 float gui_element::getY()
 {
     return y;
+}
+
+gui_tex *gui_element::getTex()
+{
+    return tex;
 }
 
 int32_t gui_element::getTexW()
