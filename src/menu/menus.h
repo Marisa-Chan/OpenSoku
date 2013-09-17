@@ -11,7 +11,8 @@ enum id_screen
     SCREEN_UNK = -1,
     SCREEN_TITLE = 0,
     SCREEN_MAIN  = 2,
-    SCREEN_GAMEPLAY = 5
+    SCREEN_GAMEPLAY = 5,
+    SCREEN_LOADING  = 6
 };
 
 class screen
@@ -82,6 +83,10 @@ protected:
 
     float fade_alpha;
     float fade_alpha_delta;
+    uint8_t fade_a;
+    uint8_t fade_r;
+    uint8_t fade_g;
+    uint8_t fade_b;
 
     float main_gear_angle;
 
@@ -115,6 +120,9 @@ public:
     void draw_gears(int32_t alpha);
     void draw_cursor(float x, float y, float width);
 
+    void fade_out(uint8_t r,uint8_t g,uint8_t b, uint8_t a, int32_t frames);
+    void fade_in(uint8_t r,uint8_t g,uint8_t b, uint8_t a, int32_t frames);
+
     int32_t get_count();
     void add_menu(ingame_menu *menu);
     bool is_not_empty();
@@ -131,6 +139,7 @@ inp_both *get_global_input();
 
 #include "title.h"
 #include "gameplay.h"
+#include "loading.h"
 #include "pause.h"
 
 #endif // MENUS_H_INCLUDED

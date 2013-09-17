@@ -11,9 +11,9 @@ pause_menu::pause_menu(c_scene *scn)
     cur_pos = 0;
     state = 0;
 
-    if ( game_type_get() != GAME_TYPE_SCENARIO && game_type_get() != GAME_TYPE_ARCADE && game_type_get() != GAME_TYPE_P_VS_C )
+    if ( settings_get()->get_gametype() != GAME_TYPE_SCENARIO && settings_get()->get_gametype() != GAME_TYPE_ARCADE && settings_get()->get_gametype() != GAME_TYPE_P_VS_C )
     {
-        if ( game_type_get() == 7 )
+        if ( settings_get()->get_gametype() == 7 )
         {
             gui.load_dat("data/menu/battle","pausePractice.dat");
             id_elements.push_back(0);
@@ -96,7 +96,7 @@ int32_t pause_menu::update()
                 break;
             case 3:
             case 4:
-                if (gameplay_type_get() == GAMEPLAY_NORMAL)
+                if (settings_get()->get_gameplay() == GAMEPLAY_NORMAL)
                 {
 
                 }

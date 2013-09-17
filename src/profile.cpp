@@ -201,3 +201,78 @@ s_profile *profile_load_from_file(const char *file)
 
     return tmp;
 }
+
+bool profile_load_from_file(const char *file, s_profile *profile)
+{
+    filehandle *f = arc_get_file(file);
+
+    if (!f)
+        return false;
+
+    s_profile *tmp = profile;
+
+    f->read(52, &tmp->kbd);
+    dx2sfml(&tmp->kbd);
+
+    f->read(52, &tmp->joy);
+    f->read(1,  &tmp->unk1);
+    f->read(1,  &tmp->unk2);
+    for (int32_t chr=0; chr < 20; chr++)
+        for (int32_t dk=0; dk < 4; dk++)
+        {
+            uint8_t crd_num = 20;
+            f->read(1, &crd_num);
+            for (int32_t crd=0; crd < crd_num; crd++)
+                f->read(2, &tmp->decks[chr][dk][crd]);
+        }
+
+
+    return true;
+}
+
+void profile_init_profile(s_profile *profile)
+{
+    profile->kbd.UP    = kC_Up;
+    profile->kbd.DOWN  = kC_Down;
+    profile->kbd.LEFT  = kC_Left;
+    profile->kbd.RIGHT = kC_Right;
+    profile->kbd.A     = kC_Z;
+    profile->kbd.B     = kC_X;
+    profile->kbd.C     = kC_C;
+    profile->kbd.D     = kC_A;
+    profile->kbd.AB    = kC_S;
+    profile->kbd.BC    = kC_D;
+    profile->kbd.START = kC_Q;
+    profile->kbd.inp_id = 0;
+    profile->joy.UP    = 0;
+    profile->joy.DOWN  = 0;
+    profile->joy.LEFT  = 0;
+    profile->joy.RIGHT = 0;
+    profile->joy.A     = 0;
+    profile->joy.B     = 1;
+    profile->joy.C     = 2;
+    profile->joy.D     = 3;
+    profile->joy.AB    = 4;
+    profile->joy.BC    = 5;
+    profile->joy.START = 6;
+    profile->joy.inp_id = 0;
+
+    memset(profile->name,0,256);
+    profile->unk1 = 0;
+    profile->unk2 = 0;
+    for(int32_t i=0; i< 20; i++) //chars
+        for(int32_t j=0; j< 4; j++)
+        {
+            for(int32_t k=0; k< 4; k++)
+                profile->decks[i][j][k] = 0;
+            for(int32_t k=4; k< 8; k++)
+                profile->decks[i][j][k] = 1;
+            for(int32_t k=8; k< 12; k++)
+                profile->decks[i][j][k] = 2;
+            for(int32_t k=12; k< 16; k++)
+                profile->decks[i][j][k] = 3;
+            for(int32_t k=16; k< 20; k++)
+                profile->decks[i][j][k] = 4;
+        }
+
+}

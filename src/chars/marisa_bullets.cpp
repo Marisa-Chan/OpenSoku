@@ -4987,21 +4987,21 @@ void marisa_bullets::func10()
                 addbullet(chrt, NULL, 910, x, y, dir, 1, t, 3);
             }
             int32_t v700, v701;
-            switch ( get_game_difficulty() )
+            switch ( settings_get()->get_difficulty() )
             {
-            case 3:
+            case GAME_DIFF_LUNA:
                 v700 = 4;
                 v701 = 1;
                 break;
-            case 2:
+            case GAME_DIFF_HARD:
                 v700 = 3;
                 v701 = 1;
                 break;
-            case 1:
+            case GAME_DIFF_NORMAL:
                 v700 = 2;
                 v701 = 1;
                 break;
-            case 0:
+            case GAME_DIFF_EASY:
                 v700 = 1;
                 v701 = 0;
                 break;
@@ -5052,16 +5052,16 @@ void marisa_bullets::func10()
                 t[0] = 0.0;
                 t[1] = 0.0;
                 t[2] = 5.0;
-                switch ( get_game_difficulty() )
+                switch ( settings_get()->get_difficulty() )
                 {
-                case 3:
+                case GAME_DIFF_LUNA:
                     t[2] = 7.0;
                     break;
-                case 0:
-                case 1:
+                case GAME_DIFF_EASY:
+                case GAME_DIFF_NORMAL:
                     t[2] = 5.0;
                     break;
-                case 2:
+                case GAME_DIFF_HARD:
                     t[2] = 6.0;
                     break;
                 default:
@@ -5416,21 +5416,21 @@ void marisa_bullets::func10()
             int32_t frames;
             frames = 1;
             t[3] = 0.0;
-            switch ( get_game_difficulty() )
+            switch ( settings_get()->get_difficulty() )
             {
-            case 3:
+            case GAME_DIFF_LUNA:
                 frames = 2;
                 t[3] = 120.0;
                 break;
-            case 2:
+            case GAME_DIFF_HARD:
                 frames = 3;
                 t[3] = 60.0;
                 break;
-            case 1:
+            case GAME_DIFF_NORMAL:
                 frames = 6;
                 t[3] = 30.0;
                 break;
-            case 0:
+            case GAME_DIFF_EASY:
                 frames = 0;
                 break;
             default:
@@ -5544,21 +5544,21 @@ void marisa_bullets::func10()
                 int32_t frames = 0;
                 float t[4];
                 t[3] = 0.0;
-                switch ( get_game_difficulty() )
+                switch ( settings_get()->get_difficulty() )
                 {
-                case 3:
+                case GAME_DIFF_LUNA:
                     frames = 2;
                     t[3] = 300.0;
                     break;
-                case 2:
+                case GAME_DIFF_HARD:
                     frames = 3;
                     t[3] = 240.0;
                     break;
-                case 1:
+                case GAME_DIFF_NORMAL:
                     frames = 6;
                     t[3] = 180.0;
                     break;
-                case 0:
+                case GAME_DIFF_EASY:
                     frames = 0;
                     t[3] = 0.0;
                     break;
@@ -6567,16 +6567,16 @@ void marisa_bullets::set_seq_params()
         }
         if ( get_subseq()== 12 )
         {
-            switch ( get_game_difficulty() )
+            switch ( settings_get()->get_difficulty() )
             {
-            case 3:
+            case GAME_DIFF_LUNA:
                 field_36E = 240;
                 break;
-            case 2:
+            case GAME_DIFF_HARD:
                 field_36E = 180;
                 break;
-            case 0:
-            case 1:
+            case GAME_DIFF_EASY:
+            case GAME_DIFF_NORMAL:
                 field_36E = 120;
                 break;
             default:

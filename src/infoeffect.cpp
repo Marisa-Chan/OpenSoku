@@ -247,7 +247,7 @@ void c_infoef_fx::func10()
         {
             battle_ui_effect(103, x, y - 10.0, 1, 1);
             if ( weather_setted_get() == WEATHER_SUNNY && weather_get() != WEATHER_CLEAR )
-                if ( game_type_get() != GAME_TYPE_SCENARIO )
+                if ( settings_get()->get_gametype() != GAME_TYPE_SCENARIO )
                     battle_ui_effect(105, 320.0, 120.0, 1, 1);
         }
             if ( par2 == 0)
@@ -1742,7 +1742,7 @@ void c_infoef_fx::func10()
         {
             battle_ui_effect(213, x, y - 10.0, 1, 1);
             if ( weather_setted_get() == WEATHER_TEMPEST && weather_get() != WEATHER_CLEAR )
-                if ( game_type_get() != GAME_TYPE_SCENARIO )
+                if ( settings_get()->get_gametype() != GAME_TYPE_SCENARIO )
                     battle_ui_effect(215, 320.0, 120.0, 1, 1);
         }
         if ( par2 == 0.0 )
@@ -2950,7 +2950,7 @@ void c_infoef_fx::func10()
         {
             battle_ui_effect(303, x, y - 10.0, 1, 1);
             if ( weather_setted_get() == WEATHER_AURORA && weather_get() != WEATHER_CLEAR )
-                if ( game_type_get() != GAME_TYPE_SCENARIO)
+                if ( settings_get()->get_gametype() != GAME_TYPE_SCENARIO)
                     battle_ui_effect(305, 320.0, 120.0, 1, 1);
         }
         if ( par2 == 0.0 )

@@ -13,32 +13,7 @@ using namespace std;
 #define BKG_HOR_PAD   60.0
 #define BKG_VERT_POS  860.0
 
-enum GAME_TYPE
-{
-    GAME_TYPE_SCENARIO = 0,
-    GAME_TYPE_ARCADE = 1,
-    GAME_TYPE_P_VS_C = 2,
-    GAME_TYPE_P_VS_P = 3,
-    GAME_TYPE_HOST   = 4,
-    GAME_TYPE_CLIENT = 5,
-    GAME_TYPE_SPECTATE = 6,
-    GAME_TYPE_UNK      = 7,
-    GAME_TYPE_TRAINING = 8
-};
 
-enum GAMEPLAY_TYPE
-{
-    GAMEPLAY_NORMAL = 1,
-    GAMEPLAY_REPLAY = 2
-};
-
-enum GAME_DIFF_TYPE
-{
-    GAME_DIFF_EASY = 0,
-    GAME_DIFF_NORMAL = 1,
-    GAME_DIFF_HARD = 2,
-    GAME_DIFF_LUNA = 3
-};
 
 struct s_camera
 {
@@ -193,16 +168,6 @@ bool sub_479510(frame_box *a1, frame_box *a2, int32_t x, int32_t y);
 bool sub_4795A0(int32_t x11, int32_t y11, int32_t x12, int32_t y12, int32_t x21, int32_t y21, int32_t x22, int32_t y22);
 
 void scene_set_spell_img(uint8_t idx, gr_tex *img);
-
-
-GAME_TYPE game_type_get();
-void      game_type_set(GAME_TYPE type);
-
-GAME_DIFF_TYPE get_game_difficulty();
-void set_game_difficulty(GAME_DIFF_TYPE diff);
-
-GAMEPLAY_TYPE gameplay_type_get();
-void gameplay_type_set(GAMEPLAY_TYPE type);
 
 
 #endif // SCENE_H_INCLUDED

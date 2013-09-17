@@ -31,42 +31,6 @@ mtwist randomm;
 
 c_scene *scn = NULL;
 
-//0 - easy, 3 - Lunatic
-GAME_DIFF_TYPE game_difficulty = GAME_DIFF_LUNA;
-GAME_TYPE  game_type = GAME_TYPE_P_VS_P;
-GAMEPLAY_TYPE gameplay_type = GAMEPLAY_NORMAL;
-
-
-GAME_TYPE game_type_get()
-{
-    return game_type;
-}
-
-void game_type_set(GAME_TYPE type)
-{
-    game_type = type;
-}
-
-GAME_DIFF_TYPE get_game_difficulty()
-{
-    return game_difficulty;
-}
-
-void set_game_difficulty(GAME_DIFF_TYPE diff)
-{
-    game_difficulty = diff;
-}
-
-GAMEPLAY_TYPE gameplay_type_get()
-{
-    return gameplay_type;
-}
-
-void gameplay_type_set(GAMEPLAY_TYPE type)
-{
-    gameplay_type = type;
-}
-
 
 void draw_spell_images(spell_bkg_images *sbi)
 {
@@ -1403,7 +1367,7 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
 
         bool v10 = (frm2->fflags & FF_CH_ON_HIT) != 0 || (enm->field_56F && plr->chrt->combo_count == 0);
 
-        if ( game_type_get() == GAME_TYPE_TRAINING )
+        if ( settings_get()->get_gametype() == GAME_TYPE_TRAINING )
         {
             /*if ( !practice_params->dummy_counter ) // HACK
             {

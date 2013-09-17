@@ -13,7 +13,7 @@ id_screen screen_gameplay::update()
     switch (t)
     {
         case 1:
-        if ( gameplay_type_get() == GAMEPLAY_REPLAY )
+        if ( settings_get()->get_gameplay() == GAMEPLAY_REPLAY )
             return SCREEN_MAIN;
     /*
   if ( !game_type_get() || (v3 = game_type_get() == GAME_TYPE_ARCADE, result = 3, v3) )//HACK
@@ -47,6 +47,7 @@ bool screen_gameplay::draw()
 void screen_gameplay::onExit()
 {
     menu_get_fader()->clear_list();
+    menu_get_fader()->fade_out(0, 0, 0, 0, 0);
 }
 
 

@@ -60,9 +60,9 @@ int8_t c_scene_one::update()
     if (get_global_input()->rawHit(kC_Escape))
     {
         scene_play_sfx(41);
-        if (gameplay_type_get() == GAMEPLAY_REPLAY)
+        if (settings_get()->get_gameplay() == GAMEPLAY_REPLAY)
             return 2;
-        if (game_type_get() != GAME_TYPE_TRAINING)
+        if (settings_get()->get_gametype() != GAME_TYPE_TRAINING)
         {
             menu_add(new pause_menu(this));
         }
@@ -183,7 +183,7 @@ int8_t c_scene_one::state5_update()
     scene_subfunc5();
     if ( frames > 360 )
     {
-        if ( gameplay_type_get() == GAMEPLAY_REPLAY )
+        if ( settings_get()->get_gameplay() == GAMEPLAY_REPLAY )
           return 2;
 
         func13(6);
@@ -215,7 +215,7 @@ int8_t c_scene_one::state7_update()
 
 void c_scene_one::func11(char_c *pl)
 {
-    if ( game_type_get() != GAME_TYPE_TRAINING)
+    if ( settings_get()->get_gametype() != GAME_TYPE_TRAINING)
         pl->field_574 = 1;
 }
 

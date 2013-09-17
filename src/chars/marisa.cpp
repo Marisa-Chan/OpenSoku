@@ -616,6 +616,7 @@ void char_marisa::func10()
     case 210:
     case 211:
     case 212:
+        case 220:
     case 221:
     case 222:
         if ( get_subseq() == 0 )
@@ -645,9 +646,9 @@ void char_marisa::func10()
 
             if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
             {
-                if (sq == 208)
+                if (sq == 208 || sq == 220)
                 {
-                    //char_h_move( 0);
+                    char_h_move( 0);
                     v_inerc = 22.5;
                     v_force = 0.85;
                 }
@@ -780,7 +781,7 @@ void char_marisa::func10()
                         float xx = cos_deg(dash_angle) * 100.0 * dir + x;
                         scene_add_effect(this, 125, xx, yy, dir, 1);
                     }
-                    if ( (input->keyDown(INP_D) == 0 && field_7D6 > 10) || spell_energy <= 0 )
+                    if ( (keyDown(INP_D) == 0 && field_7D6 > 10) || spell_energy <= 0 )
                     {
                         reset_ofs();
                         angZ = 0;
@@ -878,7 +879,7 @@ void char_marisa::func10()
                 break;
             }
 
-            field_7D2 = atan2_deg(enemy->y + 100.0 - y, enemy->x - x * dir);
+            field_7D2 = atan2_deg(enemy->y + 100.0 - y, (enemy->x - x) * dir);
             if (get_subseq() == 5 || get_subseq() == 6)
                 v_inerc -= v_force;
             if (get_subseq() > 0 && get_subseq() < 5)
@@ -1023,43 +1024,6 @@ void char_marisa::func10()
                     set_seq(10);
                     reset_forces();
                 }
-            }
-        }
-        break;
-    case 220:
-        if ( get_subseq() == 0 )
-            sub10func();
-
-        if ( char_on_ground_down() )
-        {
-            set_seq(10);
-            y = getlvl_height();
-            reset_forces();
-        }
-        else
-        {
-            if ( char_on_ground_flag() || v_inerc > 0.0 )
-                field_522 = 2;
-            if ( get_subseq() > 0 )
-            {
-                v_inerc -= v_force;
-                if (v_inerc < -20.0)
-                    v_inerc = -20.0;
-            }
-
-            if ( get_subseq() == 1 && v_inerc < 4.0 )
-                set_subseq(2);
-
-            process();
-
-            if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
-            {
-                char_h_move(0.0);
-                v_inerc = 22.5;
-                v_force = 0.85;
-                field_49A = 0;
-
-                scene_add_effect(this, 63, x, y, dir, 1);
             }
         }
         break;
@@ -5600,30 +5564,30 @@ void char_marisa::func10()
         {
             if (get_subseq() == 1)
             {
-                switch ( get_game_difficulty() )
+                switch ( settings_get()->get_difficulty() )
                 {
-                case 3:
+                case GAME_DIFF_LUNA:
                     field_7D0 = 300;
                     field_7D2 = 290;
                     field_7D4 = 45;
                     field_7E4 = 0.25;
                     field_7E8 = 0.0;
                     break;
-                case 2:
+                case GAME_DIFF_HARD:
                     field_7D0 = 300;
                     field_7D2 = 270;
                     field_7D4 = 30;
                     field_7E4 = 0.5;
                     field_7E8 = 0.0;
                     break;
-                case 1:
+                case GAME_DIFF_NORMAL:
                     field_7D0 = 300;
                     field_7D2 = 240;
                     field_7D4 = 20;
                     field_7E4 = 1.0;
                     field_7E8 = 0.0;
                     break;
-                case 0:
+                case GAME_DIFF_EASY:
                     field_7D0 = 300;
                     field_7D2 = 120;
                     field_7D4 = 10;
@@ -5637,16 +5601,16 @@ void char_marisa::func10()
             if ( get_subseq() == 3 )
             {
                 play_sfx( 21);
-                switch ( get_game_difficulty() )
+                switch ( settings_get()->get_difficulty() )
                 {
-                case 3:
+                case GAME_DIFF_LUNA:
                     field_7D0 = 90;
                     break;
-                case 0:
-                case 1:
+                case GAME_DIFF_EASY:
+                case GAME_DIFF_NORMAL:
                     field_7D0 = 150;
                     break;
-                case 2:
+                case GAME_DIFF_HARD:
                     field_7D0 = 120;
                     break;
                 default:
@@ -5703,24 +5667,24 @@ void char_marisa::func10()
 
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
         {
-            switch ( get_game_difficulty() )
+            switch ( settings_get()->get_difficulty() )
             {
-            case 3:
+            case GAME_DIFF_LUNA:
                 field_7D0 = 120;
                 field_7DC = 5.0;
                 dash_angle = 40.0;
                 break;
-            case 2:
+            case GAME_DIFF_HARD:
                 field_7D0 = 120;
                 field_7DC = 4.0;
                 dash_angle = 40.0;
                 break;
-            case 1:
+            case GAME_DIFF_NORMAL:
                 field_7D0 = 150;
                 field_7DC = 3.0;
                 dash_angle = 45.0;
                 break;
-            case 0:
+            case GAME_DIFF_EASY:
                 field_7D0 = 180;
                 field_7DC = 3.0;
                 dash_angle = 45.0;
@@ -5746,16 +5710,16 @@ void char_marisa::func10()
                 float yy = sin_deg(-t[0]) * 50.0 + y - frm->extra1[5];
                 addbullet(this, NULL, 910, xx, yy, dir, 1, t, 3);
             }
-            switch ( get_game_difficulty() )
+            switch ( settings_get()->get_difficulty() )
             {
-            case 0:
-            case 1:
+            case GAME_DIFF_EASY:
+            case GAME_DIFF_NORMAL:
                 field_7D0 = 150;
                 break;
-            case 3:
+            case GAME_DIFF_LUNA:
                 field_7D0 = 90;
                 break;
-            case 2:
+            case GAME_DIFF_HARD:
                 field_7D0 = 120;
                 break;
             default:
@@ -5823,24 +5787,24 @@ void char_marisa::func10()
             if ( get_subseq() == 3 )
             {
                 v_force = 0.0;
-                switch ( get_game_difficulty() )
+                switch ( settings_get()->get_difficulty() )
                 {
-                case 3:
+                case GAME_DIFF_LUNA:
                     field_7D0 = 120;
                     field_7DC = 5.0;
                     dash_angle = 40.0;
                     break;
-                case 2:
+                case GAME_DIFF_HARD:
                     field_7D0 = 120;
                     field_7DC = 4.0;
                     dash_angle = 40.0;
                     break;
-                case 1:
+                case GAME_DIFF_NORMAL:
                     field_7D0 = 150;
                     field_7DC = 3.0;
                     dash_angle = 45.0;
                     break;
-                case 0:
+                case GAME_DIFF_EASY:
                     field_7D0 = 180;
                     field_7DC = 3.0;
                     dash_angle = 45.0;
@@ -5870,16 +5834,16 @@ void char_marisa::func10()
                     float yy = sin_deg(-t[0]) * 50.0 + y - frm->extra1[5];
                     addbullet(this, NULL, 910, xx, yy, dir, 1, t, 3);
                 }
-                switch ( get_game_difficulty() )
+                switch ( settings_get()->get_difficulty() )
                 {
-                case 0:
-                case 1:
+                case GAME_DIFF_EASY:
+                case GAME_DIFF_NORMAL:
                     field_7D0 = 150;
                     break;
-                case 3:
+                case GAME_DIFF_LUNA:
                     field_7D0 = 90;
                     break;
-                case 2:
+                case GAME_DIFF_HARD:
                     field_7D0 = 120;
                     break;
                 default:
@@ -5965,21 +5929,21 @@ void char_marisa::func10()
             set_seq(0);
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
         {
-            switch ( get_game_difficulty() )
+            switch ( settings_get()->get_difficulty() )
             {
-            case 3:
+            case GAME_DIFF_LUNA:
                 field_7D0 = 120;
                 field_7DC = 2.0;
                 break;
-            case 2:
+            case GAME_DIFF_HARD:
                 field_7D0 = 150;
                 field_7DC = 1.5;
                 break;
-            case 1:
+            case GAME_DIFF_NORMAL:
                 field_7D0 = 180;
                 field_7DC = 1.0;
                 break;
-            case 0:
+            case GAME_DIFF_EASY:
                 field_7D0 = 240;
                 field_7DC = 1.0;
                 break;
@@ -6007,12 +5971,12 @@ void char_marisa::func10()
 
             addbullet(this, NULL, 920, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 4);
 
-            switch ( get_game_difficulty() )
+            switch ( settings_get()->get_difficulty() )
             {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
+            case GAME_DIFF_EASY:
+            case GAME_DIFF_NORMAL:
+            case GAME_DIFF_HARD:
+            case GAME_DIFF_LUNA:
                 field_7D0 = 180;
                 break;
             default:
@@ -6143,21 +6107,21 @@ void char_marisa::func10()
         {
             if ( get_subseq() == 3 )
             {
-                switch ( get_game_difficulty() )
+                switch ( settings_get()->get_difficulty() )
                 {
-                case 3:
+                case GAME_DIFF_LUNA:
                     field_7D0 = 60;
                     field_7DC = 2.0;
                     break;
-                case 2:
+                case GAME_DIFF_HARD:
                     field_7D0 = 90;
                     field_7DC = 1.5;
                     break;
-                case 1:
+                case GAME_DIFF_NORMAL:
                     field_7D0 = 120;
                     field_7DC = 1.0;
                     break;
-                case 0:
+                case GAME_DIFF_EASY:
                     field_7D0 = 180;
                     field_7DC = 1.0;
                     break;
@@ -6176,12 +6140,12 @@ void char_marisa::func10()
 
                 char_frame *frm = get_pframe();
                 addbullet(this, NULL, 920, x + 200.0 + frm->extra1[4], y - frm->extra1[5], dir, 1, t, 4);
-                switch ( get_game_difficulty() )
+                switch ( settings_get()->get_difficulty() )
                 {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
+                case GAME_DIFF_EASY:
+                case GAME_DIFF_NORMAL:
+                case GAME_DIFF_HARD:
+                case GAME_DIFF_LUNA:
                     field_7D0 = 240;
                     break;
                 default:

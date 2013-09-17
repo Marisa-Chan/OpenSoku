@@ -165,6 +165,9 @@ menu_fader::~menu_fader()
         gr_delete_sprite(cursor[i]);
     }
 
+    for(uint32_t i=0; i<menu_stack.size(); i++)
+        delete menu_stack[i];
+
 }
 
 
@@ -172,67 +175,67 @@ void menu_fader::gears_update()
 {
     float angles[40];
 
-  angles[21] = main_gear_angle;
-  angles[20] = -main_gear_angle * gearAngles[20] / gearAngles[19];
-  angles[0] = -angles[20];
-  angles[8] = gearAngles[19] * angles[0] / gearAngles[7];
-  angles[9] = gearAngles[7] * -angles[8] / gearAngles[8];
-  angles[10] = gearAngles[8] * -angles[9] / gearAngles[9];
-  angles[11] = gearAngles[9] * -angles[10] / gearAngles[10];
-  angles[19] = gearAngles[10] * -angles[11] / gearAngles[18];
-  angles[12] = angles[19];
-  angles[15] = -angles[19] * gearAngles[11] / gearAngles[14];
-  angles[7] = gearAngles[14] * -angles[15] / gearAngles[6];
-  angles[18] = gearAngles[6] * -angles[7] / gearAngles[17];
-  angles[16] = angles[18];
-  angles[13] = -angles[18] * gearAngles[15] / gearAngles[12];
-  angles[0] = main_gear_angle * 0.25;
-  angles[2] = angles[0];
-  angles[5] = main_gear_angle * 0.5;
-  angles[17] = main_gear_angle;
-  angles[6] = angles[20];
-  angles[3] = angles[0] * gearAngles[5] / gearAngles[2];
-  angles[4] = gearAngles[2] * -angles[3] / gearAngles[3];
-  angles[1] = angles[4];
-  angles[14] = angles[7];
-  angles[28] = angles[0];
-  angles[22] = -angles[0] * gearAngles[27] / gearAngles[21];
-  angles[23] = gearAngles[21] * -angles[22] / gearAngles[22];
-  angles[24] = main_gear_angle;
-  angles[29] = -main_gear_angle * gearAngles[23] / gearAngles[28];
-  angles[32] = main_gear_angle;
-  angles[0] = -main_gear_angle;
-  angles[39] = angles[0] * gearAngles[31] / gearAngles[38];
-  angles[38] = gearAngles[38] * -angles[39] / gearAngles[37];
-  angles[31] = main_gear_angle;
-  angles[37] = angles[0] * gearAngles[30] / gearAngles[36];
-  angles[34] = gearAngles[36] * -angles[37] / gearAngles[33];
-  angles[36] = gearAngles[33] * -angles[34] / gearAngles[35];
-  angles[33] = gearAngles[35] * -angles[36] / gearAngles[32];
-  angles[30] = main_gear_angle;
-  angles[35] = main_gear_angle;
-  angles[27] = main_gear_angle;
-  angles[25] = angles[0] * gearAngles[26] / gearAngles[24];
-  angles[26] = gearAngles[24] * -angles[25] / gearAngles[25];
+    angles[21] = main_gear_angle;
+    angles[20] = -main_gear_angle * gearAngles[20] / gearAngles[19];
+    angles[0] = -angles[20];
+    angles[8] = gearAngles[19] * angles[0] / gearAngles[7];
+    angles[9] = gearAngles[7] * -angles[8] / gearAngles[8];
+    angles[10] = gearAngles[8] * -angles[9] / gearAngles[9];
+    angles[11] = gearAngles[9] * -angles[10] / gearAngles[10];
+    angles[19] = gearAngles[10] * -angles[11] / gearAngles[18];
+    angles[12] = angles[19];
+    angles[15] = -angles[19] * gearAngles[11] / gearAngles[14];
+    angles[7] = gearAngles[14] * -angles[15] / gearAngles[6];
+    angles[18] = gearAngles[6] * -angles[7] / gearAngles[17];
+    angles[16] = angles[18];
+    angles[13] = -angles[18] * gearAngles[15] / gearAngles[12];
+    angles[0] = main_gear_angle * 0.25;
+    angles[2] = angles[0];
+    angles[5] = main_gear_angle * 0.5;
+    angles[17] = main_gear_angle;
+    angles[6] = angles[20];
+    angles[3] = angles[0] * gearAngles[5] / gearAngles[2];
+    angles[4] = gearAngles[2] * -angles[3] / gearAngles[3];
+    angles[1] = angles[4];
+    angles[14] = angles[7];
+    angles[28] = angles[0];
+    angles[22] = -angles[0] * gearAngles[27] / gearAngles[21];
+    angles[23] = gearAngles[21] * -angles[22] / gearAngles[22];
+    angles[24] = main_gear_angle;
+    angles[29] = -main_gear_angle * gearAngles[23] / gearAngles[28];
+    angles[32] = main_gear_angle;
+    angles[0] = -main_gear_angle;
+    angles[39] = angles[0] * gearAngles[31] / gearAngles[38];
+    angles[38] = gearAngles[38] * -angles[39] / gearAngles[37];
+    angles[31] = main_gear_angle;
+    angles[37] = angles[0] * gearAngles[30] / gearAngles[36];
+    angles[34] = gearAngles[36] * -angles[37] / gearAngles[33];
+    angles[36] = gearAngles[33] * -angles[34] / gearAngles[35];
+    angles[33] = gearAngles[35] * -angles[36] / gearAngles[32];
+    angles[30] = main_gear_angle;
+    angles[35] = main_gear_angle;
+    angles[27] = main_gear_angle;
+    angles[25] = angles[0] * gearAngles[26] / gearAngles[24];
+    angles[26] = gearAngles[24] * -angles[25] / gearAngles[25];
 
-  for(int8_t i=0; i<39; i+=3)
-  {
-      uiGears[i]->setRotate(angles[i + 1]);
-      uiGears[i+1]->setRotate(angles[i + 2]);
-      uiGears[i+2]->setRotate(angles[i+3]);
-  }
+    for(int8_t i=0; i<39; i+=3)
+    {
+        uiGears[i]->setRotate(angles[i + 1]);
+        uiGears[i+1]->setRotate(angles[i + 2]);
+        uiGears[i+2]->setRotate(angles[i+3]);
+    }
 
-  angles[0] = main_gear_angle - 90.0;
-  uiGearRail[0]->setDXDY(cos_deg(angles[0]) * 43.0, sin_deg(angles[0]) * 43.0 + 43.0);
-  uiGearRail[1]->setDXDY(uiGearRail[0]->getDX(), uiGearRail[0]->getDY());
+    angles[0] = main_gear_angle - 90.0;
+    uiGearRail[0]->setDXDY(cos_deg(angles[0]) * 43.0, sin_deg(angles[0]) * 43.0 + 43.0);
+    uiGearRail[1]->setDXDY(uiGearRail[0]->getDX(), uiGearRail[0]->getDY());
 }
 
 void menu_fader::draw_cursor(float x, float y, float width)
 {
 
-  gr_setscale_sprite(cursor[0], width / 512.0, 1.0);
-  gr_setxy_sprite(cursor[0],x - 7.0, y);
-  gr_draw_sprite(cursor[0], gr_alpha, PLANE_GUI);
+    gr_setscale_sprite(cursor[0], width / 512.0, 1.0);
+    gr_setxy_sprite(cursor[0],x - 7.0, y);
+    gr_draw_sprite(cursor[0], gr_alpha, PLANE_GUI);
 
     gr_setrotate_sprite(cursor[1],main_gear_angle * 4.0);
     gr_setxy_sprite(cursor[1], x - 7.0, y + 8.0);
@@ -248,15 +251,13 @@ void menu_fader::update()
     if ( fade_alpha_delta != 0.0 )
     {
         fade_alpha += fade_alpha_delta;
-        if ( fade_alpha <= 1.0 )
+
+        if ( fade_alpha < 0.0 )
         {
-            if ( fade_alpha < 0.0 )
-            {
-                fade_alpha = 0.0;
-                fade_alpha_delta = 0.0;
-            }
+            fade_alpha = 0.0;
+            fade_alpha_delta = 0.0;
         }
-        else
+        else if ( fade_alpha > 1.0 )
         {
             fade_alpha = 1.0;
             fade_alpha_delta = 0.0;
@@ -303,6 +304,38 @@ void menu_fader::update()
                 //}
             }
         }
+    }
+}
+
+void menu_fader::fade_out(uint8_t r,uint8_t g,uint8_t b, uint8_t a, int32_t frames)
+{
+    fade_a = a;
+    fade_r = r;
+    fade_g = g;
+    fade_b = b;
+
+    if ( frames > 0 )
+        fade_alpha_delta = -1.0 / (double)frames;
+    else
+    {
+        fade_alpha = 0.0;
+        fade_alpha_delta = 0.0;
+    }
+}
+
+void menu_fader::fade_in(uint8_t r,uint8_t g,uint8_t b, uint8_t a, int32_t frames)
+{
+    fade_a = a;
+    fade_r = r;
+    fade_g = g;
+    fade_b = b;
+
+    if ( frames > 0 )
+        fade_alpha_delta = 1.0 / (double)frames;
+    else
+    {
+        fade_alpha = 0.0;
+        fade_alpha_delta = 0.0;
     }
 }
 
@@ -406,7 +439,7 @@ void menu_fader::draw_context()
 void menu_fader::draw()
 {
     if ( fade_alpha > 0.0 )
-        gr_draw_box(0,0,640,480, 255, 255 ,255, fade_alpha * 255, PLANE_GUI);
+        gr_draw_box(0,0,640,480, fade_r, fade_g ,fade_b, fade_alpha * fade_a, PLANE_GUI);
 
     draw_context();
 }
@@ -428,14 +461,18 @@ bool menu_fader::is_not_empty()
 
 void menu_fader::clear_list()
 {
-    menu_list_it it = menu_stack.begin();
-    while (it != menu_stack.end())
+    int32_t num = menu_stack.size() - saved_menus;
+    for (int32_t i =0; i < num; i++)
     {
-        delete *it;
-        it++;
+        delete menu_stack.back();
+        menu_stack.pop_back();
     }
 
-    menu_stack.clear();
+    if (menu_stack.size() == 0)
+    {
+        todelete = false;
+        context_alpha = 0;
+    }
 }
 
 
@@ -474,6 +511,9 @@ screen *screen_create(id_screen scrn)
 
     case SCREEN_MAIN:
         return new screen_main;
+
+    case SCREEN_LOADING:
+        return new screen_loading;
 
     case SCREEN_UNK:
     default:

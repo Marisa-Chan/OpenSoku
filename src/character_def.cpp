@@ -4076,12 +4076,12 @@ int8_t char_c::sub_469750(uint32_t enemu_aflags)
                     return 0;
             }*/
         }
-        else if ( get_game_difficulty() == 1 && scene_rand_rng(100) >= 95 )
+        else if ( settings_get()->get_difficulty() == GAME_DIFF_NORMAL && scene_rand_rng(100) >= 95 )
         {
             if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
                 return 0;
         }
-        else if ( get_game_difficulty() == 0 && scene_rand_rng(100) >= 70 )
+        else if ( settings_get()->get_difficulty() == GAME_DIFF_EASY && scene_rand_rng(100) >= 70 )
         {
             if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
                 return 0;
@@ -4626,7 +4626,7 @@ void char_c::sub_463200()
     }
 }
 
-void char_c::sub_4685C0(int a2)
+void char_c::sub_4685C0(int /*a2*/)
 {
     //HACK
 

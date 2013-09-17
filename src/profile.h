@@ -30,5 +30,8 @@ struct s_profile
 };
 
 s_profile *profile_load_from_file(const char *file);
+bool profile_load_from_file(const char *file, s_profile *profile);
+
+void profile_init_profile(s_profile *profile);
 
 #endif // PROFILE_H_INCLUDED

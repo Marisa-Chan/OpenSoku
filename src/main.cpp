@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 
     bullets_init_common();
 
-    char_c *marisa = new char_marisa(inp_createinput(INP_TYPE_BOTH));
+    char_c *marisa = new char_cirno(inp_createinput(INP_TYPE_BOTH));
 
     sprintf(buf,"%s/profile/profile1p.pf",path);
     s_profile *prof = profile_load_from_file(buf);
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 
     screen *scr = NULL;
     id_screen scr_id = SCREEN_UNK;
-    id_screen scr_next_id = SCREEN_TITLE;
+    id_screen scr_next_id = SCREEN_GAMEPLAY;
 
     fader       glob_fader;
     menu_fader  *loc_fader = menu_get_fader();

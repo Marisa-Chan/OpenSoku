@@ -9,6 +9,8 @@ class char_cirno: public char_c
 
     char_cirno(inp_ab *func,uint8_t pal = 0);
 
+    void sub_6E28C0();
+
     void set_seq_params();
 
     void func10();
