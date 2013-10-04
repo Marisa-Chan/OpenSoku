@@ -358,6 +358,7 @@ class char_c : public c_meta
     void sub_4834F0();
     void sub_4873B0(int32_t seq, int32_t smt);
     bool sub_469710();
+    bool sub_469730();
     void sub_4684F0();
     bool sub_468660(int8_t card);
     void sub_488E70();

@@ -35,6 +35,7 @@ char_c::char_c(inp_ab *func)
     //input__input__deque
 
     chrt = this;
+    chrt_changeable = this;
 
     //pat_map = (mapstru *)v4; //HACK?  USED PGP with global common seq's
     //char_images_vector       //HACK?  USED PGP with global common seq's
@@ -4044,6 +4045,35 @@ void char_c::char_xy_pos_calculation()
     }
 }
 
+float c_meta::sub_4634F0()
+{
+  float dmg = chrt->field_530 * enemy->field_534 * chrt_changeable->combo_rate;
+  if ( field_18C >= 0 && field_18C < 32 )
+      dmg *= (chrt->skills_1[field_18C] / 10.0 + 1.0);
+
+  char_frame *frm = get_pframe();
+  if ( frm->aflags & AF_UNK1000 )
+    dmg *= chrt->field_544;
+  if ( frm->aflags & AF_UNK800 )
+    dmg *= chrt->field_548;
+  if ( chrt_changeable->correction & 0x1 )
+    dmg *= 0.8;
+  if ( chrt_changeable->correction & 0x2 )
+    dmg *= 0.8;
+  if ( chrt_changeable->correction & 0x4 )
+    dmg *= 0.8;
+  if ( chrt_changeable->correction & 0x8 )
+    dmg *= 0.85;
+  if ( chrt_changeable->correction & 0x10 )
+    dmg *= 0.925;
+
+    if ( enemy->health < 0 )
+      dmg *= 0.7;
+    else if ( enemy->max_health > enemy->health )
+        dmg *= enemy->health / enemy->max_health * 0.3 + 0.7;
+  return dmg;
+}
+
 
 int8_t char_c::sub_469750(uint32_t enemu_aflags)
 {
@@ -4465,6 +4495,11 @@ void char_c::sub_4834F0()
 bool char_c::sub_469710()
 {
     return get_seq() >= 197 && get_seq() < 200;
+}
+
+bool char_c::sub_469730()
+{
+    return get_seq() >= 95 && get_seq() < 100;
 }
 
 void char_c::sub_4873B0(int32_t seq, int32_t smt)

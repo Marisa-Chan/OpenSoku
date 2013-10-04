@@ -33,6 +33,7 @@ OBJS =  \
 	menu/menus.cpp\
 	menu/title.cpp\
 	menu/pause.cpp\
+	menu/loading.cpp\
 	menu/gameplay.cpp\
 	main.cpp\
 	sfx.cpp\
@@ -53,7 +54,8 @@ OBJS =  \
 	cards.cpp\
 	battle_ui.cpp\
 	tail.cpp\
-	c_scene_one.cpp
+	c_scene_one.cpp\
+	settings.cpp
 
 linux: $(OBJS)
 	$(CXX) -O3 -Os --std=c++11 -pedantic -o $(TARGET) $(OBJS) $(LIBS) -I /usr/include/ 

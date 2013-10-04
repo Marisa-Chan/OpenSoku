@@ -125,6 +125,7 @@ void c_bullet::init(char_c *_parent, c_bullet *bul, int32_t idx, float _x, float
 {
 //    parent = _parent;
     chrt = _parent;
+    chrt_changeable = _parent;
     enemy = chrt->enemy;
 
     bul_parent = bul;

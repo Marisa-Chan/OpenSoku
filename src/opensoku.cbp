@@ -98,6 +98,8 @@
 		<Unit filename="menu/gameplay.h" />
 		<Unit filename="menu/pause.cpp" />
 		<Unit filename="menu/pause.h" />
+		<Unit filename="menu/loading.cpp" />
+		<Unit filename="menu/loading.h" />
 		<Unit filename="menu/menus.cpp" />
 		<Unit filename="menu/menus.h" />
 		<Unit filename="menu/title.cpp" />
@@ -116,6 +118,8 @@
 		<Unit filename="scene.h" />
 		<Unit filename="scene_fx.cpp" />
 		<Unit filename="scene_fx.h" />
+		<Unit filename="settings.cpp" />
+		<Unit filename="settings.h" />
 		<Unit filename="sfx.cpp" />
 		<Unit filename="sfx.h" />
 		<Unit filename="text.cpp" />

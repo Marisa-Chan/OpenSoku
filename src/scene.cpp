@@ -406,7 +406,7 @@ void c_scene::scene_subfunc1()
             {
                 c_bullet *blt = *iter;
 
-                if ( !blt->chrt->time_stop || blt->field_360)
+                if ( !blt->chrt_changeable->time_stop || blt->field_360)
                 {
                     if (blt->hit_stop)
                         blt->hit_stop--;
@@ -455,7 +455,7 @@ void c_scene::scene_subfunc2()
         {
             c_bullet *bul = *i;
 
-            int32_t plindex = bul->chrt->player_index;
+            int32_t plindex = bul->chrt_changeable->player_index;
 
             char_frame *frm = bul->get_pframe();
 
@@ -555,7 +555,7 @@ void c_scene::sub_47BE70(c_meta *plr, char_c *enm)
         if ( !enm->sub_4699E0() && enm->damage_limit < 100 )
         {
             char_frame *frm = plr->get_pframe();
-            if (plr != enm || (frm->aflags & AF_HITSALL) == 0 || plr->enemy->field_575 == 0)
+            if (plr->chrt != enm || (frm->aflags & AF_HITSALL) == 0 || plr->enemy->field_575 == 0)
             {
                 if (!plr->childs.empty())
                 {
@@ -663,7 +663,7 @@ void c_scene::sub_47BFA0(c_meta *plr, c_meta *enm)
 
 bool c_scene::sub_47AD00(c_meta *plr, c_meta *enm)
 {
-    if (plr->chrt != enm->chrt)
+    if (plr->chrt_changeable != enm->chrt_changeable)
     {
         if ( !(plr->get_pframe()->fflags & FF_UNK80000) || !sub_479D50(plr, enm))
             return false;
@@ -1329,7 +1329,7 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
     if ( !enm->char_is_shock() )
     {
         if ( enm->field_4C0 == 0 )
-            sub_478FC0(plr->chrt, enm);
+            sub_478FC0(plr->chrt_changeable, enm);
     }
     if ( enm->field_538 != 0.0 )
     {
@@ -1346,37 +1346,37 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
 
     if ( enm->field_4BC < 100 )
     {
-        enm->damage_limit += (plr->chrt->limit_multiply * frm->limit);
+        enm->damage_limit += (plr->chrt_changeable->limit_multiply * frm->limit);
         enm->field_19C = 15.0;
         enm->field_4C0 = 20;
 
-        plr->chrt->combo_limit = enm->damage_limit;
+        plr->chrt_changeable->combo_limit = enm->damage_limit;
         plr->field_190 = 7;
     }
     else
     {
 
         enm->field_4BC = 0;
-        enm->damage_limit += (plr->chrt->limit_multiply * frm->limit);
+        enm->damage_limit += (plr->chrt_changeable->limit_multiply * frm->limit);
         enm->field_4C0 = 0;
 
         plr->field_190 = 1;
-        plr->chrt->combo_limit = enm->damage_limit;
+        plr->chrt_changeable->combo_limit = enm->damage_limit;
 
         enm->reset_ofs();
 
-        bool v10 = (frm2->fflags & FF_CH_ON_HIT) != 0 || (enm->field_56F && plr->chrt->combo_count == 0);
+        bool v10 = (frm2->fflags & FF_CH_ON_HIT) != 0 || (enm->field_56F && plr->chrt_changeable->combo_count == 0);
 
         if ( settings_get()->get_gametype() == GAME_TYPE_TRAINING )
         {
             /*if ( !practice_params->dummy_counter ) // HACK
             {
-              if ( plr->chrt->combo_count == 0)
+              if ( plr->chrt_changeable->combo_count == 0)
                 v10 = true;
             }*/
         }
 
-        if ( plr->field_1A2 <= 0 || plr->chrt->combo_count != 0 )
+        if ( plr->field_1A2 <= 0 || plr->chrt_changeable->combo_count != 0 )
         {
             if ( frm->aflags & AF_CRASH_HIT )
             {
@@ -1468,18 +1468,18 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
     enm->hit_stop = frm->flag196_enemy;
     if ( v36 )
     {
-        plr->chrt->correction |= 0x20u;
+        plr->chrt_changeable->correction |= 0x20u;
         enm->field_1A4 = frm->velocity_x * 1.5;
         enm->field_1A8 = frm->velocity_y * 1.5;
 
         if (weather_get() == WEATHER_DUST_STORM)
         {
             weather_time_mul(3.0/4.0);
-            enm->field_4BA = (2 * frm->untech) * plr->chrt->combo_rate;
+            enm->field_4BA = (2 * frm->untech) * plr->chrt_changeable->combo_rate;
         }
         else
         {
-            enm->field_4BA = (3 * frm->untech / 2) * plr->chrt->combo_rate;
+            enm->field_4BA = (3 * frm->untech / 2) * plr->chrt_changeable->combo_rate;
         }
 
         dmg = plr->field_198 * (plr->sub_464240() / 3);
@@ -1489,36 +1489,36 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
     {
         enm->field_1A4 = frm->velocity_x;
         enm->field_1A8 = frm->velocity_y;
-        enm->field_4BA = (plr->chrt->combo_rate * frm->untech);
+        enm->field_4BA = (plr->chrt_changeable->combo_rate * frm->untech);
 
         dmg = plr->sub_464240();
     }
-    plr->chrt->add_card_energy2(plr->chrt->field_54C * (float)frm->card_energy);
-    if ( plr->chrt->field_554 <= 0.0 )
+    plr->chrt_changeable->add_card_energy2(plr->chrt_changeable->field_54C * (float)frm->card_energy);
+    if ( plr->chrt_changeable->field_554 <= 0.0 )
     {
         enm->add_card_energy2(dmg / 20);
     }
     else
     {
-        scn_p2[enm->player_index] -= plr->chrt->field_554 * plr->chrt->field_54C * (float)frm->card_energy;
+        scn_p2[enm->player_index] -= plr->chrt_changeable->field_554 * plr->chrt_changeable->field_54C * (float)frm->card_energy;
     }
 
-    plr->chrt->combo_count++;
+    plr->chrt_changeable->combo_count++;
 
-    plr->chrt->combo_rate *= (frm->proration + plr->chrt->field_540 * (1000.0 - frm->proration)) / 1000.0;
+    plr->chrt_changeable->combo_rate *= (frm->proration + plr->chrt_changeable->field_540 * (1000.0 - frm->proration)) / 1000.0;
 
-    plr->chrt->correction |= frm->unk20;
+    plr->chrt_changeable->correction |= frm->unk20;
 
-    plr->chrt->combo_damage += dmg;
+    plr->chrt_changeable->combo_damage += dmg;
 
-    if ( plr->chrt->field_550 > 0 )
+    if ( plr->chrt_changeable->field_550 > 0 )
     {
-        scn_p1[plr->chrt->player_index] += plr->chrt->field_550 * dmg;
+        scn_p1[plr->chrt_changeable->player_index] += plr->chrt_changeable->field_550 * dmg;
     }
 
-    if ( plr->chrt->field_558 > 0 )
+    if ( plr->chrt_changeable->field_558 > 0 )
     {
-        scn_p1[plr->chrt->player_index] -= plr->chrt->field_558 * dmg;
+        scn_p1[plr->chrt_changeable->player_index] -= plr->chrt_changeable->field_558 * dmg;
     }
 
     enm->field_188 += (enm->field_55C * dmg);
@@ -1555,7 +1555,7 @@ bool c_scene::sub_47B5A0(c_meta *plr, char_c *enm)
     if ( !enm->char_is_shock() )
     {
         if ( !enm->field_4C0 )
-            sub_478FC0(plr->chrt, enm);
+            sub_478FC0(plr->chrt_changeable, enm);
     }
     if ( !enm->field_575 )
     {
@@ -1565,11 +1565,11 @@ bool c_scene::sub_47B5A0(c_meta *plr, char_c *enm)
         if ( enm->health < 1 )
             enm->health = 1;
 
-        char_c * plr_c = plr->chrt;
+        char_c * plr_c = plr->chrt_changeable;
         if ( plr_c->field_550 > 0.0 )
             scn_p1[plr_c->player_index] += tmp * plr_c->field_550;
 
-        char_c * enm_c = enm->chrt;
+        char_c * enm_c = enm->chrt_changeable;
         if ( enm_c->field_558 > 0.0 )
             scn_p1[enm_c->player_index] -= tmp * plr_c->field_558;
     }
@@ -1634,7 +1634,7 @@ bool c_scene::sub_47B5A0(c_meta *plr, char_c *enm)
 
     enm->field_49D = 1;
 
-    char_c * plr_c = plr->chrt;
+    char_c * plr_c = plr->chrt_changeable;
 
     plr_c->add_card_energy2(plr_c->field_54C * (float)frm->card_energy2);
 
@@ -1655,23 +1655,23 @@ void c_scene::sub_47A980(c_meta *plr, char_c *enm)
     if ( !plr->chrt->field_56D )
         enm->crash_spell_borders(1);
 
-    sub_478FC0(plr->chrt, enm);
+    sub_478FC0(plr->chrt_changeable, enm);
 
     plr->field_190 = 2;
     plr->field_194 = plr->field_1BC - 1;
 
     plr->hit_stop = frm->flag196_char2;
-    plr->chrt->correction |= 4;
+    plr->chrt_changeable->correction |= 4;
 
     enm->hit_stop = frm->flag196_enemy2;
     enm->field_1A4 = frm->velocity_x;
     enm->field_1A8 = frm->velocity_y;
     enm->field_4BA = 0x4000;
 
-    plr->chrt->add_card_energy2(frm->card_energy2);
+    plr->chrt_changeable->add_card_energy2(frm->card_energy2);
 
-    if ( plr->chrt->field_554 > 0.0 )
-        scn_p2[enm->player_index] -= (frm->card_energy2 / 2) * plr->chrt->field_554;
+    if ( plr->chrt_changeable->field_554 > 0.0 )
+        scn_p2[enm->player_index] -= (frm->card_energy2 / 2) * plr->chrt_changeable->field_554;
 
 
     enm->flip_to_enemy();
@@ -1683,7 +1683,7 @@ void c_scene::sub_47A980(c_meta *plr, char_c *enm)
 bool c_scene::sub_47B8F0(c_meta *plr, char_c *enm)
 {
     char_frame *frm = plr->get_pframe();
-    char_c *plr_c = plr->chrt;
+    char_c *plr_c = plr->chrt_changeable;
 
     if ( !enm->char_is_shock() )
         if ( !enm->field_4C0 )
@@ -1877,6 +1877,45 @@ bool c_scene::sub_47AAA0(c_meta *plr, char_c *enm)
     return true;
 }
 
+void c_scene::sub_47A7E0(c_meta *plr, char_c *enemy, int32_t a4, int32_t a5, int32_t a6, int32_t a7)
+{
+  if ( !enemy->char_is_shock() && !enemy->field_4C0 )
+      sub_478FC0(plr->chrt_changeable, enemy);
+
+  int32_t dmg = a4;
+  if ( a7 )
+    dmg *= plr->sub_4634F0();
+
+  if ( plr->chrt_changeable->field_554 == 0.0 )
+    enemy->add_card_energy2(dmg / 20);
+
+  plr->chrt_changeable->combo_count += a6;
+
+  int32_t health_plus = 0;
+
+  plr->chrt_changeable->combo_rate = a5 / 1000.0 * plr->chrt_changeable->combo_rate;
+  plr->chrt_changeable->combo_damage += dmg;
+
+  if ( plr->chrt_changeable->field_550 > 0.0 )
+    health_plus = plr->chrt_changeable->field_550 * dmg;
+  if ( enemy->chrt_changeable->field_558 > 0.0 )
+    health_plus = plr->chrt_changeable->field_550 * dmg;
+
+    int32_t new_health = plr->chrt_changeable->health + health_plus;
+  if ( new_health >= plr->chrt_changeable->max_health )
+    new_health = plr->chrt_changeable->max_health;
+  if ( new_health <= 1 )
+    new_health = 1;
+  plr->chrt_changeable->health = new_health;
+  enemy->health -= dmg;
+  if ( enemy->health <= 0 )
+  {
+    enemy->health = 0;
+    func11(enemy);
+  }
+  enemy->field_188 += enemy->field_55C * a4;
+}
+
 bool c_scene::sub_47ABE0(c_meta *plr, c_meta *enm)
 {
     char_frame *frm = plr->get_pframe();
@@ -2018,6 +2057,5 @@ void scene_set_spell_img(uint8_t idx, gr_tex *img)
 {
     scn->spell_images.spell_image[idx] = img;
 }
-
 
 

@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     }
 
 
-    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_BOTH),7);
+    char_c *alice = new char_marisa(inp_createinput(INP_TYPE_KB),7);
 
     if (prof2)
     {

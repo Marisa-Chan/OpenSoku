@@ -117,6 +117,7 @@ class c_scene
     void upd_camera(char_c *p1,char_c *p2);
     void apply_camera();
     void set_start_flag(int8_t flag);
+    void sub_47A7E0(c_meta *plr, char_c *enemy, int32_t a4, int32_t a5, int32_t a6, int32_t a7);
 
     void reset_ibox();
 

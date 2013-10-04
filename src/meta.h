@@ -166,7 +166,7 @@ class c_meta : public moveable
     //mapstru* pat_map   ;      //0x160
     //int sounds_max_256;       //0x164
     char_c  *chrt;  //for char classes - it's self, for bullets - char caster  0x168
-    //char_class_vars *selft_pointer1?; //0x16C
+    char_c  *chrt_changeable;  //holder of parent class  0x16C
     char_c  *enemy;          //0x170
     c_meta  *parent;  //0x174
     metalst childs;         //0x178 + 0xC
@@ -244,6 +244,8 @@ class c_meta : public moveable
     float sub_464270();
     void sub_4647B0(c_meta *enm);
     void sub_464890(c_meta *enm);
+    float sub_4634F0();
+    void sub_464110(int32_t a2, int32_t a3, int32_t a4, int32_t a5);
 
     void box_coll_get(box_box *box);
 

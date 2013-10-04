@@ -4,6 +4,7 @@
 #include "framedata.h"
 #include "meta.h"
 #include "character_def.h"
+#include "scene.h"
 
 
 c_meta::c_meta(char_graph *_pgp)
@@ -36,6 +37,7 @@ c_meta::c_meta(char_graph *_pgp)
     field_18C = -1;
     field_1AC = 1;
     chrt = NULL;
+    chrt_changeable = NULL;
     enemy = NULL;
     parent = NULL;
 
@@ -234,7 +236,7 @@ void c_meta::sub_464890(c_meta *enm)
         mt = mt->parent;
 
     dir *= -1;
-    chrt = enm->chrt;
+    chrt_changeable = enm->chrt_changeable;
     field_1A0++;
     enemy = enm->enemy;
 
@@ -245,7 +247,7 @@ void c_meta::sub_464890(c_meta *enm)
         c_meta *mt = *i;
 
         mt->dir *= -1;
-        mt->chrt = enm->chrt;
+        mt->chrt_changeable = enm->chrt_changeable;
         mt->enemy = enm->enemy;
         mt->field_1A0++;
     }
@@ -274,9 +276,10 @@ double c_meta::sub_4636B0()
     float dmg = 0;
 
     char_c * chr = chrt;
+    char_c * chr2 = chrt_changeable;
     char_c * enm = enemy;
 
-    dmg = chr->field_530 * enm->field_534 * chr->combo_rate;
+    dmg = chr->field_530 * enm->field_534 * chr2->combo_rate;
 
     if ( enm->field_1B4 >= 0 )
     {
@@ -288,11 +291,8 @@ double c_meta::sub_4636B0()
         dmg *= 0.7;
     }
 
-    /*if ( plr->field_18C >= 0 ) //Hack
-    {
-      if ( plr->field_18C < 32 )
-        dmg *= (*(&chr->field_6A4 + plr->field_18C) / 10.0 + 1.0);
-    }*/
+    if ( field_18C >= 0 && field_18C < 32 )
+        dmg *= chr->skills_1[field_18C] / 10.0 + 1.0;
 
     uint32_t aflgs = get_pframe()->aflags;
 
@@ -301,15 +301,15 @@ double c_meta::sub_4636B0()
     if ( aflgs & AF_UNK800 )
         dmg *= chr->field_548;
 
-    if ( chr->correction & 1 )
+    if ( chr2->correction & 1 )
         dmg *= 0.8;
-    if ( chr->correction & 2 )
+    if ( chr2->correction & 2 )
         dmg *= 0.8;
-    if ( chr->correction & 4 )
+    if ( chr2->correction & 4 )
         dmg *= 0.8;
-    if ( chr->correction & 8 )
+    if ( chr2->correction & 8 )
         dmg *= 0.85;
-    if ( chr->correction & 0x10 )
+    if ( chr2->correction & 0x10 )
         dmg *= 0.925;
     return dmg;
 }
@@ -597,4 +597,9 @@ void c_meta::scn_char_ss2()
     }
     else
         pcoll_box = NULL;
+}
+
+void c_meta::sub_464110(int32_t a2, int32_t a3, int32_t a4, int32_t a5)
+{
+  scene_get_scene()->sub_47A7E0(this, enemy, a2, a3, a4, a5);
 }
