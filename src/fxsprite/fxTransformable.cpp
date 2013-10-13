@@ -160,6 +160,12 @@ void fxTransformable::scale(const Vector2f& factor)
     setScale(m_scale.x * factor.x, m_scale.y * factor.y);
 }
 
+void fxTransformable::setTransform(const fxTransform &trans)
+{
+    m_transform = trans;
+    m_transformNeedUpdate = false;
+}
+
 const fxTransform& fxTransformable::getTransform() const
 {
     if (m_transformNeedUpdate)

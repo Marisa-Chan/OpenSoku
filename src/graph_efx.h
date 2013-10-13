@@ -48,6 +48,8 @@ class gfx_sprite
 {
     protected:
 
+    gr_transform m_transform;
+
     gr_sprite  *sprite;
     gr_blend    blend;
 
@@ -64,8 +66,6 @@ class gfx_sprite
     gfx_subseq   *_cur_sseq;
 
     void frame_val_set();
-
-    bool y_axis_up;
 
     public:
 
@@ -88,15 +88,9 @@ class gfx_sprite
     bool set_subseq(uint32_t idx);
     bool process(bool ignore_loop = false);
 
-    void setXY(float x, float y);
-    void setScale(float x, float y);
-    void setOrigin(float x, float y);
     void setBlend(gr_blend blend);
     void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-    void setRotate(float angl);
-    void setRotate(float x, float y, float z);
-
-    void set_Y_to_up(bool up);
+    void setTransform(gr_transform *trans);
 
     void setSkew(float x, float y);
 
@@ -136,8 +130,6 @@ class gfx_meta: public moveable
     uint32_t get_seq();
 
     void setSkew(float x, float y);
-
-    void set_Y_to_up(bool up);
 
     bool process(bool ignore_loop = false);
 };

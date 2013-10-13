@@ -1060,7 +1060,7 @@ void cirno_bullets::func10()
                 tmp[0] = scene_rand_rngf(360);
                 tmp[1] = 2.0;
                 tmp[2] = 4.0;
-                addbullet(chrt,NULL, 808, x, y - frm->extra1[5] * scaleY, dir, 1, tmp, 3);
+                addbullet(chrt,NULL, 808, x, y - get_pframe()->extra1[5] * scaleY, dir, 1, tmp, 3);
             }
             if ( (chrt->get_seq() != 416 && chrt->get_seq() != 412) || chrt->get_subseq() == 3 )
             {
@@ -1377,6 +1377,15 @@ void cirno_bullets::func10()
                     h_inerc *= 0.5;
                 }
             }
+            if ( x > 1380.0 || x < -100.0 || y > 1000.0 || y < -100.0 )
+            {
+                active = false;
+                break;
+            }
+            x += dir * h_inerc;
+            y += v_inerc;
+            if ( process() )
+                active = false;
             break;
         case 10:
             angZ += addition[0];
@@ -1738,8 +1747,6 @@ void cirno_bullets::func10()
                     active = false;
                     break;
                 }
-                x += dir * h_inerc;
-                y += v_inerc;
             }
             else
             {
@@ -1764,9 +1771,9 @@ void cirno_bullets::func10()
                     active = false;
                     break;
                 }
-                x += dir * h_inerc;
-                y += v_inerc;
             }
+            x += dir * h_inerc;
+            y += v_inerc;
         }
         else if ( get_subseq() == 1 )
         {
@@ -2511,8 +2518,8 @@ void cirno_bullets::func10()
                         tmp[1] = scene_rand_rngf(5) + 5.0;
                         tmp[2] = 2.0;
 
-                        float xx = cos_deg(-tmp[0]) * tmp[1] * 50.0 * dir + x;
-                        float yy = sin_deg(-tmp[0]) * tmp[1] * 50.0 + y;
+                        float xx = cos_deg(-tmp[0]) * 50.0 * dir + x;
+                        float yy = sin_deg(-tmp[0]) * 50.0 + y;
 
                         addbullet(chrt, NULL, 820, xx, yy, dir, 1, tmp, 3);
                     }
@@ -2542,8 +2549,8 @@ void cirno_bullets::func10()
                     tmp[1] = scene_rand_rngf(7) + 8.0;
                     tmp[2] = (scene_rand_rng(10) > 5) + 8.0;
 
-                    float xx = cos_deg(-tmp[0]) * 5.0 * scaleX * dir + x;
-                    float yy = sin_deg(-tmp[0]) * 5.0 * scaleY + y + 100.0;
+                    float xx = cos_deg(-tmp[0]) * tmp[1] * 5.0 * scaleX * dir + x;
+                    float yy = sin_deg(-tmp[0]) * tmp[1] * 5.0 * scaleY + y + 100.0;
                     addbullet( chrt,NULL, 820, xx, yy, dir, 1, tmp,3);
                 }
                 for (int32_t i=0; i<6; i++)
@@ -2569,7 +2576,7 @@ void cirno_bullets::func10()
                 {
                     char_frame *frm = chrt->get_pframe();
                     x = frm->extra1[4] * dir + chrt->x;
-                    x = chrt->y - frm->extra1[5];
+                    y = chrt->y - frm->extra1[5];
                     if ( chrt->get_subseq() == 2 && chrt->get_frame() == 1 )
                     {
                         field_36C = 1;
@@ -2585,8 +2592,8 @@ void cirno_bullets::func10()
                         tmp[1] = scene_rand_rngf(5) + 5.0;
                         tmp[2] = 2.0;
 
-                        float xx = cos_deg(-tmp[0]) * tmp[1] * 50.0 * dir + x;
-                        float yy = sin_deg(-tmp[0]) * tmp[1] * 50.0 + y;
+                        float xx = cos_deg(-tmp[0]) * 50.0 * dir + x;
+                        float yy = sin_deg(-tmp[0]) * 50.0 + y;
 
                         addbullet(chrt, NULL, 820, xx, yy, dir, 1, tmp, 3);
                     }
@@ -2617,8 +2624,8 @@ void cirno_bullets::func10()
                     tmp[1] = scene_rand_rngf(2) + 13.0;
                     tmp[2] = 2.0;
 
-                    float xx = cos_deg(-tmp[0]) * tmp[1] * 50.0 * dir + x;
-                    float yy = sin_deg(-tmp[0]) * tmp[1] * 50.0 + y + 100.0;
+                    float xx = cos_deg(-tmp[0]) * 50.0 * dir + x;
+                    float yy = sin_deg(-tmp[0]) * 50.0 + y + 100.0;
 
                     addbullet(chrt, NULL, 820, xx, yy, dir, 1, tmp, 3);
                 }
@@ -2797,7 +2804,7 @@ void cirno_bullets::func10()
                 tmp[1] = scene_rand_rngf(50) * 0.01 + 0.75;
                 tmp[2] = 2.0;
 
-                addbullet(chrt, NULL, 821, x, y, dir, 1, tmp, 3);
+                addbullet(chrt, this, 821, x, y, dir, 1, tmp, 3);
             }
             if ( get_elaps_frames() % 15 == 0 )
             {
@@ -2806,7 +2813,7 @@ void cirno_bullets::func10()
                 tmp[1] = 0.0;
                 tmp[2] = 1.0;
 
-                addbullet(chrt, NULL, 821, x, y, dir, 1, tmp, 3);
+                addbullet(chrt, this, 821, x, y, dir, 1, tmp, 3);
             }
 
             float yy = y - enemy->y - 100.0;
@@ -2887,6 +2894,7 @@ void cirno_bullets::func10()
                     scaleX = addition[1];
                     field_36C = 1;
                 }
+                scaleY = scaleX;
             }
             else
             {
@@ -3973,7 +3981,7 @@ void cirno_bullets::func10()
             }
             x = (cos_deg(-addition[0]) * field_378 + 58.0) * dir + chrt->x;
             y = sin_deg(-addition[0]) * field_378 + chrt->y + 107.0;
-            if ( chrt->hit_stop == 0 )
+            if ( chrt->hit_stop <= 0 )
             {
                 field_36C++;
                 field_378 += addition[1];
@@ -4034,7 +4042,7 @@ void cirno_bullets::func10()
             c_A -= 10;
             x += dir * h_inerc;
             y += v_inerc;
-            if ( chrt->hit_stop == 0 )
+            if ( chrt->hit_stop <= 0 )
                 if ( process() )
                     active = false;
             break;
@@ -4855,7 +4863,7 @@ void cirno_bullets::func10()
 
                 field_378 += 1.0;
             }
-            if ( get_elaps_frames() != 180 )
+            if ( get_elaps_frames() == 180 )
             {
                 chrt->play_sfx( 15);
                 for(int32_t i=0; i<18; i++)
@@ -6336,14 +6344,17 @@ void cirno_bullets::func10()
                 y = chrt->y;
                 if ( chrt->get_frame() == 10 )
                     field_36C = 1;
-                break;
             }
-            if ( c_A < 10 )
+            else
+            {
+                if ( c_A < 10 )
             {
                 active = false;
                 break;
             }
             c_A -= 10;
+            }
+
             if ( process() )
                 active = false;
             if ( get_frame_time() == 0 && get_frame() == 1 )
@@ -8050,8 +8061,8 @@ void cirno_bullets::set_seq_params()
         field_194 = 10;
         break;
     case 804:
-      field_194 = 1;
-      break;
+        field_194 = 1;
+        break;
     case 805:
         set_subseq(addition[2]);
         if ( get_subseq() == 0 )
@@ -8392,12 +8403,12 @@ void cirno_bullets::set_seq_params()
         break;
     case 816:
     case 817:
- set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-        field_378 = 0.5;
-      if ( get_subseq() == 1 )
-      {
-          for(int32_t i=0; i<3; i++)
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+            field_378 = 0.5;
+        if ( get_subseq() == 1 )
+        {
+            for(int32_t i=0; i<3; i++)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(360);
@@ -8406,28 +8417,28 @@ void cirno_bullets::set_seq_params()
                 addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
             }
 
-        float tmp[3];
+            float tmp[3];
             tmp[0] = scene_rand_rngf(360);
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rng(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -8435,27 +8446,27 @@ void cirno_bullets::set_seq_params()
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 || get_subseq() == 6 )
-        field_194 = 0;
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-          set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 5 || get_subseq() == 6 )
+            field_194 = 0;
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             field_36C = scene_rand_rngf(10);
             scaleY = scaleX = scene_rand_rngf(100) * 0.01 + 1.0;
-      }
-      break;
+        }
+        break;
     case 820:
-      field_18C = 2;
-      field_194 = 1;
-      set_subseq( addition[2]);
-      if ( get_subseq() == 0 )
-        field_378 = 0.5;
-      if ( get_subseq() == 1 )
-      {
-          for(int32_t i=0; i<3; i++)
+        field_18C = 2;
+        field_194 = 1;
+        set_subseq( addition[2]);
+        if ( get_subseq() == 0 )
+            field_378 = 0.5;
+        if ( get_subseq() == 1 )
+        {
+            for(int32_t i=0; i<3; i++)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(360);
@@ -8464,28 +8475,28 @@ void cirno_bullets::set_seq_params()
                 addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
             }
 
-        float tmp[3];
+            float tmp[3];
             tmp[0] = scene_rand_rngf(360);
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rng(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -8493,88 +8504,88 @@ void cirno_bullets::set_seq_params()
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 )
-      {
-        if ( chrt->skills_1[2] >= 2 )
-          set_frame( 1);
-        if ( chrt->skills_1[2] >= 4 )
-          set_frame( 2);
-        field_194 = 0;
-        scaleX = 0.25;
-        scaleY = 0.25;
-      }
-      if ( get_subseq() == 6 )
-      {
-        field_194 = 1;
-        angZ = scene_rand_rngf(360);
-        set_vec_speed(addition[0], addition[1]);
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleX = scaleY = scene_rand_rng(125) * 0.01 + 0.25;
-      }
-      if ( get_subseq() == 11 )
-      {
-        field_194 = 1;
-        /*sub_465E50(&meta, 995);
-        field_154->field_F8 = 10.0;
-        field_154->field_FC = 10.0;
-        field_154->field_E8 = x;
-        field_154->field_EC = getlvl_height();
-        LOBYTE(field_154->field_104) = dir;*/
-        scaleY = scaleX = scene_rand_rng(20) * 0.01 + 0.8;
-      }
-      break;
+        }
+        if ( get_subseq() == 5 )
+        {
+            if ( chrt->skills_1[2] >= 2 )
+                set_frame( 1);
+            if ( chrt->skills_1[2] >= 4 )
+                set_frame( 2);
+            field_194 = 0;
+            scaleX = 0.25;
+            scaleY = 0.25;
+        }
+        if ( get_subseq() == 6 )
+        {
+            field_194 = 1;
+            angZ = scene_rand_rngf(360);
+            set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleX = scaleY = scene_rand_rng(125) * 0.01 + 0.25;
+        }
+        if ( get_subseq() == 11 )
+        {
+            field_194 = 1;
+            /*sub_465E50(&meta, 995);
+            field_154->field_F8 = 10.0;
+            field_154->field_FC = 10.0;
+            field_154->field_E8 = x;
+            field_154->field_EC = getlvl_height();
+            LOBYTE(field_154->field_104) = dir;*/
+            scaleY = scaleX = scene_rand_rng(20) * 0.01 + 0.8;
+        }
+        break;
     case 821:
-      field_18C = 6;
-      set_subseq( addition[2]);
-      if ( get_subseq() == 0 )
-        set_vec_speed(addition[0], addition[1]);
-      if ( get_subseq() == 1 )
-        angZ = addition[0];
-      if ( get_subseq() == 2 )
-      {
-        scaleX = 0.1;
-        scaleY = 0.1;
-        angZ = addition[0];
-      }
-      if ( get_subseq() == 3 )
-      {
-        angZ = addition[0];
-        set_vec_speed(addition[0], addition[1]);
-        field_194 = 1;
-      }
-      if ( get_subseq() == 4 || get_subseq() == 5 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(20) - 10.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 6 )
-      {
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(6) - 3.0;
-        scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      break;
+        field_18C = 6;
+        set_subseq( addition[2]);
+        if ( get_subseq() == 0 )
+            set_vec_speed(addition[0], addition[1]);
+        if ( get_subseq() == 1 )
+            angZ = addition[0];
+        if ( get_subseq() == 2 )
+        {
+            scaleX = 0.1;
+            scaleY = 0.1;
+            angZ = addition[0];
+        }
+        if ( get_subseq() == 3 )
+        {
+            angZ = addition[0];
+            set_vec_speed(addition[0], addition[1]);
+            field_194 = 1;
+        }
+        if ( get_subseq() == 4 || get_subseq() == 5 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(20) - 10.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 6 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(6) - 3.0;
+            scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
+        }
+        break;
     case 822:
-      field_18C = 10;
-      set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-      {
-        field_194 = 1;
-        set_vec_speed(addition[0], addition[1]);
-      }
-      if ( get_subseq() == 1 )
-      {
-          float tmp[3];
+        field_18C = 10;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            field_194 = 1;
+            set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
             for (int32_t i=0; i<12; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
@@ -8587,24 +8598,24 @@ void cirno_bullets::set_seq_params()
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet( chrt,NULL, 810, x, y, dir, 1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 5 )
-      {
-        v_inerc = 4.0;
-        for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 5 )
+        {
+            v_inerc = 4.0;
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -8612,58 +8623,58 @@ void cirno_bullets::set_seq_params()
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
             }
-        enemy->set_seq(102);
-        enemy->reset_forces();
-      }
-      if ( get_subseq() == 6 )
-      {
-        field_194 = 1;
-        angZ = scene_rand_rngf(360);
-        set_vec_speed(addition[0], addition[1]);
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(125) * 0.01 + 0.25;
-      }
-      break;
+            enemy->set_seq(102);
+            enemy->reset_forces();
+        }
+        if ( get_subseq() == 6 )
+        {
+            field_194 = 1;
+            angZ = scene_rand_rngf(360);
+            set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(125) * 0.01 + 0.25;
+        }
+        break;
     case 825:
-      field_18C = 3;
-      set_subseq( addition[2]);
-      if ( get_subseq() == 0 )
-        field_194 = 1;
-      if ( get_subseq() == 1 || get_subseq() == 2 )
-      {
-        scaleX = 0.0;
-        scaleY = 0.0;
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(4) - 2.0;
-        field_37C = scene_rand_rngf(15) * 0.1 + 0.5;
-      }
-      if ( get_subseq() == 3 )
-      {
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(10) - 5.0;
-        scaleY = scaleX = scene_rand_rngf(40) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(6) - 3.0;
-        scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      break;
+        field_18C = 3;
+        set_subseq( addition[2]);
+        if ( get_subseq() == 0 )
+            field_194 = 1;
+        if ( get_subseq() == 1 || get_subseq() == 2 )
+        {
+            scaleX = 0.0;
+            scaleY = 0.0;
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(4) - 2.0;
+            field_37C = scene_rand_rngf(15) * 0.1 + 0.5;
+        }
+        if ( get_subseq() == 3 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(10) - 5.0;
+            scaleY = scaleX = scene_rand_rngf(40) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 4 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(6) - 3.0;
+            scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
+        }
+        break;
     case 826:
-      field_18C = 7;
-      set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-        field_378 = 0.5;
-      if ( get_subseq() == 1 )
-      {
-        float tmp[3];
+        field_18C = 7;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+            field_378 = 0.5;
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
             for (int32_t i=0; i<3; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
@@ -8676,23 +8687,23 @@ void cirno_bullets::set_seq_params()
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet( chrt,NULL, 810, x, y, dir, 1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -8700,68 +8711,68 @@ void cirno_bullets::set_seq_params()
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 )
-      {
-        field_194 = 0;
-        /*sub_465E50(&meta, 995); //HACK
-        field_154->field_F8 = 10.0;
-        field_154->field_FC = 10.0;
-        field_154->field_E8 = x;
-        v225 = y + 120.0;
-        field_154->field_EC = v225;
-        LOBYTE(field_154->field_104) = dir;*/
-        angZ = addition[0] + 90.0;
-        scaleY = scaleX = scene_rand_rngf(20) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 6 )
-      {
-        field_194 = 0;
-        /*sub_465E50(&meta, 995); // HACK
-        field_154->field_F8 = 10.0;
-        field_154->field_FC = 10.0;
-        field_154->field_E8 = x;
-        v227 = y + 120.0;
-        field_154->field_EC = v227;
-        LOBYTE(field_154->field_104) = dir;*/
-        angZ = addition[0];
-        scaleX = scene_rand_rngf(20) * 0.01 + 0.8;
-        scaleY = scaleX * 0.5;
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 11 )
-        field_194 = 1;
-      break;
+        }
+        if ( get_subseq() == 5 )
+        {
+            field_194 = 0;
+            /*sub_465E50(&meta, 995); //HACK
+            field_154->field_F8 = 10.0;
+            field_154->field_FC = 10.0;
+            field_154->field_E8 = x;
+            v225 = y + 120.0;
+            field_154->field_EC = v225;
+            LOBYTE(field_154->field_104) = dir;*/
+            angZ = addition[0] + 90.0;
+            scaleY = scaleX = scene_rand_rngf(20) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 6 )
+        {
+            field_194 = 0;
+            /*sub_465E50(&meta, 995); // HACK
+            field_154->field_F8 = 10.0;
+            field_154->field_FC = 10.0;
+            field_154->field_E8 = x;
+            v227 = y + 120.0;
+            field_154->field_EC = v227;
+            LOBYTE(field_154->field_104) = dir;*/
+            angZ = addition[0];
+            scaleX = scene_rand_rngf(20) * 0.01 + 0.8;
+            scaleY = scaleX * 0.5;
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 11 )
+            field_194 = 1;
+        break;
     case 827:
-      field_18C = 11;
-      set_subseq(addition[2]);
-      if ( get_subseq() == 1 || get_subseq() == 2 )
-      {
-        field_378 = scene_rand_rngf(11) - 5.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(6) * 0.1 + 0.8;
-        set_vec_speed(addition[0], addition[1]);
-      }
-      if ( get_subseq() == 3 )
-      {
-        field_378 = scene_rand_rngf(5) - 2.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
-      }
-      if ( get_subseq() == 4 )
-      {
-        field_378 = scene_rand_rngf(11) - 5.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(3) * 0.1 + 0.8;
-      }
-      break;
+        field_18C = 11;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 1 || get_subseq() == 2 )
+        {
+            field_378 = scene_rand_rngf(11) - 5.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(6) * 0.1 + 0.8;
+            set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            field_378 = scene_rand_rngf(5) - 2.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
+        }
+        if ( get_subseq() == 4 )
+        {
+            field_378 = scene_rand_rngf(11) - 5.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(3) * 0.1 + 0.8;
+        }
+        break;
     case 848:
         angZ = addition[0];
         set_subseq(addition[2]);
@@ -8814,29 +8825,29 @@ void cirno_bullets::set_seq_params()
         }
         break;
     case 849:
-      angZ = addition[0];
-      set_subseq(addition[2]);
-      if ( get_subseq() == 2 )
-      {
-        scaleX = 2.0;
-        scaleY = 2.0;
-      }
-      if ( get_subseq() == 3 || get_subseq() == 4 || get_subseq() == 5 )
-      {
-        field_18C = 5;
-        field_194 = 5;
-      }
-      break;
+        angZ = addition[0];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 2 )
+        {
+            scaleX = 2.0;
+            scaleY = 2.0;
+        }
+        if ( get_subseq() == 3 || get_subseq() == 4 || get_subseq() == 5 )
+        {
+            field_18C = 5;
+            field_194 = 5;
+        }
+        break;
     case 850:
-      set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-      {
-        field_360 = 1;
-        field_378 = 0.5;
-      }
-      if ( get_subseq() == 1 )
-      {
-        float tmp[3];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            field_360 = 1;
+            field_378 = 0.5;
+        }
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
             for (int32_t i=0; i<3; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
@@ -8849,24 +8860,24 @@ void cirno_bullets::set_seq_params()
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet( chrt,NULL, 850, x, y, dir, 1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        field_360 = 1;
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            field_360 = 1;
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -8874,29 +8885,29 @@ void cirno_bullets::set_seq_params()
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 850, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 )
-      {
-        angZ = addition[0];
-        set_vec_speed(addition[0], addition[1]);
-        field_194 = 1;
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-       set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      break;
+        }
+        if ( get_subseq() == 5 )
+        {
+            angZ = addition[0];
+            set_vec_speed(addition[0], addition[1]);
+            field_194 = 1;
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        break;
     case 851:
-     set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-        field_378 = 0.5;
-      if ( get_subseq() == 1 )
-      {
-          float tmp[3];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+            field_378 = 0.5;
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
             for (int32_t i=0; i<12; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
@@ -8909,23 +8920,23 @@ void cirno_bullets::set_seq_params()
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet( chrt,NULL, 810, x, y, dir, 1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -8933,57 +8944,57 @@ void cirno_bullets::set_seq_params()
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 810, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 )
-      {
-        field_194 = 0;
-        /*sub_465E50(&meta, 995); //HACK
-        field_154->field_F8 = 10.0;
-        field_154->field_FC = 10.0;
-        field_154->field_E8 = x;
-        v295 = y + 120.0;
-        field_154->field_EC = v295;
-        LOBYTE(field_154->field_104) = dir;*/
-        angZ = addition[0] + 90.0;
-        scaleX = scaleY = scene_rand_rngf(20) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 6 )
-      {
-        field_194 = 0;
-        /*sub_465E50(&meta, 995);
-        field_154->field_F8 = 10.0;
-        field_154->field_FC = 10.0;
-        field_154->field_E8 = x;
-        v297 = y + 240.0;
-        field_154->field_EC = v297;
-        LOBYTE(field_154->field_104) = dir;*/
-        angZ = addition[0] + 90.0;
-        scaleX = scaleY = scene_rand_rngf(20) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleX = scaleY = scene_rand_rng(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 10 )
-        field_194 = 1;
-      if ( get_subseq() >= 11 && get_subseq() <= 14 )
-      {
-        scaleX = 0.1;
-        scaleY = 0.1;
-      }
-      break;
+        }
+        if ( get_subseq() == 5 )
+        {
+            field_194 = 0;
+            /*sub_465E50(&meta, 995); //HACK
+            field_154->field_F8 = 10.0;
+            field_154->field_FC = 10.0;
+            field_154->field_E8 = x;
+            v295 = y + 120.0;
+            field_154->field_EC = v295;
+            LOBYTE(field_154->field_104) = dir;*/
+            angZ = addition[0] + 90.0;
+            scaleX = scaleY = scene_rand_rngf(20) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 6 )
+        {
+            field_194 = 0;
+            /*sub_465E50(&meta, 995);
+            field_154->field_F8 = 10.0;
+            field_154->field_FC = 10.0;
+            field_154->field_E8 = x;
+            v297 = y + 240.0;
+            field_154->field_EC = v297;
+            LOBYTE(field_154->field_104) = dir;*/
+            angZ = addition[0] + 90.0;
+            scaleX = scaleY = scene_rand_rngf(20) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleX = scaleY = scene_rand_rng(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 10 )
+            field_194 = 1;
+        if ( get_subseq() >= 11 && get_subseq() <= 14 )
+        {
+            scaleX = 0.1;
+            scaleY = 0.1;
+        }
+        break;
     case 852:
-      set_subseq( addition[2]);
-      if ( get_subseq() == 0 )
-        c_A = 128;
-      if ( get_subseq() == 1 )
-      {
-          float tmp[3];
-          for(int32_t i=0; i<3; i++)
+        set_subseq( addition[2]);
+        if ( get_subseq() == 0 )
+            c_A = 128;
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
+            for(int32_t i=0; i<3; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
                 tmp[1] = scene_rand_rngf(10) + 5.0;
@@ -8993,23 +9004,23 @@ void cirno_bullets::set_seq_params()
 
             tmp[2] = 0.0;
             addbullet(chrt, this, 852, x ,y ,dir,-1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rng(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-          for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -9017,107 +9028,107 @@ void cirno_bullets::set_seq_params()
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 852, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        v_inerc *= 0.5;
-        angZ = -atan2_deg(v_inerc, h_inerc);
-        float tm = cos_deg(-addition[0]);
-        if ( cos_deg(-addition[0]) < 0.0 )
-            tm *= -1;
-        field_194 = 1;
-        scaleY = scaleX = (tm) * 0.5 + 0.5;
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 10 || get_subseq() == 11 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      break;
+        }
+        if ( get_subseq() == 5 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            v_inerc *= 0.5;
+            angZ = -atan2_deg(v_inerc, h_inerc);
+            float tm = cos_deg(-addition[0]);
+            if ( cos_deg(-addition[0]) < 0.0 )
+                tm *= -1;
+            field_194 = 1;
+            scaleY = scaleX = (tm) * 0.5 + 0.5;
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 10 || get_subseq() == 11 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        break;
     case 854:
-      set_subseq( addition[2]);
-      if ( get_subseq() == 0 )
-      {
-        field_360 = 1;
-        scaleX = 0.0;
-        scaleY = 0.0;
-      }
-      if ( get_subseq() == 1 )
-        angZ = scene_rand_rngf(360);
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(6) - 3.0;
-        scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        angZ = addition[0];
-        field_194 = 1;
-        field_378 = 0.2;
-        scaleY = scaleX = scene_rand_rngf(5) * 0.1 + 0.8;
+        set_subseq( addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            field_360 = 1;
+            scaleX = 0.0;
+            scaleY = 0.0;
+        }
+        if ( get_subseq() == 1 )
+            angZ = scene_rand_rngf(360);
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(6) - 3.0;
+            scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 4 )
+        {
+            angZ = addition[0];
+            field_194 = 1;
+            field_378 = 0.2;
+            scaleY = scaleX = scene_rand_rngf(5) * 0.1 + 0.8;
 
-        float tmp[3];
-        tmp[0] = addition[0];
-        tmp[1] = 0.0;
-        tmp[2] = 15.0;
-        addbullet(chrt, this, 854, x, y, dir, 1, tmp, 3);
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 10 || get_subseq() == 11 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 12 )
-        field_194 = 1;
-      //if ( get_subseq() == 14 )
-        //field_134 = 1;           //HACK
-      if ( get_subseq() == 15 )
-      {
-        angZ = addition[0];
-        field_378 = 0.2;
-        scaleY = scaleX = scene_rand_rngf(5) * 0.1 + 1.0;
-        sub_48BF60(scene_rand_rngf(360));
-      }
-      break;
+            float tmp[3];
+            tmp[0] = addition[0];
+            tmp[1] = 0.0;
+            tmp[2] = 15.0;
+            addbullet(chrt, this, 854, x, y, dir, 1, tmp, 3);
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 10 || get_subseq() == 11 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 12 )
+            field_194 = 1;
+        if ( get_subseq() == 14 )
+            y_to_down = true;
+        if ( get_subseq() == 15 )
+        {
+            angZ = addition[0];
+            field_378 = 0.2;
+            scaleY = scaleX = scene_rand_rngf(5) * 0.1 + 1.0;
+            sub_48BF60(scene_rand_rngf(360));
+        }
+        break;
     case 855:
-      set_subseq(addition[2]);
-      if ( get_subseq() == 0)
-        c_A = 128;
-      if ( get_subseq() == 1 )
-      {
-          float tmp[3];
-          for(int32_t i=0; i<3; i++)
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0)
+            c_A = 128;
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
+            for(int32_t i=0; i<3; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
                 tmp[1] = scene_rand_rngf(10) + 5.0;
@@ -9127,23 +9138,23 @@ void cirno_bullets::set_seq_params()
 
             tmp[2] = 0.0;
             addbullet(chrt, this, 855, x ,y ,dir,-1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rng(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -9151,69 +9162,69 @@ void cirno_bullets::set_seq_params()
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 855, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        v_inerc *= 0.5;
-        angZ = -atan2_deg(v_inerc, h_inerc);
-        float tm = cos_deg(-addition[0]);
-        if ( cos_deg(-addition[0]) < 0.0 )
-            tm *= -1;
-        field_194 = 1;
-        scaleY = scaleX = (tm) * 0.5 + 0.5;
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 10 || get_subseq() == 11 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      break;
-    case 856:
-set_subseq(addition[2]);
-      if ( get_subseq() == 0)
-      {
-        field_194 = 1;
-        scaleX = 1.0;
-        scaleY = 0.25;
-      }
-      if ( get_subseq() == 1 )
-      {
-        if ( bul_parent )
-        {
-          x = cos_deg(-addition[0]) * bul_parent->scaleX * addition[1] * dir + bul_parent->x;
-          y = sin_deg(-addition[0]) * bul_parent->scaleY * addition[1] + bul_parent->y;
         }
-        field_378 = scene_rand_rngf(50) * 0.1 + 6.0;
-        field_37C = scene_rand_rngf(10) * 0.1 + 0.5;
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
+        if ( get_subseq() == 5 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            v_inerc *= 0.5;
+            angZ = -atan2_deg(v_inerc, h_inerc);
+            float tm = cos_deg(-addition[0]);
+            if ( cos_deg(-addition[0]) < 0.0 )
+                tm *= -1;
+            field_194 = 1;
+            scaleY = scaleX = (tm) * 0.5 + 0.5;
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 10 || get_subseq() == 11 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        break;
+    case 856:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0)
+        {
+            field_194 = 1;
+            scaleX = 1.0;
+            scaleY = 0.25;
+        }
+        if ( get_subseq() == 1 )
+        {
+            if ( bul_parent )
+            {
+                x = cos_deg(-addition[0]) * bul_parent->scaleX * addition[1] * dir + bul_parent->x;
+                y = sin_deg(-addition[0]) * bul_parent->scaleY * addition[1] + bul_parent->y;
+            }
+            field_378 = scene_rand_rngf(50) * 0.1 + 6.0;
+            field_37C = scene_rand_rngf(10) * 0.1 + 0.5;
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(6) - 3.0;
             scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rng(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-        for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -9221,91 +9232,91 @@ set_subseq(addition[2]);
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 852, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 7 )
-      {
-        angZ = scene_rand_rngf(360);
-        angY = scene_rand_rngf(20) - 10.0;
-        angX = scene_rand_rngf(20) + 65.0;
-        if ( bul_parent )
-        {
-          scaleY = scaleX = (scene_rand_rngf(25) * 0.01 + 1.0) * bul_parent->scaleX;
         }
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 10 || get_subseq() == 11 )
-      {
-        if ( bul_parent )
+        if ( get_subseq() == 7 )
         {
-          x = cos_deg(-addition[0]) * bul_parent->scaleX * addition[1] * dir + bul_parent->x;
-          y = sin_deg(-addition[0]) * bul_parent->scaleY * addition[1] + bul_parent->y;
+            angZ = scene_rand_rngf(360);
+            angY = scene_rand_rngf(20) - 10.0;
+            angX = scene_rand_rngf(20) + 65.0;
+            if ( bul_parent )
+            {
+                scaleY = scaleX = (scene_rand_rngf(25) * 0.01 + 1.0) * bul_parent->scaleX;
+            }
         }
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(30) * 0.1 + 5.0;
-        field_37C = scene_rand_rngf(10) * 0.1 + 0.5;
-        field_380 = 6.0 - scene_rand_rngf(13);
-      }
-      break;
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 10 || get_subseq() == 11 )
+        {
+            if ( bul_parent )
+            {
+                x = cos_deg(-addition[0]) * bul_parent->scaleX * addition[1] * dir + bul_parent->x;
+                y = sin_deg(-addition[0]) * bul_parent->scaleY * addition[1] + bul_parent->y;
+            }
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(30) * 0.1 + 5.0;
+            field_37C = scene_rand_rngf(10) * 0.1 + 0.5;
+            field_380 = 6.0 - scene_rand_rngf(13);
+        }
+        break;
     case 857:
-set_subseq(addition[2]);
-      if ( get_subseq() == 1 || get_subseq() == 2 )
-      {
-        field_378 = scene_rand_rngf(11) - 5.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(6)* 0.1 + 0.8;
-        set_vec_speed(addition[0], addition[1]);
-      }
-      if ( get_subseq() == 3 )
-      {
-        field_378 = scene_rand_rngf(5) - 2.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
-      }
-      if ( get_subseq() == 4 )
-      {
-        field_378 = scene_rand_rngf(11) - 5.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(3) * 0.1 + 0.9;
-      }
-      break;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 1 || get_subseq() == 2 )
+        {
+            field_378 = scene_rand_rngf(11) - 5.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(6)* 0.1 + 0.8;
+            set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            field_378 = scene_rand_rngf(5) - 2.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
+        }
+        if ( get_subseq() == 4 )
+        {
+            field_378 = scene_rand_rngf(11) - 5.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(3) * 0.1 + 0.9;
+        }
+        break;
     case 858:
-set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-        field_194 = 1;
-      if ( get_subseq() == 1 || get_subseq() == 2 )
-      {
-        field_378 = scene_rand_rngf(11) - 5.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(6) * 0.1 + 0.8;
-        set_vec_speed(addition[0], addition[1]);
-      }
-      if ( get_subseq() == 3 )
-      {
-        field_378 = scene_rand_rngf(5) - 2.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
-      }
-      if ( get_subseq() == 4 )
-      {
-        field_378 = scene_rand_rngf(11) - 5.0;
-        angZ = scene_rand_rngf(360);
-        scaleY = scaleX = scene_rand_rngf(3) * 0.1 + 0.9;
-      }
-      break;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+            field_194 = 1;
+        if ( get_subseq() == 1 || get_subseq() == 2 )
+        {
+            field_378 = scene_rand_rngf(11) - 5.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(6) * 0.1 + 0.8;
+            set_vec_speed(addition[0], addition[1]);
+        }
+        if ( get_subseq() == 3 )
+        {
+            field_378 = scene_rand_rngf(5) - 2.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
+        }
+        if ( get_subseq() == 4 )
+        {
+            field_378 = scene_rand_rngf(11) - 5.0;
+            angZ = scene_rand_rngf(360);
+            scaleY = scaleX = scene_rand_rngf(3) * 0.1 + 0.9;
+        }
+        break;
     case 860:
-      set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-        c_A = 0;
-      if ( get_subseq() == 1 )
-      {
-        float tmp[3];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+            c_A = 0;
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
             for (int32_t i=0; i<12; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
@@ -9318,60 +9329,60 @@ set_subseq(addition[2]);
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet( chrt,NULL, 810, x, y, dir, 1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(6) - 3.0;
-        scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-        field_194 = 1;
-      if ( get_subseq() == 5 || get_subseq() == 6 )
-        field_194 = 0;
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(100) * 0.01 + 1.0;
-      }
-      break;
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(6) - 3.0;
+            scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 4 )
+            field_194 = 1;
+        if ( get_subseq() == 5 || get_subseq() == 6 )
+            field_194 = 0;
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(100) * 0.01 + 1.0;
+        }
+        break;
     case 863:
-      angZ = addition[0];
-      set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-      {
-        sub_438450( 0.0, 0.0, 0.0, 256.0);
-        scaleX = 1.0;
-        scaleY = 1.5;
+        angZ = addition[0];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            sub_438450( 0.0, 0.0, 0.0, 256.0);
+            scaleX = 1.0;
+            scaleY = 1.5;
 
-        float tmp[3];
-        tmp[0] = 0.0;
-        tmp[1] = 0.0;
-        tmp[2] = 1.0;
-        field_194 = 15;
-        addbullet(chrt, this, 863, x, y, dir, 1, tmp, 3);
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = 1.0;
+            field_194 = 15;
+            addbullet(chrt, this, 863, x, y, dir, 1, tmp, 3);
 
-        tmp[2] = 2.0;
-        addbullet(chrt, this, 863, x, y, dir, 1, tmp, 3);
-      }
-      break;
+            tmp[2] = 2.0;
+            addbullet(chrt, this, 863, x, y, dir, 1, tmp, 3);
+        }
+        break;
     case 900:
- set_subseq(addition[2]);
-      if ( get_subseq() == 0 || get_subseq() == 14 )
-        field_378 = 0.5;
-      if ( get_subseq() == 1 )
-      {
-          float tmp[3];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 || get_subseq() == 14 )
+            field_378 = 0.5;
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
             for (int32_t i=0; i<12; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
@@ -9384,23 +9395,23 @@ set_subseq(addition[2]);
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet( chrt,NULL, 900, x, y, dir, 1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(6) - 3.0;
-        scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-          for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(6) - 3.0;
+            scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -9408,35 +9419,35 @@ set_subseq(addition[2]);
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 900, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 || get_subseq() == 6 || get_subseq() == 7 )
-      {
-        angZ = addition[0];
-        set_vec_speed(addition[0], addition[1]);
-        field_194 = 1;
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() >= 10 && get_subseq() <= 13 )
-        {
-          angZ = scene_rand_rngf(360);
-          field_378 = scene_rand_rngf(12) - 6.0;
-          scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
         }
-      break;
+        if ( get_subseq() == 5 || get_subseq() == 6 || get_subseq() == 7 )
+        {
+            angZ = addition[0];
+            set_vec_speed(addition[0], addition[1]);
+            field_194 = 1;
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() >= 10 && get_subseq() <= 13 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
+        }
+        break;
     case 910:
- set_subseq(addition[2]);
-      if ( get_subseq() == 0 || get_subseq() == 14 )
-        field_378 = 0.5;
-      if ( get_subseq() == 1 )
-      {
-          float tmp[3];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 || get_subseq() == 14 )
+            field_378 = 0.5;
+        if ( get_subseq() == 1 )
+        {
+            float tmp[3];
             for (int32_t i=0; i<12; i++)
             {
                 tmp[0] = scene_rand_rngf(360);
@@ -9449,23 +9460,23 @@ set_subseq(addition[2]);
             tmp[1] = scene_rand_rngf(5) + 4.0;
             tmp[2] = 2.0;
             addbullet( chrt,NULL, 910, x, y, dir, 1, tmp,3);
-      }
-      if ( get_subseq() == 2 )
-      {
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(6) - 3.0;
-        scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
-      }
-      if ( get_subseq() == 3 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() == 4 )
-      {
-          for(int32_t i=0; i<360; i+=60)
+        }
+        if ( get_subseq() == 2 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(6) - 3.0;
+            scaleY = scaleX = scene_rand_rngf(60) * 0.01 + 0.7;
+        }
+        if ( get_subseq() == 3 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() == 4 )
+        {
+            for(int32_t i=0; i<360; i+=60)
             {
                 float tmp[3];
                 tmp[0] = scene_rand_rngf(40) + i;
@@ -9473,111 +9484,111 @@ set_subseq(addition[2]);
                 tmp[2] = 3.0;
                 addbullet(chrt, NULL, 910, x ,y ,dir,1, tmp,3);
             }
-      }
-      if ( get_subseq() == 5 || get_subseq() == 6 || get_subseq() == 7 )
-      {
-        angZ = addition[0];
-        set_vec_speed(addition[0], addition[1]);
-        field_194 = 1;
-      }
-      if ( get_subseq() == 8 || get_subseq() == 9 || get_subseq() == 16 || get_subseq() == 17 )
-      {
-        set_vec_speed(addition[0], addition[1]);
-        angZ = scene_rand_rngf(360);
-        field_378 = scene_rand_rngf(12) - 6.0;
-        field_36C = scene_rand_rngf(10);
-        scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
-      }
-      if ( get_subseq() >= 10 && get_subseq() <= 13 )
-        {
-          angZ = scene_rand_rngf(360);
-          field_378 = scene_rand_rngf(12) - 6.0;
-          scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
         }
-      if ( get_subseq() == 15 )
-        angZ = scene_rand_rngf(360);
-      break;
+        if ( get_subseq() == 5 || get_subseq() == 6 || get_subseq() == 7 )
+        {
+            angZ = addition[0];
+            set_vec_speed(addition[0], addition[1]);
+            field_194 = 1;
+        }
+        if ( get_subseq() == 8 || get_subseq() == 9 || get_subseq() == 16 || get_subseq() == 17 )
+        {
+            set_vec_speed(addition[0], addition[1]);
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            field_36C = scene_rand_rngf(10);
+            scaleY = scaleX = scene_rand_rngf(80) * 0.01 + 0.8;
+        }
+        if ( get_subseq() >= 10 && get_subseq() <= 13 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
+        }
+        if ( get_subseq() == 15 )
+            angZ = scene_rand_rngf(360);
+        break;
     case 920:
-      angZ = addition[0];
-      set_subseq(addition[2]);
-      if ( get_subseq() == 1 || get_subseq() == 3 || get_subseq() == 5 )
-        scaleX = 10.0;
-      if ( get_subseq() == 2 )
-        scaleX = 10.0;
-      if ( get_subseq() == 4 )
-        scaleX = 6.0;
-      if ( get_subseq() == 6 )
-        scaleX = 4.0;
-      if ( get_subseq() == 10 )
-      {
-        scaleX = 10.0;
-        scaleY = 0.0;
-      }
-      if ( get_subseq() == 11 )
-      {
-          float tmp[4];
-          tmp[0] = addition[0];
-          tmp[1] = 0.0;
-          tmp[2] = 10.0;
+        angZ = addition[0];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 1 || get_subseq() == 3 || get_subseq() == 5 )
+            scaleX = 10.0;
+        if ( get_subseq() == 2 )
+            scaleX = 10.0;
+        if ( get_subseq() == 4 )
+            scaleX = 6.0;
+        if ( get_subseq() == 6 )
+            scaleX = 4.0;
+        if ( get_subseq() == 10 )
+        {
+            scaleX = 10.0;
+            scaleY = 0.0;
+        }
+        if ( get_subseq() == 11 )
+        {
+            float tmp[4];
+            tmp[0] = addition[0];
+            tmp[1] = 0.0;
+            tmp[2] = 10.0;
 
-          addbullet(chrt, this, 920,x ,y ,dir, 1, tmp, 3);
+            addbullet(chrt, this, 920,x ,y ,dir, 1, tmp, 3);
 
-          tmp[1] = 5.0;
-          tmp[2] = 9.0;
-          tmp[3] = 0.2;
+            tmp[1] = 5.0;
+            tmp[2] = 9.0;
+            tmp[3] = 0.2;
 
-          addbullet(chrt,this, 920, x ,y ,dir, 1, tmp, 4);
+            addbullet(chrt,this, 920, x ,y ,dir, 1, tmp, 4);
 
-          tmp[1] = 15.0;
-          tmp[3] = 0.4;
-          addbullet(chrt,this, 920, x ,y ,dir, 1, tmp, 4);
-      }
-      if ( get_subseq() == 12 )
-      {
-        scaleY = scaleX = scene_rand_rngf(5) * 0.1 + 0.5;
-      }
-      break;
+            tmp[1] = 15.0;
+            tmp[3] = 0.4;
+            addbullet(chrt,this, 920, x ,y ,dir, 1, tmp, 4);
+        }
+        if ( get_subseq() == 12 )
+        {
+            scaleY = scaleX = scene_rand_rngf(5) * 0.1 + 0.5;
+        }
+        break;
     case 921:
-      angZ = scene_rand_rngf(360);
-      set_subseq( addition[2]);
-      field_194 = 1;
-      set_vec_speed(addition[0], addition[1]);
-      scaleY = scaleX = scene_rand_rngf(50) * 0.01 + 0.75;
-      break;
+        angZ = scene_rand_rngf(360);
+        set_subseq( addition[2]);
+        field_194 = 1;
+        set_vec_speed(addition[0], addition[1]);
+        scaleY = scaleX = scene_rand_rngf(50) * 0.01 + 0.75;
+        break;
     case 980:
-      //sub_48C360(); //HACK
-      break;
+        //sub_48C360(); //HACK
+        break;
     case 989:
-      field_194 = 1;
-      angZ = addition[0];
-      set_subseq(addition[2]);
-      if ( get_subseq() == 0 )
-      {
-           float tmp[3];
-          tmp[0] = 0.0;
-          tmp[1] = 0.0;
-          tmp[2] = 1.0;
+        field_194 = 1;
+        angZ = addition[0];
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = 1.0;
 
-          addbullet(chrt, this, 989,x ,y ,dir, 1, tmp, 3);
+            addbullet(chrt, this, 989,x ,y ,dir, 1, tmp, 3);
 
-        c_R = 0;
-        c_G = 0;
-        c_B = 0;
-      }
-      if ( get_subseq() == 1 )
-        c_A = 0;
-      break;
+            c_R = 0;
+            c_G = 0;
+            c_B = 0;
+        }
+        if ( get_subseq() == 1 )
+            c_A = 0;
+        break;
     case 990:
         set_subseq(addition[2]);
         break;
     case 999:
-      set_subseq(addition[2]);
-      if ( get_subseq() == 4 )
-      {
-        h_inerc = addition[0];
-        v_inerc = addition[1];
-      }
-      break;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 4 )
+        {
+            h_inerc = addition[0];
+            v_inerc = addition[1];
+        }
+        break;
     default:
         break;
     }

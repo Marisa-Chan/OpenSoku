@@ -729,7 +729,7 @@ void marisa_bullets::func10()
                         if ( scaleX < 0.01 )
                         {
                             active = false;
-                            return;
+                            break;
                         }
                     }
                 }
@@ -6711,7 +6711,7 @@ void marisa_bullets::set_seq_params()
         //sub_48C360(); //HACK
         break;
     case 990:
-//      field_134 = 0; //HACK
+        y_to_down = true;
         break;
     case 998:
         angZ = 0;

@@ -91,7 +91,8 @@ void char_sprite::frame_val_set()
         cur_frame_time = 0;
         cur_duration   = pframe->durate;
 
-        setOrigin(0,0);
+        //setOrigin(0,0);
+
         if (pframe->type == 2)
         {
             if (pframe->blend_mode == 1)
@@ -107,8 +108,10 @@ void char_sprite::frame_val_set()
         {
             setBlend(gr_alpha);
         }
-        setRotate(0,0,0);
-        setScale(1.0,1.0);
+        //setRotate(0,0,0);
+        //setScale(1.0,1.0);
+        m_transform.reset();
+
         setColor(255,255,255,255);
     }
 }
@@ -191,87 +194,27 @@ void char_sprite::draw(uint8_t plane, gr_shader *shader)
     gr_draw_sprite(sprite,blend,plane,shader);
 }
 
-
-
-void char_sprite::setXY(float x, float y)
-{
-    gr_setxy_sprite(sprite,x,-y);
-}
-
-void char_sprite::setScale(float x, float y)
-{
-    if (pframe)
-        gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_y);
-    else
-        gr_setscale_sprite(sprite,x,y);
-}
-
-void char_sprite::setAScale(float w, float h)
-{
-    if (pframe)
-    {
-        //gr_setorigin_sprite(sprite,0,0);
-        gr_setscale_sprite(sprite,w / pframe->tx_width, h / pframe->tx_height);
-    }
-}
-
-void char_sprite::setOrigin(float x, float y)
-{
-    if (pframe)
-    {
-        if (x != 0.0 || y != 0.0)
-        {
-        if (pframe->angle_z)
-        {
-            float cz = cos_deg(pframe->angle_z);
-            float sz = sin_deg(pframe->angle_z);
-            float px = x/pframe->scale_x;
-            float py = y/pframe->scale_y;
-            float xx = px * cz + py * sz;
-            float yy = -px * sz + py * cz;
-            gr_setorigin_sprite(sprite,pframe->x_offset+xx,pframe->y_offset+yy);
-        }
-        else
-            gr_setorigin_sprite(sprite,pframe->x_offset+x/pframe->scale_x,pframe->y_offset+y/pframe->scale_y);
-        }
-        else
-            gr_setorigin_sprite(sprite,pframe->x_offset,pframe->y_offset);
-    }
-    else
-        gr_setorigin_sprite(sprite,x,y);
-}
-
 void char_sprite::setBlend(gr_blend _blend)
 {
     blend = _blend;
 }
 
-void char_sprite::setRotate(float angl)
+void char_sprite::setTransform(gr_transform *trans)
 {
     if (pframe)
     {
-        float rx,ry,rz;
-        if (pframe->scale_x < 0)
-            angl*=-1;
-        euler_mult(pframe->angle_x,pframe->angle_y,pframe->angle_z,0,0,angl,rx,ry,rz);
-        gr_setrotate_sprite(sprite,rx,ry,rz);
-    }
-    else
-        gr_setrotate_sprite(sprite,0,0,angl);
-}
+        m_transform.reset();
 
-void char_sprite::setRotate(float x, float y, float z)
-{
-    if (pframe)
-    {
-        float rx,ry,rz;
-        if (pframe->scale_x < 0)
-            z*=-1;
-        euler_mult(pframe->angle_x,pframe->angle_y,pframe->angle_z,x,y,z,rx,ry,rz);
-        gr_setrotate_sprite(sprite,rx,ry,rz);
+        m_transform.rotate3(pframe->angle_x,pframe->angle_y,pframe->angle_z,pframe->x_offset, pframe->y_offset,0);
+
+        m_transform.scale3(pframe->scale_x,pframe->scale_y,1.0,  pframe->x_offset, pframe->y_offset,0);
+
+        m_transform.rcombine(*trans);
+
+        gr_settransform_sprite(sprite, &m_transform);
     }
     else
-        gr_setrotate_sprite(sprite,x,y,z);
+        gr_settransform_sprite(sprite, trans);
 }
 
 uint16_t char_sprite::get_cprior()

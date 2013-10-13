@@ -32,7 +32,7 @@ struct box_box
 struct char_frame
 {
 	gr_tex * img;
-	uint16_t unk1;
+	int16_t  unk1;
 	int16_t  unk2;
     int16_t  tx_width;
     int16_t  tx_height;
@@ -124,6 +124,8 @@ class char_sprite
 
     void frame_val_set();
 
+    gr_transform m_transform;
+
     public:
 
     gr_sprite  *sprite;
@@ -148,14 +150,9 @@ class char_sprite
     bool set_subseq(uint32_t idx);
     bool process(bool ignore_loop = false);
 
-    void setXY(float x, float y);
-    void setScale(float x, float y);
-    void setAScale(float w, float h);
-    void setOrigin(float x, float y);
     void setBlend(gr_blend blend);
-    void setRotate(float angl);
-    void setRotate(float x, float y, float z);
     void setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+    void setTransform(gr_transform *trans);
 
     gr_info getInfo();
     void draw(uint8_t plane = 0, gr_shader *shader = NULL);

@@ -47,6 +47,8 @@ moveable::moveable()
 	rs_w = 0;
 	rs_h = 0;
 	scale_real = false;
+
+	y_to_down = false;
 }
 
 void moveable::setOrigin(float x, float y)

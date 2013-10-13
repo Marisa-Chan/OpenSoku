@@ -27,8 +27,6 @@ c_weather_fx::c_weather_fx(int32_t idx, gfx_seq *sq, float _x, float _y, int8_t 
     active = true;
     order = _order;
 
-    set_Y_to_up(true);
-
     set_seq_params();
 }
 

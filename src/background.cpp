@@ -42,13 +42,18 @@ void background::draw_shadow(c_meta *chr)
     shadow.r = 0;
     shadow.g = 0;
     shadow.b = 0;
-    shadow.ax = 106;
-    shadow.ay = 0;
-    shadow.az = 0;
-    shadow.x = chr->x;
-    shadow.y = (chr->y + chr->y_off) * cos_deg(106);
-    shadow.sx = 1.0;
-    shadow.sy = 1.0;
+
+    shadow.trans.reset();
+
+    shadow.trans.rotate3(160,0,0);
+    shadow.trans.scale3(1,0.3,1);
+//    shadow.ax = 106;
+//    shadow.ay = 0;
+//    shadow.az = 0;
+//    shadow.x = chr->x;
+//    shadow.y = (chr->y + chr->y_off) * cos_deg(106);
+//    shadow.sx = 1.0;
+//    shadow.sy = 1.0;
 
     chr->draw_shadow(&shadow);
 }
@@ -476,13 +481,18 @@ void background_16::draw_shadow(c_meta *chr)
     shadow.r = 255;
     shadow.g = 255;
     shadow.b = 255;
-    shadow.ax = 106;
-    shadow.ay = 0;
-    shadow.az = 0;
-    shadow.x = chr->x;
-    shadow.y = (chr->y + chr->y_off) * cos_deg(106);
-    shadow.sx = 1.0;
-    shadow.sy = 1.0;
+    shadow.trans.reset();
+
+    shadow.trans.rotate3(160,0,0);
+    shadow.trans.scale3(1,0.3,1);
+
+//    shadow.ax = 106;
+//    shadow.ay = 0;
+//    shadow.az = 0;
+//    shadow.x = chr->x;
+//    shadow.y = (chr->y + chr->y_off) * cos_deg(106);
+//    shadow.sx = 1.0;
+//    shadow.sy = 1.0;
 
     chr->draw_shadow(&shadow);
 }

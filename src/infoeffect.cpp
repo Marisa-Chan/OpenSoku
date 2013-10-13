@@ -47,7 +47,7 @@ c_infoef_fx::c_infoef_fx(int32_t idx, gfx_seq *sq, float _x, float _y, int8_t _d
     active = true;
     order = _order;
 
-    set_Y_to_up(false);
+    y_to_down = true;
 
     set_seq_params();
 }

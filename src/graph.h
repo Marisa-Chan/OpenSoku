@@ -12,6 +12,7 @@ typedef sf::Texture gr_tex;
 typedef sf::fxSprite  gr_sprite;
 typedef sf::RenderStates gr_state;
 typedef sf::Shader gr_shader;
+typedef sf::fxTransform gr_transform;
 
 struct gr_tristrip
 {
@@ -80,6 +81,7 @@ void gr_setscale_sprite(gr_sprite *spr, float x, float y);
 void gr_setorigin_sprite(gr_sprite *spr, float x, float y);
 void gr_setrotate_sprite(gr_sprite *spr, float angl);
 void gr_setrotate_sprite(gr_sprite *spr, float x, float y, float z);
+void gr_settransform_sprite(gr_sprite *spr, gr_transform *trans);
 
 void gr_draw_sprite(gr_sprite *spr, gr_blend blend = gr_alpha, uint8_t plane = 0, gr_shader *shader = NULL);
 

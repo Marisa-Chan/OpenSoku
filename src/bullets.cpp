@@ -1401,7 +1401,7 @@ void c_bullet::set_seq_params()
     case 1201:
         set_subseq(addition[2]);
         field_360 = 1;
-        //field_134 = 1; //HACK
+        y_to_down = true;
         if ( get_subseq() == 0 )
         {
             float tmp[3];
@@ -1434,7 +1434,7 @@ void c_bullet::set_seq_params()
     case 1203:
         set_subseq(addition[2]);
         field_360 = 1;
-        //field_134 = 1; //HACK
+        y_to_down = true;
         if (chrt->health > 0)
         {
             if (get_subseq() == 0)
@@ -1478,7 +1478,7 @@ void c_bullet::set_seq_params()
     case 1251:
         if ( addition[3] != 0)
             set_subseq(addition[3]);
-        //field_134 = 1; //HACK
+        y_to_down = true;
         field_360 = 1;
         c_A = 0;
         break;
@@ -1493,21 +1493,54 @@ void c_bullet::set_seq_params()
     }
 }
 
-void c_bullet::draw_shadow(shd_trans *trans, gr_shader *shader)
+void c_bullet::draw_shadow(shd_trans *sh_trans, gr_shader *shader)
 {
-    float rx,ry,rz;
-    euler_mult(0,0,-angZ,trans->ax,trans->ay,trans->az,rx,ry,rz);
+    if (active)
+    {
+        sprite.setColor(sh_trans->r,sh_trans->g,sh_trans->b,sh_trans->a);
 
-    if (trans->sx < 0)
-        sprite.setRotate(rx,ry,-rz*dir);
-    else
-        sprite.setRotate(rx,ry,rz*dir);
+        float dx = 0.0;
+        float dy = 0.0;
 
-    sprite.setScale(trans->sx*dir,trans->sy);
-    sprite.setXY(trans->x,trans->y);
-    sprite.setOrigin(-x_off ,-y_off);
-    sprite.setColor(trans->r,trans->g,trans->b,trans->a);
-    sprite.draw(PLANE_SCENE,shader);
+        char_frame *frm = get_pframe();
+        if (frm)
+        {
+            dx = sprite.get_pframe()->x_offset;
+            dy = sprite.get_pframe()->y_offset;
+        }
+
+        float cx = (x_off + dx) * dir;
+        float cy = dy - y_off;
+
+        gr_transform trans;
+        trans.reset();
+        trans.translate(x, -y - field_138);
+
+        trans.translate(-dir * dx, -dy);
+
+        trans.rotate3(angX,angY,angZ * dir, cx, cy, 0);
+        if (scale_real)
+        {
+            float sx = 1.0;
+            float sy = 1.0;
+            if (frm)
+            {
+                sx = (double)(rs_w) / ((double)frm->tx_width * frm->scale_x);
+                sy = (double)(rs_h) / ((double)frm->tx_height  * frm->scale_y);
+            }
+            trans.scale3(scaleX * sx,scaleY * sy,1.0,  cx, cy, 0.0);
+        }
+        else
+            trans.scale3(scaleX,scaleY,1.0,  cx, cy, 0.0);
+
+        trans.scale3(dir,1,1);
+
+        trans.rcombine(sh_trans->trans);
+
+        sprite.setTransform(&trans);
+
+        sprite.draw(PLANE_SCENE,shader);
+    }
 }
 
 
@@ -1515,48 +1548,52 @@ void c_bullet::draw(gr_shader *shader)
 {
     if (active)
     {
-        sprite.setXY(x,y);
+
         sprite.setColor(c_R,c_G,c_B,c_A);
 
-        if (scaleX < 0)
-            sprite.setRotate(angX,-angY,-angZ * dir);
-        else
-            sprite.setRotate(angX,-angY,angZ * dir);
+        float dx = 0.0;
+        float dy = 0.0;
 
+        char_frame *frm = get_pframe();
+        if (frm)
+        {
+            dx = sprite.get_pframe()->x_offset;
+            dy = sprite.get_pframe()->y_offset;
+        }
+
+        float cx = (x_off + dx) * dir;
+        float cy = dy - y_off;
+
+        gr_transform trans;
+        trans.reset();
+
+        if (y_to_down)
+            trans.translate(x, y);
+        else
+            trans.translate(x, -y);
+
+        trans.translate(-dir * dx, -dy);
+
+        trans.rotate3(angX,angY,angZ * dir, cx, cy, 0);
         if (scale_real)
-            sprite.setAScale(dir*rs_w*scaleX,rs_h*scaleY);
+        {
+            float sx = 1.0;
+            float sy = 1.0;
+            if (frm)
+            {
+                sx = (double)(rs_w) / ((double)frm->tx_width * frm->scale_x);
+                sy = (double)(rs_h) / ((double)frm->tx_height  * frm->scale_y);
+            }
+            trans.scale3(scaleX * sx,scaleY * sy,1.0,  cx, cy, 0.0);
+        }
         else
-            sprite.setScale(dir*scaleX,scaleY);
+            trans.scale3(scaleX,scaleY,1.0,  cx, cy, 0.0);
 
-        // scale_real = false;
+        trans.scale3(dir,1,1);
+
+        sprite.setTransform(&trans);
 
         sprite.draw(PLANE_SCENE,shader);
-
-//        for (int32_t i = 0; i<5; i++)
-        //if (atk_area_2o[i])
-        /*{
-            frame_box *bx = &atk_area_2o[i];
-            gr_draw_box(bx->x1,
-                        bx->y1,
-                        bx->x2-bx->x1,
-                        bx->y2-bx->y1,
-                        255,0,0,60,1);
-        }*/
-        /*
-        char_frame *pf = sprite.get_pframe();
-
-        if (pf->box_atk.size() > 0)
-        {
-            for (uint32_t i=0; i<pf->box_atk.size(); i++)
-            {
-                gr_draw_box(x+pf->box_atk[i].x1,
-                            -y+pf->box_atk[i].y1,
-                            pf->box_atk[i].x2-pf->box_atk[i].x1,
-                            pf->box_atk[i].y2-pf->box_atk[i].y1,
-                            255,0,0,128,1);
-            }
-        }*/
-        //gr_draw_box(x,-y,255,0,0,1);
     }
 }
 

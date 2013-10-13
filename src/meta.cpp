@@ -12,7 +12,7 @@ c_meta::c_meta(char_graph *_pgp)
     pgp  = _pgp;
 
     //field_154 = NULL; //HACK
-    //field_134 = 0;    //HACK
+    y_to_down = false;
     has_shadow = 0;
     atk_area_of[0] = NULL;
     atk_area_of[1] = NULL;

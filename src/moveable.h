@@ -38,6 +38,8 @@ class moveable
 	uint8_t  c_G;
 	uint8_t  c_B;
 
+	bool  y_to_down;
+
 	int16_t rs_w;
 	int16_t rs_h;
 	bool scale_real;

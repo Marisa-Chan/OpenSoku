@@ -107,15 +107,7 @@ typedef list<c_meta *>::iterator metalst_iter;
 
 struct shd_trans
 {
-    float x;
-    float y;
-
-    float ax;
-    float ay;
-    float az;
-
-    float sx;
-    float sy;
+    gr_transform trans;
 
     uint8_t a;
     uint8_t r;
@@ -146,10 +138,10 @@ class c_meta : public moveable
     uint8_t  shader_cA;     //0x117
 
     //charstruct_with_vector_1 *char_images_vector; //0x130
-    //char field_134;
+    //char y_to_down;           //0x134 y axis directed to up  Implimented in moveable
     int8_t  has_shadow;         //0x135
     //__int16 field_136;
-    float  field_138;
+    float  field_138;           //Shadow vertical offset
     //__int16 playing_seq;      //0x13C
     //__int16 viz.get_subseq;   //0x13E
     //__int16 viz.get_frame;    //0x140

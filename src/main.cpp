@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     marisa->set_seq(0);
     alice->set_seq(0);
     srand(time(NULL));
-    background  *bkg = bkg_create(12);
+    background  *bkg = bkg_create(17);
 
     scene_new_scene(bkg,marisa,alice);
 
@@ -122,11 +122,11 @@ int main(int argc, char *argv[])
     weather_change(WEATHER_CLEAR,1);
     weather_time_set(0);
 
+    marisa->add_card(107);
+    marisa->add_card(108);
     marisa->add_card(111);
-    marisa->add_card();
-    marisa->add_card();
-    marisa->add_card();
-    marisa->add_card();
+    marisa->add_card(105);
+    marisa->add_card(106);
 
     alice->add_card();
     alice->add_card();
@@ -152,12 +152,12 @@ int main(int argc, char *argv[])
         if (aa > 10 && inp->rawPressed(kC_Q))
         {
             aa = 0;
-            marisa->add_card(bb);
+            marisa->add_card(bb+100);
             //weather_time_set(999);
             //weather_change((WEATHER_ID)bb,true);
 
             bb++;
-            bb %= 21;
+            bb %= 12;
         }
 
 

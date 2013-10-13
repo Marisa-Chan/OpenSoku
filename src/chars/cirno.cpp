@@ -741,8 +741,8 @@ void char_cirno::func10()
 
 
         if ( h_inerc < 0.0 )
-            angZ = 180 -angZ;
-        //angZ = 180.0 + dash_angle;
+            angZ = 180.0 - dash_angle;
+            //angZ = 180 -angZ;
 
         if ( h_inerc < 0.0 )
             if ( get_subseq() == 1 )
@@ -925,8 +925,8 @@ void char_cirno::func10()
 
 
         if ( h_inerc < 0.0 )
-            angZ = 180 -angZ;
-        //angZ = 180.0 + dash_angle;
+            angZ = 180.0 - dash_angle;
+//            angZ = 180 -angZ;
 
         if ( h_inerc < 0.0 )
             if ( get_subseq() == 1 )
@@ -1300,7 +1300,7 @@ void char_cirno::func10()
                     float tmp[3];
                     tmp[0] = 0.0;
                     tmp[1] = 0.0;
-                    tmp[2] = 0.0;
+                    tmp[2] = 7.0;
 
                     char_frame *frm = get_pframe();
                     addbullet(this, NULL, 848, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
@@ -1526,7 +1526,7 @@ void char_cirno::func10()
                     float tmp[3];
                     tmp[0] = 0.0;
                     tmp[1] = 0.0;
-                    tmp[2] = 1.0;
+                    tmp[2] = 4.0;
 
                     char_frame *frm = get_pframe();
                     addbullet(this, NULL, 848, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
@@ -4055,9 +4055,9 @@ void char_cirno::func10()
         {
             spell_energy_spend(200, 120);
             add_card_energy( 50);
-            h_inerc = 17.5;
-            v_inerc = 10.0;
-            v_force = 0.75;
+            h_inerc = 12.5;
+            v_inerc = 25.0;
+            v_force = 1.00;
 
             float tmp[3];
             tmp[0] = 0.0;

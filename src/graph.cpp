@@ -192,6 +192,11 @@ void gr_setrotate_sprite(gr_sprite *spr, float x, float y, float z)
     spr->setRotation(x,y,z);
 }
 
+void gr_settransform_sprite(gr_sprite *spr, gr_transform *trans)
+{
+    spr->setTransform(*trans);
+}
+
 void gr_setscale_sprite(gr_sprite *spr, float x, float y)
 {
     spr->setScale(x,y);

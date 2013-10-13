@@ -16,7 +16,6 @@ gfx_sprite::gfx_sprite()
     elaps_frames = 0;
     _num_frames = 0;
     _cur_sseq = NULL;
-    y_axis_up = false;
 }
 
 gfx_sprite::~gfx_sprite()
@@ -94,7 +93,7 @@ void gfx_sprite::frame_val_set()
         cur_frame_time = 0;
         cur_duration   = pframe->durate;
 
-        setOrigin(0,0);
+        //setOrigin(0,0);
         if (pframe->type == 2)
         {
             if (pframe->blend_mode == 1)
@@ -109,8 +108,8 @@ void gfx_sprite::frame_val_set()
         else
             setBlend(gr_alpha);
 
-        setRotate(0,0,0);
-        setScale(1.0,1.0);
+        //setRotate(0,0,0);
+        //setScale(1.0,1.0);
         setColor(255,255,255,255);
     }
 }
@@ -198,44 +197,9 @@ void gfx_sprite::draw(uint8_t plane)
     gr_draw_sprite(sprite,blend,plane);
 }
 
-
-
-void gfx_sprite::setXY(float x, float y)
-{
-    if (y_axis_up)
-        gr_setxy_sprite(sprite,x,-y);
-    else
-        gr_setxy_sprite(sprite,x,y);
-}
-
 void gfx_sprite::setSkew(float x, float y)
 {
     gr_sprite_skew(sprite,x,y);
-}
-
-void gfx_sprite::set_Y_to_up(bool up)
-{
-    y_axis_up = up;
-}
-
-void gfx_sprite::setScale(float x, float y)
-{
-    if (pframe)
-    {
-        gr_setscale_sprite(sprite,x*pframe->scale_x,y*pframe->scale_y);
-    }
-    else
-        gr_setscale_sprite(sprite,x,y);
-}
-
-void gfx_sprite::setOrigin(float x, float y)
-{
-    if (pframe)
-    {
-        gr_setorigin_sprite(sprite,pframe->x_offset+x/pframe->scale_x,pframe->y_offset+y/pframe->scale_y);
-    }
-    else
-        gr_setorigin_sprite(sprite,x,y);
 }
 
 void gfx_sprite::setBlend(gr_blend _blend)
@@ -243,30 +207,22 @@ void gfx_sprite::setBlend(gr_blend _blend)
     blend = _blend;
 }
 
-void gfx_sprite::setRotate(float angl)
+void gfx_sprite::setTransform(gr_transform *trans)
 {
     if (pframe)
     {
-        if (pframe->scale_x < 0)
-            angl*=-1;
-        gr_setrotate_sprite(sprite,angl+pframe->angle_z);
-    }
-    else
-        gr_setrotate_sprite(sprite,angl);
-}
+        m_transform.reset();
 
-void gfx_sprite::setRotate(float x, float y, float z)
-{
-    if (pframe)
-    {
-        float rx,ry,rz;
-        if (pframe->scale_x < 0)
-            z*=-1;
-        euler_mult(pframe->angle_x,pframe->angle_y,pframe->angle_z,x,y,z,rx,ry,rz);
-        gr_setrotate_sprite(sprite,rx,ry,rz);
+        m_transform.rotate3(pframe->angle_x,pframe->angle_y,pframe->angle_z,pframe->x_offset, pframe->y_offset,0);
+
+        m_transform.scale3(pframe->scale_x,pframe->scale_y,1.0,  pframe->x_offset, pframe->y_offset,0);
+
+        m_transform.rcombine(*trans);
+
+        gr_settransform_sprite(sprite, &m_transform);
     }
     else
-        gr_setrotate_sprite(sprite,x,y,z);
+        gr_settransform_sprite(sprite, trans);
 }
 
 uint32_t gfx_sprite::get_seq_id()
@@ -355,27 +311,54 @@ void gfx_meta::draw(int8_t plane)
 {
     if (active)
     {
-        sprite.setXY(x,y);
         sprite.setColor(c_R,c_G,c_B,c_A);
-
-        sprite.setOrigin(x_off,y_off);
-        sprite.setScale(dir*scaleX,scaleY);
-
-        if (scaleX < 0)
-            sprite.setRotate(angX,angY,-angZ*dir);
-        else
-            sprite.setRotate(angX,angY,angZ*dir);
 
         if (skew_x != 0 || skew_y != 0)
             sprite.setSkew(skew_x,skew_y);
 
+        float dx = 0.0;
+        float dy = 0.0;
+
+        gfx_frame *frm = get_pframe();
+        if (frm)
+        {
+            dx = sprite.get_pframe()->x_offset;
+            dy = sprite.get_pframe()->y_offset;
+        }
+
+        float cx = (x_off + dx) * dir;
+        float cy = dy - y_off;
+
+        gr_transform trans;
+        trans.reset();
+        if (y_to_down)
+            trans.translate(x, y);
+        else
+            trans.translate(x, -y);
+
+        trans.translate(-dir * dx, -dy);
+
+        trans.rotate3(angX,angY,angZ * dir, cx, cy, 0);
+        if (scale_real)
+        {
+            float sx = 1.0;
+            float sy = 1.0;
+            if (frm)
+            {
+                sx = (double)(rs_w) / ((double)frm->tx_width * frm->scale_x);
+                sy = (double)(rs_h) / ((double)frm->tx_height  * frm->scale_y);
+            }
+            trans.scale3(scaleX * sx,scaleY * sy,1.0,  cx, cy, 0.0);
+        }
+        else
+            trans.scale3(scaleX,scaleY,1.0,  cx, cy, 0.0);
+
+        trans.scale3(dir,1,1);
+
+        sprite.setTransform(&trans);
+
         sprite.draw(plane);
     }
-}
-
-void gfx_meta::set_Y_to_up(bool up)
-{
-    sprite.set_Y_to_up(up);
 }
 
 gfx_meta::~gfx_meta()

@@ -37,11 +37,19 @@ public :
 
     fxTransform& combine(const fxTransform& transform);
 
+    fxTransform& rcombine(const fxTransform& transform);
+
     fxTransform& translate(float x, float y);
+
+    fxTransform& translate3(float x, float y, float z);
 
     fxTransform& translate(const Vector2f& offset);
 
     fxTransform& rotate(float angle);
+
+    fxTransform& rotate3(float x, float y, float z);
+
+    fxTransform& rotate3(float x, float y, float z, float cX, float cY, float cZ);
 
     fxTransform& rotate(float angle, float centerX, float centerY);
 
@@ -49,11 +57,17 @@ public :
 
     fxTransform& scale(float scaleX, float scaleY);
 
+    fxTransform& scale3(float scaleX, float scaleY, float scaleZ);
+
+    fxTransform& scale3(float scaleX, float scaleY, float scaleZ, float cX, float cY, float cZ);
+
     fxTransform& scale(float scaleX, float scaleY, float centerX, float centerY);
 
     fxTransform& scale(const Vector2f& factors);
 
     fxTransform& scale(const Vector2f& factors, const Vector2f& center);
+
+    fxTransform& reset();
 
     static const fxTransform Identity; ///< The identity transform (does nothing)
 

@@ -223,6 +223,17 @@ void c_scene::draw_scene()
     draw_spell_images(&spell_images);
 
     for (uint32_t i=0; i < 2; i++)
+    {
+        bullist *lst = chrs[i]->get_bullets();
+        for(bullist_iter i=lst->begin(); i != lst->end(); i++)
+        if ((*i)->has_shadow)
+        {
+            bkg->draw_shadow(*i);
+        }
+    }
+
+
+    for (uint32_t i=0; i < 2; i++)
         bkg->draw_shadow(chrs[i]);
 
     bkg->draw_mid();

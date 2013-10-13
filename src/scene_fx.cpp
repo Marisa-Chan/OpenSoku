@@ -45,8 +45,6 @@ c_scene_fx::c_scene_fx(int32_t idx, gfx_seq *sq, c_meta *chr, float _x, float _y
     parent = chr;
     order = _order;
 
-    set_Y_to_up(true);
-
     set_seq_params();
 }
 

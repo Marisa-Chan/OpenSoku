@@ -50,6 +50,8 @@ public :
 
     void scale(const Vector2f& factor);
 
+    void setTransform(const fxTransform &trans);
+
     const fxTransform& getTransform() const;
 
     const fxTransform& getInverseTransform() const;

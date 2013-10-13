@@ -398,74 +398,85 @@ void char_c::set_seq(uint32_t idx)
         printf("%d\n",idx);
 }
 
-void char_c::draw_shadow(shd_trans *trans, gr_shader *shader)
+void char_c::draw_shadow(shd_trans *sh_trans, gr_shader *shader)
 {
-    float rx,ry,rz;
-    euler_mult(0,0,-angZ,trans->ax,trans->ay,trans->az,rx,ry,rz);
+    sprite.setColor(sh_trans->r,sh_trans->g,sh_trans->b,sh_trans->a);
 
-    if (trans->sx < 0)
-        sprite.setRotate(rx,ry,-rz*dir);
-    else
-        sprite.setRotate(rx,ry,rz*dir);
+    float dx = 0.0;
+    float dy = 0.0;
 
-    sprite.setScale(trans->sx*dir,trans->sy);
-    sprite.setXY(trans->x,trans->y);
-    sprite.setOrigin(-x_off ,-y_off);
-    sprite.setColor(trans->r,trans->g,trans->b,trans->a);
-    sprite.draw(1,shader);
+    char_frame *frm = get_pframe();
+    if (frm)
+    {
+        dx = sprite.get_pframe()->x_offset;
+        dy = sprite.get_pframe()->y_offset;
+    }
+
+    float cx = (x_off + dx) * dir;
+    float cy = dy - y_off;
+
+    gr_transform trans;
+    trans.reset();
+    trans.translate(x, -y - field_138);
+
+    trans.translate(-dir * dx, -dy);
+
+    trans.rotate3(angX,angY,angZ * dir, cx, cy, 0);
+    trans.scale3(scaleX,scaleY,1.0,  cx, cy, 0.0);
+
+    trans.scale3(dir,1,1);
+
+    trans.rcombine(sh_trans->trans);
+
+    sprite.setTransform(&trans);
+
+    sprite.draw(PLANE_SCENE,shader);
+//    float rx,ry,rz;
+//    euler_mult(0,0,-angZ,trans->ax,trans->ay,trans->az,rx,ry,rz);
+//
+//    if (trans->sx < 0)
+//        sprite.setRotate(rx,ry,-rz*dir);
+//    else
+//        sprite.setRotate(rx,ry,rz*dir);
+//
+//    sprite.setScale(trans->sx*dir,trans->sy);
+//    sprite.setXY(trans->x,trans->y);
+//    sprite.setOrigin(-x_off ,-y_off);
+//    sprite.setColor(trans->r,trans->g,trans->b,trans->a);
+//    sprite.draw(1,shader);
 }
 
 void char_c::draw(gr_shader *shader)
 {
-    sprite.setOrigin(-x_off,-y_off);
-
-    sprite.setScale(dir*scaleX,scaleY);
-
-    if (scaleX < 0)
-        sprite.setRotate(-angZ*dir);
-    else
-        sprite.setRotate(angZ*dir);
-
     sprite.setColor(255,255,255,255);
-    // }
 
-    sprite.setXY(x,y+y_off);
+    float dx = 0.0;
+    float dy = 0.0;
 
-    sprite.draw(1,shader);
-
-    //setOrigin(-x_off,-y_off);
-    //draw(x,y+y_off,1,dir,angZ);
-
-    //if (angZ != 0)
-    //    draw(x,y+y_off,1,dir,angZ);
-    //else
-    //   draw(x,y+y_off,1,dir);
-
-    // gr_draw_box(x,-y,255,0,0,1);
-    // gr_draw_box(x,-y-y_off,0,255,0,1);
-
-    //for (uint32_t i = 0; i<get_pframe()->box_hit.size(); i++)
-    //if (atk_area_2o[i])
+    char_frame *frm = get_pframe();
+    if (frm)
     {
-//        frame_box *bx = &hit_area_2o[i];
-        //gr_draw_box(bx->x1,
-        //            bx->y1,
-        //          bx->x2-bx->x1,
-        //        bx->y2-bx->y1,
-        //      0,255,0,60,1);
+        dx = sprite.get_pframe()->x_offset;
+        dy = sprite.get_pframe()->y_offset;
     }
-    /*if (pf->box_atk.size() > 0)
-    {
-        for (uint32_t i=0; i<pf->box_atk.size(); i++)
-        {
-            gr_draw_box(x+pf->box_atk[i].x1,
-                        -y+pf->box_atk[i].y1,
-                        pf->box_atk[i].x2-pf->box_atk[i].x1,
-                        pf->box_atk[i].y2-pf->box_atk[i].y1,
-                        0,255,0,128,1);
-        }
-    }*/
 
+    float cx = (x_off + dx) * dir;
+    float cy = dy - y_off;
+
+    gr_transform trans;
+    trans.reset();
+    trans.translate(x, -y);
+
+    trans.translate(-dir * dx, -dy);
+
+    trans.rotate3(angX,angY,angZ * dir, cx, cy, 0);
+    trans.scale3(scaleX,scaleY,1.0,  cx, cy, 0.0);
+
+    trans.scale3(dir,1,1);
+
+    sprite.setTransform(&trans);
+
+    sprite.draw(PLANE_SCENE,shader);
 }
 
 bool char_c::field_sq_check()
@@ -4047,31 +4058,31 @@ void char_c::char_xy_pos_calculation()
 
 float c_meta::sub_4634F0()
 {
-  float dmg = chrt->field_530 * enemy->field_534 * chrt_changeable->combo_rate;
-  if ( field_18C >= 0 && field_18C < 32 )
-      dmg *= (chrt->skills_1[field_18C] / 10.0 + 1.0);
+    float dmg = chrt->field_530 * enemy->field_534 * chrt_changeable->combo_rate;
+    if ( field_18C >= 0 && field_18C < 32 )
+        dmg *= (chrt->skills_1[field_18C] / 10.0 + 1.0);
 
-  char_frame *frm = get_pframe();
-  if ( frm->aflags & AF_UNK1000 )
-    dmg *= chrt->field_544;
-  if ( frm->aflags & AF_UNK800 )
-    dmg *= chrt->field_548;
-  if ( chrt_changeable->correction & 0x1 )
-    dmg *= 0.8;
-  if ( chrt_changeable->correction & 0x2 )
-    dmg *= 0.8;
-  if ( chrt_changeable->correction & 0x4 )
-    dmg *= 0.8;
-  if ( chrt_changeable->correction & 0x8 )
-    dmg *= 0.85;
-  if ( chrt_changeable->correction & 0x10 )
-    dmg *= 0.925;
+    char_frame *frm = get_pframe();
+    if ( frm->aflags & AF_UNK1000 )
+        dmg *= chrt->field_544;
+    if ( frm->aflags & AF_UNK800 )
+        dmg *= chrt->field_548;
+    if ( chrt_changeable->correction & 0x1 )
+        dmg *= 0.8;
+    if ( chrt_changeable->correction & 0x2 )
+        dmg *= 0.8;
+    if ( chrt_changeable->correction & 0x4 )
+        dmg *= 0.8;
+    if ( chrt_changeable->correction & 0x8 )
+        dmg *= 0.85;
+    if ( chrt_changeable->correction & 0x10 )
+        dmg *= 0.925;
 
     if ( enemy->health < 0 )
-      dmg *= 0.7;
+        dmg *= 0.7;
     else if ( enemy->max_health > enemy->health )
         dmg *= enemy->health / enemy->max_health * 0.3 + 0.7;
-  return dmg;
+    return dmg;
 }
 
 
