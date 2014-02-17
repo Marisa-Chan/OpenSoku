@@ -1130,7 +1130,7 @@ void c_scene_fx::set_seq_params()
             if ( parent->get_subseq() == 1 || parent->get_subseq() == 2 )
                 angZ = parent->angZ;
             else if ( parent->get_subseq() == 3 || parent->get_subseq() == 4 )
-                angZ = -parent->angZ + 180.0;
+                angZ = parent->angZ + 180.0;
         }
         break;
     case 135:
