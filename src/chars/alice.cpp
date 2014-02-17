@@ -5119,6 +5119,20 @@ void char_alice::set_seq_params()
 	uint32_t sq = get_seq();
 	switch(sq)
 	{
+	case 4:
+		h_inerc = 6.0;
+		break;
+	case 5:
+		h_inerc = -6.0;
+		break;
+	case 197:
+		reset_forces();
+		h_inerc = 15.0;
+		break;
+	case 198:
+		reset_forces();
+		h_inerc = -15.0;
+		break;
 	case 214:
 	case 217:
 		reset_ofs();
@@ -5130,6 +5144,87 @@ void char_alice::set_seq_params()
 		y_off = 95.0;
 		field_7DC = 12.0;
 		field_7EC = 0.0;
+		break;
+	case 300:
+	case 303:
+	case 321:
+	case 330:
+		if ( !field_49A )
+			reset_forces();
+		field_190 = 0;
+		field_194 = 1;
+		break;
+	case 301:
+		if ( !field_49A )
+			reset_forces();
+		field_190 = 0;
+		break;
+	case 302:
+		not_charge_attack = 1;
+		if ( !field_49A )
+			reset_forces();
+		field_190 = 0;
+		break;
+	case 304:
+		field_49A = 0;
+		field_194 = 0;
+		field_190 = 0;
+		reset_forces();
+		field_7D0 = 0;
+		field_7D2 = 0;
+		break;
+	case 305:
+		v_inerc = 0.0;
+		h_inerc = 15.0;
+		v_force = 0.0;
+		field_49A = 0;
+		field_190 = 0;
+		field_194 = 1;
+		break;
+	case 306:
+		field_7D0 = 0;
+		field_190 = 0;
+		field_194 = 1;
+		break;
+	case 307:
+		field_190 = 0;
+		h_inerc *= 0.25;
+		v_inerc *= 0.25;
+		break;
+	case 308:
+		field_190 = 0;
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_194 = 4;
+		break;
+	case 309:
+		field_190 = 0;
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_194 = 4;
+		h_inerc *= 0.2;
+		v_inerc *= 0.2;
+		v_force = 0.0;
+		break;
+	case 310:
+		h_inerc = 0.0;
+		field_7D0 = 0;
+		v_inerc = 0.0;
+		field_190 = 0;
+		field_194 = 99;
+		v_force = 0.5;
+		break;
+	case 320:
+		field_49A = 0;
+		field_190 = 0;
+		field_194 = 1;
+		break;
+	case 322:
+		reset_forces();
+		field_49A = 0;
+		field_190 = 0;
+		field_194 = 1;
+		not_charge_attack = 1;
 		break;
 	case 400:
 	case 401:
@@ -5150,6 +5245,219 @@ void char_alice::set_seq_params()
 		field_7D6 = 0;
 		field_7D8 = 0;
 		not_charge_attack = 1;
+		break;
+	case 402:
+		field_190 = 0;
+		reset_forces();
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		break;
+	case 404:
+	case 405:
+	case 406:
+		field_190 = 0;
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		h_inerc *= 0.2;
+		field_7D8 = 0;
+		not_charge_attack = 1;
+		v_inerc *= 0.2;
+		v_force = 0.6;
+		break;
+	case 408:
+		field_190 = 0;
+		field_49A = 0;
+		if ( h_inerc < 7.5 )
+			h_inerc = 7.5;
+		break;
+	case 409:
+		field_49A = 0;
+		v_force = 0.35;
+		field_7D0 = 0;
+		field_190 = 0;
+		field_194 = 1;
+		break;
+	case 414:
+	case 415:
+	case 416:
+		field_190 = 0;
+		h_inerc *= 0.2;
+		v_inerc *= 0.2;
+		v_force = 0.5;
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		not_charge_attack = 1;
+		break;
+	case 418:
+		field_190 = 0;
+		field_49A = 0;
+		if ( h_inerc > 10.0 )
+			h_inerc = 10.0;
+		break;
+	case 500:
+	case 501:
+	case 505:
+	case 506:
+	case 540:
+	case 541:
+		field_190 = 1;
+		reset_forces();
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		break;
+	case 507:
+	case 508:
+		v_force = 0.0;
+		field_190 = 1;
+		h_inerc *= 0.25;
+		v_inerc *= 0.25;
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		break;
+	case 510:
+	case 511:
+	case 550:
+	case 551:
+	case 560:
+	case 570:
+		field_190 = 0;
+		reset_forces();
+		break;
+	case 512:
+	case 513:
+		field_190 = 0;
+		h_inerc *= 0.1;
+		v_inerc *= 0.1;
+		v_force = 0.025;
+		break;
+	case 530:
+	case 531:
+		field_190 = 0;
+		reset_forces();
+		not_charge_attack = 1;
+		break;
+	case 542:
+	case 543:
+		v_force = 0.0;
+		field_190 = 1;
+		h_inerc *= 0.2;
+		v_inerc *= 0.2;
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		break;
+	case 545:
+	case 546:
+	case 568:
+	case 610:
+		field_190 = 0;
+		reset_forces();
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		break;
+	case 547:
+	case 548:
+	case 660:
+		field_190 = 0;
+		h_inerc *= 0.25;
+		v_inerc *= 0.25;
+		v_force = 0.5;
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		break;
+	case 565:
+	case 566:
+		field_190 = 0;
+		reset_forces();
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		field_8BC[0] = 1;
+		break;
+	case 567:
+	case 569:
+		field_190 = 0;
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		h_inerc *= 0.1;
+		field_7D8 = 0;
+		field_8BC[0] = 0;
+		v_inerc *= 0.1;
+		v_force = 0.0;
+		break;
+	case 600:
+	case 601:
+	case 603:
+	case 604:
+	case 607:
+	case 608:
+	case 609:
+	case 657:
+	case 659:
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_190 = 1;
+		reset_forces();
+		break;
+	case 602:
+	case 605:
+	case 606:
+	case 652:
+		field_190 = 1;
+		reset_forces();
+		field_7D0 = 0;
+		field_7D2 = 0;
+		field_7D6 = 0;
+		field_7D8 = 0;
+		field_8BC[0] = 1;
+		break;
+	case 611:
+		field_190 = 0;
+		reset_forces();
+		field_7D0 = 0;
+		break;
+	case 710:
+		reset_forces();
+		field_7D0 = 0;
+		break;
+	case 711:
+		reset_forces();
+		field_7D0 = 1;
+		break;
+	case 720:
+	case 721:
+	case 730:
+		reset_forces();
+		break;
+	case 740:
+		reset_forces();
+		field_7D0 = 0;
+		field_7D2 = 0;
+		break;
+	case 797:
+	case 798:
+		reset_forces();
+		scene_play_sfx(31);
+		h_inerc = 12.0;
+		field_7D0 = 0;
+		v_inerc = 0.0;
+		v_force = 0.5;
 		break;
 	default:
 		char_c::set_seq_params();
