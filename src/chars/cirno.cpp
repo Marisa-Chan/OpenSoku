@@ -745,20 +745,19 @@ void char_cirno::func10()
             //angZ = 180 -angZ;
 
         if ( h_inerc < 0.0 )
+        {
             if ( get_subseq() == 1 )
                 set_subseq(3);
-
-        if ( h_inerc >= 0 )
+            else if ( get_subseq() == 2 )
+                set_subseq(4);
+        }
+        else
+        {
             if ( get_subseq() == 3 )
                 set_subseq(1);
-
-        if ( h_inerc < 0.0 )
-            if ( get_subseq() == 2 )
-                set_subseq(4);
-
-        if ( h_inerc >= 0)
-            if ( get_subseq() == 4 )
+            else if ( get_subseq() == 4 )
                 set_subseq(2);
+        }
 
         if ( get_elaps_frames() % 5 == 1 )
         {
@@ -929,20 +928,20 @@ void char_cirno::func10()
 //            angZ = 180 -angZ;
 
         if ( h_inerc < 0.0 )
+        {
             if ( get_subseq() == 1 )
                 set_subseq(3);
+            else if ( get_subseq() == 2 )
+                set_subseq(4);
+        }
 
         if ( h_inerc >= 0 )
+        {
             if ( get_subseq() == 3 )
                 set_subseq(1);
-
-        if ( h_inerc < 0.0 )
-            if ( get_subseq() == 2 )
-                set_subseq(4);
-
-        if ( h_inerc >= 0)
-            if ( get_subseq() == 4 )
+            else if ( get_subseq() == 4 )
                 set_subseq(2);
+        }
 
         if ( get_elaps_frames() % 5 == 1 )
         {
