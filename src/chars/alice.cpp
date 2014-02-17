@@ -16,6 +16,21 @@ char_alice::char_alice(inp_ab *func, uint8_t pal):
 	load_face("alice");
 }
 
+void char_alice::init_vars()
+{
+	for (int32_t i = 0; i < 4; i++)
+	{
+		field_890[i] = 0;
+		field_89C[i] = 0;
+		field_8AC[i] = 0;
+		field_8BC[i + 1] = 0;
+	}
+	field_89A = 0;
+	field_898 = 0;
+	field_8BC[0] = 0;
+	char_c::init_vars();
+}
+
 c_bullet *char_alice::new_bullet()
 {
 	c_bullet *tmp = new alice_bullets();
