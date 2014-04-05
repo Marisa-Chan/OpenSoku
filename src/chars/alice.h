@@ -20,6 +20,7 @@ class char_alice: public char_c
     void func20();
     void set_seq_params();
     c_bullet *new_bullet();
+    void init_vars();
 };
 
 #endif // MARISA_CPP_INCLUDED
