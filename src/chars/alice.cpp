@@ -7,13 +7,15 @@
 #include "alice.h"
 
 char_alice::char_alice(inp_ab *func, uint8_t pal):
-	char_c::char_c(func)
+    char_c::char_c(func)
 {
-	char_id = CHAR_ID_ALICE;
-	pgp->load_dat("alice",pal);
-	char_loadsfx("alice");
-	cards_load_cards(&chr_cards,"alice");
-	load_face("alice");
+    char_id = CHAR_ID_ALICE;
+    pgp->load_dat("alice",pal);
+    char_loadsfx("alice");
+    cards_load_cards(&chr_cards,"alice");
+    load_face("alice");
+    load_spells("alice");
+    stand_gfx->init(this,"alice");
 }
 
 void char_alice::init_vars()
