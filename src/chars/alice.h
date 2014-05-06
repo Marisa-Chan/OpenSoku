@@ -8,6 +8,9 @@ class char_alice: public char_c
     int16_t field_890[4];
      //CF_SP_DOLL_COUNT 0x890 // short
      //CF_DOLL_COUNT 0x892 // short
+
+    int16_t field_892;
+
     int16_t field_898;
     int16_t field_89A;
     float field_89C[4]; // Dolls X

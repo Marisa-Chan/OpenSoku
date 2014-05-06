@@ -5,6 +5,8 @@ class alice_bullets: public c_bullet
 {
     public:
 
+    int32_t field_3AC;
+
     void func10();
     void set_seq_params(); //func15
 

@@ -31,6 +31,7 @@ void char_alice::init_vars()
     field_89A = 0;
     field_898 = 0;
     field_8BC[0] = 0;
+    field_892 = 0;
     char_c::init_vars();
 }
 
@@ -172,7 +173,7 @@ void char_alice::func10()
     if ( health <= 0 )
     {
         field_890[0] = 0;
-        field_890[1] = 0;
+        field_892 = 0;
     }
     if ( sq > 149 && sq < 159 )
     {
@@ -2555,7 +2556,7 @@ void char_alice::func10()
             for ( int32_t i = 0; i < field_7D2; i++ )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(45) + 20.0;
+                tmp[0] = scene_rand_rngf(45) + 20.0;
                 tmp[1] = 15.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 815, (14 * dir) + x, y + 111.0, dir, 1, tmp, 3);
@@ -2587,7 +2588,7 @@ void char_alice::func10()
             for ( int32_t i = 0; i < field_7D2; i++ )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(45) + 30.0;
+                tmp[0] = scene_rand_rngf(45) + 30.0;
                 tmp[1] = 15.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 815, (14 * dir) + x, y + 111.0, dir, 1, tmp, 3);
@@ -2657,7 +2658,7 @@ void char_alice::func10()
             for ( int32_t i = 0; i < field_7D2; i++ )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(45) - 30.0;
+                tmp[0] = scene_rand_rngf(45) - 30.0;
                 tmp[1] = 15.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 815, (14 * dir) + x, y + 111.0, dir, 1, tmp, 3);
@@ -2689,7 +2690,7 @@ void char_alice::func10()
             for ( int32_t i = 0; i < field_7D2; i++ )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(45) - 10.0;
+                tmp[0] = scene_rand_rngf(45) - 10.0;
                 tmp[1] = 15.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 815, (14 * dir) + x, y + 111.0, dir, 1, tmp, 3);
@@ -2759,7 +2760,7 @@ void char_alice::func10()
             for ( int32_t i = 0; i < field_7D2; i++ )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(45) + 20.0;
+                tmp[0] = scene_rand_rngf(45) + 20.0;
                 tmp[1] = 15.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 815, (14 * dir) + x, y + 111.0, dir, 1, tmp, 3);
@@ -2791,7 +2792,7 @@ void char_alice::func10()
             for ( int32_t i = 0; i < field_7D2; i++ )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(45) + 30.0;
+                tmp[0] = scene_rand_rngf(45) + 30.0;
                 tmp[1] = 15.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 815, (14 * dir) + x, y + 111.0, dir, 1, tmp, 3);
@@ -2861,7 +2862,7 @@ void char_alice::func10()
             for ( int32_t i = 0; i < field_7D2; i++ )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(45) - 30.0;
+                tmp[0] = scene_rand_rngf(45) - 30.0;
                 tmp[1] = 15.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 815, (14 * dir) + x, y + 111.0, dir, 1, tmp, 3);
@@ -2893,7 +2894,7 @@ void char_alice::func10()
             for ( int32_t i = 0; i < field_7D2; i++ )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(45) - 10.0;
+                tmp[0] = scene_rand_rngf(45) - 10.0;
                 tmp[1] = 15.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 815, (14 * dir) + x, y + 111.0, dir, 1, tmp, 3);
@@ -2933,8 +2934,8 @@ void char_alice::func10()
                 for (int32_t i=0; i < t; i++)
                 {
                     float tmp[3];
-                    tmp[0] = scene_rand_rng(80) * 0.1 + 2.0;
-                    tmp[1] = scene_rand_rng(70) * 0.1 + 21.0;
+                    tmp[0] = scene_rand_rngf(80) * 0.1 + 2.0;
+                    tmp[1] = scene_rand_rngf(70) * 0.1 + 21.0;
                     tmp[2] = 0;
 
                     addbullet(this, NULL, 816, (124 * dir) + x, y + 100.0, dir, 1, tmp, 3);
@@ -2962,8 +2963,8 @@ void char_alice::func10()
             for (int32_t i=0; i < t; i++)
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(80) * 0.1 + 2.0;
-                tmp[1] = scene_rand_rng(70) * 0.1 + 21.0;
+                tmp[0] = scene_rand_rngf(80) * 0.1 + 2.0;
+                tmp[1] = scene_rand_rngf(70) * 0.1 + 21.0;
                 tmp[2] = 0;
 
                 addbullet(this, NULL, 816, (124 * dir) + x, y + 100.0, dir, 1, tmp, 3);
@@ -3006,8 +3007,8 @@ void char_alice::func10()
                 for (int32_t i=0; i < t; i++)
                 {
                     float tmp[3];
-                    tmp[0] = scene_rand_rng(60) * 0.1 + 9.0;
-                    tmp[1] = scene_rand_rng(70) * 0.1 + 21.0;
+                    tmp[0] = scene_rand_rngf(60) * 0.1 + 9.0;
+                    tmp[1] = scene_rand_rngf(70) * 0.1 + 21.0;
                     tmp[2] = 0;
 
                     addbullet(this, NULL, 816, (124 * dir) + x, y + 100.0, dir, 1, tmp, 3);
@@ -3035,8 +3036,8 @@ void char_alice::func10()
             for (int32_t i=0; i < t; i++)
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(60) * 0.1 + 9.0;
-                tmp[1] = scene_rand_rng(70) * 0.1 + 21.0;
+                tmp[0] = scene_rand_rngf(60) * 0.1 + 9.0;
+                tmp[1] = scene_rand_rngf(70) * 0.1 + 21.0;
                 tmp[2] = 0;
 
                 addbullet(this, NULL, 816, (124 * dir) + x, y + 100.0, dir, 1, tmp, 3);
@@ -3488,9 +3489,9 @@ void char_alice::func10()
             {
                 float tmp[5];
                 tmp[0] = i * t2 - 175.0;
-                tmp[1] = scene_rand_rng(12) + 12.0;
+                tmp[1] = scene_rand_rngf(12) + 12.0;
                 tmp[2] = 0.0;
-                tmp[3] = scene_rand_rng(8);
+                tmp[3] = scene_rand_rngf(8);
                 tmp[4] = 0.0;
                 addbullet(this, NULL, 822, x, y + 120.0, dir, -1, tmp, 5);
             }
@@ -3529,9 +3530,9 @@ void char_alice::func10()
             {
                 float tmp[5];
                 tmp[0] = i * t2 - 175.0;
-                tmp[1] = scene_rand_rng(12) + 12.0;
+                tmp[1] = scene_rand_rngf(12) + 12.0;
                 tmp[2] = 0.0;
-                tmp[3] = scene_rand_rng(8);
+                tmp[3] = scene_rand_rngf(8);
                 tmp[4] = 6.0;
                 addbullet(this, NULL, 822, x, y + 120.0, dir, -1, tmp, 5);
             }
@@ -3723,14 +3724,14 @@ void char_alice::func10()
                 field_190 = 1;
                 add_card_energy( 50);
                 float tmp[4];
-                if ( field_890[1] <= 0 )
+                if ( field_892 <= 0 )
                 {
                     tmp[0] = 0.0;
                 }
                 else
                 {
-                    float xx = (field_89C[field_890[1] - 1] - x - (13 * dir)) * dir;
-                    float yy = field_8AC[field_890[1] - 1] - y - 115.0;
+                    float xx = (field_89C[field_892 - 1] - x - (13 * dir)) * dir;
+                    float yy = field_8AC[field_892 - 1] - y - 115.0;
                     tmp[0] = -atan2_deg(yy, xx);
                 }
                 tmp[1] = 30.0;
@@ -3769,14 +3770,14 @@ void char_alice::func10()
                 field_190 = 1;
                 add_card_energy( 50);
                 float tmp[4];
-                if ( field_890[1] <= 0 )
+                if ( field_892 <= 0 )
                 {
                     tmp[0] = 0.0;
                 }
                 else
                 {
-                    float xx = (field_89C[field_890[1] - 1] - x - (13 * dir)) * dir;
-                    float yy = field_8AC[field_890[1] - 1] - y - 115.0;
+                    float xx = (field_89C[field_892 - 1] - x - (13 * dir)) * dir;
+                    float yy = field_8AC[field_892 - 1] - y - 115.0;
                     tmp[0] = -atan2_deg(yy, xx);
                 }
                 tmp[1] = 30.0;
@@ -4204,8 +4205,8 @@ void char_alice::func10()
                     if ( field_7D0 == 30 )
                     {
                         float tmp[3];
-                        tmp[0] = scene_rand_rng(20) * 0.1 + 1.0;
-                        tmp[1] = scene_rand_rng(20) * 0.1 + 3.0;
+                        tmp[0] = scene_rand_rngf(20) * 0.1 + 1.0;
+                        tmp[1] = scene_rand_rngf(20) * 0.1 + 3.0;
                         tmp[2] = 0.0;
                         addbullet( this, NULL, 861, x, y + 50.0, dir, -1, tmp, 3);
                         play_sfx( 3);
@@ -4213,8 +4214,8 @@ void char_alice::func10()
                     else
                     {
                         float tmp[3];
-                        tmp[0] = scene_rand_rng(40) * 0.1 + 3.0;
-                        tmp[1] = scene_rand_rng(20) * 0.1 + 1.0;
+                        tmp[0] = scene_rand_rngf(40) * 0.1 + 3.0;
+                        tmp[1] = scene_rand_rngf(20) * 0.1 + 1.0;
                         tmp[2] = 9.0;
                         addbullet( this, NULL, 861, x, y + 50.0, dir, -1, tmp, 3);
                     }
@@ -4494,8 +4495,8 @@ void char_alice::func10()
             }
             play_sfx( 2);
             float tmp[3];
-            tmp[0] = -45.0 - scene_rand_rng(90);
-            tmp[1] = scene_rand_rng(60) * 0.1 + 7.0;
+            tmp[0] = -45.0 - scene_rand_rngf(90);
+            tmp[1] = scene_rand_rngf(60) * 0.1 + 7.0;
             tmp[2] = 0.0;
             addbullet(this, NULL, 900, x, y + 100.0, dir, -1, tmp, 3);
         }
@@ -4506,9 +4507,9 @@ void char_alice::func10()
         if ( get_subseq() == 0 && get_elaps_frames() % 2 == 0 )
         {
             float tmp[3];
-            tmp[0] = scene_rand_rng(360);
-            tmp[1] = scene_rand_rng(400) + 200.0;
-            tmp[2] = scene_rand_rng(7);
+            tmp[0] = scene_rand_rngf(360);
+            tmp[1] = scene_rand_rngf(400) + 200.0;
+            tmp[2] = scene_rand_rngf(7);
             char_frame *frm = get_pframe();
             float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
             float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
@@ -4519,9 +4520,9 @@ void char_alice::func10()
             if ( get_elaps_frames() % 2 == 0 && (int32_t)get_elaps_frames() <= field_7D0 - 30 )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(360);
-                tmp[1] = scene_rand_rng(400) + 200.0;
-                tmp[2] = scene_rand_rng(7);
+                tmp[0] = scene_rand_rngf(360);
+                tmp[1] = scene_rand_rngf(400) + 200.0;
+                tmp[2] = scene_rand_rngf(7);
                 char_frame *frm = get_pframe();
                 float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
                 float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
@@ -4583,7 +4584,7 @@ void char_alice::func10()
             for (int32_t i=0; i < field_7DC; i++)
             {
                 float tmp[3];
-                tmp[0] = -60.0 - scene_rand_rng(120);
+                tmp[0] = -60.0 - scene_rand_rngf(120);
                 tmp[1] = scene_rand_rng(dash_angle * 10.0) * 0.1 + 7.0;
                 tmp[2] = 0.0;
                 addbullet(this, NULL, 900, x, y + 100.0, dir, -1, tmp, 3);
@@ -4596,9 +4597,9 @@ void char_alice::func10()
         if ( get_subseq() == 0 && get_elaps_frames() % 2 == 0 )
         {
             float tmp[3];
-            tmp[0] = scene_rand_rng(360);
-            tmp[1] = scene_rand_rng(400) + 200.0;
-            tmp[2] = scene_rand_rng(7);
+            tmp[0] = scene_rand_rngf(360);
+            tmp[1] = scene_rand_rngf(400) + 200.0;
+            tmp[2] = scene_rand_rngf(7);
             char_frame *frm = get_pframe();
             float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
             float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
@@ -4609,9 +4610,9 @@ void char_alice::func10()
             if ( get_elaps_frames() % 2 == 0 && (int32_t)get_elaps_frames() <= field_7D0 - 30 )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(360);
-                tmp[1] = scene_rand_rng(400) + 200.0;
-                tmp[2] = scene_rand_rng(7);
+                tmp[0] = scene_rand_rngf(360);
+                tmp[1] = scene_rand_rngf(400) + 200.0;
+                tmp[2] = scene_rand_rngf(7);
                 char_frame *frm = get_pframe();
                 float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
                 float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
@@ -4664,8 +4665,8 @@ void char_alice::func10()
             }
             play_sfx( 22);
             float tmp[3];
-            tmp[0] = -60.0 - scene_rand_rng(120);
-            tmp[1] = scene_rand_rng(dash_angle * 10.0) * 0.1 + 7.0;
+            tmp[0] = -60.0 - scene_rand_rngf(120);
+            tmp[1] = scene_rand_rngf(dash_angle * 10.0) * 0.1 + 7.0;
             tmp[2] = 0.0;
             addbullet(this, NULL, 910, x, y + 100.0, dir, -1, tmp, 3);
         }
@@ -4679,9 +4680,9 @@ void char_alice::func10()
         if ( get_subseq() == 2 && get_elaps_frames() % 2 == 0 )
         {
             float tmp[3];
-            tmp[0] = scene_rand_rng(360);
-            tmp[1] = scene_rand_rng(400) + 200.0;
-            tmp[2] = scene_rand_rng(7);
+            tmp[0] = scene_rand_rngf(360);
+            tmp[1] = scene_rand_rngf(400) + 200.0;
+            tmp[2] = scene_rand_rngf(7);
             char_frame *frm = get_pframe();
             float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
             float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
@@ -4692,9 +4693,9 @@ void char_alice::func10()
             if ( get_elaps_frames() % 2 == 0 && (int32_t)get_elaps_frames() <= field_7D0 - 30 )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(360);
-                tmp[1] = scene_rand_rng(400) + 200.0;
-                tmp[2] = scene_rand_rng(7);
+                tmp[0] = scene_rand_rngf(360);
+                tmp[1] = scene_rand_rngf(400) + 200.0;
+                tmp[2] = scene_rand_rngf(7);
                 char_frame *frm = get_pframe();
                 float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
                 float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
@@ -4720,7 +4721,7 @@ void char_alice::func10()
             set_seq( 0);
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1 )
         {
-            h_inerc = scene_rand_rng(20) * 0.1 - 10.0;
+            h_inerc = scene_rand_rngf(20) * 0.1 - 10.0;
             v_inerc = 10.0;
             v_force = 0.5;
         }
@@ -4829,14 +4830,14 @@ void char_alice::func10()
         {
             field_7D0 = 0;
             if ( getlvl_height() >= y )
-                field_7DC = scene_rand_rng(100) + 150.0;
+                field_7DC = scene_rand_rngf(100) + 150.0;
             else
-                field_7DC = scene_rand_rng(250) + 50.0;
+                field_7DC = scene_rand_rngf(250) + 50.0;
 
             if ( x > 640.0 )
-                dash_angle = scene_rand_rng(480) + 100.0;
+                dash_angle = scene_rand_rngf(480) + 100.0;
             else
-                dash_angle = 1180 - scene_rand_rng(480);
+                dash_angle = 1180 - scene_rand_rngf(480);
 
             if ( dash_angle >= x )
                 dir = 1;
@@ -4851,9 +4852,9 @@ void char_alice::func10()
         if ( get_subseq() == 0 && get_elaps_frames() % 2 == 0 )
         {
             float tmp[3];
-            tmp[0] = scene_rand_rng(360);
-            tmp[1] = scene_rand_rng(400) + 200.0;
-            tmp[2] = scene_rand_rng(7);
+            tmp[0] = scene_rand_rngf(360);
+            tmp[1] = scene_rand_rngf(400) + 200.0;
+            tmp[2] = scene_rand_rngf(7);
             char_frame *frm = get_pframe();
             float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
             float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
@@ -4864,9 +4865,9 @@ void char_alice::func10()
             if ( get_elaps_frames() % 2 == 0 && (int32_t)get_elaps_frames() <= field_7D2 - 30 )
             {
                 float tmp[3];
-                tmp[0] = scene_rand_rng(360);
-                tmp[1] = scene_rand_rng(400) + 200.0;
-                tmp[2] = scene_rand_rng(7);
+                tmp[0] = scene_rand_rngf(360);
+                tmp[1] = scene_rand_rngf(400) + 200.0;
+                tmp[2] = scene_rand_rngf(7);
                 char_frame *frm = get_pframe();
                 float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
                 float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
@@ -6084,7 +6085,7 @@ void char_alice::func20()
                         }
                         if ( pres_comb & PCOMB_2N2C )
                         {
-                            if ( field_890[1] >= 1)
+                            if ( field_892 >= 1)
                             {
                                 if ( skills_1[11] >= 1 )
                                 {
@@ -6135,7 +6136,7 @@ void char_alice::func20()
                                     }
                                 }
                             }
-                            if ( field_890[1] >= 1)
+                            if ( field_892 >= 1)
                             {
                                 if ( cprior <= get_prior(560) || (sq >= 500 && sq <= 599 && field_803 == 0))
                                 {
@@ -6152,7 +6153,7 @@ void char_alice::func20()
                         }
                         if ( pres_comb & PCOMB_2N2B )
                         {
-                            if ( field_890[1] >= 1)
+                            if ( field_892 >= 1)
                             {
                                 if ( skills_1[11] >= 1 )
                                 {
@@ -6203,7 +6204,7 @@ void char_alice::func20()
                                     }
                                 }
                             }
-                            if ( field_890[1] >= 1)
+                            if ( field_892 >= 1)
                             {
                                 if ( cprior <= get_prior(560) || (sq >= 500 && sq <= 599 && field_803 == 0))
                                 {
