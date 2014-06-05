@@ -49,6 +49,25 @@ void battle_ui_std::init()
     under.load_dat("data/battle","battleUnder.dat");
     combo.load_dat("data/battle","combo.dat");
 
+    inf_cmb.hit_numb = combo.get_gui_t6(1000); // comboFont.bmp
+    inf_cmb.hit_numb->renderable = true;
+
+    inf_cmb.rate_numb = combo.get_gui_t6(1001); // infoFont.bmp
+    inf_cmb.rate_numb->renderable = true;
+
+    inf_cmb.limit_numb = combo.get_gui_t6(1002); // infoFont.bmp
+    inf_cmb.limit_numb->renderable = true;
+
+    inf_cmb.damage_numb = combo.get_gui_t6(1003); // infoFont.bmp
+    inf_cmb.damage_numb->renderable = true;
+
+    inf_cmb.RiftAttack = combo.get_gui_t0(2103); // RiftAttack.bmp
+    inf_cmb.smashAttack = combo.get_gui_t0(2104); // smashAttack.bmp
+    inf_cmb.borderResist = combo.get_gui_t0(2105);// borderResist.bmp
+    inf_cmb.chainArts = combo.get_gui_t0(2100);// chainArts.bmp
+    inf_cmb.chainSpell = combo.get_gui_t0(2101);// chainSpell.bmp
+    inf_cmb.counterHit = combo.get_gui_t0(2102);// counterHit.bmp
+
     for(int8_t i=0; i < 2; i++)
     {
         btl_std_plr *pl = &player[i];
@@ -98,18 +117,32 @@ void battle_ui_std::init()
 
 void battle_ui_std::link(char_c *p1, char_c *p2)
 {
+    inf_eff.clear();
+
     player[0].chr = p1;
     player[0].health = p1->health;
     player[0].health_prev = p1->health_prev;
     player[1].chr = p2;
     player[1].health = p2->health;
     player[1].health_prev = p2->health_prev;
+
+    cmb_plr[0].cmd_deq.clear();
+    cmb_plr[0].field_14 = 90;
+    cmb_plr[0].timer = 0;
+    cmb_plr[0].old_correction = 0;
+    cmb_plr[0].last_combo_count = 0;
+    cmb_plr[1].cmd_deq.clear();
+    cmb_plr[1].field_14 = 90;
+    cmb_plr[1].timer = 0;
+    cmb_plr[1].old_correction = 0;
+    cmb_plr[1].last_combo_count = 0;
 }
 
 void battle_ui_std::update()
 {
     for(int8_t i=0; i < 2; i++)
     {
+        // sub_47E890
         btl_std_plr *pl = &player[i];
         char_c *chr = pl->chr;
 
@@ -268,6 +301,13 @@ void battle_ui_std::update()
                     }
             }
         }
+
+        //sub_4788D0
+        update_cmb_info(i);
+
+
+        //sub_4355C0
+
     }
 
     weatherFont000->renderable = (weather_get() != WEATHER_CLEAR);
@@ -346,6 +386,8 @@ void battle_ui_std::draw()
     upper.draw_all(0);
 
     inf_eff.draw(2,0);
+    draw_cmb_info(0);
+    draw_cmb_info(1);
     inf_eff.draw(1,0);
 
     upper.draw_by_id(100,true,0);
@@ -354,6 +396,133 @@ void battle_ui_std::draw()
     inf_eff.draw(0,0);
 }
 
+
+void btl_ui::update_cmb_info(int8_t index)
+{
+    btl_std_plr *pl = &player[index];
+    char_c *chr = pl->chr;
+    combo_player *chr_inf = &cmb_plr[index];
+
+  if ( chr->combo_count != chr_inf->last_combo_count )
+  {
+      chr_inf->last_combo_count = chr->combo_count;
+      if (chr_inf->last_combo_count >= 2)
+        chr_inf->timer = 180;
+      if (chr->correction > chr_inf->old_correction)
+      {
+          for (int8_t i = 0; i < 6; i++)
+            if ( (chr->correction - chr_inf->old_correction) & (1 << i) )
+            {
+                cmb_elmnt tmp;
+                tmp.pos_x = 0.0;
+                tmp.timer = 10;
+                tmp.id = i;
+                chr_inf->cmd_deq.push_back(tmp);
+            }
+        chr_inf->old_correction = chr->correction;
+      }
+  }
+
+  if ( chr_inf->timer )
+  {
+    chr_inf->timer--;
+
+    if (chr_inf->field_14)
+    {
+        chr_inf->field_8 = (1.0 - cos_deg(9 * chr_inf->field_14)) * 300.0;
+        chr_inf->field_14--;
+    }
+    else
+    {
+        chr_inf->field_8 = 0.0;
+    }
+
+    for (uint32_t i=0; i < chr_inf->cmd_deq.size(); i++)
+    {
+        cmb_elmnt &tmp = chr_inf->cmd_deq[i];
+        if (tmp.timer)
+        {
+            tmp.timer--;
+            if (chr->player_index == 0)
+                tmp.pos_x = (1.0 - cos_deg(9 * tmp.timer)) * -300.0;
+            else
+                tmp.pos_x = (1.0 - cos_deg(9 * tmp.timer)) * 300.0;
+        }
+    }
+  }
+}
+
+void btl_ui::draw_cmb_info(int8_t index)
+{
+    btl_std_plr *pl = &player[index];
+    char_c *chr = pl->chr;
+    combo_player *chr_inf = &cmb_plr[index];
+
+    if (chr_inf->timer)
+    {
+        float yy = 0.0;
+        float xx = 0.0;
+        if (chr->player_index == 0)
+            xx = 0.0 - chr_inf->field_8;
+        else
+            xx = chr_inf->field_8 + 520.0;
+
+        int8_t alpha = 255;
+        if (chr_inf->timer < 30)
+            alpha = (int8_t) (255.0 * (chr_inf->timer / 30.0));
+
+        combo.setColor(alpha, 255, 255, 255);
+
+        //sub_478300
+        {
+            inf_cmb.damage_numb->setInt(chr->combo_damage);
+            if (chr->combo_count <= 99)
+                inf_cmb.hit_numb->setInt(chr->combo_count);
+            else
+                inf_cmb.hit_numb->setInt(99);
+
+            inf_cmb.rate_numb->setFloat(chr->combo_rate * 100.0);
+            inf_cmb.limit_numb->setInt(chr->combo_limit);
+
+            inf_cmb.RiftAttack->renderable = false;
+            inf_cmb.smashAttack->renderable = false;
+            inf_cmb.borderResist->renderable = false;
+            inf_cmb.chainArts->renderable = false;
+            inf_cmb.chainSpell->renderable = false;
+            inf_cmb.counterHit->renderable = false;
+
+            float dy = 0.0;
+            gui_el_t0 *inf_access[6];
+            inf_access[0] = inf_cmb.RiftAttack;
+            inf_access[1] = inf_cmb.smashAttack;
+            inf_access[2] = inf_cmb.borderResist;
+            inf_access[3] = inf_cmb.chainArts;
+            inf_access[4] = inf_cmb.chainSpell;
+            inf_access[5] = inf_cmb.counterHit;
+
+            for (uint32_t i=0; i < chr_inf->cmd_deq.size(); i++)
+            {
+                cmb_elmnt &tmp = chr_inf->cmd_deq[i];
+
+                inf_access[ tmp.id ]->renderable = true;
+                inf_access[ tmp.id ]->setDXDY(tmp.pos_x, dy);
+
+                dy += 12.0;
+            }
+
+            combo.draw_all_dx_dy(PLANE_GUI, xx, yy);
+        }
+    }
+}
+
+void btl_ui::clear_cmb_info(int8_t i)
+{
+    cmb_plr[i].cmd_deq.clear();
+    cmb_plr[i].field_14 = 10;
+    cmb_plr[i].timer = 0;
+    cmb_plr[i].last_combo_count = 0;
+    cmb_plr[i].old_correction = 0;
+}
 
 
 btl_ui::btl_ui()

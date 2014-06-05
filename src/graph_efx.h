@@ -155,6 +155,7 @@ class gfx_holder
 
     virtual void update();
     virtual void draw(int8_t order, int8_t plane = 0 );
+    void clear();
 };
 
 #endif //GRAPH_EFX_H_INCLUDED

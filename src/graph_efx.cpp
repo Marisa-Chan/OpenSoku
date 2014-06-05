@@ -681,6 +681,14 @@ void gfx_holder::draw(int8_t order,int8_t plane)
             fx[i]->draw(plane);
 }
 
+void gfx_holder::clear()
+{
+    for(int32_t i=fx.size()-1; i>=0; i--)
+        delete fx[i];
+
+    fx.clear();
+}
+
 
 gfx_holder::~gfx_holder()
 {

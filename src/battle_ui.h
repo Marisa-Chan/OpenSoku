@@ -26,11 +26,41 @@ struct btl_std_plr
     int32_t    health_prev;
 };
 
+struct combo_info {
+    gui_el_t6 *hit_numb;
+    gui_el_t6 *rate_numb;
+    gui_el_t6 *limit_numb;
+    gui_el_t6 *damage_numb;
+    gui_el_t0 *RiftAttack;
+    gui_el_t0 *smashAttack;
+    gui_el_t0 *borderResist;
+    gui_el_t0 *chainArts;
+    gui_el_t0 *chainSpell;
+    gui_el_t0 *counterHit;
+};
+
+struct cmb_elmnt {
+    float pos_x;
+    int32_t timer;
+    int8_t id;
+};
+
+struct combo_player {
+    int32_t last_combo_count;
+    int32_t timer;
+    float   field_8;
+    int32_t field_14;
+    int8_t old_correction;
+    deque<cmb_elmnt> cmd_deq;
+};
+
 class btl_ui
 {
     protected:
     c_infoef_sp inf_eff;
     btl_std_plr player[2];
+    combo_player cmb_plr[2];
+    combo_info inf_cmb;
 
     gui_holder upper;
     gui_holder under;
@@ -38,6 +68,9 @@ class btl_ui
 
     gui_el_t6 *weatherFont001;
     gui_el_t6 *weatherFont000;
+
+    void update_cmb_info(int8_t index);
+    void draw_cmb_info(int8_t index);
 
 
     public:
@@ -52,6 +85,7 @@ class btl_ui
     virtual void spawneffect(int32_t idx);
 
     void spawn_orb_effect(int32_t idx, uint8_t player, uint8_t orb);
+    void clear_cmb_info(int8_t index);
 };
 
 class battle_ui_std: public btl_ui

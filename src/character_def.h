@@ -135,7 +135,7 @@ class char_c : public c_meta
     WEATHER_ID weather_id;     //0x52C
     float   field_530;
     float   field_534;
-    int32_t field_538;
+    float   field_538;
     float   limit_multiply; //0x53C
     int32_t field_540;
     float   field_544;

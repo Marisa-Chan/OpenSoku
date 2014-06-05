@@ -284,7 +284,7 @@ double c_meta::sub_4636B0()
     if ( enm->field_1B4 >= 0 )
     {
         if ( enm->max_health > enm->field_1B4 )
-            dmg *= (enm->field_1B4 / enm->max_health * 0.3 + 0.7);
+            dmg *= ((float)enm->field_1B4 / (float)enm->max_health * 0.3 + 0.7);
     }
     else
     {
