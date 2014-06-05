@@ -71,7 +71,7 @@ void alice_bullets::func10()
 {
     switch(sprite.get_seq_id())
     {
-    case 800:
+        case 800:
         if ( field_190 == 5 )
         {
             active = false;
@@ -1022,12 +1022,12 @@ void alice_bullets::func10()
             {
                 scaleY = scaleX *= 0.85;
                 if (c_A <= 20)
-                {
-                    active = false;
-                    return;
-                }
-                else
-                    c_A -= 20;
+            {
+                active = false;
+                return;
+            }
+            else
+                c_A -= 20;
             }
             else
                 return;
@@ -1059,52 +1059,52 @@ void alice_bullets::set_seq_params()
     switch(get_seq())
     {
     case 801:
-        if ( addition[2] >= 2.0 )
-            set_subseq(addition[2]);
+      if ( addition[2] >= 2.0 )
+        set_subseq(addition[2]);
 
-        if ( get_subseq() == 0 )
+      if ( get_subseq() == 0 )
+      {
+        h_inerc = 40.0;
+        v_inerc = 10.0;
+      }
+      if ( get_subseq() == 7 )
+      {
+        float tmp[3];
+        tmp[0] = 0.0;
+        tmp[1] = 0.0;
+        tmp[2] = 6.0;
+        addbullet(chrt, this, 803, x ,y, dir, 1, tmp, 3);
+      }
+      if ( get_subseq() == 10 )
+      {
+          float tmp[3];
+        tmp[0] = 0.0;
+        tmp[1] = 0.0;
+        tmp[2] = 12.0;
+        addbullet(chrt, this, 801, x ,y, dir, 1, tmp, 3);
+
+        field_194 = 8;
+
+        for (int i=0; i < 4; i++)
         {
-            h_inerc = 40.0;
-            v_inerc = 10.0;
-        }
-        if ( get_subseq() == 7 )
-        {
-            float tmp[3];
             tmp[0] = 0.0;
-            tmp[1] = 0.0;
-            tmp[2] = 6.0;
-            addbullet(chrt, this, 803, x ,y, dir, 1, tmp, 3);
-        }
-        if ( get_subseq() == 10 )
-        {
-            float tmp[3];
-            tmp[0] = 0.0;
-            tmp[1] = 0.0;
-            tmp[2] = 12.0;
+            tmp[1] = i * 90.0;
+            tmp[2] = 11.0;
             addbullet(chrt, this, 801, x ,y, dir, 1, tmp, 3);
-
-            field_194 = 8;
-
-            for (int i=0; i < 4; i++)
-            {
-                tmp[0] = 0.0;
-                tmp[1] = i * 90.0;
-                tmp[2] = 11.0;
-                addbullet(chrt, this, 801, x ,y, dir, 1, tmp, 3);
-            }
         }
-        if ( get_subseq() == 11 )
-        {
-            angZ = addition[1];
-            scaleX = 1.0;
-            scaleY = 0.0;
-        }
-        if ( get_subseq() == 12 )
-        {
-            scaleX = 0.0;
-            scaleY = 0.0;
-        }
-        break;
+      }
+      if ( get_subseq() == 11 )
+      {
+        angZ = addition[1];
+        scaleX = 1.0;
+        scaleY = 0.0;
+      }
+      if ( get_subseq() == 12 )
+      {
+        scaleX = 0.0;
+        scaleY = 0.0;
+      }
+      break;
     case 803:
         set_subseq(addition[2]);
         if ( get_subseq() == 0 || get_subseq() == 7 )
@@ -1130,48 +1130,48 @@ void alice_bullets::set_seq_params()
         }
         break;
     case 804:
-        field_194 = 1;
-        angZ = addition[0];
-        set_subseq(addition[2]);
-        if ( get_subseq() >= 7 )
-        {
-            field_36C = scene_rand_rng(15) + 5;
-            scaleY = scaleX = scene_rand_rng(15) * 0.1 + 0.5;
-        }
-        break;
+      field_194 = 1;
+      angZ = addition[0];
+      set_subseq(addition[2]);
+      if ( get_subseq() >= 7 )
+      {
+        field_36C = scene_rand_rng(15) + 5;
+        scaleY = scaleX = scene_rand_rng(15) * 0.1 + 0.5;
+      }
+      break;
     case 805:
-        if ( addition[2] >= 2.0 )
-            set_subseq( addition[2]);
-        if ( get_subseq() == 0 )
-        {
-            h_inerc = 40.0;
-            v_inerc = 0.0;
+      if ( addition[2] >= 2.0 )
+        set_subseq( addition[2]);
+      if ( get_subseq() == 0 )
+      {
+        h_inerc = 40.0;
+        v_inerc = 0.0;
 
-            float tmp[3];
-            tmp[0] = 0.0;
-            tmp[1] = 0.0;
-            tmp[2] = 7.0;
-            addbullet(chrt, this, 805, x, y, dir, 1, tmp, 3);
-        }
-        if ( get_subseq() == 7 && bul_parent )
-        {
-            angZ = -atan2_deg(enemy->y + 100.0 - y, enemy->x - x);
-            field_378 = (bul_parent->x - x) * (bul_parent->x - x);
-            field_37C = (bul_parent->y - y) * (bul_parent->y - y);
-            field_380 = sqrt(field_378 + field_37C);
-            scaleX = field_380 * 0.004;
-        }
-        break;
+        float tmp[3];
+        tmp[0] = 0.0;
+        tmp[1] = 0.0;
+        tmp[2] = 7.0;
+        addbullet(chrt, this, 805, x, y, dir, 1, tmp, 3);
+      }
+      if ( get_subseq() == 7 && bul_parent )
+      {
+        angZ = -atan2_deg(enemy->y + 100.0 - y, enemy->x - x);
+        field_378 = (bul_parent->x - x) * (bul_parent->x - x);
+        field_37C = (bul_parent->y - y) * (bul_parent->y - y);
+        field_380 = sqrt(field_378 + field_37C);
+        scaleX = field_380 * 0.004;
+      }
+      break;
     case 806:
-        field_194 = 1;
-        angZ = addition[0];
-        set_subseq(addition[2]);
-        if ( get_subseq() >= 7 )
-        {
-            angX = scene_rand_rngf(90) - 45.0;
-            angY = scene_rand_rngf(90) - 45.0;
-        }
-        break;
+      field_194 = 1;
+      angZ = addition[0];
+      set_subseq(addition[2]);
+      if ( get_subseq() >= 7 )
+      {
+        angX = scene_rand_rngf(90) - 45.0;
+        angY = scene_rand_rngf(90) - 45.0;
+      }
+      break;
     default:
         break;
     }
