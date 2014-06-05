@@ -248,7 +248,7 @@ void char_utsuho::func10()
         reset_forces();
         if (process())
         {
-            if (input->gY() < 0)
+            if (dY() < 0)
                 set_seq(2);
             else
                 set_seq(0);
@@ -269,7 +269,7 @@ void char_utsuho::func10()
             else*/
             {
                 set_seq(0);
-                if ( gY() < 0)
+                if ( dY() < 0)
                     set_seq(1);
             }
         }
@@ -297,20 +297,20 @@ void char_utsuho::func10()
             }
             else
             {
-                if ( input->gY() > 0)
+                if ( dY() > 0)
                 {
-                    field_7D2 = 90 - input->gX(dir) * 45;
+                    field_7D2 = 90 - dX(dir) * 45;
                 }
-                else if (input->gY() == 0)
+                else if (dY() == 0)
                 {
-                    if (input->gX(dir) > 0 )
+                    if (dX(dir) > 0 )
                         field_7D2 = 0;
-                    else if (input->gX(dir) < 0 )
+                    else if (dX(dir) < 0 )
                         field_7D2 = 180;
                 }
-                else if (input->gY() < 0)
+                else if (dY() < 0)
                 {
-                    field_7D2 = -90 - input->gX(dir) * 45;
+                    field_7D2 = -90 - dX(dir) * 45;
                 }
 
                 if ( get_subseq() == 5 || get_subseq() == 6 )
@@ -380,7 +380,7 @@ void char_utsuho::func10()
                         float xx = cos_deg(dash_angle) * 100.0 * dir + x;
                         scene_add_effect(this, 125, xx, yy, dir, 1);
                     }
-                    if ( (input->keyDown(INP_D) == 0 && field_7D6 > 10) || spell_energy <= 0 )
+                    if ( (keyDown(INP_D) == 0 && field_7D6 > 10) || spell_energy <= 0 )
                     {
                         reset_ofs();
                         angZ = 0;

@@ -367,78 +367,78 @@ void c_scene::reset_ibox()
 
 void c_scene::scene_subfunc1()
 {
-    for (uint32_t i=0; i < 2; i++)
-        chrs[i]->func16();
+	for (uint32_t i=0; i < 2; i++)
+		chrs[i]->func16();
 
-    //HACK NOT NEEDED
-    //for (uint32_t i=0; i < 2; i++)
-    //chrs[i]->bullets_func16;
+	//HACK NOT NEEDED
+	//for (uint32_t i=0; i < 2; i++)
+	//chrs[i]->bullets_func16;
 
-    for (uint32_t i=0; i < 2; i++)
-    {
-        chrs[i]->func10();
-    }
+	for (uint32_t i=0; i < 2; i++)
+	{
+		chrs[i]->func10();
+	}
 
 
-    for (uint32_t i=0; i < 2; i++)
-    {
-        if ( chrs[i]->hit_stop == 0 )
-        {
+	for (uint32_t i=0; i < 2; i++)
+	{
+		if ( chrs[i]->hit_stop == 0 )
+		{
+			if ( !chrs[i]->enemy->time_stop )
+			{
+				if ( chrs[i]->char_idle_or_move() )
+				{
+					chrs[i]->func18();
+					if ( !chrs[i]->field_4C0 )
+						chrs[i]->damage_limit = 0;
+				}
+				if (chrs[i]->char_is_shock())
+					if ( chrs[i]->y > 0.0 )
+						chrs[i]->sub_462FF0();
+				if ( chrs[i]->get_seq() < 300 )
+				{
+				    if (chrs[i]->input)
+					if (chrs[i]->input->get_hitTimer() <= 6)
+						chrs[i]->input->zero_keyhit();
+				}
+				chrs[i]->func20();
+			}
+		}
+	}
 
-            if ( !chrs[i]->enemy->time_stop )
-            {
-                if ( chrs[i]->char_idle_or_move() )
-                {
-                    chrs[i]->func18();
-                    if ( !chrs[i]->field_4C0 )
-                        chrs[i]->damage_limit = 0;
-                }
-                if (chrs[i]->char_is_shock())
-                    if ( chrs[i]->y > 0.0 )
-                        chrs[i]->sub_462FF0();
-            }
-            if ( chrs[i]->get_seq() < 300 )
-            {
-                //if ( v1->some_input_var <= 6 )
-                //zero_input_charclass_ispressed_vars(v1); //HACK
-            }
-            chrs[i]->func20();
-        }
-    }
+	for (uint32_t i=0; i < 2; i++)
+	{
+		if (!chrs[i]->enemy->time_stop)
+		{
+			bullist *lst = chrs[i]->get_bullets();
+			bullist_iter iter = lst->begin();
 
-    for (uint32_t i=0; i < 2; i++)
-    {
-        if (!chrs[i]->enemy->time_stop)
-        {
-            bullist *lst = chrs[i]->get_bullets();
-            bullist_iter iter = lst->begin();
+			while(iter != lst->end())
+			{
+				c_bullet *blt = *iter;
 
-            while(iter != lst->end())
-            {
-                c_bullet *blt = *iter;
+				if ( !blt->chrt_changeable->time_stop || blt->field_360)
+				{
+					if (blt->hit_stop)
+						blt->hit_stop--;
+					else
+					{
+						blt->func10();
+						if (blt->tail)
+							blt->tail->update(blt->x, blt->y);
+					}
+				}
 
-                if ( !blt->chrt_changeable->time_stop || blt->field_360)
-                {
-                    if (blt->hit_stop)
-                        blt->hit_stop--;
-                    else
-                    {
-                        blt->func10();
-                        if (blt->tail)
-                            blt->tail->update(blt->x, blt->y);
-                    }
-                }
-
-                if (blt->active)
-                    iter++;
-                else
-                {
-                    delete blt;
-                    iter = lst->erase(iter);
-                }
-            }
-        }
-    }
+				if (blt->active)
+					iter++;
+				else
+				{
+					delete blt;
+					iter = lst->erase(iter);
+				}
+			}
+		}
+	}
 }
 
 
@@ -1947,24 +1947,31 @@ bool c_scene::sub_47ABE0(c_meta *plr, c_meta *enm)
 
 void c_scene::clear_action_keys()
 {
-    for (int8_t i=0; i<2; i++)
-    {
-        chrs[i]->clear_key(INP_A);
-        chrs[i]->clear_key(INP_B);
-        chrs[i]->clear_key(INP_C);
-        chrs[i]->clear_key(INP_BC);
-        chrs[i]->pres_comb = 0;
-    }
+	for (int8_t i=0; i<2; i++)
+	{
+		chrs[i]->clear_key(INP_A);
+		chrs[i]->clear_key(INP_B);
+		chrs[i]->clear_key(INP_C);
+		chrs[i]->clear_key(INP_BC);
+		chrs[i]->pres_comb = 0;
+	}
 }
 
 void c_scene::clear_all_keys()
 {
-    for (int8_t i=0; i<2; i++)
-    {
-        chrs[i]->clear_key();
-        chrs[i]->pres_comb = 0;
-        chrs[i]->pres_move = 0;
-    }
+	for (int8_t i=0; i<2; i++)
+	{
+		chrs[i]->clear_key(INP_X_AXIS);
+		chrs[i]->clear_key(INP_Y_AXIS);
+		chrs[i]->clear_key(INP_A);
+		chrs[i]->clear_key(INP_B);
+		chrs[i]->clear_key(INP_C);
+		chrs[i]->clear_key(INP_D);
+		chrs[i]->clear_key(INP_AB);
+		chrs[i]->clear_key(INP_BC);
+		chrs[i]->pres_comb = 0;
+		chrs[i]->pres_move = 0;
+	}
 }
 
 void scene_load_sounds()

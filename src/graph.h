@@ -54,8 +54,13 @@ struct gr_tex_box
     float tex_scl_y;
 };
 
-void gr_init(uint32_t width, uint32_t height, const char *caption);
+struct gr_events
+{
+    void (*keyb_events)(int32_t, bool);
+};
 
+void gr_init(uint32_t width, uint32_t height, const char *caption, gr_events pollers);
+void gr_poll_events();
 void gr_clear(uint8_t r = 128, uint8_t g = 128, uint8_t b = 128);
 
 void gr_flip();

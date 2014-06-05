@@ -426,14 +426,21 @@ class char_c : public c_meta
     bool char_on_ground_down();
 
     //input functions
-    bool keyDown(inp_keys key);
-    bool keyHit(inp_keys key);
-    int8_t gX(int8_t dir);
-    int8_t gY();
-    void setgX(int8_t dir);
-    void setgY(int8_t dir);
+    //bool keyDown(inp_keys key);
+    //bool keyHit(inp_keys key);
+    int32_t keyHit(inp_keys key);
+    int32_t keyUp(inp_keys key);
+    int32_t keyDown(inp_keys key);
+    int32_t dX(int8_t dir);
+    int32_t dY();
+    int32_t hX(int8_t dir);
+    int32_t hY();
+
+    void set_dX(int8_t dir);
+    void set_dY(int8_t dir);
+    void set_keyDown(inp_keys key, int32_t val);
+
     void clear_key(inp_keys key);
-    void clear_key();
     void set_input_profile(s_profile *prof);
 };
 

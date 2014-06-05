@@ -4,6 +4,10 @@
 #include <SFML/Window.hpp>
 #include "profile.h"
 
+void key_matrix_init();
+void key_matrix_set(int32_t idx, bool down);
+bool key_matrix_get(int32_t idx);
+
 enum inp_types
 {
     INP_TYPE_KB,
@@ -132,8 +136,10 @@ enum inp_axis
 
 enum inp_keys
 {
+    INP_Y_AXIS = 100,
     INP_UP   = 0,
     INP_DOWN = 1,
+    INP_X_AXIS = 101,
     INP_LEFT = 2,
     INP_RIGHT= 3,
     INP_A    = 4,
@@ -146,52 +152,95 @@ enum inp_keys
 };
 
 #define INP_KEYS  11
-#define INPKEYBUF  40 //1.5 sec
+#define INPKEYBUF  90 //1.5 sec
 
 #define INP_AXIS(x,y)   (((x & 0xF) << 1 | (y & 0x1)) << 8)
 
+class inp_both;
 
 class inp_ab
 {
 protected:
 
-    bool key_dn[INP_KEYS];
-    bool pr_key_dn[INP_KEYS];
-    uint8_t key_frm[INP_KEYS];
+    //bool key_dn[INP_KEYS];
+    //bool pr_key_dn[INP_KEYS];
+    //uint8_t key_frm[INP_KEYS];
 
-    int8_t x_axis;
-    int8_t y_axis;
+    struct keys_struct
+    {
+        int32_t X;
+        int32_t Y;
+        int32_t A;
+        int32_t B;
+        int32_t C;
+        int32_t D;
+        int32_t AB;
+        int32_t BC;
+        int32_t START;
+    };
 
-    void flush_cur();
-    void set_key(inp_keys key);
+    keys_struct raw;
+    keys_struct down;
+    keys_struct hit;
+    keys_struct up;
 
-    uint8_t k_frames[INPKEYBUF];
+    uint16_t raw_keys_bitset;
+
+    int32_t keyhit_timer;
+
+    uint16_t k_frames[INPKEYBUF];
+
+    //void flush_cur();
+    //void set_key(inp_keys key);
+
+    //uint8_t k_frames[INPKEYBUF];
 
     void flush_kframes();
+
+    virtual void fill_raw() = 0;
+
+    void read_raw_key_data();
+    void fill_down_up_states();
+
 
 public:
     inp_ab();
 
     //Adds current keystate to input stack
-    void fill_kframes();
+    //void fill_kframes();
     //Get DOWN key state
-    bool keyDown(inp_keys key);
+    int32_t keyDown(inp_keys key);
     //Get Hit key state
-    bool keyHit(inp_keys key);
+    int32_t keyHit(inp_keys key, bool delayed = false);
     //Get Up key state
-    bool keyUp(inp_keys key);
+    int32_t keyUp(inp_keys key);
     //Return timer how many frames key was pressed (255 - infinity)
-    uint8_t keyFramed(inp_keys key);
+    //uint8_t keyFramed(inp_keys key);
+
+    int32_t dX(int8_t dir);
+    int32_t dY();
+
+    int32_t hX(int8_t dir);
+    int32_t hY();
+
     //Return pressed LEFT/RIGHT with char direction care (1 - forward, -1 - backward, 0 not pressed)
-    int8_t gX(int8_t dir);
+    //int32_t gX(int8_t dir);
     //Return pressed UP/DOWN (1 - up, -1 - down, 0 not pressed)
-    int8_t gY();
+    //int32_t gY();
+
+
     //Setting current press direction
-    void   setgX(int8_t dir);
-    void   setgY(int8_t dir);
+    void   set_dX(int8_t dir);
+    void   set_dY(int8_t dir);
+
+    void   set_keyDown(inp_keys key, int32_t val);
+
+    void   zero_keyhit();
+
+    int32_t get_hitTimer();
 
     //clear all down states
-    void zero_input();
+    //void zero_input();
 
     //clear only one key
     void zero_input(inp_keys key);
@@ -200,7 +249,7 @@ public:
     int8_t check_input_seq(const char *sq, uint8_t frames, int8_t direction);
 
     //update routines
-    virtual void update() = 0;
+    virtual void update(bool clean);
     //loads default profile
     virtual void load_def_profile() = 0;
     //loads profile
@@ -213,12 +262,15 @@ public:
 //keyboard input class
 class inp_kb: public inp_ab
 {
+friend inp_both;
 private:
     sf::Keyboard kbd;
 
     uint32_t map[INP_KEYS];
     int32_t  timeouts[kCode_COUNT];
     bool     rawhit[kCode_COUNT];
+
+    void fill_raw();
 
 public:
     inp_kb();
@@ -228,13 +280,14 @@ public:
     //get raw pressed keyboard key (any key)
     bool rawPressed(uint32_t key, int32_t timeout = 6);
     bool rawHit(uint32_t key);
-    void update();
+    //void update();
     void set_devid(uint32_t);
 };
 
 //joystick input class
 class inp_js: public inp_ab
 {
+friend inp_both;
     private:
     sf::Joystick js;
     int32_t joy_id;
@@ -242,12 +295,14 @@ class inp_js: public inp_ab
     uint32_t map[INP_KEYS];
 
     bool key_chk(uint32_t key);
+
+    void fill_raw();
 public:
     inp_js();
 
     void load_profile(s_profile * prof);
     void load_def_profile();
-    void update();
+    //void update();
     void set_devid(uint32_t);
 };
 
@@ -265,6 +320,8 @@ public:
         {return;};
     void set_devid(uint32_t)
         {return;};
+    void fill_raw()
+        {return;};
 };
 
 //keyboard and joystick input class
@@ -279,8 +336,9 @@ class inp_both: public inp_ab
     void load_def_profile();
     bool rawPressed(uint32_t key, int32_t timeout = 6);
     bool rawHit(uint32_t key);
-    void update();
+    //void update(bool clean);
     void set_devid(uint32_t);
+    void fill_raw();
 };
 
 //Create selected input class

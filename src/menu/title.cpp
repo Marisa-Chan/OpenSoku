@@ -134,7 +134,7 @@ screen_main::~screen_main()
 id_screen screen_main::update()
 {
 
-    inp.update();
+    inp.update(true);
 
     if (inp.keyHit(INP_DOWN))
         title_punkt++;

@@ -315,7 +315,7 @@ void char_marisa::func10()
         reset_forces();
         if (process())
         {
-            if (input->gY() < 0)
+            if (dY() < 0)
                 set_seq(2);
             else
                 set_seq(0);
@@ -345,7 +345,7 @@ void char_marisa::func10()
                 else
                 {
                     set_seq(0);
-                    if ( gY() < 0 )
+                    if ( dY() < 0 )
                         set_seq(1);
                 }
             }
@@ -393,7 +393,7 @@ void char_marisa::func10()
                 else
                 {
                     set_seq(0);
-                    if ( gY() < 0 )
+                    if ( dY() < 0 )
                         set_seq(1);
                 }
             }
@@ -430,7 +430,7 @@ void char_marisa::func10()
             else
             {
                 set_seq(0);
-                if ( gY() < 0)
+                if ( dY() < 0)
                     set_seq(1);
             }
         }
@@ -470,15 +470,15 @@ void char_marisa::func10()
                 float xx = x - (scene_rand() % 100) + 50;
                 scene_add_effect(this, 124,xx,yy,dir,1);
             }
-            if ( input->gY() <= 0)
+            if ( dY() <= 0)
             {
                 field_7D0++;
-                if ( ! ((input->gX(dir) > 0 || field_7D0 <= 5 ) && field_7D0 <=45) )
+                if ( ! ((dX(dir) > 0 || field_7D0 <= 5 ) && field_7D0 <=45) )
                     set_seq(204);
             }
             else
             {
-                if (input->gX(dir) <= 0)
+                if (dX(dir) <= 0)
                     set_seq(211);
                 else
                     set_seq(212);
@@ -698,20 +698,20 @@ void char_marisa::func10()
             else
             {
 
-                if ( input->gY() > 0)
+                if ( dY() > 0)
                 {
-                    field_7D2 = 90 - input->gX(dir) * 45;
+                    field_7D2 = 90 - dX(dir) * 45;
                 }
-                else if (input->gY() == 0)
+                else if (dY() == 0)
                 {
-                    if (input->gX(dir) > 0 )
+                    if (dX(dir) > 0 )
                         field_7D2 = 0;
-                    else if (input->gX(dir) < 0 )
+                    else if (dX(dir) < 0 )
                         field_7D2 = 180;
                 }
-                else if (input->gY() < 0)
+                else if (dY() < 0)
                 {
-                    field_7D2 = -90 - input->gX(dir) * 45;
+                    field_7D2 = -90 - dX(dir) * 45;
                 }
 
                 if ( get_subseq() == 5 || get_subseq() == 6 )
@@ -1045,7 +1045,7 @@ void char_marisa::func10()
                 scene_add_effect(this, 124, x + 50.0 - scene_rand_rngf(100), y + scene_rand_rngf(200), dir, 1);
             field_7D0++;
 
-            if ( (gX(dir) <= 0 && field_7D0 > 15) || field_7D0 > 45)
+            if ( (dX(dir) <= 0 && field_7D0 > 15) || field_7D0 > 45)
                 set_seq(204);
         }
         break;
@@ -1202,7 +1202,7 @@ void char_marisa::func10()
             sub10func();
 
         if ( get_frame() < 2 )
-            if ( !input->keyDown(INP_A))
+            if ( !keyDown(INP_A))
                 not_charge_attack = 0;  // yeah, CHARGE
 
         if ( ssq == 0 )
@@ -1289,7 +1289,7 @@ void char_marisa::func10()
             if ( h_inerc < 0.0 )
                 h_inerc = 0.0;
         }
-        if ( !input->keyDown(INP_A))
+        if ( !keyDown(INP_A))
             not_charge_attack = 0;
 
         if ( process() )
@@ -1378,7 +1378,7 @@ void char_marisa::func10()
         break;
 
     case 307:
-        if ( input->keyDown(INP_A) == 0 )
+        if ( keyDown(INP_A) == 0 )
             not_charge_attack = 0;
 
         v_inerc -= v_force;
@@ -1464,7 +1464,7 @@ void char_marisa::func10()
         break;
     case 308:
 
-        if ( input->keyDown(INP_A) == 0 )
+        if ( keyDown(INP_A) == 0 )
             not_charge_attack = 0;
 
         v_inerc -= v_force;
@@ -1613,7 +1613,7 @@ void char_marisa::func10()
         }
         if ( process() )
         {
-            if (gY() >= 0 )
+            if (dY() >= 0 )
                 set_seq(3);
             else
                 set_seq(2);
@@ -1693,7 +1693,7 @@ void char_marisa::func10()
         sub10func();
 
         if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
-            if ( input->keyDown(INP_B) == 0)
+            if ( keyDown(INP_B) == 0)
                 not_charge_attack = 0;
 
         if ( field_7D0 > 0 )
@@ -1761,7 +1761,7 @@ void char_marisa::func10()
         sub10func();
 
         if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
-            if ( input->keyDown(INP_B) == 0 )
+            if ( keyDown(INP_B) == 0 )
                 not_charge_attack = 0;
 
 
@@ -1834,7 +1834,7 @@ void char_marisa::func10()
 
     case 402:
         sub10func();
-        if ( input->keyDown(INP_B) == 0 )
+        if ( keyDown(INP_B) == 0 )
             not_charge_attack = 0;
         if ( field_7D0 >= 0)
         {
@@ -1926,7 +1926,7 @@ void char_marisa::func10()
                 set_seq(0);
 
             if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
-                if ( input->keyDown(INP_B) == 0 )
+                if ( keyDown(INP_B) == 0 )
                     not_charge_attack = 0;
 
             if ( get_subseq() == 1 )
@@ -2021,7 +2021,7 @@ void char_marisa::func10()
                 set_seq(0);
 
             if ( get_subseq() == 0 || (get_subseq() == 1 && get_elaps_frames() <= 4))
-                if ( input->keyDown(INP_B) == 0 )
+                if ( keyDown(INP_B) == 0 )
                     not_charge_attack = 0;
 
             if ( get_subseq() == 1 )
@@ -2090,7 +2090,7 @@ void char_marisa::func10()
     case 410:
         sub10func();
 
-        if ( input->keyDown(INP_C) == 0)
+        if ( keyDown(INP_C) == 0)
             not_charge_attack = 0;
         if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
         {
@@ -2144,7 +2144,7 @@ void char_marisa::func10()
         sub10func();
 
         if ( get_subseq() < 2 )
-            if ( input->keyDown(INP_C) == 0)
+            if ( keyDown(INP_C) == 0)
                 not_charge_attack = 0;
 
         if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
@@ -2179,7 +2179,7 @@ void char_marisa::func10()
         sub10func();
 
         if ( get_subseq() < 2 )
-            if ( input->keyDown(INP_C) == 0)
+            if ( keyDown(INP_C) == 0)
                 not_charge_attack = 0;
 
         if ( get_subseq() == 2 && get_frame() == 1 && get_frame_time() == 0 )
@@ -2220,7 +2220,7 @@ void char_marisa::func10()
         }
         else
         {
-            if ( input->keyDown(INP_C) == 0)
+            if ( keyDown(INP_C) == 0)
                 not_charge_attack = 0;
 
             if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
@@ -2297,7 +2297,7 @@ void char_marisa::func10()
         else
         {
             if ( get_subseq() < 2 )
-                if ( input->keyDown(INP_C) == 0)
+                if ( keyDown(INP_C) == 0)
                     not_charge_attack = 0;
 
             if ( get_subseq() == 2 && get_frame() == 2 && get_frame_time() == 0 )
@@ -4558,9 +4558,9 @@ void char_marisa::func10()
                 t[2] = 5.0;
                 addbullet(this, NULL, 853, x + 30.0 * dir, y + 53.0, dir, 1, t, 3);
             }
-            if ( gX(dir) > 0 || gY() > 0 )
+            if ( dX(dir) > 0 || dY() > 0 )
                 field_7DC -= 0.2;
-            if ( gX(dir) < 0 || gY() < 0 )
+            if ( dX(dir) < 0 || dY() < 0 )
                 field_7DC += 0.2;
             h_inerc = cos_deg(180.0 - field_7DC) * 3.0;
             v_inerc = sin_deg(180.0 - field_7DC) * 3.0;
@@ -6338,7 +6338,7 @@ void char_marisa::func20()
         {
             if (field_524 == 0)
             {
-                if (input->keyHit(INP_BC) && sub_468660(0) && field_836 == 0)
+                if (((keyDown(INP_BC) && keyDown(INP_BC) < 3) || keyHit(INP_BC)) && sub_468660(0) && field_836 == 0)
                 {
                     if (char_on_ground_flag())
                     {
@@ -6474,7 +6474,7 @@ void char_marisa::func20()
                                     break;
                                 }
                             }
-                            else if (cprior <= 100 && crd_id >= 200 && crd_id <= 299 && gX(1) == 0)
+                            else if (cprior <= 100 && crd_id >= 200 && crd_id <= 299 && keyDown(INP_X_AXIS) == 0)
                             {
                                 switch(crd_id)
                                 {
@@ -6652,7 +6652,7 @@ void char_marisa::func20()
                                     break;
                                 }
                             }
-                            else if (cprior <= 100 && crd_id >= 200 && crd_id <= 299 && gX(1) == 0)
+                            else if (cprior <= 100 && crd_id >= 200 && crd_id <= 299 && keyDown(INP_X_AXIS) == 0)
                             {
                                 switch(crd_id)
                                 {
@@ -7284,58 +7284,58 @@ void char_marisa::func20()
                 }
             }
 
-            if (input->keyHit(INP_A))
+            if ((keyUp(INP_A) && keyUp(INP_A) < 3) || keyDown(INP_A) == 2 || keyHit(INP_A))
             {
                 if (char_on_ground_flag()) // On Ground
                 {
-                    if ( sq == 200 && input->gY() == 0 &&
-                            input->gX(dir) > 0 &&
+                    if ( sq == 200 && dY() == 0 &&
+                            dX(dir) > 0 &&
                             cprior <= get_prior(305) )  // 66A
                     {
                         angZ = 0;
                         set_seq(305);
-                        input->zero_input();
+                        input->zero_keyhit();
                         return;
                     }
 
                     if ( (sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 )
                     {
-                        if ( input->gY() < 0 )
+                        if ( dY() < 0 )
                         {
-                            if ( input->gX(dir) > 0 && cprior <= get_prior(304) ) // 3A
+                            if ( ( dX(dir) > 0 || hX(dir) > 0 ) && cprior <= get_prior(304) ) // 3A
                             {
                                 angZ = 0;
                                 set_seq(304);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else if (cprior <= get_prior(303) ) // 2A
                             {
                                 angZ = 0;
                                 set_seq(303);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }
-                        else if ( gY() <= 0 )
+                        else if ( dY() <= 0 )
                         {
-                            if ( gX(dir) < 0) // 4a
+                            if ( dX(dir) < 0 || hX(dir) < 0 ) // 4a
                                 if ( cprior <= get_prior(330) || sq == 330 )
                                 {
                                     angZ = 0;
                                     set_seq(330);
-                                    input->zero_input();
+                                    input->zero_keyhit();
                                     return;
                                 }
                         }
 
-                        if (input->gY() == 0)
+                        if (dY() == 0)
                         {
-                            if ( input->gX(dir) > 0 && cprior <= get_prior(302) ) // 6A
+                            if ( (dX(dir) > 0 || hX(dir) > 0) && cprior <= get_prior(302) ) // 6A
                             {
                                 angZ = 0;
                                 set_seq(302);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
 
@@ -7345,7 +7345,7 @@ void char_marisa::func20()
                             {
                                 angZ = 0;
                                 set_seq(301);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
 
@@ -7353,7 +7353,7 @@ void char_marisa::func20()
                             {
                                 angZ = 0;
                                 set_seq(300);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }
@@ -7364,21 +7364,21 @@ void char_marisa::func20()
                         {
                             angZ = 0;
                             set_seq(322);
-                            input->zero_input();
+                            input->zero_keyhit();
                             return;
                         }
                         else if ( sq == 320 ) // AAA
                         {
                             angZ = 0;
                             set_seq(321);
-                            input->zero_input();
+                            input->zero_keyhit();
                             return;
                         }
                         else if ( sq == 300 ) // AA
                         {
                             angZ = 0;
                             set_seq(320);
-                            input->zero_input();
+                            input->zero_keyhit();
                             return;
                         }
                     }
@@ -7386,82 +7386,82 @@ void char_marisa::func20()
                 else if ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) // In Air (Melee)
                 {
 
-                    if ( input->gY() > 0 && input->gX(dir) == 0 && cprior <= get_prior(309) ) //j8A
+                    if ( (dY() > 0 || hY() > 0 ) && dX(dir) == 0 && cprior <= get_prior(309) ) //j8A
                     {
                         angZ = 0;
                         set_seq(309);
-                        input->zero_input();
+                        input->zero_keyhit();
                         return;
                     }
-                    else if (input->gY() < 0 && input->gX(dir) >= 0 && cprior <= get_prior(308)) //j2A
+                    else if ((dY() < 0 || hY() < 0) /*&& gX(dir) >= 0*/ && cprior <= get_prior(308)) //j2A
                     {
                         angZ = 0;
                         set_seq(308);
-                        input->zero_input();
+                        input->zero_keyhit();
                         return;
                     }
-                    else if ( input->gY() == 0 && input->gX(dir) > 0 && cprior <= get_prior(307)) //j6A
+                    else if ( dY() == 0 && (dX(dir) > 0 || hX(dir) > 0 ) && cprior <= get_prior(307)) //j6A
                     {
                         angZ = 0;
                         set_seq(307);
-                        input->zero_input();
+                        input->zero_keyhit();
                         return;
                     }
                     else if ( cprior <= get_prior(306) ) //j5A
                     {
                         angZ = 0;
                         set_seq(306);
-                        input->zero_input();
+                        input->zero_keyhit();
                         return;
                     }
                 }
             }
 
-            if (input->keyHit(INP_B))
+            if ((keyUp(INP_B) && keyUp(INP_B) < 3) || keyDown(INP_B) == 2 || keyHit(INP_B))
             {
                 if (char_on_ground_flag()) // On Ground
                 {
-                    if ( sq == 200 && input->gY() == 0 &&  input->gX(dir) > 0 )  // 66B
+                    if ( sq == 200 && dY() == 0 && (dX(dir) > 0 || hX(dir) > 0) )  // 66B
                     {
                         angZ = 0;
                         set_seq(408);
-                        input->zero_input();
+                        input->zero_keyhit();
                         return;
                     }
 
                     if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
                     {
-                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= get_prior(402) ) // 2B //HACK?
+                        if ( (dY() < 0 || hY() < 0)/*&& gX(dir) > 0*/ && cprior <= get_prior(402) ) // 2B //HACK?
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
                                 angZ = 0.0;
                                 set_seq(421);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(402);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }
-                        else if ( input->gY() == 0  && input->gX(dir) > 0 && cprior <= get_prior(401) )
+                        else if ( dY() == 0  && (dX(dir) > 0 || hX(dir) > 0) && cprior <= get_prior(401) )
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
                                 angZ = 0.0;
                                 set_seq(420);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(401);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
 
@@ -7472,14 +7472,14 @@ void char_marisa::func20()
                             {
                                 angZ = 0.0;
                                 set_seq(420);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(400);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }
@@ -7487,20 +7487,20 @@ void char_marisa::func20()
                 }
                 else if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200 ) //In AIR
                 {
-                    if ( input->gY() >= 0 && cprior <= get_prior(404))
+                    if ( (dY() >= 0 || hY() >= 0) && cprior <= get_prior(404))
                     {
                         if ( field_892 > 0 && field_890 != 50 )
                         {
                             angZ = 0.0;
                             set_seq(422);
-                            input->zero_input();
+                            input->zero_keyhit();
                             return;
                         }
                         else
                         {
                             angZ = 0.0;
                             set_seq(404);
-                            input->zero_input();
+                            input->zero_keyhit();
                             return;
                         }
                     }
@@ -7510,64 +7510,64 @@ void char_marisa::func20()
                         {
                             angZ = 0.0;
                             set_seq(422);
-                            input->zero_input();
+                            input->zero_keyhit();
                             return;
                         }
                         else
                         {
                             angZ = 0.0;
                             set_seq(406);
-                            input->zero_input();
+                            input->zero_keyhit();
                             return;
                         }
 
                     }
                 }
             }
-            if (input->keyHit(INP_C))
+            if ((keyUp(INP_C) && keyUp(INP_C) < 3) || keyDown(INP_C) == 2 || keyHit(INP_C))
             {
                 if (char_on_ground_flag()) // On Ground
                 {
-                    if ( sq == 200 && input->gY() == 0 &&  input->gX(dir) > 0 )  // 66B
+                    if ( sq == 200 && dY() == 0 && (dX(dir) > 0 || hX(dir) > 0) )  // 66B
                     {
                         angZ = 0;
                         set_seq(418);
-                        input->zero_input();
+                        input->zero_keyhit();
                         return;
                     }
                     if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
                     {
-                        if ( input->gY() < 0 /*&& input->gX(dir) > 0*/ && cprior <= get_prior(412) ) // 2C //HACK?
+                        if ( (dY() < 0 || hY() < 0)/*&& gX(dir) > 0*/ && cprior <= get_prior(412) ) // 2C //HACK?
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
                                 angZ = 0.0;
                                 set_seq(431);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(412);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }
-                        else if ( input->gY() == 0  && input->gX(dir) > 0 && cprior <= get_prior(411) ) // 6C
+                        else if ( dY() == 0  && (dX(dir) > 0 || hX(dir) > 0) && cprior <= get_prior(411) ) // 6C
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
                                 angZ = 0.0;
                                 set_seq(430);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(411);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
 
@@ -7578,14 +7578,14 @@ void char_marisa::func20()
                             {
                                 angZ = 0.0;
                                 set_seq(430);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(410);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }
@@ -7595,37 +7595,37 @@ void char_marisa::func20()
                 {
                     if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
                     {
-                        if (input->gY() >= 0 && input->gX(dir) > 0 && cprior <= get_prior(415))
+                        if (dY() >= 0 && (dX(dir) > 0 || hX(dir) > 0) && cprior <= get_prior(415))
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
                                 angZ = 0.0;
                                 set_seq(432);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(415);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }
-                        else if (input->gY() < 0 && cprior <= get_prior(416))
+                        else if ((dY() < 0 || hY() < 0) && cprior <= get_prior(416))
                         {
                             if ( field_892 > 0 && field_890 != 50 )
                             {
                                 angZ = 0.0;
                                 set_seq(432);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(416);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }
@@ -7635,14 +7635,14 @@ void char_marisa::func20()
                             {
                                 angZ = 0.0;
                                 set_seq(432);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                             else
                             {
                                 angZ = 0.0;
                                 set_seq(414);
-                                input->zero_input();
+                                input->zero_keyhit();
                                 return;
                             }
                         }

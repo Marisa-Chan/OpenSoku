@@ -394,8 +394,6 @@ void char_c::set_seq(uint32_t idx)
 {
     c_meta::set_seq(idx);
     set_seq_params();
-    if (player_index == 0)
-        printf("%d\n",idx);
 }
 
 void char_c::draw_shadow(shd_trans *sh_trans, gr_shader *shader)
@@ -487,7 +485,7 @@ bool char_c::field_sq_check()
 
 void char_c::input_update()
 {
-    input->update();
+    input->update(get_seq() < 300 && !char_is_block_knock() && !char_is_shock());
 }
 
 void char_c::check_seq_input()
@@ -1198,12 +1196,12 @@ void char_c::func10()
         if ( get_subseq() == 3 )
             sub10func();
 
-        if ( gX(dir) > 0 )
+        if ( dX(dir) > 0 )
         {
             if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D)  )
                 field_7D0 = 1;
         }
-        else if ( gX(dir) < 0 )
+        else if ( dX(dir) < 0 )
         {
             if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D)  )
                 field_7D0 = 2;
@@ -1252,12 +1250,12 @@ void char_c::func10()
         }
         else
         {
-            if ( gX(dir) > 0 )
+            if ( dX(dir) > 0 )
             {
                 if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D)  )
                     field_7D0 = 1;
             }
-            else if ( gX(dir) < 0  )
+            else if ( dX(dir) < 0  )
             {
                 if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D)  )
                     field_7D0 = 2;
@@ -2089,7 +2087,7 @@ void char_c::func16()
                     if ( get_seq() <= 9 || (get_seq() >= 20 && get_seq() <= 299) )
                     {
 
-                        if (input->gX(dir) == 0)
+                        if (dX(dir) == 0)
                         {
                             if ( 0 < h_inerc )
                             {
@@ -2104,18 +2102,18 @@ void char_c::func16()
                                     h_inerc = 0;
                             }
                         }
-                        else if (input->gX(dir) < 0)
+                        else if (dX(dir) < 0)
                         {
                             if ( h_inerc > -8.0 )
                                 h_inerc -= 0.5;
                         }
-                        else if (input->gX(dir) > 0)
+                        else if (dX(dir) > 0)
                         {
                             if ( h_inerc < 8.0 )
                                 h_inerc += 0.5;
                         }
 
-                        if (input->gY() == 0)
+                        if (dY() == 0)
                         {
                             if (  v_inerc > 0)
                             {
@@ -2130,12 +2128,12 @@ void char_c::func16()
                                     v_inerc = 0;
                             }
                         }
-                        else if (input->gY() < 0)
+                        else if (dY() < 0)
                         {
                             if ( v_inerc > -12 )
                                 v_inerc -= 0.5;
                         }
-                        else if (input->gY() > 0)
+                        else if (dY() > 0)
                         {
                             if ( v_inerc < 12 )
                                 v_inerc +=  0.5;
@@ -2241,7 +2239,7 @@ void char_c::func16()
     field_554 = 0;
     field_558 = 0;
     field_540 = 0;
-    if ( !input->keyHit(INP_BC) /*|| input->keyHit(INP_BC) >= 3 */) //HACK
+    if ( !keyDown(INP_BC) || keyDown(INP_BC) >= 3)
         field_836 = 0;
 
     /*if ( controlling_type == 2 ) // HACK
@@ -2647,8 +2645,8 @@ void char_c::func18()
             int32_t sq = get_seq();
             if ( sq != 6 && sq != 7 && sq != 8 )
             {
-                int8_t in_y = input->gY();
-                int8_t in_x = input->gX(dir);
+                int8_t in_y = dY();
+                int8_t in_x = dX(dir);
 
                 if (in_y == 0)
                 {
@@ -2679,7 +2677,7 @@ void char_c::func18()
                 else if (in_y > 0)
                 {
                     flip_to_enemy();
-                    in_x = input->gX(dir);
+                    in_x = dX(dir);
 
                     if ( in_x < 0 )
                     {
@@ -2767,38 +2765,50 @@ void char_c::clear_key(inp_keys key)
     input->zero_input(key);
 }
 
-void char_c::clear_key()
-{
-    input->zero_input();
-}
-
-bool char_c::keyDown(inp_keys key)
+int32_t char_c::keyDown(inp_keys key)
 {
     return input->keyDown(key);
 }
-bool char_c::keyHit(inp_keys key)
+int32_t char_c::keyHit(inp_keys key)
 {
-    return input->keyHit(key);
+    return input->keyHit(key, true);
+}
+int32_t char_c::keyUp(inp_keys key)
+{
+    return input->keyUp(key);
 }
 
-int8_t char_c::gX(int8_t dir)
+int32_t char_c::dX(int8_t _dir)
 {
-    return input->gX(dir);
+    return input->dX(_dir);
 }
-int8_t char_c::gY()
+int32_t char_c::dY()
 {
-    return input->gY();
-}
-
-void char_c::setgX(int8_t dir)
-{
-    input->setgX(dir);
-}
-void char_c::setgY(int8_t dir)
-{
-    input->setgY(dir);
+    return input->dY();
 }
 
+int32_t char_c::hX(int8_t _dir)
+{
+    return input->hX(_dir);
+}
+int32_t char_c::hY()
+{
+    return input->hY();
+}
+
+void char_c::set_dX(int8_t dir)
+{
+    input->set_dX(dir);
+}
+void char_c::set_dY(int8_t dir)
+{
+    input->set_dY(dir);
+}
+
+void char_c::set_keyDown(inp_keys key, int32_t val)
+{
+    input->set_keyDown(key, val);
+}
 
 void char_c::sub_486FD0(float p1, float p2)
 {
@@ -2823,7 +2833,7 @@ void char_c::set_seq_params()
             reset_forces();
         break;
     case 6:
-        if ( (pres_move & PMOVE_N08) == 0  && (keyDown(INP_D) == 0 || gY() <= 0 || gX(dir) != 0 ))
+        if ( (pres_move & PMOVE_N08) == 0  && (keyDown(INP_D) == 0 || dY() <= 0 || dX(dir) != 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -2834,7 +2844,7 @@ void char_c::set_seq_params()
 
         break;
     case 7:
-        if ( (pres_move & PMOVE_N09) == 0  && (keyDown(INP_D) == 0 || gY() <= 0 || gX(dir) <= 0 ))
+        if ( (pres_move & PMOVE_N09) == 0  && (keyDown(INP_D) == 0 || dY() <= 0 || dX(dir) <= 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -2845,7 +2855,7 @@ void char_c::set_seq_params()
 
         break;
     case 8:
-        if ( (pres_move & PMOVE_N07) == 0  && (keyDown(INP_D) == 0 || gY() <= 0 || gX(dir) >= 0 ))
+        if ( (pres_move & PMOVE_N07) == 0  && (keyDown(INP_D) == 0 || dY() <= 0 || dX(dir) >= 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -3695,15 +3705,15 @@ void char_c::char_loadsfx(const char *name)
 
 bool char_c::hi_jump_after_move()
 {
-    if ( gY() > 0)
+    if ( dY() > 0)
     {
-        if ( gX(dir) > 0 )
+        if ( dX(dir) > 0 )
         {
             angZ = 0.0;
             set_seq(209);
             return true;
         }
-        else if ( gX(dir) < 0 )
+        else if ( dX(dir) < 0 )
         {
             angZ = 0.0;
             set_seq(210);
@@ -3725,10 +3735,10 @@ bool char_c::border_escape_ground()
     if ( pres_move & PMOVE_DD  && field_80E == 0)
         if (  char_is_block_knock() && (max_spell_energy >= 200 || weather_id == WEATHER_SUNNY) )
         {
-            if ( gY() <= 0 )
+            if ( dY() <= 0 )
             {
                 angZ = 0.0;
-                if ( gX(dir) <= 0 )
+                if ( dX(dir) <= 0 )
                     set_seq(224);
                 else
                     set_seq(223);
@@ -3739,7 +3749,7 @@ bool char_c::border_escape_ground()
             else
             {
                 angZ = 0.0;
-                if ( gX(dir) >= 0 )
+                if ( dX(dir) >= 0 )
                     set_seq(220);
                 else
                     set_seq(222);
@@ -3753,7 +3763,7 @@ bool char_c::border_escape_ground()
 
 bool char_c::hi_jump(uint16_t cprior, uint32_t hjc)
 {
-    if ( (pres_move & PMOVE_N08) || (gY() > 0 && gX(dir)==0 && (keyDown(INP_D) || cprior >= 40)) )
+    if ( (pres_move & PMOVE_N08) || (dY() > 0 && dX(dir)==0 && (keyDown(INP_D) || cprior >= 40)) )
         if ( cprior <= get_prior(208) || hjc )
             if ( field_sq_check() )
             {
@@ -3761,7 +3771,7 @@ bool char_c::hi_jump(uint16_t cprior, uint32_t hjc)
                 set_seq(208);
                 return true;
             }
-    if ( pres_move & PMOVE_N09 || (gY() > 0 && gX(dir) > 0 && (keyDown(INP_D) || cprior >= 40)))
+    if ( pres_move & PMOVE_N09 || (dY() > 0 && dX(dir) > 0 && (keyDown(INP_D) || cprior >= 40)))
         if ( cprior <= get_prior(209) || hjc )
 
             if ( field_sq_check())
@@ -3772,7 +3782,7 @@ bool char_c::hi_jump(uint16_t cprior, uint32_t hjc)
             }
 
 
-    if ( pres_move & PMOVE_N07 || (gY() > 0 && gX(dir) < 0 && (keyDown(INP_D) || cprior >= 40)))
+    if ( pres_move & PMOVE_N07 || (dY() > 0 && dX(dir) < 0 && (keyDown(INP_D) || cprior >= 40)))
         if ( cprior <= get_prior(210) || hjc)
             if ( field_sq_check())
             {
@@ -3787,7 +3797,7 @@ bool char_c::fw_bk_dash_ground(uint16_t cprior, uint32_t hjc)
 {
     if ( ((pres_move & PMOVE_NRNR && dir == 1)
             || (pres_move & PMOVE_NLNL && dir == -1)
-            || (keyDown(INP_D) && gY() == 0 && gX(dir) > 0))
+            || (keyDown(INP_D) && dY() == 0 && dX(dir) > 0))
             && get_seq() != 204
             && cprior <= get_prior(200)
             && field_sq_check())
@@ -3798,7 +3808,7 @@ bool char_c::fw_bk_dash_ground(uint16_t cprior, uint32_t hjc)
     }
     else if (((pres_move & PMOVE_NLNL && dir == 1)
               || (pres_move & PMOVE_NRNR && dir == -1)
-              || (keyDown(INP_D) && gY() == 0 && gX(dir) < 0))
+              || (keyDown(INP_D) && dY() == 0 && dX(dir) < 0))
              && (cprior <= get_prior(201) || hjc)
              && field_sq_check())
     {
@@ -3816,7 +3826,7 @@ bool char_c::border_escape_air()
             (max_spell_energy >= 200 || weather_get()==WEATHER_SUNNY ))
     {
         angZ = 0.0;
-        if ( gX(dir) > 0 )
+        if ( dX(dir) > 0 )
         {
             set_seq(226);
             if ( weather_id != WEATHER_SUNNY )
@@ -3871,35 +3881,35 @@ bool char_c::bkg_dash_air(uint16_t cprior, uint32_t hjc, int8_t max_dash, uint16
 bool char_c::flying_air(uint16_t cprior, uint32_t hjc, int8_t max_dash)
 {
     if ( air_dash_cnt < max_dash
-            && keyDown(INP_D)
-            && (gX(dir) != 0 || gY() != 0)
+            && keyDown(INP_D) // >= 1   //OPTIMIZATION
+            && (dX(dir) != 0 || dY() != 0)
             && (v_inerc <= 0.0 || y > 100.0)
             && (cprior <= get_prior(214) || hjc)
             && field_sq_check() )
     {
-        if ( gY() < 0 )
+        if ( dY() < 0 )
         {
-            if (gX(dir) > 0)
+            if (dX(dir) > 0)
                 dash_angle = -45.0;
-            else if( gX(dir) < 0 )
+            else if( dX(dir) < 0 )
                 dash_angle = -135.0;
             else
                 dash_angle = -90.0;
         }
-        else if ( gY() > 0 )
+        else if ( dY() > 0 )
         {
-            if (gX(dir) > 0)
+            if (dX(dir) > 0)
                 dash_angle = 45.0;
-            else if( gX(dir) < 0 )
+            else if( dX(dir) < 0 )
                 dash_angle = 135.0;
             else
                 dash_angle = 90.0;
         }
         else
         {
-            if (gX(dir) > 0)
+            if (dX(dir) > 0)
                 dash_angle = 0.0;
-            else if( gX(dir) < 0 )
+            else if( dX(dir) < 0 )
                 dash_angle = 180.0;
             else
                 dash_angle = 0.0;
@@ -4104,13 +4114,13 @@ int8_t char_c::sub_469750(uint32_t enemu_aflags)
     {
         if ( input_function )
         {
-            if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
+            if ( field_578 == 0  && ((enemy->x - x) * dX(1) > 0  || dX(1) == 0))
                 return 0;
         }
         else if ( controlling_type == 3 ) //CHAR_CTRL_TRAIN_DUMMY
         {
-            setgY(0);
-            setgX(0);
+            set_dY(0);
+            set_dX(0);
             /*if ( practice_params->field_C <= 0 ) //HACK
             {
                 if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
@@ -4119,34 +4129,34 @@ int8_t char_c::sub_469750(uint32_t enemu_aflags)
         }
         else if ( settings_get()->get_difficulty() == GAME_DIFF_NORMAL && scene_rand_rng(100) >= 95 )
         {
-            if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
+            if ( field_578 == 0  && ((enemy->x - x) * dX(1) > 0  || dX(1) == 0))
                 return 0;
         }
         else if ( settings_get()->get_difficulty() == GAME_DIFF_EASY && scene_rand_rng(100) >= 70 )
         {
-            if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
+            if ( field_578 == 0  && ((enemy->x - x) * dX(1) > 0  || dX(1) == 0))
                 return 0;
         }
         else
         {
             if ( enemy->x - x <= 0.0 )
-                setgX(1);
+                set_dX(1);
             else
-                setgX(-1);
+                set_dX(-1);
 
             if ( controlling_type == 3 )
             {
                 if ( /*practice_params->dummy_block_type*/ dummy_block_type == 2 ) // HACK
-                    setgY(0);
+                    set_dY(0);
                 else if ( dummy_block_type == 3 )
-                    setgY(1);
+                    set_dY(1);
                 else
-                    setgY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
+                    set_dY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
             }
             else
-                setgY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
+                set_dY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
 
-            if ( field_578 == 0  && ((enemy->x - x) * gX(1) > 0  || gX(1) == 0))
+            if ( field_578 == 0  && ((enemy->x - x) * dX(1) > 0  || dX(1) == 0))
                 return 0;
         }
     }
@@ -4154,20 +4164,20 @@ int8_t char_c::sub_469750(uint32_t enemu_aflags)
     {
         if ( input_function )
         {
-            if ( gX(1) == 0 && (enemu_aflags & AF_GUARDCRUSH) )
+            if ( dX(1) == 0 && (enemu_aflags & AF_GUARDCRUSH) )
                 return 0;
         }
         else if ( controlling_type == 3 )
         {
             if ( dummy_block_type == 2 )
-                setgY(0);
+                set_dY(0);
             else if ( dummy_block_type == 3 )
-                setgY(1);
+                set_dY(1);
             else
-                setgY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
+                set_dY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
         }
         else
-            setgY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
+            set_dY((enemu_aflags & AF_MID_HIT) == 0 ? 1 : 0);
     }
 
     if ( !char_on_ground_flag() || frm->fflags & FF_AIRBORNE )
@@ -4176,7 +4186,7 @@ int8_t char_c::sub_469750(uint32_t enemu_aflags)
     }
     else
     {
-        if ( gY() <= 0 )
+        if ( dY() <= 0 )
         {
             if ( enemu_aflags & AF_MID_HIT )
                 return 1;
@@ -4356,8 +4366,9 @@ void char_c::add_card(int32_t id)
 
 bool char_c::check_AB_pressed()
 {
-    if ( keyHit(INP_AB) && get_seq() < 600 )
+    if ( keyDown(INP_AB) == 1 && get_seq() < 600 )
     {
+        set_keyDown(INP_AB, 4);
         //a1->pressed_AB = 4;
         //loop_active_cards(chr); //HACK?
 
@@ -4444,13 +4455,13 @@ void char_c::sub_462FF0()
                     {
                         if ( input_function || controlling_type != 3 ) //HACK
                         {
-                            if ( gX(1) )
+                            if ( keyDown(INP_X_AXIS) )
                             {
                                 if ( keyDown(INP_A) || keyDown(INP_B) || keyDown(INP_C) || keyDown(INP_D) )
                                 {
                                     damage_limit = 0;
                                     flip_to_enemy();
-                                    if (gX(dir) <= 0)
+                                    if (dX(dir) <= 0)
                                         set_seq(181);
                                     else
                                         set_seq(180);
@@ -4731,7 +4742,7 @@ void char_c::mountain_vapor_shuffle()
 
 bool char_c::sub_489F10(uint16_t cprior)
 {
-    if ( gX(1) || gY() )
+    if ( keyDown(INP_X_AXIS) || keyDown(INP_Y_AXIS) )
     {
         if (cprior <= get_prior(690))
         {

@@ -10,11 +10,36 @@ static sf::RenderWindow *window = NULL;
 static gr_state zerostate;
 static gr_state states[MAX_STATES];
 
-void gr_init(uint32_t width, uint32_t height, const char *caption)
+static gr_events poller;
+
+void gr_init(uint32_t width, uint32_t height, const char *caption, gr_events pollers)
 {
     window = new sf::RenderWindow(sf::VideoMode(width,height), caption);
 
     window->setFramerateLimit(60);
+
+    poller = pollers;
+}
+
+void gr_poll_events()
+{
+    sf::Event event;
+    while (window->pollEvent(event))
+    {
+        // Request for closing the window
+        //if (event.type == sf::Event::Closed)
+            //window.close();
+        // The escape key was pressed
+        if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
+        {
+            if (poller.keyb_events)
+                poller.keyb_events(event.key.code , event.type == sf::Event::KeyPressed);
+        }
+        // The window was resized
+        //if (event.type == sf::Event::Resized)
+            //doSomethingWithTheNewSize(event.size.width, event.size.height);
+        // etc ...
+    }
 }
 
 void gr_clear(uint8_t r, uint8_t g, uint8_t b)
@@ -25,14 +50,6 @@ void gr_clear(uint8_t r, uint8_t g, uint8_t b)
 void gr_flip()
 {
     window->display();
-    sf::Event ev;
-    while(window->pollEvent(ev))
-    {
-        if (ev.type == sf::Event::Closed)
-        {
-
-        }
-    };
 }
 
 void gr_tex_update(gr_tex *tex, void *buf, uint32_t wi, uint32_t hi)

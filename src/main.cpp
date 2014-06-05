@@ -74,7 +74,12 @@ int main(int argc, char *argv[])
     //arc_add_dat("th123b.dat");
     //arc_add_dat("th123c.dat");
 
-    gr_init(640,480,"OpenSoku");
+    key_matrix_init();
+
+    gr_events pollers;
+    pollers.keyb_events = key_matrix_set;
+
+    gr_init(640,480,"OpenSoku", pollers);
     sfx_init();
     scene_load_sounds();
 
@@ -143,7 +148,10 @@ int main(int argc, char *argv[])
 
     while(game_run)
     {
-        inp->update();
+
+        gr_poll_events();
+
+        inp->update(true);
 
         if (inp->rawPressed(kC_F1))
             game_run = false;

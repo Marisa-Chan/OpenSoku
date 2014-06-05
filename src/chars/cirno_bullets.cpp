@@ -6695,14 +6695,14 @@ void cirno_bullets::func10()
             {
                 if ( addition[0] > 0.0 )
                 {
-                    if ( chrt->gX(dir)> 0 )
+                    if ( chrt->dX(dir)> 0 )
                         if ( addition[0] >= 15.0 )
                         {
                             addition[0] -= 1.0;
                             if ( addition[0] < 15.0 )
                                 addition[0] = 15.0;
                         }
-                    if ( chrt->gX(dir)< 0 )
+                    if ( chrt->dX(dir)< 0 )
                         if ( addition[0] <= 75.0 )
                         {
                             addition[0] += 1.0;
@@ -6712,14 +6712,14 @@ void cirno_bullets::func10()
                 }
                 if ( addition[0] < 0.0 )
                 {
-                    if ( chrt->gX(dir) > 0 )
+                    if ( chrt->dX(dir) > 0 )
                         if ( addition[0] <= -15.0 )
                         {
                             addition[0] += 1.0;
                             if ( addition[0] >= -15.0 )
                                 addition[0] = -15.0;
                         }
-                    if ( chrt->gX(dir) < 0 )
+                    if ( chrt->dX(dir) < 0 )
                         if ( addition[0] >= -75.0 )
                         {
                             addition[0] -= 1.0;
