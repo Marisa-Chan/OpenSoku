@@ -18,4 +18,6 @@ struct vec2d
 void vec2d_hermit(vec2d *pOut, const vec2d *pV1, const vec2d *pT1, const vec2d *pV2, const vec2d *pT2, float s);
 void vec2d_normolize(vec2d *pOut, const vec2d *pV);
 
+#define SQR(x) ((x)*(x))
+
 #endif

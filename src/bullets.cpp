@@ -1740,6 +1740,13 @@ void c_bullet::sub_48BF60(int32_t angle)
     }
 }
 
+void c_bullet::sub_4B0750()
+{
+    if (tail)
+        delete tail;
+    tail = NULL;
+}
+
 
 void bul_follow_char(c_bullet *bul, int32_t h_inerc, int32_t v_inerc)
 {

@@ -65,6 +65,8 @@ class c_bullet : public c_meta
 
     void set_seq(uint32_t idx);
 
+    void sub_4B0750();
+
     virtual void func10();
     virtual void set_seq_params(); //func15
     virtual void func16();
