@@ -14,6 +14,7 @@ class c_bullet : public c_meta
     friend void updatebullet(char_c *chr);
     friend void drawbullet(char_c *chr, int8_t order);
     friend class marisa_bullets;
+    friend class alice_bullets;
 
     protected:
 
