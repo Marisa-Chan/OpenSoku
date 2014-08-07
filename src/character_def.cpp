@@ -2645,8 +2645,8 @@ void char_c::func18()
             int32_t sq = get_seq();
             if ( sq != 6 && sq != 7 && sq != 8 )
             {
-                int8_t in_y = dY();
-                int8_t in_x = dX(dir);
+                int32_t in_y = dY();
+                int32_t in_x = dX(dir);
 
                 if (in_y == 0)
                 {
