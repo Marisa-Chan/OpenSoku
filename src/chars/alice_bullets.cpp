@@ -4410,6 +4410,229 @@ void alice_bullets::func10()
             field_378 = 0.0;
         }
         break;
+    case 852:
+        if ( chrt->get_seq() > 49 && chrt->get_seq() < 150 && get_subseq() <= 3 )
+        {
+            set_subseq(4);
+            h_inerc = 0.0;
+            v_inerc = 0.0;
+            break;
+        }
+        if ( get_subseq() == 0 )
+        {
+            float xx = (50 * chrt->dir) + chrt->x - x;
+            float yy = chrt->y + 115.0 - y;
+            field_378 = SQR(xx);
+            field_37C = SQR(yy);
+            field_380 = sqrt(field_37C + field_378);
+            addition[0] = -atan2_deg(yy, xx);
+            addition[1] = field_380 * 0.2;
+            if ( addition[1] > 50.0 )
+                addition[1] = 50.0;
+            set_vec_speed(addition[0], addition[1]);
+            if ( h_inerc >= 0.0 )
+                dir = 1;
+            else
+                dir = -1;
+            if ( get_elaps_frames() >= 16 )
+            {
+                next_subseq();
+                dir = chrt->dir;
+                x = (50 * chrt->dir) + chrt->x;
+                y = chrt->y + 115.0;
+                break;
+            }
+            x += h_inerc;
+            y += v_inerc;
+        }
+        if ( get_subseq() == 1)
+        {
+            if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0)
+            {
+                float tmp[3];
+                tmp[0] = 0.0;
+                tmp[1] = 0.0;
+                tmp[2] = 5.0;
+                float xx = (60 * dir) + x;
+                float yy = y + 5.0;
+                addbullet(chrt, this, 852, xx, yy, dir, 1, tmp, 3);
+                chrt->play_sfx( 23);
+            }
+            x = (50 * dir) + chrt->x;
+            y = chrt->y + 115.0;
+
+            if ( (chrt->get_seq() != 602 && chrt->get_seq() != 652) || chrt->get_seq() >= 3 )
+            {
+                field_378 = 0.0;
+                field_37C = 0.0;
+                field_380 = 0.0;
+                next_subseq();
+                break;
+            }
+        }
+        if ( get_subseq() == 3 )
+        {
+            if ( sub_5269B0() )
+                return;
+            x += h_inerc;
+            y += v_inerc;
+        }
+        if ( get_subseq() == 4 )
+        {
+            if ( 5.0 < h_inerc )
+                h_inerc = 5.0;
+            if ( h_inerc < -5.0 )
+                h_inerc = -5.0;
+            if ( 5.0 < v_inerc )
+                v_inerc = 5.0;
+            if ( v_inerc < -5.0 )
+                v_inerc = -5.0;
+            v_inerc -= 0.5;
+            x += h_inerc;
+            y += v_inerc;
+            angZ += 15.0;
+            if ( c_A < 20 )
+            {
+                active = false;
+                break;
+            }
+            c_A -= 20;
+        }
+        if ( get_subseq() == 5 )
+        {
+            if ( field_36C == 0)
+            {
+                if ( get_elaps_frames() >= 60 )
+                {
+                    field_36C = 1;
+                }
+                else
+                {
+                    if ( bul_parent )
+                    {
+                        x = (60 * dir) + bul_parent->x;
+                        y = bul_parent->y + 5.0;
+                    }
+                    scaleY = scaleX = (get_elaps_frames() & 2) * 0.2 + 1.0;
+                }
+                if ( chrt->get_seq() > 49 && chrt->get_seq() < 150 )
+                {
+                    active = false;
+                    break;
+                }
+                if ( (chrt->get_seq() != 602 && chrt->get_seq() != 652) || chrt->get_subseq() == 3 )
+                    field_36C = 1;
+            }
+            else if ( field_36C == 1 )
+            {
+                scaleY = scaleX *= 0.85;
+                if ( scaleX < 0.02 )
+                {
+                    active = false;
+                    break;
+                }
+            }
+        }
+        if ( get_subseq() == 6 )
+        {
+            if ( field_36C <= 1 )
+            {
+                if ( chrt->get_seq() > 49 && chrt->get_seq() < 150 )
+                {
+                    active = false;
+                    break;
+                }
+                else
+                {
+                    if ( (chrt->get_seq() != 602 && chrt->get_seq() != 652) || chrt->get_subseq() == 3 )
+                        field_36C = 2;
+                }
+            }
+            if ( field_36C == 0)
+            {
+                if ( bul_parent )
+                {
+                    x = bul_parent->x;
+                    y = bul_parent->y;
+                }
+                scaleY += 0.15;
+                if ( scaleY > 1.0 )
+                {
+                    scaleY = 1.0;
+                    field_36C = 1;
+                    field_194 = 20;
+                    break;
+                }
+            }
+            else if ( field_36C == 1 )
+            {
+                if ( (get_elaps_frames() % 2) == 0 )
+                {
+                    float tmp[3];
+                    tmp[0] = 0.0;
+                    tmp[1] = 0.0;
+                    tmp[2] = 7.0;
+                    float xx = scene_rand_rngf(960) * dir + x;
+                    addbullet(chrt, this, 852, xx, y, dir, 1, tmp, 3);
+                }
+                if ( bul_parent )
+                {
+                    x = bul_parent->x;
+                    y = bul_parent->y;
+                    if ( bul_parent->field_36C == 1 )
+                        field_36C = 2;
+                }
+                sub_48C5F0(0);
+                if ( field_190 )
+                {
+                    field_36E++;
+                    if ( field_36E >= 3 )
+                    {
+                        field_36E = 0;
+                        field_190 = 0;
+                    }
+                }
+            }
+            else if ( field_36C == 2 )
+            {
+                field_194 = 0;
+                scaleY *= 0.85;
+                if ( scaleY <= 0.01 )
+                {
+                    active = false;
+                    break;
+                }
+            }
+        }
+        if ( get_subseq() == 7 )
+        {
+            scaleY = scaleX += 0.05;
+            angZ += 30.0;
+            if ( bul_parent )
+                y = bul_parent->y;
+            if ( chrt->get_seq() > 49 && chrt->get_seq() < 150 )
+            {
+                active = false;
+                break;
+            }
+            if ( c_A < 10 )
+            {
+                active = false;
+                break;
+            }
+            c_A -= 10;
+            c_G -= 10;
+            c_B -= 10;
+            x += (25 * dir);
+            if ( x > 1380.0 || x < -100.0 )
+            {
+                active = false;
+                break;
+            }
+        }
+        if ( process() )
+            active = false;
+        break;
     default:
         if (process())
             active = false;
