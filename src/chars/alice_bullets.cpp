@@ -4212,9 +4212,9 @@ void alice_bullets::func10()
 		if ( get_subseq() == 3 )
 		{
 			scaleX = scaleY += 0.2;
-			if (get_elaps_frames() <= 0)
+			if (get_elaps_frames() > 0)
 			{
-				if ( c_B > 25 ) // WHAT!!!?
+				if ( c_B > 25 )
 				{
 					if ( c_A <= 25 )
 					{
@@ -4235,7 +4235,7 @@ void alice_bullets::func10()
 		if ( get_subseq() == 4 )
 		{
 			scaleY = scaleX += 0.01;
-			if ((int)get_elaps_frames() < 0)
+			if (get_elaps_frames() > 0)
 			{
 				if ( c_B < 25 )
 				{
