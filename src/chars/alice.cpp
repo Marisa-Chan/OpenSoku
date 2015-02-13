@@ -1331,6 +1331,7 @@ void char_alice::func10()
 			{
 				scene_add_effect(this, 62, x - (20 * dir), y + 120.0, dir, 1);
 				next_subseq();
+				break;
 			}
 			else
 			{
@@ -1342,19 +1343,21 @@ void char_alice::func10()
 				addbullet(this, NULL, 849, (110 * dir) + x, y + 105.0, dir, 1, tmp, 3);
 			}
 		}
-		else if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_subseq() == 1 )
+		if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 )
 		{
-			if (get_frame() == 0 )
+			if (get_subseq() == 1)
 				set_seq( 0);
-			else if (get_frame() == 1)
-			{
-				scene_play_sfx(29);
-				float tmp[3];
-				tmp[0] = 0.0;
-				tmp[1] = 0.0;
-				tmp[2] = 26.0;
-				addbullet(this, NULL, 849, (110 * dir) + x, y + 105.0, dir, 1, tmp, 3);
-			}
+			break;
+		}
+
+		if (get_subseq() == 1 && get_frame() == 1 && get_frame_time() == 0)
+		{
+			scene_play_sfx(29);
+			float tmp[3];
+			tmp[0] = 0.0;
+			tmp[1] = 0.0;
+			tmp[2] = 26.0;
+			addbullet(this, NULL, 849, (110 * dir) + x, y + 105.0, dir, 1, tmp, 3);
 		}
 		break;
 
