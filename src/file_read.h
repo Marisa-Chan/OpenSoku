@@ -3,7 +3,7 @@
 
 class filehandle
 {
-    private:
+private:
 
     bool inarchive;
     bool opened;
@@ -13,7 +13,7 @@ class filehandle
     uint32_t pos;
     uint32_t spos;
 
-    public:
+public:
 
     filehandle();
 

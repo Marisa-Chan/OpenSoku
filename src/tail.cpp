@@ -35,190 +35,190 @@ void c_tail::update(float x, float y)
 
     switch(sz)
     {
-        case 0:
-            break;
-        case 1:
-            vtx.push_back(pts[0]);
-            vtx.push_back(pts[0]);
-            break;
-        case 2:
-            {
-                vec2d tmp;
-                tmp.x = pts[0].y - pts[1].y;
-                tmp.y = pts[1].x - pts[0].x;
-
-                vec2d tmp2;
-                vec2d_normolize(&tmp2, &tmp);
-
-                vtx[1].x += tmp2.x * width;
-                vtx[1].y += tmp2.y * width;
-
-                vtx[0].x -= tmp2.x * width;
-                vtx[0].y -= tmp2.y * width;
-
-                vec2d t1, t2;
-                t1.x = 0;
-                t1.y = 0;
-                t2.x = 0;
-                t2.y = 0;
-
-                vec2d pred;
-                pred = pts[1];
-
-                for (int32_t i = subdiv - 1; i >= 0; i--)
-                {
-                    vec2d pout;
-                    vec2d_hermit(&pout, &pts[0], &t1, &pts[1], &t2, (float)i / (float)subdiv);
-
-                    tmp.x = pout.y - pred.y;
-                    tmp.y = pred.x - pout.x;
-                    vec2d_normolize(&tmp2, &tmp);
-
-                    tmp.x = pout.x + tmp2.x * width;
-                    tmp.y = pout.y + tmp2.y * width;
-                    vtx.push_front(tmp);
-
-                    tmp.x = pout.x - tmp2.x * width;
-                    tmp.y = pout.y - tmp2.y * width;
-                    vtx.push_front(tmp);
-
-                    pred = pout;
-                }
-            }
-            break;
-        case 3:
-            {
-                vec2d tmp2;
-                tmp2.x = pts[2].x - pts[0].x;
-                tmp2.y = pts[2].y - pts[0].y;
-
-                vtx.erase(vtx.begin(), vtx.begin() + subdiv * 2);
-
-                vec2d t1, t2;
-                t1.x = 0;
-                t1.y = 0;
-                t2.x = 0;
-                t2.y = 0;
-
-                vec2d pred;
-                pred = pts[2];
-
-                for (int32_t i = subdiv - 1; i >= 0; i--)
-                {
-                    vec2d pout;
-                    vec2d_hermit(&pout, &pts[1], &tmp2, &pts[2], &t2, (float)i / (float)subdiv);
-
-                    vec2d tmp;
-                    tmp.x = pout.y - pred.y;
-                    tmp.y = pred.x - pout.x;
-
-                    vec2d norm;
-                    vec2d_normolize(&norm, &tmp);
-
-                    tmp.x = pout.x + norm.x * width;
-                    tmp.y = pout.y + norm.y * width;
-                    vtx.push_front(tmp);
-
-                    tmp.x = pout.x - norm.x * width;
-                    tmp.y = pout.y - norm.y * width;
-                    vtx.push_front(tmp);
-
-                    pred = pout;
-                }
-
-                for (int32_t i = subdiv - 1; i >= 0; i--)
-                {
-                    vec2d pout;
-                    vec2d_hermit(&pout, &pts[0], &t1, &pts[1], &tmp2, (float)i / (float)subdiv);
-
-                    t1.x = pout.y - pred.y;
-                    t1.y = pred.x - pout.x;
-
-                    vec2d norm;
-                    vec2d_normolize(&norm, &t1);
-
-                    vec2d tmp;
-
-                    tmp.x = pout.x + norm.x * width;
-                    tmp.y = pout.y + norm.y * width;
-                    vtx.push_front(tmp);
-
-                    tmp.x = pout.x - norm.x * width;
-                    tmp.y = pout.y - norm.y * width;
-                    vtx.push_front(tmp);
-
-                    pred = pout;
-                }
-            }
+    case 0:
         break;
-        default:
-            {
-                vec2d t1, t2;
-                t1.x = pts[2].x - pts[0].x;
-                t1.y = pts[2].y - pts[0].y;
-
-                t2.x = pts[3].x - pts[1].x;
-                t2.y = pts[3].y - pts[1].y;
-
-                vtx.erase(vtx.begin(), vtx.begin() + subdiv * 2);
-
-                vec2d pred;
-                pred = pts[2];
-
-                for (int32_t i = subdiv - 1; i >= 0; i--)
-                {
-                    vec2d pout;
-                    vec2d_hermit(&pout, &pts[1], &t1, &pts[2], &t2, (float)i / (float)subdiv);
-
-                    t2.x = pout.y - pred.y;
-                    t2.y = pred.x - pout.x;
-
-                    vec2d norm;
-                    vec2d_normolize(&norm, &t2);
-
-                    vec2d tmp;
-
-                    tmp.x = pout.x + norm.x * width;
-                    tmp.y = pout.y + norm.y * width;
-                    vtx.push_front(tmp);
-
-                    tmp.x = pout.x - norm.x * width;
-                    tmp.y = pout.y - norm.y * width;
-                    vtx.push_front(tmp);
-
-                    pred = pout;
-                }
-
-                vec2d zero;
-                zero.x = 0;
-                zero.y = 0;
-
-                for (int32_t i = subdiv - 1; i >= 0; i--)
-                {
-                    vec2d pout;
-                    vec2d_hermit(&pout, &pts[0], &zero, &pts[1], &t1, (float)i / (float)subdiv);
-
-                    zero.x = pout.y - pred.y;
-                    zero.y = pred.x - pout.x;
-
-                    vec2d norm;
-                    vec2d_normolize(&norm, &zero);
-
-                    vec2d tmp;
-
-                    tmp.x = pout.x + norm.x * width;
-                    tmp.y = pout.y + norm.y * width;
-                    vtx.push_front(tmp);
-
-                    tmp.x = pout.x - norm.x * width;
-                    tmp.y = pout.y - norm.y * width;
-                    vtx.push_front(tmp);
-
-                    pred = pout;
-                }
-
-            }
+    case 1:
+        vtx.push_back(pts[0]);
+        vtx.push_back(pts[0]);
         break;
+    case 2:
+    {
+        vec2d tmp;
+        tmp.x = pts[0].y - pts[1].y;
+        tmp.y = pts[1].x - pts[0].x;
+
+        vec2d tmp2;
+        vec2d_normolize(&tmp2, &tmp);
+
+        vtx[1].x += tmp2.x * width;
+        vtx[1].y += tmp2.y * width;
+
+        vtx[0].x -= tmp2.x * width;
+        vtx[0].y -= tmp2.y * width;
+
+        vec2d t1, t2;
+        t1.x = 0;
+        t1.y = 0;
+        t2.x = 0;
+        t2.y = 0;
+
+        vec2d pred;
+        pred = pts[1];
+
+        for (int32_t i = subdiv - 1; i >= 0; i--)
+        {
+            vec2d pout;
+            vec2d_hermit(&pout, &pts[0], &t1, &pts[1], &t2, (float)i / (float)subdiv);
+
+            tmp.x = pout.y - pred.y;
+            tmp.y = pred.x - pout.x;
+            vec2d_normolize(&tmp2, &tmp);
+
+            tmp.x = pout.x + tmp2.x * width;
+            tmp.y = pout.y + tmp2.y * width;
+            vtx.push_front(tmp);
+
+            tmp.x = pout.x - tmp2.x * width;
+            tmp.y = pout.y - tmp2.y * width;
+            vtx.push_front(tmp);
+
+            pred = pout;
+        }
+    }
+    break;
+    case 3:
+    {
+        vec2d tmp2;
+        tmp2.x = pts[2].x - pts[0].x;
+        tmp2.y = pts[2].y - pts[0].y;
+
+        vtx.erase(vtx.begin(), vtx.begin() + subdiv * 2);
+
+        vec2d t1, t2;
+        t1.x = 0;
+        t1.y = 0;
+        t2.x = 0;
+        t2.y = 0;
+
+        vec2d pred;
+        pred = pts[2];
+
+        for (int32_t i = subdiv - 1; i >= 0; i--)
+        {
+            vec2d pout;
+            vec2d_hermit(&pout, &pts[1], &tmp2, &pts[2], &t2, (float)i / (float)subdiv);
+
+            vec2d tmp;
+            tmp.x = pout.y - pred.y;
+            tmp.y = pred.x - pout.x;
+
+            vec2d norm;
+            vec2d_normolize(&norm, &tmp);
+
+            tmp.x = pout.x + norm.x * width;
+            tmp.y = pout.y + norm.y * width;
+            vtx.push_front(tmp);
+
+            tmp.x = pout.x - norm.x * width;
+            tmp.y = pout.y - norm.y * width;
+            vtx.push_front(tmp);
+
+            pred = pout;
+        }
+
+        for (int32_t i = subdiv - 1; i >= 0; i--)
+        {
+            vec2d pout;
+            vec2d_hermit(&pout, &pts[0], &t1, &pts[1], &tmp2, (float)i / (float)subdiv);
+
+            t1.x = pout.y - pred.y;
+            t1.y = pred.x - pout.x;
+
+            vec2d norm;
+            vec2d_normolize(&norm, &t1);
+
+            vec2d tmp;
+
+            tmp.x = pout.x + norm.x * width;
+            tmp.y = pout.y + norm.y * width;
+            vtx.push_front(tmp);
+
+            tmp.x = pout.x - norm.x * width;
+            tmp.y = pout.y - norm.y * width;
+            vtx.push_front(tmp);
+
+            pred = pout;
+        }
+    }
+    break;
+    default:
+    {
+        vec2d t1, t2;
+        t1.x = pts[2].x - pts[0].x;
+        t1.y = pts[2].y - pts[0].y;
+
+        t2.x = pts[3].x - pts[1].x;
+        t2.y = pts[3].y - pts[1].y;
+
+        vtx.erase(vtx.begin(), vtx.begin() + subdiv * 2);
+
+        vec2d pred;
+        pred = pts[2];
+
+        for (int32_t i = subdiv - 1; i >= 0; i--)
+        {
+            vec2d pout;
+            vec2d_hermit(&pout, &pts[1], &t1, &pts[2], &t2, (float)i / (float)subdiv);
+
+            t2.x = pout.y - pred.y;
+            t2.y = pred.x - pout.x;
+
+            vec2d norm;
+            vec2d_normolize(&norm, &t2);
+
+            vec2d tmp;
+
+            tmp.x = pout.x + norm.x * width;
+            tmp.y = pout.y + norm.y * width;
+            vtx.push_front(tmp);
+
+            tmp.x = pout.x - norm.x * width;
+            tmp.y = pout.y - norm.y * width;
+            vtx.push_front(tmp);
+
+            pred = pout;
+        }
+
+        vec2d zero;
+        zero.x = 0;
+        zero.y = 0;
+
+        for (int32_t i = subdiv - 1; i >= 0; i--)
+        {
+            vec2d pout;
+            vec2d_hermit(&pout, &pts[0], &zero, &pts[1], &t1, (float)i / (float)subdiv);
+
+            zero.x = pout.y - pred.y;
+            zero.y = pred.x - pout.x;
+
+            vec2d norm;
+            vec2d_normolize(&norm, &zero);
+
+            vec2d tmp;
+
+            tmp.x = pout.x + norm.x * width;
+            tmp.y = pout.y + norm.y * width;
+            vtx.push_front(tmp);
+
+            tmp.x = pout.x - norm.x * width;
+            tmp.y = pout.y - norm.y * width;
+            vtx.push_front(tmp);
+
+            pred = pout;
+        }
+
+    }
+    break;
     }
 
     if (pts.size() > (uint32_t)segs + 1)

@@ -14,7 +14,7 @@ class gui_element
     friend
     gui_holder;
 
-    protected:
+protected:
 
     int32_t tex_w = 0;
     int32_t tex_h = 0;
@@ -37,7 +37,7 @@ class gui_element
     float sx = 1.0;
     float sy = 1.0;
 
-    public:
+public:
 
     bool renderable = false;
 
@@ -72,7 +72,7 @@ class gui_element
 
 class gui_el_t6: public gui_element
 {
-    private:
+private:
     int32_t frames;
     int32_t w;
     int32_t h;
@@ -87,7 +87,7 @@ class gui_el_t6: public gui_element
     void draw_f(float dx, float dy, int8_t plane);
     void draw_frame(int32_t frame, float dx, float dy, int8_t plane);
 
-    public:
+public:
 
     gui_el_t6(gui_tex *tex, int32_t w, int32_t h, int32_t frames, int32_t dx, int32_t intg, int32_t flt);
     gui_el_t6(int32_t _guid, gui_tex *tex, int32_t w, int32_t h, int32_t frames, int32_t dx, int32_t intg, int32_t flt);
@@ -106,10 +106,10 @@ class gui_el_t6: public gui_element
 
 class gui_el_t1: public gui_element
 {
-    private:
+private:
     int32_t f_w = 0;
     int32_t f_h = 0;
-    public:
+public:
     gui_el_t1();
     gui_el_t1(int32_t _guid);
     ~gui_el_t1();
@@ -135,7 +135,7 @@ class gui_el_t1: public gui_element
 
 class gui_el_t0: public gui_element
 {
-    public:
+public:
 
     gui_el_t0(gui_tex *tex);
     gui_el_t0(int32_t _guid, gui_tex *tex);
@@ -154,11 +154,11 @@ class gui_el_t0: public gui_element
 
 class gui_holder
 {
-    protected:
+protected:
     vector<gui_tex> imgs;
     vector<gui_element *> elmnt;
 
-    public:
+public:
     //gui_holder();
     ~gui_holder();
 

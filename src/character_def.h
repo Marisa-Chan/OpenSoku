@@ -50,15 +50,15 @@ class char_c : public c_meta
 {
     friend c_scene;
 
-    private:
+private:
 
-    protected:
+protected:
 
     inp_ab      *input;
     virtual void set_seq_params(); //func15
 
 
-    public:
+public:
 
     int8_t input_function;//HACK
 
@@ -305,7 +305,8 @@ class char_c : public c_meta
     int8_t   field_868;
     //int8_t   field_869;
     int16_t field_86A;
-    int32_t field_86C;
+    int16_t field_86C;
+    int16_t field_86E;
     int32_t   field_870;
     int32_t   field_874;
     int32_t   field_878;
@@ -449,7 +450,7 @@ typedef list<char_c *>::iterator charlist_iter;
 
 class stand_graph
 {
-    private:
+private:
     gr_tex *tex;
     float   xpos;
     uint8_t  alpha;
@@ -458,7 +459,7 @@ class stand_graph
     int8_t  disp_stage;
     int32_t frames;
 
-    public:
+public:
     stand_graph();
     ~stand_graph();
 

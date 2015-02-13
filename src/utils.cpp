@@ -157,9 +157,9 @@ inline void euler2matrix(float x, float y, float z, float (*m)[3])
 void euler_mult(float x1, float y1, float z1, float x2, float y2, float z2, float &rx,float &ry,float &rz)
 {
     if (((x1 || x2 ) && y1 == 0 && y2 == 0 && z1 ==0 && z2 ==0) ||
-        ((y1 || y2 ) && x1 == 0 && x2 == 0 && z1 ==0 && z2 ==0) ||
-        ((z1 || z2 ) && y1 == 0 && y2 == 0 && x1 ==0 && x2 ==0))
-    { // if only one axis
+            ((y1 || y2 ) && x1 == 0 && x2 == 0 && z1 ==0 && z2 ==0) ||
+            ((z1 || z2 ) && y1 == 0 && y2 == 0 && x1 ==0 && x2 ==0))
+    {   // if only one axis
         rx = x1 + x2;
         ry = y1 + y2;
         rz = z1 + z2;
@@ -171,8 +171,8 @@ void euler_mult(float x1, float y1, float z1, float x2, float y2, float z2, floa
         if (x2 != 0 || y2 != 0 || z2 != 0)
         {
             float a[3][3],
-            b[3][3],
-            c[3][3];
+                  b[3][3],
+                  c[3][3];
 
             euler2matrix(x1,y1,z1,a);
             euler2matrix(x2,y2,z2,b);

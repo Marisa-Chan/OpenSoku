@@ -3,7 +3,7 @@
 
 class char_cirno: public char_c
 {
-    public:
+public:
 
     int32_t field_890;
 

@@ -235,9 +235,9 @@ void gfx_sprite::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
     if (pframe)
         gr_setcolor_sprite(sprite, (r*pframe->c_R) / 255,
-                                   (g*pframe->c_G) / 255,
-                                   (b*pframe->c_B) / 255,
-                                   (a*pframe->c_A) / 255);
+                           (g*pframe->c_G) / 255,
+                           (b*pframe->c_B) / 255,
+                           (a*pframe->c_A) / 255);
     else
         gr_setcolor_sprite(sprite, r,g,b,a);
 }

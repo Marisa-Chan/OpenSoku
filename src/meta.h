@@ -117,12 +117,12 @@ struct shd_trans
 
 class c_meta : public moveable
 {
-    private:
+private:
     int32_t index;
 
-    protected:
+protected:
 
-    public:
+public:
     char_graph *pgp; //Pointer Graph Parent
 
     c_meta(char_graph *pgp);

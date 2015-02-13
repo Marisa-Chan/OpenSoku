@@ -38,7 +38,7 @@ class pause_menu;
 
 class c_scene
 {
-    protected:
+protected:
     friend pause_menu;
 
     btl_ui *ui;
@@ -87,7 +87,7 @@ class c_scene
     void scene_subfunc4();
     void scene_subfunc5();
 
-    public:
+public:
 
     c_scene();
     virtual ~c_scene();

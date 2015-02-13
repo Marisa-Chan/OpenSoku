@@ -262,7 +262,7 @@ public:
 //keyboard input class
 class inp_kb: public inp_ab
 {
-friend inp_both;
+    friend inp_both;
 private:
     sf::Keyboard kbd;
 
@@ -287,8 +287,8 @@ public:
 //joystick input class
 class inp_js: public inp_ab
 {
-friend inp_both;
-    private:
+    friend inp_both;
+private:
     sf::Joystick js;
     int32_t joy_id;
 
@@ -313,25 +313,35 @@ class inp_none: public inp_ab
 public:
 
     void load_profile(s_profile * /*prof*/)
-        {return;};
+    {
+        return;
+    };
     void load_def_profile()
-        {return;};
+    {
+        return;
+    };
     void update()
-        {return;};
+    {
+        return;
+    };
     void set_devid(uint32_t)
-        {return;};
+    {
+        return;
+    };
     void fill_raw()
-        {return;};
+    {
+        return;
+    };
 };
 
 //keyboard and joystick input class
 class inp_both: public inp_ab
 {
-    private:
+private:
     inp_js js;
     inp_kb kb;
 
-    public:
+public:
     void load_profile(s_profile * prof);
     void load_def_profile();
     bool rawPressed(uint32_t key, int32_t timeout = 6);

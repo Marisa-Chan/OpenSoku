@@ -184,7 +184,7 @@ int8_t c_scene_one::state5_update()
     if ( frames > 360 )
     {
         if ( settings_get()->get_gameplay() == GAMEPLAY_REPLAY )
-          return 2;
+            return 2;
 
         func13(6);
     }

@@ -3,7 +3,7 @@
 
 class char_marisa: public char_c
 {
-    public:
+public:
 
     int16_t field_890;
     int16_t field_892;

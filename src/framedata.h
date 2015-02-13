@@ -6,10 +6,10 @@ using namespace std;
 
 struct frame_box
 {
-	int32_t		x1;
-	int32_t     y1;
-	int32_t     x2;
-	int32_t     y2;
+    int32_t		x1;
+    int32_t     y1;
+    int32_t     x2;
+    int32_t     y2;
 };
 
 struct custom_box
@@ -23,64 +23,64 @@ struct custom_box
 
 struct box_box
 {
-	float		x1;
-	float       y1;
-	float       x2;
-	float       y2;
+    float		x1;
+    float       y1;
+    float       x2;
+    float       y2;
 };
 
 struct char_frame
 {
-	gr_tex * img;
-	int16_t  unk1;
-	int16_t  unk2;
+    gr_tex * img;
+    int16_t  unk1;
+    int16_t  unk2;
     int16_t  tx_width;
     int16_t  tx_height;
     int16_t  x_offset;
     int16_t  y_offset;
     uint16_t  durate;
-	uint8_t  type;
+    uint8_t  type;
 
-	int16_t  blend_mode;
+    int16_t  blend_mode;
     uint8_t  c_A;
-	uint8_t  c_R;
-	uint8_t  c_G;
-	uint8_t  c_B;
-	float    scale_x;
+    uint8_t  c_R;
+    uint8_t  c_G;
+    uint8_t  c_B;
+    float    scale_x;
     float    scale_y;
-	int16_t  angle_x;
-	int16_t  angle_y;
+    int16_t  angle_x;
+    int16_t  angle_y;
     int16_t  angle_z;
 
 
-	int16_t  damage;
-	int16_t  proration;
-	uint16_t health_smval;
-	uint16_t sp_smval;
-	int16_t  untech;
-	uint16_t unk9;
-	int16_t  limit;
-	uint16_t flag196_char;
-	uint16_t flag196_enemy;
-	uint16_t flag196_char2;
-	uint16_t flag196_enemy2;
-	uint16_t card_energy;
-	uint16_t card_energy2;
-	uint16_t fall_seq;
-	uint16_t fall_seq2;
-	float  velocity_x;
-	float  velocity_y;
-	uint16_t hit_sfx;
-	uint16_t unk19;
-	int16_t  attack_type;
-	uint8_t  unk20;
+    int16_t  damage;
+    int16_t  proration;
+    uint16_t health_smval;
+    uint16_t sp_smval;
+    int16_t  untech;
+    uint16_t unk9;
+    int16_t  limit;
+    uint16_t flag196_char;
+    uint16_t flag196_enemy;
+    uint16_t flag196_char2;
+    uint16_t flag196_enemy2;
+    uint16_t card_energy;
+    uint16_t card_energy2;
+    uint16_t fall_seq;
+    uint16_t fall_seq2;
+    float  velocity_x;
+    float  velocity_y;
+    uint16_t hit_sfx;
+    uint16_t unk19;
+    int16_t  attack_type;
+    uint8_t  unk20;
     uint32_t fflags;
     uint32_t aflags;
 
-	frame_box *box_coll;
-	vector<frame_box> box_hit;
-	vector<frame_box> box_atk;
-	vector<frame_box *> box_unk_atk;
+    frame_box *box_coll;
+    vector<frame_box> box_hit;
+    vector<frame_box> box_atk;
+    vector<frame_box *> box_unk_atk;
 
     int32_t  extra1[6];
     uint16_t unk22[3];
@@ -107,7 +107,7 @@ struct seq
 
 class char_sprite
 {
-    protected:
+protected:
     gr_blend    blend;
 
     seq        *cur_seq;
@@ -126,7 +126,7 @@ class char_sprite
 
     gr_transform m_transform;
 
-    public:
+public:
 
     gr_sprite  *sprite;
 
@@ -164,9 +164,9 @@ typedef map<int32_t, seq *> mapseq;
 
 class char_graph
 {
-    private:
+private:
 
-    protected:
+protected:
 
     vector<gr_tex *> imgs;
 
@@ -174,7 +174,7 @@ class char_graph
 
     bool load_pal_pal(const char *file, uint32_t *pal);
 
-    public:
+public:
 
     bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
 

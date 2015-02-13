@@ -6348,11 +6348,11 @@ void cirno_bullets::func10()
             else
             {
                 if ( c_A < 10 )
-            {
-                active = false;
-                break;
-            }
-            c_A -= 10;
+                {
+                    active = false;
+                    break;
+                }
+                c_A -= 10;
             }
 
             if ( process() )

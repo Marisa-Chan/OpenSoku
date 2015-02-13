@@ -7,26 +7,26 @@ using namespace std;
 
 struct gfx_frame
 {
-	gr_tex * img;
-	uint16_t unk1;
-	int16_t  unk2;
+    gr_tex * img;
+    uint16_t unk1;
+    int16_t  unk2;
     int16_t  tx_width;
     int16_t  tx_height;
     int16_t  x_offset;
     int16_t  y_offset;
     uint16_t  durate;
-	uint8_t  type;
+    uint8_t  type;
 
-	int16_t  blend_mode;
-	uint8_t  c_A;
-	uint8_t  c_R;
-	uint8_t  c_G;
-	uint8_t  c_B;
+    int16_t  blend_mode;
+    uint8_t  c_A;
+    uint8_t  c_R;
+    uint8_t  c_G;
+    uint8_t  c_B;
 
-	float    scale_x;
+    float    scale_x;
     float    scale_y;
-	int16_t  angle_x;
-	int16_t  angle_y;
+    int16_t  angle_x;
+    int16_t  angle_y;
     int16_t  angle_z;
 };
 
@@ -46,7 +46,7 @@ struct gfx_seq
 
 class gfx_sprite
 {
-    protected:
+protected:
 
     gr_transform m_transform;
 
@@ -67,7 +67,7 @@ class gfx_sprite
 
     void frame_val_set();
 
-    public:
+public:
 
     gfx_sprite();
     virtual ~gfx_sprite();
@@ -101,13 +101,13 @@ class c_meta;
 
 class gfx_meta: public moveable
 {
-    protected:
+protected:
     int32_t index;
 
     float skew_x;
     float skew_y;
 
-    public:
+public:
     gfx_meta();
     gfx_sprite sprite;
 
@@ -139,7 +139,7 @@ typedef map<int32_t, gfx_seq *> map_gfx_seq;
 
 class gfx_holder
 {
-    protected:
+protected:
 
     bool load_pal_pal(const char *file, uint32_t *pal);
     bool load_dat(const char *file, const char *dir);
@@ -148,7 +148,7 @@ class gfx_holder
     vector<gfx_meta *> fx;
     vector<gr_tex *> imgs;
 
-    public:
+public:
     virtual ~gfx_holder();
 
     gfx_seq *get_seq(uint32_t idx);

@@ -3,11 +3,11 @@
 
 class char_alice: public char_c
 {
-    public:
+public:
 
     int16_t field_890[4];
-     //CF_SP_DOLL_COUNT 0x890 // short
-     //CF_DOLL_COUNT 0x892 // short
+    //CF_SP_DOLL_COUNT 0x890 // short
+    //CF_DOLL_COUNT 0x892 // short
 
     int16_t field_892;
 

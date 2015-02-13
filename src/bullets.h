@@ -16,14 +16,14 @@ class c_bullet : public c_meta
     friend class marisa_bullets;
     friend class alice_bullets;
 
-    protected:
+protected:
 
 
     int8_t order;
 
     float addition[12];
 
-    public:
+public:
 
     c_bullet *bul_parent;
     bullist   bul_childs;

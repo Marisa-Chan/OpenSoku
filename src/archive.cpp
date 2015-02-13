@@ -15,13 +15,13 @@ static vector<char *> archives;
 
 static void dexorcrypt(uint8_t *data, uint32_t size, uint8_t v1, uint8_t v2, uint8_t v3)
 {
-	for (uint32_t i = 0; i < size; ++i)
-	{
-		*data ^= v1;
-		v1 += v2;
-		v2 += v3;
-		data++;
-	}
+    for (uint32_t i = 0; i < size; ++i)
+    {
+        *data ^= v1;
+        v1 += v2;
+        v2 += v3;
+        data++;
+    }
 }
 
 static void tolowerstr(char *str, uint32_t size)

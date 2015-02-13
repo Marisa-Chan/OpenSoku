@@ -268,9 +268,9 @@ fxTransform& fxTransform::rotate3(float x, float y, float z)
     float sz = std::sin(rad);
 
     fxTransform rotation(        cy*cz,           -cy*sz,      sy,    0,
-                        sx*sy*cz+cx*sz,  -sx*sy*sz+cx*cz,  -sx*cy,    0,
-                       -cx*sy*cz+sx*sz,   cx*sy*sz+sx*cz,   cx*cy,    0,
-                                     0,                0,       0,    1);
+                                 sx*sy*cz+cx*sz,  -sx*sy*sz+cx*cz,  -sx*cy,    0,
+                                 -cx*sy*cz+sx*sz,   cx*sy*sz+sx*cz,   cx*cy,    0,
+                                 0,                0,       0,    1);
 
 
     return combine(rotation);
@@ -295,9 +295,9 @@ fxTransform& fxTransform::rotate3(float x, float y, float z, float cX, float cY,
 
 
     fxTransform rotation(        cy*cz,           -cy*sz,      sy,                             (1-cy*cz)*cX+cy*sz*cY-sy*cZ,
-                        sx*sy*cz+cx*sz,  -sx*sy*sz+cx*cz,  -sx*cy,     -(sx*sy*cz+cx*sz)*cX+(1+sx*sy*sz-cx*cz)*cY+sx*cy*cZ,
-                       -cx*sy*cz+sx*sz,   cx*sy*sz+sx*cz,   cx*cy,  -(-cx*sy*cz+sx*sz)*cX-(cx*sy*sz+sx*cz)*cY+(1-cx*cy)*cZ,
-                                     0,                0,       0,                                                       1);
+                                 sx*sy*cz+cx*sz,  -sx*sy*sz+cx*cz,  -sx*cy,     -(sx*sy*cz+cx*sz)*cX+(1+sx*sy*sz-cx*cz)*cY+sx*cy*cZ,
+                                 -cx*sy*cz+sx*sz,   cx*sy*sz+sx*cz,   cx*cy,  -(-cx*sy*cz+sx*sz)*cX-(cx*sy*sz+sx*cz)*cY+(1-cx*cy)*cZ,
+                                 0,                0,       0,                                                       1);
 
 
     return combine(rotation);
@@ -347,9 +347,9 @@ fxTransform& fxTransform::scale3(float scaleX, float scaleY, float scaleZ, float
 
     return translate(-cX,-cY,-cZ);*/
     fxTransform scaling(scaleX,      0,      0,  (1.0-scaleX)*cX,
-                             0, scaleY,      0,  (1.0-scaleY)*cY,
-                             0,      0,	scaleZ,  (1.0-scaleZ)*cZ,
-                             0,      0,      0,                1);
+                        0, scaleY,      0,  (1.0-scaleY)*cY,
+                        0,      0,	scaleZ,  (1.0-scaleZ)*cZ,
+                        0,      0,      0,                1);
     return combine(scaling);
 }
 

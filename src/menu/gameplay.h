@@ -3,10 +3,10 @@
 
 class screen_gameplay: public screen
 {
-    protected:
+protected:
     c_scene * scene;
 
-    public:
+public:
     screen_gameplay();
     virtual id_screen update(); //func1, Return next screen ID
     virtual bool draw(); //func2

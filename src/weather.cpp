@@ -1205,11 +1205,11 @@ WEATHER_ID weather_index_for_name_get()
 
 void weather_forecast_set(WEATHER_ID id)
 {
-  if ( id != WEATHER_CLEAR )
-  {
-    weather_index_for_name = id;
-    battle_ui_effect(get_ieid_by_weather(id) + 4, 320, 32, 1, 1);
-  }
+    if ( id != WEATHER_CLEAR )
+    {
+        weather_index_for_name = id;
+        battle_ui_effect(get_ieid_by_weather(id) + 4, 320, 32, 1, 1);
+    }
 }
 
 void add_sky_bkg(t_weather_manager *wth, int32_t stage_id)
@@ -1233,11 +1233,11 @@ void add_sky_bkg(t_weather_manager *wth, int32_t stage_id)
 
 void weather_set_new_sky_if_changed(t_weather_manager *wth, WEATHER_ID id)
 {
-  if ( wth->current_sky_weather != id )
-  {
-    wth->current_sky_weather = id;
-    add_sky_bkg(wth, scene_get_scene()->get_stage_id());
-  }
+    if ( wth->current_sky_weather != id )
+    {
+        wth->current_sky_weather = id;
+        add_sky_bkg(wth, scene_get_scene()->get_stage_id());
+    }
 }
 
 
@@ -1273,9 +1273,9 @@ void weather_change(WEATHER_ID id, bool setted)
 
 void weather_forecast_next()
 {
-  if ( weather == WEATHER_CLEAR )
-      if (weather_index_for_name >= WEATHER_SUNNY && weather_index_for_name <= WEATHER_AURORA)
-        weather_forecast_set( (WEATHER_ID)(((int32_t)weather_index_for_name + 1) % 20) );
+    if ( weather == WEATHER_CLEAR )
+        if (weather_index_for_name >= WEATHER_SUNNY && weather_index_for_name <= WEATHER_AURORA)
+            weather_forecast_set( (WEATHER_ID)(((int32_t)weather_index_for_name + 1) % 20) );
 }
 
 
@@ -1489,7 +1489,7 @@ void weather_spawn_effects_by_id(WEATHER_ID wid)
 
             if ( weather_efx_time % 90 == 0 )
                 weather_manager->wfx_holder.addeffect(11, scene_rand_rngf(480), 1560.0, 1, 1);
-            }
+        }
         break;
 
     case WEATHER_CLOUDY:

@@ -3,7 +3,7 @@
 
 class pause_menu: public ingame_menu
 {
-    protected:
+protected:
 
     int8_t cur_pos;
     int8_t state;
@@ -15,7 +15,7 @@ class pause_menu: public ingame_menu
 
     c_scene *scene;
 
-    public:
+public:
     pause_menu(c_scene *scn);
     virtual ~pause_menu();
 

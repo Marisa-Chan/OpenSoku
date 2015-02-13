@@ -8,21 +8,21 @@ namespace sf
 {
 
 fxSprite::fxSprite() :
-m_texture    (NULL),
-m_textureRect()
+    m_texture    (NULL),
+    m_textureRect()
 {
 }
 
 fxSprite::fxSprite(const Texture& texture) :
-m_texture    (NULL),
-m_textureRect()
+    m_texture    (NULL),
+    m_textureRect()
 {
     setTexture(texture);
 }
 
 fxSprite::fxSprite(const Texture& texture, const IntRect& rectangle) :
-m_texture    (NULL),
-m_textureRect()
+    m_texture    (NULL),
+    m_textureRect()
 {
     setTexture(texture);
     setTextureRect(rectangle);

@@ -149,13 +149,13 @@ id_screen screen_main::update()
         {
             switch (title_punkt)
             {
-                case 3:
+            case 3:
                 return SCREEN_GAMEPLAY;
 
-                case 11:
+            case 11:
                 return SCREEN_UNK;
 
-                default:
+            default:
                 break;
             }
         }

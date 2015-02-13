@@ -250,229 +250,229 @@ void c_infoef_fx::func10()
                 if ( settings_get()->get_gametype() != GAME_TYPE_SCENARIO )
                     battle_ui_effect(105, 320.0, 120.0, 1, 1);
         }
-            if ( par2 == 0)
-            {
-                if ( c_A >= 245 )
-                    c_A = 255;
-                else
-                    c_A += 10;
-                if ( get_elaps_frames() % 60 == 0)
-                    battle_ui_effect(101, x, y, 1, 2);
-            }
+        if ( par2 == 0)
+        {
+            if ( c_A >= 245 )
+                c_A = 255;
             else
-            {
-                if (c_A > 10)
-                    c_A -= 10;
-                else
-                    active = false;
-            }
-
-            if ( weather_setted_get() != WEATHER_SUNNY )
-                par2 = 1.0;
-
-            if (active)
-                if (process())
-                    active = false;
-            break;
-
-        case 101:
-        case 111:
-        case 121:
-        case 131:
-        case 141:
-        case 151:
-        case 161:
-        case 171:
-        case 181:
-        case 191:
-        case 201:
-        case 211:
-        case 221:
-        case 231:
-        case 241:
-        case 251:
-        case 261:
-        case 271:
-        case 281:
-        case 291:
-        case 301:
-        case 311:
-            c_A = sin_deg(3 * get_elaps_frames()) * 255.0;
-            scaleY = scaleX += 0.01;
-            if ( get_elaps_frames() <= 60 )
-            {
-                if (process())
-                    active = false;
-            }
-            else
-                active = false;
-            break;
-        case 102:
-        case 112:
-        case 122:
-        case 132:
-        case 142:
-        case 152:
-        case 162:
-        case 172:
-        case 182:
-        case 192:
-        case 202:
-        case 212:
-        case 222:
-        case 232:
-        case 242:
-        case 252:
-        case 262:
-        case 272:
-        case 282:
-        case 292:
-        case 302:
-        case 312:
-            if ( c_A > 10)
-            {
+                c_A += 10;
+            if ( get_elaps_frames() % 60 == 0)
+                battle_ui_effect(101, x, y, 1, 2);
+        }
+        else
+        {
+            if (c_A > 10)
                 c_A -= 10;
-                int32_t frms = get_elaps_frames();
-                if (frms > 30 )
-                    frms = 30;
-                scaleY = scaleX = sin_deg(frms * 3) * 20.0 + 1.0;
-                if (process())
-                    active = false;
-            }
             else
                 active = false;
-            break;
-        case 103:
-            scaleX -= 0.1;
-            if (scaleX < 1.0)
-                scaleX = 1.0;
-            scaleY = scaleX;
-            if (par2 == 0)
+        }
+
+        if ( weather_setted_get() != WEATHER_SUNNY )
+            par2 = 1.0;
+
+        if (active)
+            if (process())
+                active = false;
+        break;
+
+    case 101:
+    case 111:
+    case 121:
+    case 131:
+    case 141:
+    case 151:
+    case 161:
+    case 171:
+    case 181:
+    case 191:
+    case 201:
+    case 211:
+    case 221:
+    case 231:
+    case 241:
+    case 251:
+    case 261:
+    case 271:
+    case 281:
+    case 291:
+    case 301:
+    case 311:
+        c_A = sin_deg(3 * get_elaps_frames()) * 255.0;
+        scaleY = scaleX += 0.01;
+        if ( get_elaps_frames() <= 60 )
+        {
+            if (process())
+                active = false;
+        }
+        else
+            active = false;
+        break;
+    case 102:
+    case 112:
+    case 122:
+    case 132:
+    case 142:
+    case 152:
+    case 162:
+    case 172:
+    case 182:
+    case 192:
+    case 202:
+    case 212:
+    case 222:
+    case 232:
+    case 242:
+    case 252:
+    case 262:
+    case 272:
+    case 282:
+    case 292:
+    case 302:
+    case 312:
+        if ( c_A > 10)
+        {
+            c_A -= 10;
+            int32_t frms = get_elaps_frames();
+            if (frms > 30 )
+                frms = 30;
+            scaleY = scaleX = sin_deg(frms * 3) * 20.0 + 1.0;
+            if (process())
+                active = false;
+        }
+        else
+            active = false;
+        break;
+    case 103:
+        scaleX -= 0.1;
+        if (scaleX < 1.0)
+            scaleX = 1.0;
+        scaleY = scaleX;
+        if (par2 == 0)
+        {
+            if (c_A >= 245)
+                c_A = 255;
+            else
+                c_A += 10;
+        }
+        else
+        {
+            if (c_A > 20)
+                c_A -= 20;
+            else
+                active = false;
+        }
+
+        if ( weather_setted_get() != WEATHER_SUNNY )
+            par2 = 1.0;
+
+        if (active)
+            if (process())
+                active = false;
+        break;
+    case 104:
+        scaleX -= 0.1;
+        if (scaleX < 1.0)
+            scaleX = 1.0;
+        scaleY = scaleX;
+        if (par2 == 0)
+        {
+            if (c_A >= 245)
+                c_A = 255;
+            else
+                c_A += 10;
+        }
+        else
+        {
+            if (c_A > 20)
+                c_A -= 20;
+            else
+                active = false;
+        }
+        if ( weather_index_for_name_get() != WEATHER_SUNNY)
+            par2 = 1.0;
+
+        if (active)
+            if (process())
+                active = false;
+        break;
+
+    case 105:
+        if (par2 == 0.0)
+        {
+            scaleY = scaleX -= 0.25;
+            if (scaleX <= 1.0)
             {
-                if (c_A >= 245)
+                if (c_A > 240)
                     c_A = 255;
                 else
-                    c_A += 10;
-            }
-            else
-            {
-                if (c_A > 20)
-                    c_A -= 20;
-                else
-                    active = false;
-            }
-
-            if ( weather_setted_get() != WEATHER_SUNNY )
+                    c_A += 15;
+                scaleY = scaleX = 1.0;
                 par2 = 1.0;
-
-            if (active)
-                if (process())
-                    active = false;
-            break;
-        case 104:
-            scaleX -= 0.1;
-            if (scaleX < 1.0)
-                scaleX = 1.0;
-            scaleY = scaleX;
-            if (par2 == 0)
-            {
-                if (c_A >= 245)
-                    c_A = 255;
-                else
-                    c_A += 10;
             }
+        }
+        else
+        {
+            par2 += 1.0;
+            if (par2 >= 90.0)
+            {
+                scaleY *= 0.95;
+                scaleX += 0.1;
+                if (c_A <= 15)
+                    active = false;
+                else
+                    c_A -= 15;
+            }
+        }
+        if ( weather_setted_get() != WEATHER_SUNNY )
+        {
+            if (c_A <= 20)
+                active = false;
             else
-            {
-                if (c_A > 20)
-                    c_A -= 20;
-                else
-                    active = false;
-            }
-            if ( weather_index_for_name_get() != WEATHER_SUNNY)
-                par2 = 1.0;
-
-            if (active)
-                if (process())
-                    active = false;
-            break;
-
-        case 105:
-            if (par2 == 0.0)
-            {
-                scaleY = scaleX -= 0.25;
-                if (scaleX <= 1.0)
-                {
-                    if (c_A > 240)
-                        c_A = 255;
-                    else
-                        c_A += 15;
-                    scaleY = scaleX = 1.0;
-                    par2 = 1.0;
-                }
-            }
+                c_A -= 20;
+        }
+        else
+        {
+            if (c_A >= 245)
+                c_A = 255;
             else
-            {
-                par2 += 1.0;
-                if (par2 >= 90.0)
-                {
-                    scaleY *= 0.95;
-                    scaleX += 0.1;
-                    if (c_A <= 15)
-                        active = false;
-                    else
-                        c_A -= 15;
-                }
-            }
-            if ( weather_setted_get() != WEATHER_SUNNY )
-            {
-                if (c_A <= 20)
-                    active = false;
-                else
-                    c_A -= 20;
-            }
-            else
-            {
-                if (c_A >= 245)
-                    c_A = 255;
-                else
-                    c_A += 10;
-            }
-            if (active)
-                if (process())
-                    active = false;
-            break;
+                c_A += 10;
+        }
+        if (active)
+            if (process())
+                active = false;
+        break;
 
 ///////////////   110
 
-        case 110:
-            if ( get_elaps_frames() == 0 )
-            {
-                battle_ui_effect(113, x, y - 10.0, 1, 1);
-                if ( weather_get() == WEATHER_DRIZZLE)
-                    battle_ui_effect(115, 320.0, 120.0, 1, 1);
-            }
-            if ( par2 == 0.0 )
-            {
-                if ( c_A >= 245 )
-                    c_A = 255;
-                else
-                    c_A += 10;
-                if (get_elaps_frames() % 60 == 0)
-                    battle_ui_effect(111, x, y, 1, 2);
-            }
+    case 110:
+        if ( get_elaps_frames() == 0 )
+        {
+            battle_ui_effect(113, x, y - 10.0, 1, 1);
+            if ( weather_get() == WEATHER_DRIZZLE)
+                battle_ui_effect(115, 320.0, 120.0, 1, 1);
+        }
+        if ( par2 == 0.0 )
+        {
+            if ( c_A >= 245 )
+                c_A = 255;
             else
-            {
-                if ( c_A <= 10 )
-                    active = false;
-                else
-                    c_A -= 10;
-            }
-
-            if ( weather_setted_get() != WEATHER_DRIZZLE )
-                par2 = 1.0;
-
-            if (process())
+                c_A += 10;
+            if (get_elaps_frames() % 60 == 0)
+                battle_ui_effect(111, x, y, 1, 2);
+        }
+        else
+        {
+            if ( c_A <= 10 )
                 active = false;
+            else
+                c_A -= 10;
+        }
+
+        if ( weather_setted_get() != WEATHER_DRIZZLE )
+            par2 = 1.0;
+
+        if (process())
+            active = false;
         break;
 
     case 113:

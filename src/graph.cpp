@@ -28,7 +28,7 @@ void gr_poll_events()
     {
         // Request for closing the window
         //if (event.type == sf::Event::Closed)
-            //window.close();
+        //window.close();
         // The escape key was pressed
         if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
         {
@@ -37,7 +37,7 @@ void gr_poll_events()
         }
         // The window was resized
         //if (event.type == sf::Event::Resized)
-            //doSomethingWithTheNewSize(event.size.width, event.size.height);
+        //doSomethingWithTheNewSize(event.size.width, event.size.height);
         // etc ...
     }
 }
@@ -545,7 +545,7 @@ void gr_tristrip_set_vtx(gr_tristrip *strip, int32_t idx, float x, float y, floa
 
 void gr_tristrip_draw(gr_tristrip *strip, gr_blend blend , uint8_t plane , gr_shader *shader)
 {
-        if (plane < MAX_STATES)
+    if (plane < MAX_STATES)
     {
         gr_state tmp = states[plane];
 

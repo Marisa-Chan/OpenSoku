@@ -731,7 +731,7 @@ void background_34::draw_back()
 }
 
 void background_34::draw_shadow(c_meta */*chr*/)
-{ //no shadow in this location
+{   //no shadow in this location
     return;
 }
 

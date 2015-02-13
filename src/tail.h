@@ -7,7 +7,7 @@ using namespace std;
 
 class c_tail
 {
-    private:
+private:
     gr_tristrip *strip;
     float width;
     int32_t segs;
@@ -18,7 +18,7 @@ class c_tail
     deque<vec2d>  pts;
     deque<vec2d>  vtx;
 
-    public:
+public:
 
     c_tail(gr_tex *tex, uint8_t a, uint8_t r,uint8_t g, uint8_t b, float width, int32_t segs, int32_t subdiv, gr_blend blending);
     ~c_tail();

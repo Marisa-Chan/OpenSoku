@@ -205,7 +205,7 @@ void battle_ui_std::update()
         pl->borderBarCrashB[4]->renderable = chr->max_spell_energy == 800;
 
         for (int8_t j=0; j<5; j++)
-                pl->addedCards[j].nullTexture();
+            pl->addedCards[j].nullTexture();
 
         if (chr->field_570)
         {
@@ -403,53 +403,53 @@ void btl_ui::update_cmb_info(int8_t index)
     char_c *chr = pl->chr;
     combo_player *chr_inf = &cmb_plr[index];
 
-  if ( chr->combo_count != chr_inf->last_combo_count )
-  {
-      chr_inf->last_combo_count = chr->combo_count;
-      if (chr_inf->last_combo_count >= 2)
-        chr_inf->timer = 180;
-      if (chr->correction > chr_inf->old_correction)
-      {
-          for (int8_t i = 0; i < 6; i++)
-            if ( (chr->correction - chr_inf->old_correction) & (1 << i) )
-            {
-                cmb_elmnt tmp;
-                tmp.pos_x = 0.0;
-                tmp.timer = 10;
-                tmp.id = i;
-                chr_inf->cmd_deq.push_back(tmp);
-            }
-        chr_inf->old_correction = chr->correction;
-      }
-  }
-
-  if ( chr_inf->timer )
-  {
-    chr_inf->timer--;
-
-    if (chr_inf->field_14)
+    if ( chr->combo_count != chr_inf->last_combo_count )
     {
-        chr_inf->field_8 = (1.0 - cos_deg(9 * chr_inf->field_14)) * 300.0;
-        chr_inf->field_14--;
-    }
-    else
-    {
-        chr_inf->field_8 = 0.0;
-    }
-
-    for (uint32_t i=0; i < chr_inf->cmd_deq.size(); i++)
-    {
-        cmb_elmnt &tmp = chr_inf->cmd_deq[i];
-        if (tmp.timer)
+        chr_inf->last_combo_count = chr->combo_count;
+        if (chr_inf->last_combo_count >= 2)
+            chr_inf->timer = 180;
+        if (chr->correction > chr_inf->old_correction)
         {
-            tmp.timer--;
-            if (chr->player_index == 0)
-                tmp.pos_x = (1.0 - cos_deg(9 * tmp.timer)) * -300.0;
-            else
-                tmp.pos_x = (1.0 - cos_deg(9 * tmp.timer)) * 300.0;
+            for (int8_t i = 0; i < 6; i++)
+                if ( (chr->correction - chr_inf->old_correction) & (1 << i) )
+                {
+                    cmb_elmnt tmp;
+                    tmp.pos_x = 0.0;
+                    tmp.timer = 10;
+                    tmp.id = i;
+                    chr_inf->cmd_deq.push_back(tmp);
+                }
+            chr_inf->old_correction = chr->correction;
         }
     }
-  }
+
+    if ( chr_inf->timer )
+    {
+        chr_inf->timer--;
+
+        if (chr_inf->field_14)
+        {
+            chr_inf->field_8 = (1.0 - cos_deg(9 * chr_inf->field_14)) * 300.0;
+            chr_inf->field_14--;
+        }
+        else
+        {
+            chr_inf->field_8 = 0.0;
+        }
+
+        for (uint32_t i=0; i < chr_inf->cmd_deq.size(); i++)
+        {
+            cmb_elmnt &tmp = chr_inf->cmd_deq[i];
+            if (tmp.timer)
+            {
+                tmp.timer--;
+                if (chr->player_index == 0)
+                    tmp.pos_x = (1.0 - cos_deg(9 * tmp.timer)) * -300.0;
+                else
+                    tmp.pos_x = (1.0 - cos_deg(9 * tmp.timer)) * 300.0;
+            }
+        }
+    }
 }
 
 void btl_ui::draw_cmb_info(int8_t index)

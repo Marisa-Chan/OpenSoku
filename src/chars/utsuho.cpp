@@ -57,16 +57,16 @@ void char_utsuho::draw(gr_shader *_shader)
 {
     if (!_shader)
     {
-    shd_p+=0.5;
-    if (shd_p >= 512)
-        shd_p = 0;
-    gr_shader_set_texture(shader,"base",NULL);
-    gr_shader_set(shader,"pos",(x-shd_p)/512.0,(y-shd_p)/512.0);
+        shd_p+=0.5;
+        if (shd_p >= 512)
+            shd_p = 0;
+        gr_shader_set_texture(shader,"base",NULL);
+        gr_shader_set(shader,"pos",(x-shd_p)/512.0,(y-shd_p)/512.0);
 
-    char_c::draw(shader);
+        char_c::draw(shader);
     }
     else
-    char_c::draw(_shader);
+        char_c::draw(_shader);
 
 }
 
@@ -74,13 +74,13 @@ void char_utsuho::draw_shadow(shd_trans *trans, gr_shader *_shader)
 {
     if (!_shader)
     {
-    gr_shader_set_texture(shader,"base",NULL);
-    gr_shader_set(shader,"pos",(x-shd_p)/512.0,(y-shd_p)/512.0);
+        gr_shader_set_texture(shader,"base",NULL);
+        gr_shader_set(shader,"pos",(x-shd_p)/512.0,(y-shd_p)/512.0);
 
-    char_c::draw_shadow(trans,shader);
+        char_c::draw_shadow(trans,shader);
     }
     else
-    char_c::draw(_shader);
+        char_c::draw(_shader);
 }
 
 void char_utsuho::func10()

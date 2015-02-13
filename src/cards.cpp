@@ -122,9 +122,8 @@ bool cards_load_cards(s_cards *cards, const char *charname)
             period = 0;
             oldoff = off + 1;
         }
-        else
-            if (txt[off] == ',')
-                period++;
+        else if (txt[off] == ',')
+            period++;
 
     }
 

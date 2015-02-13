@@ -39,16 +39,16 @@ moveable::moveable()
     scaleX = 1.0;
     scaleY = 1.0;
 
-	c_A = 255;
-	c_R = 255;
-	c_G = 255;
-	c_B = 255;
+    c_A = 255;
+    c_R = 255;
+    c_G = 255;
+    c_B = 255;
 
-	rs_w = 0;
-	rs_h = 0;
-	scale_real = false;
+    rs_w = 0;
+    rs_h = 0;
+    scale_real = false;
 
-	y_to_down = false;
+    y_to_down = false;
 }
 
 void moveable::setOrigin(float x, float y)

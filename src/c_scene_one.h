@@ -6,7 +6,7 @@
 
 class c_scene_one: public c_scene
 {
-    public:
+public:
     c_scene_one();
 
     virtual void init(background *bg, char_c *p1, char_c *p2);
@@ -25,7 +25,7 @@ class c_scene_one: public c_scene
     virtual void func15();
     virtual void func16();
 
-    protected:
+protected:
 
     int8_t field_904;
 };

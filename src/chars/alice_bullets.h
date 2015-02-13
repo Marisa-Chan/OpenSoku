@@ -3,7 +3,7 @@
 
 class alice_bullets: public c_bullet
 {
-    public:
+public:
 
     int32_t field_3AC;
 

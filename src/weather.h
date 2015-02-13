@@ -11,12 +11,12 @@ using namespace std;
 
 class c_weather_fx: public gfx_meta
 {
-    protected:
+protected:
     int16_t par1;
     int16_t par2;
     float par3;
 
-    public:
+public:
     c_weather_fx(int32_t idx, gfx_seq *sq, float x, float y, int8_t dir, int8_t order);
 
     void func10();
@@ -26,7 +26,7 @@ class c_weather_fx: public gfx_meta
 
 class c_weather_sp: public gfx_holder
 {
-    public:
+public:
     c_weather_sp();
 
     void addeffect(int32_t idx, float x, float y, int8_t dir, int8_t order);
@@ -35,12 +35,12 @@ class c_weather_sp: public gfx_holder
 
 class c_weather_bg
 {
-    private:
+private:
     gr_sprite sprite;
     gr_tex   *bg[20];
 
     int8_t   cur_weather;
-    public:
+public:
 
     c_weather_bg();
     ~c_weather_bg();

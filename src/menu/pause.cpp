@@ -71,7 +71,7 @@ int32_t pause_menu::update()
     switch(state)
     {
     case 0:
-        {
+    {
         int8_t y = get_global_input()->keyHit(INP_DOWN) - get_global_input()->keyHit(INP_UP);
         if (y > 0)
         {
@@ -122,8 +122,8 @@ int32_t pause_menu::update()
                 return 0;
             }
         }
-        }
-        break;
+    }
+    break;
 
     default:
         break;

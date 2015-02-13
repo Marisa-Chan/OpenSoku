@@ -39,33 +39,33 @@ id_screen screen_loading::update()
 
 bool screen_loading::draw()
 {
-        gr_tex_box box;
-        box.a = 255;
-        box.r = 255;
-        box.g = 255;
-        box.b = 255;
-        box.autosize = true;
-        box.tex_scl_x = 1.0;
-        box.tex_scl_y = 1.0;
-        box.overlay_tex = false;
-        box.skew_in_pix = true;
-        box.skew_x = 0;
-        box.skew_y = 0;
-        box.x = 0;
-        box.y = 0;
-        box.tex = bkg;
+    gr_tex_box box;
+    box.a = 255;
+    box.r = 255;
+    box.g = 255;
+    box.b = 255;
+    box.autosize = true;
+    box.tex_scl_x = 1.0;
+    box.tex_scl_y = 1.0;
+    box.overlay_tex = false;
+    box.skew_in_pix = true;
+    box.skew_x = 0;
+    box.skew_y = 0;
+    box.x = 0;
+    box.y = 0;
+    box.tex = bkg;
 
-        gr_draw_tex_box(&box, gr_alpha, PLANE_GUI);
+    gr_draw_tex_box(&box, gr_alpha, PLANE_GUI);
 
-        gr_setxy_sprite(gear, 582.0, 446.0);
-        gr_setrotate_sprite(gear, frames);
-        gr_draw_sprite(gear, gr_alpha, PLANE_GUI);
+    gr_setxy_sprite(gear, 582.0, 446.0);
+    gr_setrotate_sprite(gear, frames);
+    gr_draw_sprite(gear, gr_alpha, PLANE_GUI);
 
-        gr_setxy_sprite(gear, 605.0, 428.0);
-        gr_setrotate_sprite(gear, -frames);
-        gr_draw_sprite(gear, gr_alpha, PLANE_GUI);
+    gr_setxy_sprite(gear, 605.0, 428.0);
+    gr_setrotate_sprite(gear, -frames);
+    gr_draw_sprite(gear, gr_alpha, PLANE_GUI);
 
-        return true;
+    return true;
 }
 
 id_screen screen_loading::getID()

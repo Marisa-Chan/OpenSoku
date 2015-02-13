@@ -13,7 +13,7 @@ enum s_border
 
 class moveable
 {
-    public :
+public :
 
     float x;
     float y;
@@ -33,33 +33,33 @@ class moveable
     float scaleX;
     float scaleY;
 
-	uint8_t  c_A;
-	uint8_t  c_R;
-	uint8_t  c_G;
-	uint8_t  c_B;
+    uint8_t  c_A;
+    uint8_t  c_R;
+    uint8_t  c_G;
+    uint8_t  c_B;
 
-	bool  y_to_down;
+    bool  y_to_down;
 
-	int16_t rs_w;
-	int16_t rs_h;
-	bool scale_real;
+    int16_t rs_w;
+    int16_t rs_h;
+    bool scale_real;
 
-	moveable();
+    moveable();
 
-	void setXY(float x, float y);
-	void setX(float x);
-	void setY(float y);
-	float getX();
-	float getY();
-	void setOrigin(float x, float y);
-	void reset_ofs();
+    void setXY(float x, float y);
+    void setX(float x);
+    void setY(float y);
+    float getX();
+    float getY();
+    void setOrigin(float x, float y);
+    void reset_ofs();
 
-	void set_vec_speed(float angle, float speed);
-	void set_vec_speed_2(float angle, float speed);
+    void set_vec_speed(float angle, float speed);
+    void set_vec_speed_2(float angle, float speed);
 
-	void set_real_size(int16_t w, int16_t h);
+    void set_real_size(int16_t w, int16_t h);
 
-	s_border get_border_near();
+    s_border get_border_near();
     float getlvl_height();
     float getlvl_height(float dx);
 

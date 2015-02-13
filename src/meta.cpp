@@ -601,5 +601,5 @@ void c_meta::scn_char_ss2()
 
 void c_meta::sub_464110(int32_t a2, int32_t a3, int32_t a4, int32_t a5)
 {
-  scene_get_scene()->sub_47A7E0(this, enemy, a2, a3, a4, a5);
+    scene_get_scene()->sub_47A7E0(this, enemy, a2, a3, a4, a5);
 }

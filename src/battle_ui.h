@@ -56,7 +56,7 @@ struct combo_player {
 
 class btl_ui
 {
-    protected:
+protected:
     c_infoef_sp inf_eff;
     btl_std_plr player[2];
     combo_player cmb_plr[2];
@@ -73,7 +73,7 @@ class btl_ui
     void draw_cmb_info(int8_t index);
 
 
-    public:
+public:
     btl_ui();
     virtual ~btl_ui();
 
@@ -90,11 +90,11 @@ class btl_ui
 
 class battle_ui_std: public btl_ui
 {
-    protected:
+protected:
 
     void init();
 
-    public:
+public:
 
     battle_ui_std();
     ~battle_ui_std();

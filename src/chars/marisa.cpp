@@ -616,7 +616,7 @@ void char_marisa::func10()
     case 210:
     case 211:
     case 212:
-        case 220:
+    case 220:
     case 221:
     case 222:
         if ( get_subseq() == 0 )
@@ -4674,7 +4674,7 @@ void char_marisa::func10()
         }
         if ( get_subseq() == 3 )
         {
-           /* if ( get_elaps_frames() >= 0 )*/ //SIGN HACK
+            /* if ( get_elaps_frames() >= 0 )*/ //SIGN HACK
             {
                 if ( field_7DC > 35.0 )
                 {
@@ -4923,14 +4923,14 @@ void char_marisa::func10()
             break;
         }
         if (get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 1)
-            {
-                sub_4834E0( 40);
-                scene_play_sfx(23);
-                scene_add_effect(this, 115, x - 23.0 * dir, y + 94.0, dir, 1);
-                sub_469450( 0, 0, 60);
-                sub_483570();
-                weather_forecast_next();
-            }
+        {
+            sub_4834E0( 40);
+            scene_play_sfx(23);
+            scene_add_effect(this, 115, x - 23.0 * dir, y + 94.0, dir, 1);
+            sub_469450( 0, 0, 60);
+            sub_483570();
+            weather_forecast_next();
+        }
 
         if ( get_elaps_frames() == 0 && get_frame_time() == 0 && get_frame() == 0 && get_subseq() == 6 )
         {

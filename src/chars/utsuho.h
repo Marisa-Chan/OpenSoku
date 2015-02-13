@@ -8,7 +8,7 @@ private:
     gr_shader *shader;
     float      shd_p;
 
-    public:
+public:
     char_utsuho(inp_ab *func,uint8_t pal = 0);
 
     void func10();

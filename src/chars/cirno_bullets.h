@@ -3,7 +3,7 @@
 
 class cirno_bullets: public c_bullet
 {
-    public:
+public:
 
     void func10();
     void set_seq_params(); //func15
