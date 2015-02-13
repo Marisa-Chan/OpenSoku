@@ -5619,13 +5619,13 @@ void alice_bullets::func10()
 				if ( h_inerc > 10.0 )
 					h_inerc = 10.0;
 			}
-			if ( chrt->dY() > 0 )
+			if ( chrt->dY() < 0 )
 			{
 				v_inerc += 2.0;
 				if (v_inerc > 10.0)
 					v_inerc = 10.0;
 			}
-			if ( chrt->dY() < 0 )
+			if ( chrt->dY() > 0 )
 			{
 				v_inerc -= 2.0;
 				if (v_inerc < -10.0)
@@ -5671,7 +5671,7 @@ void alice_bullets::func10()
 						set_subseq(3);
 						return;
 					}
-					if ( chrt->dY() < 0 )
+					if ( chrt->dY() > 0 )
 					{
 						field_36C = 0;
 						field_194 = 1;
@@ -5679,14 +5679,14 @@ void alice_bullets::func10()
 						return;
 					}
 				}
-				if ( chrt->dX(dir) == 0 && chrt->dY() < 0 )
+				if ( chrt->dX(dir) == 0 && chrt->dY() > 0 )
 				{
 					field_36C = 0;
 					field_194 = 1;
 					set_subseq(6);
 					return;
 				}
-				if ( chrt->dX(dir) == 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) == 0 && chrt->dY() < 0 )
 				{
 					field_36C = 0;
 					field_388 = 0.0;
@@ -5696,7 +5696,7 @@ void alice_bullets::func10()
 					set_subseq(9);
 					return;
 				}
-				if ( chrt->dX(dir) > 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) > 0 && chrt->dY() < 0 )
 				{
 					field_36C = 0;
 					field_388 = 1.0;
@@ -5706,7 +5706,7 @@ void alice_bullets::func10()
 					set_subseq(9);
 					return;
 				}
-				if ( chrt->dX(dir) < 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) < 0 && chrt->dY() < 0 )
 				{
 					dir = -dir;
 					field_36C = 0;
@@ -5793,7 +5793,7 @@ void alice_bullets::func10()
 					set_subseq(3);
 					return;
 				}
-				if ( chrt->dX(dir) >= 0 && chrt->dY() < 0 )
+				if ( chrt->dX(dir) >= 0 && chrt->dY() > 0 )
 				{
 					field_36C = 0;
 					field_194 = 1;
@@ -5801,7 +5801,7 @@ void alice_bullets::func10()
 					return;
 				}
 
-				if ( chrt->dX(dir) < 0 && chrt->dY() < 0 )
+				if ( chrt->dX(dir) < 0 && chrt->dY() > 0 )
 				{
 					field_36C = 0;
 					field_194 = 1;
@@ -5810,7 +5810,7 @@ void alice_bullets::func10()
 					return;
 				}
 
-				if ( chrt->dX(dir) == 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) == 0 && chrt->dY() < 0 )
 				{
 					field_36C = 0;
 					field_194 = 4;
@@ -5819,7 +5819,7 @@ void alice_bullets::func10()
 					set_subseq(9);
 					return;
 				}
-				if ( chrt->dX(dir) > 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) > 0 && chrt->dY() < 0 )
 				{
 					field_36C = 0;
 					field_388 = 0.0;
@@ -5829,7 +5829,7 @@ void alice_bullets::func10()
 					set_subseq(9);
 					return;
 				}
-				if ( chrt->dX(dir) < 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) < 0 && chrt->dY() < 0 )
 				{
 					dir = -dir;
 					field_36C = 0;
@@ -5887,7 +5887,7 @@ void alice_bullets::func10()
 			}
 			if ( chrt->keyDown(INP_A) > 0 && chrt->keyDown(INP_A) < 4 && field_190 != 0 && field_372 <= 1 )
 			{
-				if ( chrt->dX(dir) > 0 && chrt->dY() < 0 )
+				if ( chrt->dX(dir) > 0 && chrt->dY() > 0 )
 				{
 					field_36C = 0;
 					field_372++;
@@ -5895,7 +5895,7 @@ void alice_bullets::func10()
 					set_subseq(6);
 					return;
 				}
-				if ( chrt->dX(dir) < 0 && chrt->dY() < 0 )
+				if ( chrt->dX(dir) < 0 && chrt->dY() > 0 )
 				{
 					field_36C = 0;
 					field_372++;
@@ -5906,7 +5906,7 @@ void alice_bullets::func10()
 				}
 				if ( chrt->dX(dir) == 0 )
 				{
-					if ( chrt->dY() < 0 )
+					if ( chrt->dY() > 0 )
 					{
 						field_36C = 0;
 						field_372++;
@@ -5914,7 +5914,7 @@ void alice_bullets::func10()
 						set_subseq(6);
 						return;
 					}
-					if ( chrt->dY() > 0 )
+					if ( chrt->dY() < 0 )
 					{
 						field_36C = 0;
 						field_372++;
@@ -5924,7 +5924,7 @@ void alice_bullets::func10()
 						set_subseq(9);
 					}
 				}
-				if ( chrt->dX(dir) > 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) > 0 && chrt->dY() < 0 )
 				{
 					field_36C = 0;
 					field_372++;
@@ -5935,7 +5935,7 @@ void alice_bullets::func10()
 					set_subseq(9);
 					return;
 				}
-				if ( chrt->dX(dir) < 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) < 0 && chrt->dY() < 0 )
 				{
 					dir = -dir;
 					field_36C = 0;
@@ -6059,7 +6059,7 @@ void alice_bullets::func10()
 					set_subseq(3);
 					return;
 				}
-				if ( chrt->dX(dir) == 0 && chrt->dY() < 0 )
+				if ( chrt->dX(dir) == 0 && chrt->dY() > 0 )
 				{
 					field_36C = 0;
 					field_372++;
@@ -6069,7 +6069,7 @@ void alice_bullets::func10()
 					set_subseq(9);
 					return;
 				}
-				if ( chrt->dX(dir) > 0 && chrt->dY() < 0 )
+				if ( chrt->dX(dir) > 0 && chrt->dY() > 0 )
 				{
 					field_36C = 0;
 					field_372++;
@@ -6080,7 +6080,7 @@ void alice_bullets::func10()
 					set_subseq(9);
 					return;
 				}
-				if ( chrt->dX(dir) < 0 && chrt->dY() < 0 )
+				if ( chrt->dX(dir) < 0 && chrt->dY() > 0 )
 				{
 					dir = -dir;
 					field_36C = 0;
@@ -6243,7 +6243,7 @@ void alice_bullets::func10()
 					set_subseq(3);
 					return;
 				}
-				if ( chrt->dX(dir) >= 0  && chrt->dY() < 0 )
+				if ( chrt->dX(dir) >= 0  && chrt->dY() > 0 )
 				{
 					field_372++;
 					field_36C = 0;
@@ -6251,7 +6251,7 @@ void alice_bullets::func10()
 					set_subseq(6);
 					return;
 				}
-				if ( chrt->dX(dir) < 0 && chrt->dY() > 0 )
+				if ( chrt->dX(dir) < 0 && chrt->dY() < 0 )
 				{
 					field_372++;
 					field_36C = 0;
@@ -6310,13 +6310,13 @@ void alice_bullets::func10()
 			{
 				v_inerc = 0.0;
 			}
-			else if (chrt->dY() > 0)
+			else if (chrt->dY() < 0)
 			{
 				v_inerc += 1.0;
 				if (v_inerc > 4.0)
 					v_inerc = 4.0;
 			}
-			else if (chrt->dY() < 0)
+			else if (chrt->dY() > 0)
 			{
 				v_inerc -= 1.0;
 				if (v_inerc < -4.0)
@@ -6406,13 +6406,13 @@ void alice_bullets::func10()
 			{
 				v_inerc = 0.0;
 			}
-			else if (chrt->dY() > 0)
+			else if (chrt->dY() < 0)
 			{
 				v_inerc += 1.0;
 				if (v_inerc > 4.0)
 					v_inerc = 4.0;
 			}
-			else if (chrt->dY() < 0)
+			else if (chrt->dY() > 0)
 			{
 				v_inerc -= 1.0;
 				if (v_inerc < -4.0)
@@ -6452,13 +6452,13 @@ void alice_bullets::func10()
 			{
 				v_inerc = 0.0;
 			}
-			else if (chrt->dY() > 0)
+			else if (chrt->dY() < 0)
 			{
 				v_inerc += 1.0;
 				if (v_inerc > 2.0)
 					v_inerc = 2.0;
 			}
-			else if (chrt->dY() < 0)
+			else if (chrt->dY() > 0)
 			{
 				v_inerc -= 1.0;
 				if (v_inerc < -2.0)
@@ -6496,13 +6496,13 @@ void alice_bullets::func10()
 			{
 				v_inerc = 0.0;
 			}
-			else if (chrt->dY() > 0)
+			else if (chrt->dY() < 0)
 			{
 				v_inerc += 1.0;
 				if (v_inerc > 2.0)
 					v_inerc = 2.0;
 			}
-			else if (chrt->dY() < 0)
+			else if (chrt->dY() > 0)
 			{
 				v_inerc -= 1.0;
 				if (v_inerc < -2.0)

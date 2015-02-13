@@ -248,7 +248,7 @@ void char_utsuho::func10()
         reset_forces();
         if (process())
         {
-            if (dY() < 0)
+            if (dY() > 0)
                 set_seq(2);
             else
                 set_seq(0);
@@ -269,7 +269,7 @@ void char_utsuho::func10()
             else*/
             {
                 set_seq(0);
-                if ( dY() < 0)
+                if ( dY() > 0)
                     set_seq(1);
             }
         }
@@ -297,7 +297,7 @@ void char_utsuho::func10()
             }
             else
             {
-                if ( dY() > 0)
+                if ( dY() < 0)
                 {
                     field_7D2 = 90 - dX(dir) * 45;
                 }
@@ -308,7 +308,7 @@ void char_utsuho::func10()
                     else if (dX(dir) < 0 )
                         field_7D2 = 180;
                 }
-                else if (dY() < 0)
+                else if (dY() > 0)
                 {
                     field_7D2 = -90 - dX(dir) * 45;
                 }

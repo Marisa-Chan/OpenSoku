@@ -2128,12 +2128,12 @@ void char_c::func16()
                                     v_inerc = 0;
                             }
                         }
-                        else if (dY() < 0)
+                        else if (dY() > 0)
                         {
                             if ( v_inerc > -12 )
                                 v_inerc -= 0.5;
                         }
-                        else if (dY() > 0)
+                        else if (dY() < 0)
                         {
                             if ( v_inerc < 12 )
                                 v_inerc +=  0.5;
@@ -2674,7 +2674,7 @@ void char_c::func18()
                     }
                     flip_to_enemy();
                 }
-                else if (in_y > 0)
+                else if (in_y < 0)
                 {
                     flip_to_enemy();
                     in_x = dX(dir);
@@ -2695,7 +2695,7 @@ void char_c::func18()
                             set_seq(6);
                     }
                 }
-                else if (in_y < 0)
+                else if (in_y > 0)
                 {
                     if ( sq != 2 && sq != 1 )
                     {
@@ -2833,7 +2833,7 @@ void char_c::set_seq_params()
             reset_forces();
         break;
     case 6:
-        if ( (pres_move & PMOVE_N08) == 0  && (keyDown(INP_D) == 0 || dY() <= 0 || dX(dir) != 0 ))
+        if ( (pres_move & PMOVE_N08) == 0  && (keyDown(INP_D) == 0 || dY() >= 0 || dX(dir) != 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -2844,7 +2844,7 @@ void char_c::set_seq_params()
 
         break;
     case 7:
-        if ( (pres_move & PMOVE_N09) == 0  && (keyDown(INP_D) == 0 || dY() <= 0 || dX(dir) <= 0 ))
+        if ( (pres_move & PMOVE_N09) == 0  && (keyDown(INP_D) == 0 || dY() >= 0 || dX(dir) <= 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -2855,7 +2855,7 @@ void char_c::set_seq_params()
 
         break;
     case 8:
-        if ( (pres_move & PMOVE_N07) == 0  && (keyDown(INP_D) == 0 || dY() <= 0 || dX(dir) >= 0 ))
+        if ( (pres_move & PMOVE_N07) == 0  && (keyDown(INP_D) == 0 || dY() >= 0 || dX(dir) >= 0 ))
         {
             if ( field_49A == 0 )
                 reset_forces();
@@ -3705,7 +3705,7 @@ void char_c::char_loadsfx(const char *name)
 
 bool char_c::hi_jump_after_move()
 {
-    if ( dY() > 0)
+    if ( dY() < 0)
     {
         if ( dX(dir) > 0 )
         {
@@ -3735,7 +3735,7 @@ bool char_c::border_escape_ground()
     if ( pres_move & PMOVE_DD  && field_80E == 0)
         if (  char_is_block_knock() && (max_spell_energy >= 200 || weather_id == WEATHER_SUNNY) )
         {
-            if ( dY() <= 0 )
+            if ( dY() >= 0 )
             {
                 angZ = 0.0;
                 if ( dX(dir) <= 0 )
@@ -3763,7 +3763,7 @@ bool char_c::border_escape_ground()
 
 bool char_c::hi_jump(uint16_t cprior, uint32_t hjc)
 {
-    if ( (pres_move & PMOVE_N08) || (dY() > 0 && dX(dir)==0 && (keyDown(INP_D) || cprior >= 40)) )
+    if ( (pres_move & PMOVE_N08) || (dY() < 0 && dX(dir)==0 && (keyDown(INP_D) || cprior >= 40)) )
         if ( cprior <= get_prior(208) || hjc )
             if ( field_sq_check() )
             {
@@ -3771,7 +3771,7 @@ bool char_c::hi_jump(uint16_t cprior, uint32_t hjc)
                 set_seq(208);
                 return true;
             }
-    if ( pres_move & PMOVE_N09 || (dY() > 0 && dX(dir) > 0 && (keyDown(INP_D) || cprior >= 40)))
+    if ( pres_move & PMOVE_N09 || (dY() < 0 && dX(dir) > 0 && (keyDown(INP_D) || cprior >= 40)))
         if ( cprior <= get_prior(209) || hjc )
 
             if ( field_sq_check())
@@ -3782,7 +3782,7 @@ bool char_c::hi_jump(uint16_t cprior, uint32_t hjc)
             }
 
 
-    if ( pres_move & PMOVE_N07 || (dY() > 0 && dX(dir) < 0 && (keyDown(INP_D) || cprior >= 40)))
+    if ( pres_move & PMOVE_N07 || (dY() < 0 && dX(dir) < 0 && (keyDown(INP_D) || cprior >= 40)))
         if ( cprior <= get_prior(210) || hjc)
             if ( field_sq_check())
             {
@@ -3887,7 +3887,7 @@ bool char_c::flying_air(uint16_t cprior, uint32_t hjc, int8_t max_dash)
             && (cprior <= get_prior(214) || hjc)
             && field_sq_check() )
     {
-        if ( dY() < 0 )
+        if ( dY() > 0 )
         {
             if (dX(dir) > 0)
                 dash_angle = -45.0;
@@ -3896,7 +3896,7 @@ bool char_c::flying_air(uint16_t cprior, uint32_t hjc, int8_t max_dash)
             else
                 dash_angle = -90.0;
         }
-        else if ( dY() > 0 )
+        else if ( dY() < 0 )
         {
             if (dX(dir) > 0)
                 dash_angle = 45.0;
@@ -4186,7 +4186,7 @@ int8_t char_c::sub_469750(uint32_t enemu_aflags)
     }
     else
     {
-        if ( dY() <= 0 )
+        if ( dY() >= 0 )
         {
             if ( enemu_aflags & AF_MID_HIT )
                 return 1;

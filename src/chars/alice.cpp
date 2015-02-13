@@ -344,7 +344,7 @@ void char_alice::func10()
 		reset_forces();
 		if (process())
 		{
-			if (dY() < 0)
+			if (dY() > 0)
 				set_seq(2);
 			else
 				set_seq(0);
@@ -364,7 +364,7 @@ void char_alice::func10()
 			else
 			{
 				set_seq(0);
-				if ( dY() < 0 )
+				if ( dY() > 0 )
 					set_seq( 1);
 			}
 		}
@@ -396,7 +396,7 @@ void char_alice::func10()
 			else
 			{
 				set_seq(0);
-				if ( dY() < 0 )
+				if ( dY() > 0 )
 					set_seq( 1);
 			}
 		}
@@ -429,7 +429,7 @@ void char_alice::func10()
 			else
 			{
 				set_seq(0);
-				if ( dY() < 0)
+				if ( dY() > 0)
 					set_seq(1);
 			}
 		}
@@ -467,7 +467,7 @@ void char_alice::func10()
 				float xx = x + 50.0 - (scene_rand() % 100);
 				scene_add_effect(this, 124, xx, yy, dir, 1);
 			}
-			if ( dY() <= 0 )
+			if ( dY() >= 0 )
 			{
 				field_7D0++;
 
@@ -752,7 +752,7 @@ void char_alice::func10()
 				break;
 			}
 		}
-		if ( dY() > 0)
+		if ( dY() < 0)
 		{
 			field_7D2 = 90 - dX(dir) * 45;
 		}
@@ -763,7 +763,7 @@ void char_alice::func10()
 			else if (dX(dir) < 0 )
 				field_7D2 = 180;
 		}
-		else if (dY() < 0)
+		else if (dY() > 0)
 		{
 			field_7D2 = -90 - dX(dir) * 45;
 		}
@@ -6436,7 +6436,7 @@ void char_alice::func20()
 
 					if ( (sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 )
 					{
-						if ( dY() < 0 )
+						if ( dY() > 0 )
 						{
 							if ( ( dX(dir) > 0 || hX(dir) > 0 ) && cprior <= get_prior(304) ) // 3A
 							{
@@ -6453,7 +6453,7 @@ void char_alice::func20()
 								return;
 							}
 						}
-						else if ( dY() <= 0 )
+						else if ( dY() >= 0 )
 						{
 							if ( dX(dir) < 0 || hX(dir) < 0) // 4a
 								if ( cprior <= get_prior(330) || sq == 330 )
@@ -6522,14 +6522,14 @@ void char_alice::func20()
 				else if ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) // In Air (Melee)
 				{
 
-					if ( (dY() > 0 || hY() > 0 ) && dX(dir) == 0 && cprior <= get_prior(309) ) //j8A
+					if ( (dY() < 0 || hY() < 0 ) && dX(dir) == 0 && cprior <= get_prior(309) ) //j8A
 					{
 						angZ = 0;
 						set_seq(309);
 						input->zero_keyhit();
 						return;
 					}
-					else if ((dY() < 0 || hY() < 0) /*&& gX(dir) >= 0*/ && cprior <= get_prior(308)) //j2A
+					else if ((dY() > 0 || hY() > 0) /*&& gX(dir) >= 0*/ && cprior <= get_prior(308)) //j2A
 					{
 						angZ = 0;
 						set_seq(308);
@@ -6567,7 +6567,7 @@ void char_alice::func20()
 
 					if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
 					{
-						if ( (dY() < 0 || hY() < 0)/*&& gX(dir) > 0*/ && cprior <= get_prior(402) ) // 2B //HACK?
+						if ( (dY() > 0 || hY() > 0)/*&& gX(dir) > 0*/ && cprior <= get_prior(402) ) // 2B //HACK?
 						{
 							angZ = 0.0;
 							set_seq(402);
@@ -6592,7 +6592,7 @@ void char_alice::func20()
 				}
 				else if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200 ) //In AIR
 				{
-					if ( (dY() < 0 || hY() < 0) && cprior <= get_prior(406))
+					if ( (dY() > 0 || hY() > 0) && cprior <= get_prior(406))
 					{
 						angZ = 0.0;
 						set_seq(406);
@@ -6628,7 +6628,7 @@ void char_alice::func20()
 					}
 					if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
 					{
-						if ( (dY() < 0 || hY() < 0)/*&& gX(dir) > 0*/ && cprior <= get_prior(412) ) // 2C //HACK?
+						if ( (dY() > 0 || hY() > 0)/*&& gX(dir) > 0*/ && cprior <= get_prior(412) ) // 2C //HACK?
 						{
 							angZ = 0.0;
 							set_seq(412);
@@ -6662,14 +6662,14 @@ void char_alice::func20()
 				{
 					if ( ((sq > 299 && field_190 != 0 && field_190 != 3) || sq < 300 ) && spell_energy >= 200)
 					{
-						if (dY() >= 0 && (dX(dir) > 0 || hX(dir) > 0) && cprior <= get_prior(415))
+						if (dY() <= 0 && (dX(dir) > 0 || hX(dir) > 0) && cprior <= get_prior(415))
 						{
 							angZ = 0.0;
 							set_seq(415);
 							input->zero_keyhit();
 							return;
 						}
-						else if ((dY() < 0 || hY() < 0) && cprior <= get_prior(416))
+						else if ((dY() > 0 || hY() > 0) && cprior <= get_prior(416))
 						{
 							angZ = 0.0;
 							set_seq(416);
