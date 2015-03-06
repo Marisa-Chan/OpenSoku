@@ -222,6 +222,7 @@ public:
     uint32_t get_frame();
     uint32_t get_frame_time();
     uint32_t get_elaps_frames();
+    void set_elaps_frames(uint32_t frm);
     char_frame * get_pframe();
     uint32_t get_seq();
     uint16_t get_cprior();

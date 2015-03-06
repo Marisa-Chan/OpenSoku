@@ -135,6 +135,10 @@ uint32_t c_meta::get_elaps_frames()
 {
     return sprite.get_elaps_frames();
 }
+void c_meta::set_elaps_frames(uint32_t frm)
+{
+    sprite.set_elaps_frames(frm);
+}
 
 char_frame * c_meta::get_pframe()
 {

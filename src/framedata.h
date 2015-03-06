@@ -145,6 +145,7 @@ public:
     bool set_seq(seq *sq);
     void reset_seq();
     void set_frame(uint32_t frm);
+    void set_elaps_frames(uint32_t frm);
     bool next_frame(bool ignore_loop = false);
     bool next_subseq();
     bool set_subseq(uint32_t idx);

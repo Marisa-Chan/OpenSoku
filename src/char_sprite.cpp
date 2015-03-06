@@ -41,6 +41,11 @@ uint32_t char_sprite::get_elaps_frames()
     return elaps_frames;
 }
 
+void char_sprite::set_elaps_frames(uint32_t frm)
+{
+    elaps_frames = frm;
+}
+
 char_frame *char_sprite::get_pframe()
 {
     return pframe;
