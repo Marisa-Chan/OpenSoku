@@ -10601,7 +10601,376 @@ void alice_bullets::set_seq_params()
             field_194 = 1;
         }
         break;
+    case 859:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 6 )
+            scaleY = scaleX = scene_rand_rngf(10) * 0.1 + 0.5;
+        break;
 
+    case 860:
+        field_194 = 1;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            h_inerc = -2.0;
+            v_inerc = 0.0;
+        }
+        if ( get_subseq() == 4 )
+        {
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = 5.0;
+
+            float xx = x - (140 * dir);
+
+            addbullet(chrt, NULL, 860, xx, y, dir, 1, tmp, 3);
+        }
+        break;
+
+    case 861:
+        field_194 = 1;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 || get_subseq() == 9 )
+        {
+            has_shadow = 1;
+            h_inerc = addition[0];
+            v_inerc = addition[1];
+            field_378 = scene_rand_rngf(120) * 0.1 + 6.0;
+            field_36E = scene_rand_rngf(10);
+            if ( get_subseq() == 9 )
+                field_380 = scene_rand_rngf(20) - 10.0;
+            has_shadow = 1;
+            field_138 = field_380 - 6.0;
+        }
+        if ( get_subseq() == 2 )
+        {
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = 3.0;
+
+            addbullet(chrt, NULL, 861, x, y, dir, 1, tmp, 3);
+
+            tmp[2] = 4.0;
+
+            addbullet(chrt, NULL, 861, x, y, dir, 1, tmp, 3);
+        }
+        if ( get_subseq() == 4 )
+            angZ = scene_rand_rngf(360);
+        break;
+
+    case 900:
+        field_18C = 1;
+        field_194 = 1;
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+            set_vec_speed(addition[0], addition[1]);
+        if ( get_subseq() == 3 )
+        {
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = 4.0;
+
+            addbullet(chrt, NULL, 900, x, y, dir, 1, tmp, 3);
+
+            tmp[2] = 5.0;
+
+            addbullet(chrt, NULL, 900, x, y, dir, 1, tmp, 3);
+        }
+        if ( get_subseq() == 5 )
+            angZ = scene_rand_rngf(360);
+        break;
+    case 901:
+        field_194 = 1;
+        angZ = addition[0];
+        set_subseq(addition[2]);
+        if ( get_subseq() <= 6 )
+        {
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = get_subseq() + 7.0;
+
+            addbullet(chrt, NULL, 901, x, y, dir, 1, tmp, 3);
+
+            scaleY = 0.5;
+            scaleX = 3.0;
+        }
+        break;
+    case 902:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0)
+        {
+            set_vec_speed(addition[0], addition[1]);
+            if ( chrt->skills_1[1] >= 2 )
+                field_194 = 1;
+        }
+        if ( get_subseq() == 2 )
+        {
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = 3.0;
+
+            addbullet(chrt, NULL, 902, x, y, dir, 1, tmp, 3);
+
+            tmp[2] = 4.0;
+
+            addbullet(chrt, NULL, 902, x, y, dir, 1, tmp, 3);
+
+            field_194 = 1;
+        }
+        if ( get_subseq() == 4 )
+            angZ = scene_rand_rngf(360);
+        break;
+
+    case 910:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            switch ( settings_get()->get_difficulty() )
+            {
+            case GAME_DIFF_LUNA:
+                field_37C = 15.0;
+                field_378 = 22.5;
+                break;
+            case GAME_DIFF_HARD:
+                field_37C = 15.0;
+                field_378 = 20.0;
+                break;
+            case GAME_DIFF_NORMAL:
+                field_37C = 15.0;
+                field_378 = 17.5;
+                break;
+            case GAME_DIFF_EASY:
+                field_37C = 15.0;
+                field_378 = 15.0;
+                break;
+            default:
+                break;
+            }
+        }
+        if ( get_subseq() == 7 )
+            angZ = addition[0];
+        if ( get_subseq() == 9 )
+        {
+            switch ( settings_get()->get_difficulty() )
+            {
+            case GAME_DIFF_LUNA:
+                field_378 = 18.0;
+                break;
+            case GAME_DIFF_HARD:
+                field_378 = 15.0;
+                break;
+            case GAME_DIFF_NORMAL:
+                field_378 = 12.0;
+                break;
+            case GAME_DIFF_EASY:
+                field_378 = 8.0;
+                break;
+            default:
+                break;
+            }
+
+            for (int i = 0; i < field_378; i++)
+            {
+                float tmp[3];
+                tmp[0] = (float)i * 360.0 / field_378;
+                tmp[1] = 0.0;
+                tmp[2] = 0.0;
+
+                addbullet(chrt, this, 910, x, y, dir, -1, tmp, 3);
+
+                ((char_alice *)chrt)->field_89A++;
+            }
+        }
+        break;
+
+    case 920:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            field_37C = x;
+            field_380 = y;
+        }
+        if ( get_subseq() == 4 )
+        {
+            field_194 = 1;
+            switch ( settings_get()->get_difficulty() )
+            {
+            case GAME_DIFF_LUNA:
+                field_36E = 60;
+                break;
+            case GAME_DIFF_HARD:
+                field_36E = 45;
+                break;
+            case GAME_DIFF_NORMAL:
+                field_36E = 30;
+                break;
+            case GAME_DIFF_EASY:
+                field_36E = 15;
+                break;
+            default:
+                break;
+            }
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.2;
+            tmp[2] = 5.0;
+
+            addbullet(chrt, NULL, 920, x, y, dir, -1, tmp, 3);
+        }
+        if ( get_subseq() == 6 )
+            field_378 = scene_rand_rngf(100) * 0.1 - 5.0;
+        break;
+    case 930:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+            h_inerc = 14.5;
+        if ( get_subseq() == 16 )
+            set_vec_speed(addition[0], addition[1]);
+        break;
+    case 931:
+        field_194 = 1;
+        set_subseq(addition[2]);
+        if ( get_subseq() <= 3 )
+        {
+            float tmp[3];
+            tmp[0] = 0.0;
+            tmp[1] = 0.0;
+            tmp[2] = 5.0;
+
+            addbullet(chrt, this, 931, x, y, dir, 1, tmp, 3);
+        }
+        if ( get_subseq() == 5 )
+        {
+            scaleX = 2.0;
+            scaleY = 2.0;
+        }
+        if ( get_subseq() <= 3 )
+        {
+            chrt->play_sfx( 23);
+            scaleX = 50.0;
+            field_194 = 0;
+            scaleY = 0.1;
+        }
+        if ( get_subseq() == 7 )
+            angY = 70.0;
+        break;
+    case 932:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+            field_194 = 4;
+        if ( get_subseq() == 5 )
+        {
+            scaleX = 2.5;
+            scaleY = 2.5;
+            angX = scene_rand_rngf(5) + 70.0;
+            angZ = scene_rand_rngf(360);
+            c_A = 0;
+        }
+        break;
+    case 933:
+        set_subseq(addition[2]);
+        if ( get_subseq() <= 6 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
+            if ( bul_parent )
+            {
+                field_37C = bul_parent->x;
+                field_380 = bul_parent->y;
+            }
+        }
+        break;
+    case 940:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 5 )
+        {
+            field_138 = -6.0;
+            has_shadow = 1;
+            scaleX = 0.1;
+            shader_type = 3;
+            scaleY = 0.1;
+            shader_cR = -2;
+            shader_cG = -2;
+            shader_cB = -2;
+            field_374 = 40;
+        }
+        break;
+    case 941:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            field_378 = 5.0 - scene_rand_rngf(11);
+            scaleY = scaleX = scene_rand_rngf(75) * 0.01 + 0.75;
+            angZ = scene_rand_rng(360);
+        }
+        if ( get_subseq() == 1 )
+            angZ = addition[0];
+        if ( get_subseq() >= 2 && get_subseq() <= 4 )
+        {
+            field_194 = 1;
+            angZ = addition[0];
+        }
+        if ( get_subseq() == 5 )
+        {
+            field_194 = 1;
+            angZ = addition[0];
+            set_vec_speed(addition[0], addition[1]);
+        }
+        break;
+    case 942:
+        set_subseq(addition[2]);
+        if ( get_subseq() == 0 )
+        {
+            chrt->play_sfx( 25);
+
+            float tmp[3];
+            tmp[0] = scene_rand_rngf(75) * 0.01 + 0.75;
+            tmp[1] = 0.15;
+            tmp[2] = 1.0;
+
+            scaleY = scaleX = tmp[0];
+
+            addbullet(chrt, NULL, 942, x, y, dir, 1, tmp, 3);
+
+            for (int i = 0; i < 6; i++)
+            {
+                tmp[0] = scene_rand_rngf(360);
+                tmp[1] = scene_rand_rngf(9) + 10.0;
+                tmp[2] = 2.0;
+                addbullet(chrt, NULL, 942, x, y, dir, 1, tmp, 3);
+            }
+        }
+        if ( get_subseq() == 1 )
+        {
+            scaleY = scaleX = addition[0];
+        }
+        if ( get_subseq() == 2 )
+        {
+            field_378 = 5.0 - scene_rand_rngf(11);
+            scaleY = scaleX = scene_rand_rngf(75) * 0.01 + 0.75;
+            angZ = scene_rand_rngf(360);
+        }
+        break;
+    case 970:
+        set_subseq(addition[2]);
+        if ( get_subseq() <= 6 )
+        {
+            angZ = scene_rand_rngf(360);
+            field_378 = scene_rand_rngf(12) - 6.0;
+            scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
+            field_37C = chrt->x + (chrt->get_pframe()->extra1[4] * dir) ;
+            field_380 = chrt->y - chrt->get_pframe()->extra1[5];
+        }
+        break;
+    case 980:
+        //sub_48C360(); //HACK
+        break;
     case 998:
         break;
     case 999:
