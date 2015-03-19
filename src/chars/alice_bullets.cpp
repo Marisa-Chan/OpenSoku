@@ -4296,7 +4296,7 @@ void alice_bullets::func10()
         }
         if (get_subseq() == 0 && field_380 == 1.0)
         {
-            chrt->play_sfx( 39);
+            chrt->play_sfx(39);
             next_subseq();
             order = 1;
             field_194 = 1;
@@ -4309,8 +4309,8 @@ void alice_bullets::func10()
                 float tmp[4];
                 tmp[0] = 0.0;
                 tmp[1] = 0.0;
-                tmp[2] = 0.0;
-                tmp[3] = 5.0;
+                tmp[2] = 5.0;
+                tmp[3] = 0.0;
                 addbullet(chrt, this, 851, x, y, dir, 1, tmp, 4);
             }
             sub_48C5F0(0);
@@ -7246,7 +7246,6 @@ void alice_bullets::func10()
                 active = false;
                 return;
             }
-            v_inerc -= 0.5;
             x += dir * h_inerc;
             y += v_inerc;
             break;
@@ -7496,7 +7495,6 @@ void alice_bullets::func10()
                 active = false;
                 return;
             }
-            v_inerc -= 0.5;
             x += dir * h_inerc;
             y += v_inerc;
             break;
