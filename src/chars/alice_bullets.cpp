@@ -2425,7 +2425,7 @@ void alice_bullets::func10()
             }
             c_A -= 20;
         }
-        if ( get_subseq() != 4 )
+        if ( get_subseq() == 4 )
         {
             scaleX += 0.05;
             scaleY *= 0.8;
