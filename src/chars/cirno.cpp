@@ -7137,7 +7137,7 @@ void char_cirno::func20()
 
                             float dst = fabs(x - enemy->x);
 
-                            if ( dst > 90.0 && cprior <= get_prior(301)) //Far A
+                            if ( dst > 60.0 && cprior <= get_prior(301)) //Far A
                             {
                                 angZ = 0;
                                 set_seq(301);
