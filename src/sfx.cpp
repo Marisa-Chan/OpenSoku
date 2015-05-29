@@ -7,6 +7,7 @@
 
 sf::Sound   chnls[SFX_CHANNELS];
 bool        fchnls[SFX_CHANNELS];
+sfxc *      feedback[SFX_CHANNELS];
 
 
 
@@ -16,14 +17,16 @@ void sfx_init()
         fchnls[i] = false;
 }
 
-void sfx_check()
+void sfx_check(sfxc *snd = NULL)
 {
     for (uint32_t i=0; i<SFX_CHANNELS; i++)
         if (fchnls[i])
-            if (chnls[i].getStatus() == sf::Sound::Stopped || chnls[i].getStatus() == sf::Sound::Paused)
+            if (chnls[i].getStatus() == sf::Sound::Stopped || chnls[i].getStatus() == sf::Sound::Paused ||
+                (snd && feedback[i] == snd) )
             {
                 chnls[i].stop();
                 fchnls[i] = false;
+                feedback[i] = NULL;
             }
 }
 
@@ -42,7 +45,7 @@ int32_t sfx_get_freechn()
 
 void sfx_play(sfxc *snd)
 {
-    sfx_check();
+    sfx_check(snd);
 
     int32_t t = sfx_get_freechn();
     if (t >= 0)
@@ -50,6 +53,7 @@ void sfx_play(sfxc *snd)
         chnls[t].setBuffer(*snd);
         chnls[t].setVolume(settings_get()->get_sfx_volume());
         chnls[t].play();
+        feedback[t] = snd;
     }
 
 }
