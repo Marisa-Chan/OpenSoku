@@ -36,9 +36,8 @@ int32_t get_ieid_by_weather(WEATHER_ID id)
     return weather_to_ieid[id % WEATHER_ID_COUNT];
 }
 
-c_infoef_fx::c_infoef_fx(int32_t idx, gfx_seq *sq, float _x, float _y, int8_t _dir, int8_t _order)
+c_infoef_fx::c_infoef_fx(gfx_IdSeq sq, float _x, float _y, int8_t _dir, int8_t _order)
 {
-    index = idx;
     sprite.set_seq(sq);
     x = _x;
     y = _y;
@@ -3458,10 +3457,10 @@ c_infoef_sp::c_infoef_sp()
 
 c_infoef_fx *c_infoef_sp::addeffect(int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
-    gfx_seq *sq = get_seq(idx);
-    if (sq)
+    gfx_IdSeq sq = get_seq(idx);
+    if (sq.seq)
     {
-        c_infoef_fx *ff = new c_infoef_fx(idx, sq, x, y, dir, order);
+        c_infoef_fx *ff = new c_infoef_fx(sq, x, y, dir, order);
         fx.push_back(ff);
         return ff;
     }

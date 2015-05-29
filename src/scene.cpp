@@ -468,7 +468,7 @@ void c_scene::scene_subfunc2()
 
             int32_t plindex = bul->chrt_changeable->player_index;
 
-            char_frame *frm = bul->get_pframe();
+            CharFrameData *frm = bul->get_pframe();
 
             int32_t atk_sz = frm->box_atk.size();
             int32_t hit_sz = frm->box_hit.size();
@@ -565,7 +565,7 @@ void c_scene::sub_47BE70(c_meta *plr, char_c *enm)
     {
         if ( !enm->sub_4699E0() && enm->damage_limit < 100 )
         {
-            char_frame *frm = plr->get_pframe();
+            CharFrameData *frm = plr->get_pframe();
             if (plr->chrt != enm || (frm->aflags & AF_HITSALL) == 0 || plr->enemy->field_575 == 0)
             {
                 if (!plr->childs.empty())
@@ -632,13 +632,13 @@ char c_scene::sub_47AC70(c_meta *plr, c_meta *enm)
 {
     if ( sub_479BC0(plr, enm) )
     {
-        char_frame *frm = plr->get_pframe();
+        CharFrameData *frm = plr->get_pframe();
         plr->field_194 = plr->field_1BC - 1;
         plr->field_190 = 9;
         plr->hit_stop = frm->flag196_char;
         enm->health -= frm->damage;
         scene_play_sfx(frm->hit_sfx);
-        scene_add_effect_ibox(frm->unk19, plr->dir);
+        scene_add_effect_ibox(frm->props_unk16, plr->dir);
         reset_ibox();
         return true;
     }
@@ -689,7 +689,7 @@ bool c_scene::sub_47AD00(c_meta *plr, c_meta *enm)
 
 bool c_scene::sub_47C080(c_meta *plr, c_meta *enm)
 {
-    char_frame *frm2 = enm->get_pframe();
+    CharFrameData *frm2 = enm->get_pframe();
 
     if ( !(frm2->aflags & AF_UNK20000) && !enm->field_1A1 && (frm2->aflags & AF_UNK400000))
     {
@@ -724,14 +724,14 @@ void c_scene::sub_47C180()
         for(metalst_iter i=lst->begin(); i != lst->end(); i++)
         {
             c_meta *mt =  *i;
-            char_frame *frm = mt->get_pframe();
+            CharFrameData *frm = mt->get_pframe();
 
             if ((frm->aflags & AF_HITSALL) && !(frm->fflags & (FF_CH_ON_HIT | FF_INV_AIRBORNE)) && mt->field_1BC > 0)
             {
                 for(metalst_iter j=lst->begin(); j != lst->end(); j++)
                 {
                     c_meta *mt2 =  *j;
-                    char_frame *frm2 = mt2->get_pframe();
+                    CharFrameData *frm2 = mt2->get_pframe();
 
                     if (mt2 != mt)
                         if (!(frm2->fflags & (FF_CH_ON_HIT | FF_INV_AIRBORNE)) && mt2->field_1BC > 0)
@@ -748,14 +748,14 @@ void c_scene::sub_47C180()
     for(metalst_iter i=lst1->begin(); i != lst1->end(); i++)
     {
         c_meta *mt =  *i;
-        char_frame *frm = mt->get_pframe();
+        CharFrameData *frm = mt->get_pframe();
 
         if (!(frm->fflags & (FF_CH_ON_HIT | FF_INV_AIRBORNE)) && mt->field_1BC > 0)
         {
             for(metalst_iter j=lst2->begin(); j != lst2->end(); j++)
             {
                 c_meta *mt2 =  *j;
-                char_frame *frm2 = mt2->get_pframe();
+                CharFrameData *frm2 = mt2->get_pframe();
 
                 if (!(frm2->fflags & (FF_CH_ON_HIT | FF_INV_AIRBORNE)) && mt2->field_1BC > 0)
                     sub_47AD60(mt,mt2);
@@ -1279,8 +1279,8 @@ bool c_scene::sub_479BC0(c_meta *p1, c_meta *p2)
 
 bool c_scene::sub_47BD80(c_meta *plr, char_c *enm)
 {
-    char_frame *frm = plr->get_pframe();
-    char_frame *frm2 = enm->get_pframe();
+    CharFrameData *frm = plr->get_pframe();
+    CharFrameData *frm2 = enm->get_pframe();
 
     if ( frm->aflags & AF_UNK400000 )
     {
@@ -1335,8 +1335,8 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
 {
     int16_t dmg = 0;
 
-    char_frame *frm  = plr->get_pframe();
-    char_frame *frm2 = enm->get_pframe();
+    CharFrameData *frm  = plr->get_pframe();
+    CharFrameData *frm2 = enm->get_pframe();
 
     if ( !enm->char_is_shock() )
     {
@@ -1346,15 +1346,15 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
     if ( enm->field_538 != 0.0 )
     {
         if (frm->aflags & AF_UNK20)
-            enm->field_4BC += frm->unk9 * enm->field_538;
+            enm->field_4BC += frm->props_newunk5 * enm->field_538;
         else
         {
             if ((frm2->fflags & FF_SUPERARMOR) == 0)
             {
                 if (frm2->fflags & FF_GUARD)
-                    enm->field_4BC += frm->unk9 * enm->field_538 * 0.5;
+                    enm->field_4BC += frm->props_newunk5 * enm->field_538 * 0.5;
                 else
-                    enm->field_4BC += frm->unk9 * enm->field_538;
+                    enm->field_4BC += frm->props_newunk5 * enm->field_538;
             }
         }
     }
@@ -1527,7 +1527,7 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
 
     plr->chrt_changeable->combo_rate *= (frm->proration + plr->chrt_changeable->field_540 * (1000.0 - frm->proration)) / 1000.0;
 
-    plr->chrt_changeable->correction |= frm->unk20;
+    plr->chrt_changeable->correction |= frm->props_unk18;
 
     plr->chrt_changeable->combo_damage += dmg;
 
@@ -1565,14 +1565,14 @@ void c_scene::sub_47A060(c_meta *plr, char_c *enm)
     if ( fallseq >= 0 )
         enm->set_seq(fallseq);
 
-    scene_add_effect_ibox(frm->unk19, plr->dir);
+    scene_add_effect_ibox(frm->props_unk16, plr->dir);
     reset_ibox();
     scene_play_sfx(frm->hit_sfx);
 }
 
 bool c_scene::sub_47B5A0(c_meta *plr, char_c *enm)
 {
-    char_frame *frm = plr->get_pframe();
+    CharFrameData *frm = plr->get_pframe();
     if ( !enm->char_is_shock() )
     {
         if ( !enm->field_4C0 )
@@ -1671,7 +1671,7 @@ bool c_scene::sub_47B5A0(c_meta *plr, char_c *enm)
 
 void c_scene::sub_47A980(c_meta *plr, char_c *enm)
 {
-    char_frame *frm = plr->get_pframe();
+    CharFrameData *frm = plr->get_pframe();
 
     if ( !plr->chrt->field_56D )
         enm->crash_spell_borders(1);
@@ -1703,7 +1703,7 @@ void c_scene::sub_47A980(c_meta *plr, char_c *enm)
 
 bool c_scene::sub_47B8F0(c_meta *plr, char_c *enm)
 {
-    char_frame *frm = plr->get_pframe();
+    CharFrameData *frm = plr->get_pframe();
     char_c *plr_c = plr->chrt_changeable;
 
     if ( !enm->char_is_shock() )
@@ -1776,7 +1776,7 @@ bool c_scene::sub_47B8F0(c_meta *plr, char_c *enm)
 
 bool c_scene::sub_47BBA0(c_meta *plr, char_c *enm)
 {
-    char_frame *frm = plr->get_pframe();
+    CharFrameData *frm = plr->get_pframe();
 
     switch ( enm->sub_469750(frm->aflags) )
     {
@@ -1848,8 +1848,8 @@ bool c_scene::sub_47BBA0(c_meta *plr, char_c *enm)
 
 bool c_scene::sub_47AAA0(c_meta *plr, char_c *enm)
 {
-    char_frame *frm = plr->get_pframe();
-    char_frame *frm2 = enm->get_pframe();
+    CharFrameData *frm = plr->get_pframe();
+    CharFrameData *frm2 = enm->get_pframe();
 
     if ( ((frm2->fflags & FF_GRAZE) == 0 && enm->field_522 == 0 ) || (frm->aflags & AF_UNK800000) != 0 )
         return false;
@@ -1939,8 +1939,8 @@ void c_scene::sub_47A7E0(c_meta *plr, char_c *enemy, int32_t a4, int32_t a5, int
 
 bool c_scene::sub_47ABE0(c_meta *plr, c_meta *enm)
 {
-    char_frame *frm = plr->get_pframe();
-    char_frame *frm2 = enm->get_pframe();
+    CharFrameData *frm = plr->get_pframe();
+    CharFrameData *frm2 = enm->get_pframe();
 
     if (((frm->aflags & AF_UNK2000) && (frm2->fflags & FF_INV_AIRBORNE)) ||
             ((frm->aflags & AF_UNK4000) && (frm2->fflags & FF_INV_MID_BLOW)) ||

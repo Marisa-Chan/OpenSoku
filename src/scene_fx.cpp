@@ -17,10 +17,10 @@ c_scene_sp::c_scene_sp()
 
 void c_scene_sp::addeffect(c_meta *chr, int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
-    gfx_seq *sq = get_seq(idx);
-    if (sq)
+    gfx_IdSeq sq = get_seq(idx);
+    if (sq.seq)
     {
-        c_scene_fx *ff = new c_scene_fx(idx, sq, chr, x,y,dir, order);
+        c_scene_fx *ff = new c_scene_fx(sq, chr, x,y,dir, order);
         fx.push_back(ff);
     }
 }
@@ -33,9 +33,8 @@ void c_scene_sp::addeffect(c_meta *chr, int32_t idx, float x, float y, int8_t di
 
 
 
-c_scene_fx::c_scene_fx(int32_t idx, gfx_seq *sq, c_meta *chr, float _x, float _y, int8_t _dir, int8_t _order)
+c_scene_fx::c_scene_fx(gfx_IdSeq sq, c_meta *chr, float _x, float _y, int8_t _dir, int8_t _order)
 {
-    index = idx;
     sprite.set_seq(sq);
     x = _x;
     y = _y;

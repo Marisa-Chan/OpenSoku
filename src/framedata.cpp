@@ -3,36 +3,61 @@
 #include "file_read.h"
 #include "framedata.h"
 
+CharFrameData::CharFrameData():
+    FrameData()
+{
+    box_coll = NULL;
+}
+
+CharFrameData::~CharFrameData()
+{
+    if (box_coll)
+        delete box_coll;
+
+    for(uint32_t i = 0; i < box_unk_atk.size(); i++)
+        if (box_unk_atk[i])
+            delete box_unk_atk[i];
+}
+
+Char_IdSeq::Char_IdSeq()
+{
+    id = -1;
+    seq = NULL;
+}
+
+Char_IdSeq::Char_IdSeq(int32_t _id, Char_Seq *point)
+{
+    id = _id;
+    seq = point;
+}
+
+Char_SeqData::Char_SeqData()
+{
+
+}
+
+Char_SeqData::Char_SeqData(Char_SeqData *parent)
+{
+    seqs = parent->seqs;
+}
+
+Char_SeqData::~Char_SeqData()
+{
+    for(uint32_t i = 0; i < _imgs.size(); i++)
+        gr_delete_tex(_imgs[i]);
+
+    for(uint32_t i = 0; i < _sequences.size(); i++)
+        delete _sequences[i];
+}
+
+
 static const uint8_t color_v_to_viii [32] =
 {
     0, 8, 16, 24, 32, 41, 49, 57, 65, 74, 82, 90, 98, 106, 115, 123,
     131, 139, 148, 156, 164, 172, 180, 189, 197, 205, 213, 222, 230, 238, 246, 255
 };
 
-static void delete_seq(seq *sq)
-{
-    if (sq->refcount > 0)
-    {
-        sq->refcount--;
-        return;
-    }
-
-    for(uint32_t i = 0; i < sq->subseqs.size(); i++)
-    {
-        for (uint32_t j = 0; j < sq->subseqs[i].frames.size(); j++)
-        {
-            for (uint32_t k = 0; k < sq->subseqs[i].frames[j]->box_unk_atk.size(); k++)
-                if (sq->subseqs[i].frames[j]->box_unk_atk[k])
-                    delete sq->subseqs[i].frames[j]->box_unk_atk[k];
-
-            delete sq->subseqs[i].frames[j];
-        }
-    }
-
-    delete sq;
-}
-
-bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
+bool Char_SeqData::load_dat(const char *name, uint8_t pal, char pal_rev)
 {
     char buf[CHRBUF];
 
@@ -53,7 +78,7 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
     if (!f)
         return false;
 
-    uint16_t pat_count = 0;
+    uint16_t tex_count = 0;
 
     uint8_t pat_version = 0;
 
@@ -65,11 +90,11 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
         return false;
     }*/
 
-    f->read(2, &pat_count);
+    f->read(2, &tex_count);
 
-    imgs.resize(pat_count);
+    _imgs.resize(tex_count);
 
-    for (uint32_t i = 0; i < pat_count; i++)
+    for (uint32_t i = 0; i < tex_count; i++)
     {
         f->read(0x80, buf);
 
@@ -84,14 +109,22 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 
         gr_tex *tex = gr_load_cv2(buf2, plt);
 
-        imgs[i] = tex;
+        _imgs[i] = tex;
     }
 
     uint32_t num_seq = 0;
 
     f->read(4, &num_seq);
 
-    int32_t lastid = -1;
+    struct mapping
+    {
+        uint32_t id;
+        uint32_t maps;
+    };
+
+    list<mapping> mapList;
+
+    Char_Seq *seqv = NULL;
 
     for (uint32_t i=0; i < num_seq && !f->eof(); i++)
     {
@@ -101,46 +134,42 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 
         if (id == -1) // mapping
         {
-            uint32_t seq_new  = 0;
-            uint32_t seq_maps = 0;
-            f->read(4, &seq_new);
-            f->read(4, &seq_maps);
+            mapping mp;
 
-            mapseq::iterator tmp = seqs.find(seq_maps);
+            f->read(4, &mp.id);
+            f->read(4, &mp.maps);
 
-            if (tmp != seqs.end())
-            {
-                tmp->second->refcount++;
-                seqs[seq_new] = tmp->second;
-            }
+            mapList.push_back(mp);
         }
         else
         {
-            seq *sq         = NULL;
+            Char_SubSequence *sq         = NULL;
 
             if (id != -2) // new sequences
             {
-                mapseq::iterator tmp = seqs.find(id);
+                seqv = new Char_Seq;
 
-                if (tmp != seqs.end())
-                {
-                    delete_seq(tmp->second);
-                }
+                Char_IdSeq mSeq;
 
+                mSeq.id = id;
+                mSeq.seq = seqv;
 
-                sq = new seq;
+                seqs[id] = mSeq;
 
-                sq->refcount = 0;
-
-                seqs[id] = sq;
-
-                sq->id = id;
-
-                lastid = id;
+                Char_SubSequence tmp;
+                tmp._id = 0;
+                tmp._parent = seqv;
+                seqv->push_back(tmp);
+                sq = &seqv->back();
             }
-            else if (lastid >= 0) //it's new part of current
+            else if (seqv) //it's new part of current
             {
-                sq = seqs[lastid];
+                Char_SubSequence tmp;
+                tmp._id = seqv->size();
+                tmp._parent = seqv;
+                seqv->push_back(tmp);
+
+                sq = &seqv->back();
             }
             else
             {
@@ -153,28 +182,19 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 return false;
             }
 
-            subseq ssq;
-
-            f->read(2, &ssq.prior);
-            f->read(2, &ssq.prior_for_cancel);
-            f->read(1, &ssq.looped);
-
-            if (id != -2)
-            {
-                sq->prior = ssq.prior;
-                sq->prior_for_cancel = ssq.prior_for_cancel;
-            }
+            f->read(2, &sq->prior);
+            f->read(2, &sq->prior_for_cancel);
+            f->read(1, &sq->looped);
 
             uint32_t nframes = 0;
 
             f->read(4, &nframes);
 
-            ssq.frames.resize(nframes);
+            sq->frames.resize(nframes);
 
             for (uint32_t j = 0; j < nframes; j++)
             {
-
-                char_frame *frm = new char_frame;
+                CharFrameData *frm = &sq->frames[j];
 
                 frm->angle_z = 0;
                 frm->angle_x = 0;
@@ -190,8 +210,8 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 int32_t frame = 0;
                 f->read(4, &frame);
 
-                if (frame >= 0 && (uint32_t)frame < imgs.size())
-                    frm->img = imgs[frame];
+                if (frame >= 0 && (uint32_t)frame < _imgs.size())
+                    frm->img = _imgs[frame];
                 else
                     frm->img = NULL;
 
@@ -202,7 +222,7 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 f->read(2, &frm->tx_height);
                 f->read(2, &frm->x_offset);
                 f->read(2, &frm->y_offset);
-                f->read(2, &frm->durate);
+                f->read(2, &frm->duration);
 
                 f->read(1, &frm->type);
 
@@ -255,7 +275,7 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 f->read(2, &frm->health_smval);
                 f->read(2, &frm->sp_smval);
                 f->read(2, &frm->untech);
-                f->read(2, &frm->unk9);
+                f->read(2, &frm->props_newunk5);
                 f->read(2, &frm->limit);
                 f->read(2, &frm->flag196_char);
                 f->read(2, &frm->flag196_enemy);
@@ -275,9 +295,9 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                 frm->velocity_y = tvel / 100.0;
 
                 f->read(2, &frm->hit_sfx); //global sound, played then hit
-                f->read(2, &frm->unk19);
+                f->read(2, &frm->props_unk16);
                 f->read(2, &frm->attack_type);
-                f->read(1, &frm->unk20);
+                f->read(1, &frm->props_unk18);
                 f->read(4, &frm->fflags);
                 f->read(4, &frm->aflags);
 
@@ -349,16 +369,31 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
                     for(int8_t k=0; k<6; k++)
                         f->read(4, &frm->extra1[k]);
                     for(int8_t k=0; k<3; k++)
-                        f->read(2, &frm->unk22[k]);
+                        f->read(2, &frm->extra2[k]);
                 }
-
-                ssq.frames[j] = frm;
             }
-
-            sq->subseqs.push_back(ssq);
         }
     }
 
+    for (list<mapping>::iterator it = mapList.begin(); it != mapList.end(); it++)
+    {
+
+        Char_MapSeq::iterator fnd = seqs.find(it->maps);
+        if (fnd != seqs.end())
+        {
+            Char_IdSeq mSeq;
+
+            mSeq.id = it->id;
+            mSeq.seq = fnd->second.seq;
+            seqs[it->id] = mSeq;
+        }
+        else
+        {
+            printf("Error: cannot find mapping %d -> %d", it->id, it->maps);
+        }
+    }
+
+    mapList.clear();
 
     delete f;
     return true;
@@ -366,7 +401,7 @@ bool char_graph::load_dat(const char *name, uint8_t pal, char pal_rev)
 
 
 
-bool char_graph::load_pal_pal(const char *file,uint32_t *pal)
+bool Char_SeqData::load_pal_pal(const char *file,uint32_t *pal)
 {
     filehandle *f = arc_get_file(file);
 
@@ -408,18 +443,18 @@ bool char_graph::load_pal_pal(const char *file,uint32_t *pal)
 //    index = -1;
 //}
 
-char_graph::~char_graph()
-{
-    for(uint32_t i=0; i<imgs.size(); i++)
-        gr_delete_tex(imgs[i]);
-
-    imgs.clear();
-
-    for(mapseq::iterator tmp = seqs.begin(); tmp != seqs.end(); tmp++)
-        delete_seq(tmp->second);
-
-    seqs.clear();
-}
+//char_graph::~char_graph()
+//{
+//    for(uint32_t i=0; i<imgs.size(); i++)
+//        gr_delete_tex(imgs[i]);
+//
+//    imgs.clear();
+//
+//    for(mapseq::iterator tmp = seqs.begin(); tmp != seqs.end(); tmp++)
+//        delete_seq(tmp->second);
+//
+//    seqs.clear();
+//}
 
 //void char_graph::set_seq(uint32_t idx)
 //{
@@ -432,26 +467,35 @@ char_graph::~char_graph()
 //
 //}
 
-seq *char_graph::get_seq(uint32_t idx)
+Char_IdSeq Char_SeqData::get_seq(uint32_t idx)
 {
-    mapseq::iterator tmp = seqs.find(idx);
+    Char_MapSeq::iterator tmp = seqs.find(idx);
     if (tmp != seqs.end())
         return(tmp->second);
 
-    return NULL;
+    return Char_IdSeq(-1, NULL);
 }
 
-uint16_t char_graph::get_prior(uint32_t idx)
+bool Char_SeqData::has_seq(uint32_t idx)
 {
-    seq *tmp = get_seq(idx);
-    if (tmp)
-        return tmp->prior;
+    Char_MapSeq::iterator tmp = seqs.find(idx);
+    if (tmp != seqs.end())
+        return true;
+
+    return false;
+}
+
+uint16_t Char_SeqData::get_prior(uint32_t idx)
+{
+    Char_IdSeq tmp = get_seq(idx);
+    if (tmp.seq)
+        return (*tmp.seq)[0].prior;
     return 0xFFFF;
 }
-uint16_t char_graph::get_cprior(uint32_t idx)
+uint16_t Char_SeqData::get_cprior(uint32_t idx)
 {
-    seq *tmp = get_seq(idx);
-    if (tmp)
-        return tmp->prior_for_cancel;
+    Char_IdSeq tmp = get_seq(idx);
+    if (tmp.seq)
+        return (*tmp.seq)[0].prior_for_cancel;
     return 0xFFFF;
 }

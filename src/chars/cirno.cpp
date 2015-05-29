@@ -1197,7 +1197,7 @@ void char_cirno::func10()
                 tmp[1] = 0.0;
                 tmp[2] = 4.0;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 848, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
             }
             if ( get_frame() == 6 )
@@ -1234,7 +1234,7 @@ void char_cirno::func10()
             tmp[1] = 0.0;
             tmp[2] = 0.0;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             addbullet(this, NULL, 990, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
         }
         if (get_subseq() == 0 && get_frame_time() == 0)
@@ -1254,7 +1254,7 @@ void char_cirno::func10()
                 tmp[1] = 0.0;
                 tmp[2] = 0.0;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 990, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
             }
         }
@@ -1301,7 +1301,7 @@ void char_cirno::func10()
                     tmp[1] = 0.0;
                     tmp[2] = 7.0;
 
-                    char_frame *frm = get_pframe();
+                    CharFrameData *frm = get_pframe();
                     addbullet(this, NULL, 848, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
                 }
                 if ( get_frame() == 5 )
@@ -1368,7 +1368,7 @@ void char_cirno::func10()
                 tmp[1] = 0.0;
                 tmp[2] = 0.0;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 990, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
             }
             if (get_frame() == 13)
@@ -1527,7 +1527,7 @@ void char_cirno::func10()
                     tmp[1] = 0.0;
                     tmp[2] = 4.0;
 
-                    char_frame *frm = get_pframe();
+                    CharFrameData *frm = get_pframe();
                     addbullet(this, NULL, 848, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
                 }
                 if ( get_frame() == 6 )
@@ -1560,7 +1560,7 @@ void char_cirno::func10()
                 tmp[1] = 0.0;
                 tmp[2] = 0.0;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 990, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
             }
         }
@@ -2073,7 +2073,7 @@ void char_cirno::func10()
             tmp[1] = 0.0;
             tmp[2] = 0.0;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             addbullet(this, NULL, 808, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
         }
 
@@ -2223,7 +2223,7 @@ void char_cirno::func10()
             tmp[1] = 0.0;
             tmp[2] = 0.0;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             addbullet(this, NULL, 808, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
         }
         if ( get_subseq() == 1 && (!not_charge_attack || get_elaps_frames() >= 40) )
@@ -2260,7 +2260,7 @@ void char_cirno::func10()
                 tmp[1] = 0.0;
                 tmp[2] = 7.0;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 848, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
             }
             if ( get_frame() == 2 )
@@ -3259,7 +3259,7 @@ void char_cirno::func10()
             tmp[1] = 0.0;
             tmp[2] = 5.0;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             addbullet(this, NULL, 820, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
         }
         if ( get_subseq() == 1)
@@ -3516,13 +3516,13 @@ void char_cirno::func10()
         {
             if ( get_frame() <= 2 )
             {
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 if ( skills_1[3] >= 4 )
-                    if ( (int32_t)get_frame_time() >= frm->durate - 2 )
+                    if ( (int32_t)get_frame_time() >= frm->duration - 2 )
                         next_frame();
                 if ( skills_1[3] >= 2 )
-                    if ( (int32_t)get_frame_time() >= frm->durate - 1 )
+                    if ( (int32_t)get_frame_time() >= frm->duration - 1 )
                         next_frame();
             }
             if ( get_frame_time() == 0 && get_frame() == 3 )
@@ -3563,13 +3563,13 @@ void char_cirno::func10()
         {
             if ( get_frame() <= 2 )
             {
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 if ( skills_1[3] >= 4 )
-                    if ( (int32_t)get_frame_time() >= frm->durate - 2 )
+                    if ( (int32_t)get_frame_time() >= frm->duration - 2 )
                         next_frame();
                 if ( skills_1[3] >= 2 )
-                    if ( (int32_t)get_frame_time() >= frm->durate - 1 )
+                    if ( (int32_t)get_frame_time() >= frm->duration - 1 )
                         next_frame();
             }
             if ( get_frame_time() == 0 && get_frame() == 3 )
@@ -4537,7 +4537,7 @@ void char_cirno::func10()
                 tmp[1] = 0.0;
                 tmp[2] = 6.0;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 float xx = (frm->extra1[4] * dir) + x + 40.0 - scene_rand_rngf(80);
                 float yy = y - frm->extra1[5] + 40.0 - scene_rand_rngf(80);
@@ -4631,7 +4631,7 @@ void char_cirno::func10()
             tmp[1] = 0.0;
             tmp[2] = 6.0;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float xx = (frm->extra1[4] * dir) + x + 40.0 - scene_rand_rngf(80);
             float yy = y - frm->extra1[5] + 40.0 - scene_rand_rngf(80);
@@ -4702,7 +4702,7 @@ void char_cirno::func10()
             tmp[1] = 35.0;
             tmp[2] = 0.0;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             addbullet(this, NULL, 863, frm->extra1[4] * dir + x, y - frm->extra1[5], dir, 1, tmp, 3);
 
             tmp[0] = -30.0;
@@ -5009,7 +5009,7 @@ void char_cirno::func10()
             tmp[1] = 35.0;
             tmp[2] = 0.0;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             addbullet(this, NULL, 863, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
 
             tmp[0] = -30.0;
@@ -5060,7 +5060,7 @@ void char_cirno::func10()
                 tmp[0] = 0.0;
                 tmp[1] = 0.0;
                 tmp[2] = 0.0;
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 990, (frm->extra1[4] * dir) + x, y - frm->extra1[5], dir, 1, tmp, 3);
             }
         }

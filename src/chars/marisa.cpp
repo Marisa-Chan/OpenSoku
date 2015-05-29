@@ -3407,7 +3407,7 @@ void char_marisa::func10()
             add_card_energy(50);
             spell_energy_spend(200, 120);
             field_190 = 1;
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float t[3];
             t[0] = 3.0;
@@ -3431,7 +3431,7 @@ void char_marisa::func10()
             add_card_energy(50);
             spell_energy_spend(200, 120);
             field_190 = 1;
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float t[3];
             t[0] = 7.0;
@@ -3468,7 +3468,7 @@ void char_marisa::func10()
             v_inerc = 8.0;
             v_force = 0.5;
             field_190 = 1;
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float t[3];
             t[0] = 7.0;
@@ -3506,7 +3506,7 @@ void char_marisa::func10()
             v_inerc = 8.0;
             v_force = 0.5;
             field_190 = 1;
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float t[3];
             t[0] = 14.0;
@@ -4635,7 +4635,7 @@ void char_marisa::func10()
         {
             sub_4834E0( 40);
             scene_play_sfx(23);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             scene_add_effect(this, 115, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1);
             sub_469450( 0, 0, 60);
             sub_483570();
@@ -4653,7 +4653,7 @@ void char_marisa::func10()
                     t[1] = 0.0;
                     t[2] = i;
                     int8_t ord = 1 - 2 * (cos_deg(-t[0]) > 0 );
-                    char_frame *frm = get_pframe();
+                    CharFrameData *frm = get_pframe();
 
                     addbullet(this, NULL, 854, x + frm->extra1[4]*dir, y - frm->extra1[5], dir, ord, t, 3);
 
@@ -4956,7 +4956,7 @@ void char_marisa::func10()
         {
             sub_4834E0( 40);
             scene_play_sfx(23);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             scene_add_effect(this, 115, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1);
             sub_469450(0, 0, 60);
             sub_483570();
@@ -4965,7 +4965,7 @@ void char_marisa::func10()
         if ( get_subseq() == 2  && get_frame_time() == 0 && get_frame() == 4 )
         {
             play_sfx(20);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             float t[3];
             t[0] = -90.0;
             t[1] = 60.0;
@@ -4979,7 +4979,7 @@ void char_marisa::func10()
                 t[0] = scene_rand_rngf(10) + i * 20.0;
                 t[1] = scene_rand_rngf(75)* 0.1 + 15.0;
                 t[2] = 8.0;
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 int8_t ord = 1 - 2 *(sin_deg(-t[0]) > 0);
                 addbullet(this, NULL, 859, x + frm->extra1[4] * dir, y, dir, ord, t, 3);
             }
@@ -5111,7 +5111,7 @@ void char_marisa::func10()
                 t[1] = i * 1.5 + 3.0;
                 t[2] = 0.0;
                 t[3] = 0.0;
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 862, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 4);
             }
         }
@@ -5119,7 +5119,7 @@ void char_marisa::func10()
         {
             sub_4834E0( 40);
             scene_play_sfx(23);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             scene_add_effect(this, 115, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1);
             sub_469450( 0, 0, 60);
             sub_483570();
@@ -5189,7 +5189,7 @@ void char_marisa::func10()
             {
                 sub_4834E0( 40);
                 scene_play_sfx(23);
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 scene_add_effect(this, 115, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1);
                 sub_469450( 0, 0, 60);
                 sub_483570();
@@ -5201,7 +5201,7 @@ void char_marisa::func10()
                 t[0] = 3.0;
                 t[1] = 6.0;
                 t[2] = 0.0;
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 864, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 3);
                 play_sfx( 36);
             }
@@ -5508,7 +5508,7 @@ void char_marisa::func10()
             t[1] = scene_rand_rngf(400) + 200.0;
             t[2] = scene_rand_rngf(100) >= 50;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
             float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -5523,7 +5523,7 @@ void char_marisa::func10()
                 t[1] = scene_rand_rngf(400) + 200.0;
                 t[2] = scene_rand_rngf(8);
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
                 float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -5537,7 +5537,7 @@ void char_marisa::func10()
                 t[2] = scene_rand_rngf(4);
                 t[3] = scene_rand_rngf(field_7D4) * 0.1 + field_7E4;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
                 float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -5628,7 +5628,7 @@ void char_marisa::func10()
             t[1] = scene_rand_rngf(400) + 200.0;
             t[2] = scene_rand_rngf(100) >= 50;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
             float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -5644,7 +5644,7 @@ void char_marisa::func10()
                 t[1] = scene_rand_rngf(400) + 200.0;
                 t[2] = scene_rand_rngf(8);
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
                 float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -5704,7 +5704,7 @@ void char_marisa::func10()
                 t[1] = scene_rand_rngf(20) * 0.1 + 8.0;
                 t[2] = 0.0;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 float xx = (cos_deg(-t[0]) * 50.0 + frm->extra1[4]) * dir + x;
                 float yy = sin_deg(-t[0]) * 50.0 + y - frm->extra1[5];
@@ -5754,7 +5754,7 @@ void char_marisa::func10()
                 t[1] = scene_rand_rngf(400) + 200.0;
                 t[2] = scene_rand_rngf(8);
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
                 float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -5828,7 +5828,7 @@ void char_marisa::func10()
                     t[1] = scene_rand_rngf(20) * 0.1 + 8.0;
                     t[2] = 0.0;
 
-                    char_frame *frm = get_pframe();
+                    CharFrameData *frm = get_pframe();
 
                     float xx = (cos_deg(-t[0]) * 50.0 + frm->extra1[4]) * dir + x;
                     float yy = sin_deg(-t[0]) * 50.0 + y - frm->extra1[5];
@@ -5873,7 +5873,7 @@ void char_marisa::func10()
             t[1] = scene_rand_rngf(400) + 200.0;
             t[2] = scene_rand_rngf(8);
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
             float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -5888,7 +5888,7 @@ void char_marisa::func10()
                 t[1] = scene_rand_rngf(400) + 200.0;
                 t[2] = scene_rand_rngf(8);
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
                 float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -5954,7 +5954,7 @@ void char_marisa::func10()
             t[0] = 0.0;
             t[1] = 0.0;
             t[2] = 4.0;
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             addbullet(this, NULL, 920, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 3);
         }
@@ -5967,7 +5967,7 @@ void char_marisa::func10()
             t[2] = 10.0;
             t[3] = field_7DC;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             addbullet(this, NULL, 920, x + frm->extra1[4] * dir, y - frm->extra1[5], dir, 1, t, 4);
 
@@ -6016,7 +6016,7 @@ void char_marisa::func10()
             t[1] = scene_rand_rngf(400) + 200.0;
             t[2] = scene_rand_rngf(100) >= 50;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
             float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -6031,7 +6031,7 @@ void char_marisa::func10()
                 t[1] = scene_rand_rngf(400) + 200.0;
                 t[2] = scene_rand_rngf(8);
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
 
                 float xx = (cos_deg(-t[0]) * t[1] + frm->extra1[4]) * dir + x;
                 float yy = sin_deg(-t[0]) * t[1] + y - frm->extra1[5];
@@ -6055,7 +6055,7 @@ void char_marisa::func10()
             if ( dash_angle > 3.0 )
                 dash_angle = 3.0;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             setOrigin(frm->extra1[4], -frm->extra1[5]); // HACK? signs??
             angZ += dash_angle;
 
@@ -6138,7 +6138,7 @@ void char_marisa::func10()
                 t[2] = 12.0;
                 t[3] = field_7DC;
 
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 addbullet(this, NULL, 920, x + 200.0 + frm->extra1[4], y - frm->extra1[5], dir, 1, t, 4);
                 switch ( settings_get()->get_difficulty() )
                 {

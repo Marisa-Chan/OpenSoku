@@ -13,7 +13,7 @@ int8_t dummy_block_type = 0; //HACK
 char_c::char_c(inp_ab *func)
 {
     if (!pgp)
-        pgp = new char_graph;
+        pgp = new Char_SeqData(bullets_get_common());
 
     player_face_tex = NULL;    //texture
     player_face = NULL;        //sprite
@@ -403,7 +403,7 @@ void char_c::draw_shadow(shd_trans *sh_trans, gr_shader *shader)
     float dx = 0.0;
     float dy = 0.0;
 
-    char_frame *frm = get_pframe();
+    CharFrameData *frm = get_pframe();
     if (frm)
     {
         dx = sprite.get_pframe()->x_offset;
@@ -451,7 +451,7 @@ void char_c::draw(gr_shader *shader)
     float dx = 0.0;
     float dy = 0.0;
 
-    char_frame *frm = get_pframe();
+    CharFrameData *frm = get_pframe();
     if (frm)
     {
         dx = sprite.get_pframe()->x_offset;
@@ -1637,7 +1637,7 @@ void char_c::func10()
             {
                 if (get_subseq() == 1)
                 {
-                    char_frame * frm = get_pframe();
+                    CharFrameData * frm = get_pframe();
                     scene_play_sfx(72);
                     float ty = y - frm->extra1[5];
                     float tx = x + frm->extra1[4] * dir;
@@ -4072,7 +4072,7 @@ float c_meta::sub_4634F0()
     if ( field_18C >= 0 && field_18C < 32 )
         dmg *= (chrt->skills_1[field_18C] / 10.0 + 1.0);
 
-    char_frame *frm = get_pframe();
+    CharFrameData *frm = get_pframe();
     if ( frm->aflags & AF_UNK1000 )
         dmg *= chrt->field_544;
     if ( frm->aflags & AF_UNK800 )
@@ -4103,7 +4103,7 @@ int8_t char_c::sub_469750(uint32_t enemu_aflags)
     if ( field_4AA )
         return 0;
 
-    char_frame *frm = get_pframe();
+    CharFrameData *frm = get_pframe();
 
     if ( frm->fflags & FF_GUARD2 )
         return 6;
@@ -4246,7 +4246,7 @@ void char_c::char_stats_check()
             if ( field_51E )
                 field_51E--;
 
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
 
             if ( frm->fflags & FF_UNK800)
                 field_51E = 10;
@@ -4438,7 +4438,7 @@ bool char_c::sub_468660(int8_t card)
 
 void char_c::sub_462FF0()
 {
-    char_frame *frm = get_pframe();
+    CharFrameData *frm = get_pframe();
     if ( !(frm->fflags & FF_UNK100000) )
     {
         if ( damage_limit < 100 )

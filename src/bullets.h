@@ -62,7 +62,7 @@ public:
     virtual ~c_bullet();
 
     //call this after creation
-    void init(char_c *parent,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num, char_graph *pgp = NULL);
+    void init(char_c *parent,c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order, float *addit, int8_t num, Char_SeqData *pgp = NULL);
 
     void set_seq(uint32_t idx);
 
@@ -84,7 +84,9 @@ void updatebullet(char_c *chr);
 void drawbullet(char_c *chr, int8_t order);
 
 void bul_follow_char(c_bullet *bul, int32_t h_inerc, int32_t v_inerc);
+
 void bullets_init_common();
+Char_SeqData *bullets_get_common();
 
 #include "chars/marisa_bullets.h"
 #include "chars/alice_bullets.h"

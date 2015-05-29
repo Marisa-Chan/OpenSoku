@@ -8585,7 +8585,7 @@ void alice_bullets::func10()
                     else if ( settings_get()->get_difficulty() == GAME_DIFF_LUNA )
                         tmp[2] = 3.0;
 
-                    char_frame *frm = get_pframe();
+                    CharFrameData *frm = get_pframe();
 
                     float yy = y - frm->extra1[5];
                     float xx = (frm->extra1[4] * dir) + x;

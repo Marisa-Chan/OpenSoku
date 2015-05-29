@@ -8,36 +8,30 @@
 #include "file_read.h"
 #include <math.h>
 
-static char_graph *common_pgp = NULL;
+static Char_SeqData *common_pgp = NULL;
 
 void bullets_init_common()
 {
     if (!common_pgp)
     {
-        common_pgp = new char_graph;
+        common_pgp = new Char_SeqData;
         common_pgp->load_dat("common",0);
     }
 }
 
+Char_SeqData *bullets_get_common()
+{
+    return common_pgp;
+}
 
 void addbullet(char_c *chr, c_bullet *bul, int32_t idx, float x, float y, int8_t dir, int8_t order,float *addit, int8_t num)
 {
-    if (chr && chr->get_seq(idx))
+    if (chr && chr->get_seq(idx).seq)
     {
         c_bullet *tmp = chr->new_bullet();
         if (tmp)
         {
             tmp->init(chr,bul,idx,x,y,dir,order,addit,num);
-            if (chr)
-                chr->get_bullets()->push_back(tmp);
-        }
-    }
-    else if (common_pgp && common_pgp->get_seq(idx))
-    {
-        c_bullet *tmp = new c_bullet;
-        if (tmp)
-        {
-            tmp->init(chr,bul,idx,x,y,dir,order,addit,num,common_pgp);
             if (chr)
                 chr->get_bullets()->push_back(tmp);
         }
@@ -121,7 +115,7 @@ void c_bullet::func16()
 
 }
 
-void c_bullet::init(char_c *_parent, c_bullet *bul, int32_t idx, float _x, float _y, int8_t _dir, int8_t _order, float *addit, int8_t num, char_graph *_pgp)
+void c_bullet::init(char_c *_parent, c_bullet *bul, int32_t idx, float _x, float _y, int8_t _dir, int8_t _order, float *addit, int8_t num, Char_SeqData *_pgp)
 {
 //    parent = _parent;
     chrt = _parent;
@@ -1412,7 +1406,7 @@ void c_bullet::set_seq_params()
         }
         else if ( get_subseq() == 2 )
         {
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             x_off = frm->extra1[4];
             y_off = frm->extra1[5];
         }
@@ -1502,7 +1496,7 @@ void c_bullet::draw_shadow(shd_trans *sh_trans, gr_shader *shader)
         float dx = 0.0;
         float dy = 0.0;
 
-        char_frame *frm = get_pframe();
+        CharFrameData *frm = get_pframe();
         if (frm)
         {
             dx = sprite.get_pframe()->x_offset;
@@ -1554,7 +1548,7 @@ void c_bullet::draw(gr_shader *shader)
         float dx = 0.0;
         float dy = 0.0;
 
-        char_frame *frm = get_pframe();
+        CharFrameData *frm = get_pframe();
         if (frm)
         {
             dx = sprite.get_pframe()->x_offset;
@@ -1683,10 +1677,10 @@ void c_bullet::sub_438450(int32_t /*x*/, int32_t /*y*/, int32_t w, int32_t h)
 
 void c_bullet::tail_add(int32_t idx, float width, int32_t segments, int32_t seg_subd, gr_blend blending)
 {
-    seq * sq = pgp->get_seq(idx);
-    if (sq)
+    Char_IdSeq sq = pgp->get_seq(idx);
+    if (sq.seq)
     {
-        char_frame *frm = sq->subseqs[0].frames[0];
+        CharFrameData *frm = &(*sq.seq)[0].frames[0];
         tail = new c_tail(frm->img, 255,255,255,255,width,segments,seg_subd,blending);
     }
 }

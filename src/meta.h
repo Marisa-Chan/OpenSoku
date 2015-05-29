@@ -117,15 +117,13 @@ struct shd_trans
 
 class c_meta : public moveable
 {
-private:
-    int32_t index;
 
 protected:
 
 public:
-    char_graph *pgp; //Pointer Graph Parent
+    Char_SeqData *pgp; //Pointer Graph Parent
 
-    c_meta(char_graph *pgp);
+    c_meta(Char_SeqData *pgp);
     c_meta();
     virtual ~c_meta();
 
@@ -223,7 +221,7 @@ public:
     uint32_t get_frame_time();
     uint32_t get_elaps_frames();
     void set_elaps_frames(uint32_t frm);
-    char_frame * get_pframe();
+    CharFrameData * get_pframe();
     uint32_t get_seq();
     uint16_t get_cprior();
     uint16_t get_prior();
@@ -249,8 +247,7 @@ public:
 
     void scn_char_ss2();
 
-    seq *get_seq(uint32_t idx);
-
+    Char_IdSeq get_seq(uint32_t idx);
 
     virtual void set_seq(uint32_t idx);
 

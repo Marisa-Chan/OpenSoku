@@ -7,7 +7,7 @@
 #include "scene.h"
 
 
-c_meta::c_meta(char_graph *_pgp)
+c_meta::c_meta(Char_SeqData *_pgp)
 {
     pgp  = _pgp;
 
@@ -71,20 +71,19 @@ void c_meta::set_seq(uint32_t idx)
 {
     // printf("%d\n",idx);
     if (pgp)
-        if (pgp->get_seq(idx))
+        if (pgp->has_seq(idx))
         {
-            index = idx;
             sprite.set_seq(pgp->get_seq(idx));
             setOrigin(0,0); //Hacky
         }
 }
 
-seq *c_meta::get_seq(uint32_t idx)
+Char_IdSeq c_meta::get_seq(uint32_t idx)
 {
     if (pgp)
         return pgp->get_seq(idx);
     else
-        return NULL;
+        return Char_IdSeq();
 }
 
 bool c_meta::process(bool ignore_loop)
@@ -140,7 +139,7 @@ void c_meta::set_elaps_frames(uint32_t frm)
     sprite.set_elaps_frames(frm);
 }
 
-char_frame * c_meta::get_pframe()
+CharFrameData * c_meta::get_pframe()
 {
     return sprite.get_pframe();
 }
@@ -148,7 +147,7 @@ char_frame * c_meta::get_pframe()
 
 uint32_t c_meta::get_seq()
 {
-    return index;
+    return sprite.get_seq_id();
 }
 
 uint16_t c_meta::get_prior()
@@ -451,7 +450,7 @@ void c_meta::scn_char_ss2()
     field_1C8 = get_seq();
     field_1CA = dir;
 
-    char_frame *frm = get_pframe();
+    CharFrameData *frm = get_pframe();
 
     atk_box_cnt = frm->box_atk.size();
     hit_box_cnt = frm->box_hit.size();

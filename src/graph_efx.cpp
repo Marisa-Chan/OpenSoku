@@ -5,11 +5,50 @@
 #include "graph_efx.h"
 
 
+FrameData::FrameData()
+{
+    img = NULL;
+}
+
+gfx_IdSeq::gfx_IdSeq()
+{
+    id = -1;
+    seq = NULL;
+}
+
+gfx_IdSeq::gfx_IdSeq(int32_t _id, gfx_Seq *point)
+{
+    id = _id;
+    seq = point;
+}
+
+gfx_SeqData::gfx_SeqData()
+{
+
+}
+
+gfx_SeqData::gfx_SeqData(gfx_SeqData *parent)
+{
+    seqs = parent->seqs;
+}
+
+gfx_SeqData::~gfx_SeqData()
+{
+    clear();
+
+    for(uint32_t i = 0; i < _imgs.size(); i++)
+        gr_delete_tex(_imgs[i]);
+
+    for(uint32_t i = 0; i < _sequences.size(); i++)
+        delete _sequences[i];
+}
+
+
 gfx_sprite::gfx_sprite()
 {
     sprite  = gr_create_sprite();
     pframe  = NULL;
-    cur_seq = NULL;
+    cur_seq = gfx_IdSeq();
     cur_subseq = 0;
     cur_frame  = 0;
     cur_frame_time = 0;
@@ -43,22 +82,22 @@ uint32_t gfx_sprite::get_elaps_frames()
     return elaps_frames;
 }
 
-gfx_frame *gfx_sprite::get_pframe()
+FrameData *gfx_sprite::get_pframe()
 {
     return pframe;
 }
 
-bool gfx_sprite::set_seq(gfx_seq *sq)
+bool gfx_sprite::set_seq(gfx_IdSeq sq)
 {
-    cur_seq = NULL;
+    cur_seq = gfx_IdSeq();
 
-    if (sq == NULL)
+    if (sq.seq == NULL)
         return false;
 
-    if (sq->subseqs.size() <= 0)
+    if (sq.seq->size() <= 0)
         return false;
 
-    if (sq->subseqs[0].frames.size() <= 0)
+    if ((*sq.seq)[0].frames.size() <= 0)
         return false;
 
     cur_seq = sq;
@@ -70,12 +109,12 @@ bool gfx_sprite::set_seq(gfx_seq *sq)
 
 void gfx_sprite::reset_seq()
 {
-    if (cur_seq == NULL)
+    if (cur_seq.seq == NULL)
         return;
 
     cur_subseq   = 0;
     elaps_frames = 0;
-    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
+    _cur_sseq   = &(*cur_seq.seq)[cur_subseq];
     _num_frames = _cur_sseq->frames.size();
 
     set_frame(0);
@@ -83,7 +122,7 @@ void gfx_sprite::reset_seq()
 
 void gfx_sprite::frame_val_set()
 {
-    pframe = cur_seq->subseqs[cur_subseq].frames[cur_frame];
+    pframe = &(*cur_seq.seq)[cur_subseq].frames[cur_frame];
 
     //if (pframe)
     if (pframe->img)
@@ -91,7 +130,7 @@ void gfx_sprite::frame_val_set()
         gr_set_spr_tex(sprite,pframe->img);
 
         cur_frame_time = 0;
-        cur_duration   = pframe->durate;
+        cur_duration   = pframe->duration;
 
         //setOrigin(0,0);
         if (pframe->type == 2)
@@ -116,7 +155,7 @@ void gfx_sprite::frame_val_set()
 
 void gfx_sprite::set_frame(uint32_t frm)
 {
-    if (cur_seq == NULL || frm >= _num_frames)
+    if (cur_seq.seq == NULL || frm >= _num_frames)
         return;
 
     cur_frame = frm;
@@ -139,13 +178,13 @@ bool gfx_sprite::next_frame(bool ignore_loop)
 bool gfx_sprite::next_subseq()
 {
     uint32_t tmp = cur_subseq;
-    cur_subseq = (cur_subseq + 1) % cur_seq->subseqs.size();
+    cur_subseq = (cur_subseq + 1) % cur_seq.seq->size();
 
     if (tmp != cur_subseq)
         elaps_frames = 0;
 
 
-    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
+    _cur_sseq   = &(*cur_seq.seq)[cur_subseq];
     _num_frames = _cur_sseq->frames.size();
 
     set_frame(0);
@@ -162,13 +201,13 @@ bool gfx_sprite::next_subseq()
 bool gfx_sprite::set_subseq(uint32_t idx)
 {
     uint32_t tmp = cur_subseq;
-    cur_subseq = idx % cur_seq->subseqs.size();
+    cur_subseq = idx % cur_seq.seq->size();
 
     if (tmp != cur_subseq)
         elaps_frames = 0;
 
 
-    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
+    _cur_sseq   = &(*cur_seq.seq)[cur_subseq];
     _num_frames = _cur_sseq->frames.size();
 
     set_frame(0);
@@ -227,7 +266,7 @@ void gfx_sprite::setTransform(gr_transform *trans)
 
 uint32_t gfx_sprite::get_seq_id()
 {
-    return cur_seq->id;
+    return cur_seq.id;
 }
 
 
@@ -245,7 +284,6 @@ void gfx_sprite::setColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 
 gfx_meta::gfx_meta()
 {
-    index = -1;
     active = true;
     order = 1;
     skew_x = 0;
@@ -274,7 +312,7 @@ uint32_t gfx_meta::get_elaps_frames()
 {
     return sprite.get_elaps_frames();
 }
-gfx_frame * gfx_meta::get_pframe()
+FrameData * gfx_meta::get_pframe()
 {
     return sprite.get_pframe();
 }
@@ -290,7 +328,7 @@ void gfx_meta::set_elaps_frames(uint32_t frm)
 
 uint32_t gfx_meta::get_seq()
 {
-    return index;
+    return sprite.get_seq_id();
 }
 
 bool gfx_meta::process(bool ignore_loop)
@@ -319,7 +357,7 @@ void gfx_meta::draw(int8_t plane)
         float dx = 0.0;
         float dy = 0.0;
 
-        gfx_frame *frm = get_pframe();
+        FrameData *frm = get_pframe();
         if (frm)
         {
             dx = sprite.get_pframe()->x_offset;
@@ -379,27 +417,8 @@ static const uint8_t color_v_to_viii [32] =
     131, 139, 148, 156, 164, 172, 180, 189, 197, 205, 213, 222, 230, 238, 246, 255
 };
 
-static void delete_seq(gfx_seq *sq)
-{
-    if (sq->refcount > 0)
-    {
-        sq->refcount--;
-        return;
-    }
 
-    for(uint32_t i = 0; i < sq->subseqs.size(); i++)
-    {
-        for (uint32_t j = 0; j < sq->subseqs[i].frames.size(); j++)
-        {
-            delete sq->subseqs[i].frames[j];
-        }
-    }
-
-    delete sq;
-}
-
-
-bool gfx_holder::load_dat(const char *file, const char *dir)
+bool gfx_SeqData::load_dat(const char *file, const char *dir)
 {
     char buf[CHRBUF];
 
@@ -413,7 +432,7 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
     if (!f)
         return false;
 
-    uint16_t pat_count = 0;
+    uint16_t tex_count = 0;
 
     uint8_t pat_version = 0;
 
@@ -425,11 +444,11 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
         return false;
     }*/
 
-    f->read(2, &pat_count);
+    f->read(2, &tex_count);
 
-    imgs.resize(pat_count);
+    _imgs.resize(tex_count);
 
-    for (uint32_t i = 0; i < pat_count; i++)
+    for (uint32_t i = 0; i < tex_count; i++)
     {
         f->read(0x80, buf);
 
@@ -447,14 +466,22 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
         if (tex)
             gr_set_repeate(tex, true);
 
-        imgs[i] = tex;
+        _imgs[i] = tex;
     }
 
     uint32_t num_seq = 0;
 
     f->read(4, &num_seq);
 
-    int32_t lastid = -1;
+    struct mapping
+    {
+        uint32_t id;
+        uint32_t maps;
+    };
+
+    list<mapping> mapList;
+
+    gfx_Seq *seqv = NULL;
 
     for (uint32_t i=0; i < num_seq && !f->eof(); i++)
     {
@@ -464,46 +491,42 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
 
         if (id == -1) // mapping
         {
-            uint32_t seq_new  = 0;
-            uint32_t seq_maps = 0;
-            f->read(4, &seq_new);
-            f->read(4, &seq_maps);
+            mapping mp;
 
-            map_gfx_seq::iterator tmp = seqs.find(seq_maps);
+            f->read(4, &mp.id);
+            f->read(4, &mp.maps);
 
-            if (tmp != seqs.end())
-            {
-                tmp->second->refcount++;
-                seqs[seq_new] = tmp->second;
-            }
+            mapList.push_back(mp);
         }
         else
         {
-            gfx_seq *sq         = NULL;
+            gfx_SubSequence *sq         = NULL;
 
             if (id != -2) // new sequences
             {
-                map_gfx_seq::iterator tmp = seqs.find(id);
+                seqv = new gfx_Seq;
 
-                if (tmp != seqs.end())
-                {
-                    delete_seq(tmp->second);
-                }
+                gfx_IdSeq mSeq;
 
+                mSeq.id = id;
+                mSeq.seq = seqv;
 
-                sq = new gfx_seq;
+                seqs[id] = mSeq;
 
-                sq->refcount = 0;
-
-                seqs[id] = sq;
-
-                sq->id = id;
-
-                lastid = id;
+                gfx_SubSequence tmp;
+                tmp._id = 0;
+                tmp._parent = seqv;
+                seqv->push_back(tmp);
+                sq = &seqv->back();
             }
-            else if (lastid >= 0) //it's new part of current
+            else if (seqv) //it's new part of current
             {
-                sq = seqs[lastid];
+                gfx_SubSequence tmp;
+                tmp._id = seqv->size();
+                tmp._parent = seqv;
+                seqv->push_back(tmp);
+
+                sq = &seqv->back();
             }
             else
             {
@@ -516,9 +539,7 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
                 return false;
             }
 
-            gfx_subseq ssq;
-
-            f->read(1, &ssq.looped);
+            f->read(1, &sq->looped);
 
 
             int32_t nframes = 0;
@@ -528,18 +549,18 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
             if (nframes < 0)
                 return false;
 
-            ssq.frames.resize(nframes);
+            sq->frames.resize(nframes);
 
             for (int32_t j = 0; j < nframes; j++)
             {
 
-                gfx_frame *frm = new gfx_frame;
+                FrameData *frm = &sq->frames[j];
 
                 int32_t frame = 0;
                 f->read(4, &frame);
 
-                if (frame >= 0 && (uint32_t)frame < imgs.size())
-                    frm->img = imgs[frame];
+                if (frame >= 0 && (uint32_t)frame < _imgs.size())
+                    frm->img = _imgs[frame];
                 else
                     frm->img = NULL;
 
@@ -550,7 +571,7 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
                 f->read(2, &frm->tx_height);
                 f->read(2, &frm->x_offset);
                 f->read(2, &frm->y_offset);
-                f->read(2, &frm->durate);
+                f->read(2, &frm->duration);
 
                 f->read(1, &frm->type);
 
@@ -600,13 +621,29 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
                     frm->x_offset /= frm->scale_x;
                     frm->y_offset /= frm->scale_y;
                 }
-
-                ssq.frames[j] = frm;
             }
-
-            sq->subseqs.push_back(ssq);
         }
     }
+
+    for (list<mapping>::iterator it = mapList.begin(); it != mapList.end(); it++)
+    {
+
+        gfx_MapSeq::iterator fnd = seqs.find(it->maps);
+        if (fnd != seqs.end())
+        {
+            gfx_IdSeq mSeq;
+
+            mSeq.id = it->id;
+            mSeq.seq = fnd->second.seq;
+            seqs[it->id] = mSeq;
+        }
+        else
+        {
+            printf("Error: cannot find mapping %d -> %d", it->id, it->maps);
+        }
+    }
+
+    mapList.clear();
 
 
     delete f;
@@ -615,7 +652,7 @@ bool gfx_holder::load_dat(const char *file, const char *dir)
 
 
 
-bool gfx_holder::load_pal_pal(const char *file,uint32_t *pal)
+bool gfx_SeqData::load_pal_pal(const char *file,uint32_t *pal)
 {
     filehandle *f = arc_get_file(file);
 
@@ -653,17 +690,18 @@ bool gfx_holder::load_pal_pal(const char *file,uint32_t *pal)
 }
 
 
-gfx_seq * gfx_holder::get_seq(uint32_t idx)
+gfx_IdSeq gfx_SeqData::get_seq(uint32_t idx)
 {
-    map_gfx_seq::iterator tmp = seqs.find(idx);
+    gfx_MapSeq::iterator tmp = seqs.find(idx);
     if (tmp != seqs.end())
-        return (tmp->second);
-    return NULL;
+        return(tmp->second);
+
+    return gfx_IdSeq(-1, NULL);
 }
 
-void gfx_holder::update()
+void gfx_SeqData::update()
 {
-    for(int32_t i=fx.size()-1; i>=0; i--)
+    for(int32_t i = fx.size()-1; i>=0; i--)
         if (fx[i]->active)
             fx[i]->func10();
         else
@@ -674,14 +712,14 @@ void gfx_holder::update()
 
 }
 
-void gfx_holder::draw(int8_t order,int8_t plane)
+void gfx_SeqData::draw(int8_t order,int8_t plane)
 {
     for(uint32_t i=0; i<fx.size(); i++)
         if (fx[i]->order == order)
             fx[i]->draw(plane);
 }
 
-void gfx_holder::clear()
+void gfx_SeqData::clear()
 {
     for(int32_t i=fx.size()-1; i>=0; i--)
         delete fx[i];
@@ -689,16 +727,3 @@ void gfx_holder::clear()
     fx.clear();
 }
 
-
-gfx_holder::~gfx_holder()
-{
-    for(uint32_t i=0; i<imgs.size(); i++)
-        gr_delete_tex(imgs[i]);
-
-    imgs.clear();
-
-    for(map_gfx_seq::iterator tmp = seqs.begin(); tmp != seqs.end(); tmp++)
-        delete_seq(tmp->second);
-
-    seqs.clear();
-}

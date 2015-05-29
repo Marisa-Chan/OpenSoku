@@ -16,9 +16,8 @@ t_weather_manager *weather_manager = NULL;
 WEATHER_ID weather_id_efx = WEATHER_CLEAR;
 uint32_t weather_efx_time = 0;
 
-c_weather_fx::c_weather_fx(int32_t idx, gfx_seq *sq, float _x, float _y, int8_t _dir, int8_t _order)
+c_weather_fx::c_weather_fx(gfx_IdSeq sq, float _x, float _y, int8_t _dir, int8_t _order)
 {
-    index = idx;
     sprite.set_seq(sq);
     x = _x;
     y = _y;
@@ -1081,10 +1080,10 @@ c_weather_sp::c_weather_sp()
 
 void c_weather_sp::addeffect(int32_t idx, float x, float y, int8_t dir, int8_t order)
 {
-    gfx_seq *sq = get_seq(idx);
-    if (sq)
+    gfx_IdSeq sq = get_seq(idx);
+    if (sq.seq)
     {
-        c_weather_fx *ff = new c_weather_fx(idx, sq, x, y, dir, order);
+        c_weather_fx *ff = new c_weather_fx(sq, x, y, dir, order);
         fx.push_back(ff);
     }
 }

@@ -10,7 +10,7 @@ using namespace std;
 class c_infoef_fx: public gfx_meta
 {
 public:
-    c_infoef_fx(int32_t idx, gfx_seq *sq, float x, float y, int8_t dir, int8_t order);
+    c_infoef_fx(gfx_IdSeq sq, float x, float y, int8_t dir, int8_t order);
     float par2;
 
     void func10();
@@ -18,7 +18,7 @@ public:
 };
 
 //spawner
-class c_infoef_sp: public gfx_holder
+class c_infoef_sp: public gfx_SeqData
 {
 public:
     c_infoef_sp();

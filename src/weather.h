@@ -17,14 +17,14 @@ protected:
     float par3;
 
 public:
-    c_weather_fx(int32_t idx, gfx_seq *sq, float x, float y, int8_t dir, int8_t order);
+    c_weather_fx(gfx_IdSeq sq, float x, float y, int8_t dir, int8_t order);
 
     void func10();
     void set_seq_params(); //func15
 };
 
 
-class c_weather_sp: public gfx_holder
+class c_weather_sp: public gfx_SeqData
 {
 public:
     c_weather_sp();

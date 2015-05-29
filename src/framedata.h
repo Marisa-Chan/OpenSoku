@@ -1,6 +1,9 @@
 #ifndef FRAMEDATA_H_INCLUDED
 #define FRAMEDATA_H_INCLUDED
 
+#include <deque>
+
+#include "graph_efx.h"
 
 using namespace std;
 
@@ -29,36 +32,17 @@ struct box_box
     float       y2;
 };
 
-struct char_frame
+struct CharFrameData: FrameData
 {
-    gr_tex * img;
-    int16_t  unk1;
-    int16_t  unk2;
-    int16_t  tx_width;
-    int16_t  tx_height;
-    int16_t  x_offset;
-    int16_t  y_offset;
-    uint16_t  durate;
-    uint8_t  type;
-
-    int16_t  blend_mode;
-    uint8_t  c_A;
-    uint8_t  c_R;
-    uint8_t  c_G;
-    uint8_t  c_B;
-    float    scale_x;
-    float    scale_y;
-    int16_t  angle_x;
-    int16_t  angle_y;
-    int16_t  angle_z;
-
+    CharFrameData();
+    ~CharFrameData();
 
     int16_t  damage;
     int16_t  proration;
     uint16_t health_smval;
     uint16_t sp_smval;
     int16_t  untech;
-    uint16_t unk9;
+    uint16_t props_newunk5;
     int16_t  limit;
     uint16_t flag196_char;
     uint16_t flag196_enemy;
@@ -71,9 +55,9 @@ struct char_frame
     float  velocity_x;
     float  velocity_y;
     uint16_t hit_sfx;
-    uint16_t unk19;
+    uint16_t props_unk16;
     int16_t  attack_type;
-    uint8_t  unk20;
+    uint8_t  props_unk18;
     uint32_t fflags;
     uint32_t aflags;
 
@@ -83,35 +67,71 @@ struct char_frame
     vector<frame_box *> box_unk_atk;
 
     int32_t  extra1[6];
-    uint16_t unk22[3];
+    uint16_t extra2[3];
 };
 
-struct subseq
+struct Char_SubSequence;
+
+typedef deque<Char_SubSequence> Char_Seq;
+
+struct Char_SubSequence
 {
-    vector<char_frame *> frames; //Frames of that ATOM seq
+    vector<CharFrameData> frames; //Frames of that ATOM seq
     uint16_t    prior;
     uint16_t    prior_for_cancel;
     uint8_t     looped;
+
+    Char_Seq  * _parent;
+    uint32_t    _id;
 };
 
-struct seq
+struct Char_IdSeq
 {
-    vector<subseq>   subseqs;
-    uint32_t    id;
-    uint16_t    prior;
-    uint16_t    prior_for_cancel;
-    uint32_t    refcount;
+    Char_IdSeq();
+    Char_IdSeq(int32_t _id, Char_Seq *point);
+
+    int32_t id;
+    Char_Seq *seq;
 };
 
+typedef map<int32_t, Char_IdSeq> Char_MapSeq;
 
+class Char_SeqData
+{
+private:
+
+protected:
+
+    vector<gr_tex *> _imgs; //Holder for self loaded images
+
+    deque<Char_Seq *> _sequences; //Holder for loaded sequences
+
+    Char_MapSeq seqs;
+
+    bool load_pal_pal(const char *file, uint32_t *pal);
+
+public:
+
+    bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
+
+    uint16_t get_cprior(uint32_t idx);
+    uint16_t get_prior(uint32_t idx);
+
+    Char_IdSeq get_seq(uint32_t idx);
+    bool has_seq(uint32_t idx);
+
+    Char_SeqData(Char_SeqData * parent);
+    Char_SeqData();
+    ~Char_SeqData();
+};
 
 class char_sprite
 {
 protected:
     gr_blend    blend;
 
-    seq        *cur_seq;
-    char_frame *pframe;
+    Char_IdSeq  cur_seq;
+    CharFrameData *pframe;
 
     uint32_t cur_subseq;
     uint32_t cur_frame;
@@ -120,7 +140,7 @@ protected:
     uint32_t elaps_frames;
 
     uint32_t  _num_frames;
-    subseq   *_cur_sseq;
+    Char_SubSequence *_cur_sseq;
 
     void frame_val_set();
 
@@ -137,12 +157,12 @@ public:
     uint32_t get_frame();
     uint32_t get_frame_time();
     uint32_t get_elaps_frames();
-    char_frame * get_pframe();
+    CharFrameData * get_pframe();
     uint32_t get_seq_id();
     uint16_t get_cprior();
     uint16_t get_prior();
 
-    bool set_seq(seq *sq);
+    bool set_seq(Char_IdSeq sq);
     void reset_seq();
     void set_frame(uint32_t frm);
     void set_elaps_frames(uint32_t frm);
@@ -158,35 +178,5 @@ public:
     gr_info getInfo();
     void draw(uint8_t plane = 0, gr_shader *shader = NULL);
 };
-
-
-
-typedef map<int32_t, seq *> mapseq;
-
-class char_graph
-{
-private:
-
-protected:
-
-    vector<gr_tex *> imgs;
-
-    mapseq seqs;
-
-    bool load_pal_pal(const char *file, uint32_t *pal);
-
-public:
-
-    bool load_dat(const char *name, uint8_t pal, char pal_rev = 0);
-
-    uint16_t get_cprior(uint32_t idx);
-    uint16_t get_prior(uint32_t idx);
-
-    seq *get_seq(uint32_t idx);
-
-    //char_graph();
-    ~char_graph();
-};
-
 
 #endif // FRAMEDATA_H_INCLUDED

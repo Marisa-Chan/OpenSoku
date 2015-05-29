@@ -888,7 +888,7 @@ void cirno_bullets::func10()
             }
             scaleX += 0.05;
             scaleY += 0.05;
-            char_frame *frm = chrt->get_pframe();
+            CharFrameData *frm = chrt->get_pframe();
             x = frm->extra1[4] * dir + chrt->x;
             y = chrt->y - frm->extra1[5];
             if ( chrt->get_subseq() == 0 && chrt->get_frame() == 4 )
@@ -1052,7 +1052,7 @@ void cirno_bullets::func10()
         {
         case 0:
         {
-            char_frame *frm = chrt->get_pframe();
+            CharFrameData *frm = chrt->get_pframe();
 
             if ( get_elaps_frames() % 6 == 0 )
             {
@@ -2574,14 +2574,14 @@ void cirno_bullets::func10()
                 scaleY = scaleX;
                 if ( chrt->get_seq() >= 540 && chrt->get_seq() <= 544 )
                 {
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = frm->extra1[4] * dir + chrt->x;
                     y = chrt->y - frm->extra1[5];
                     if ( chrt->get_subseq() == 2 && chrt->get_frame() == 1 )
                     {
                         field_36C = 1;
-                        h_inerc = frm->unk22[1];
-                        v_inerc = frm->unk22[2];
+                        h_inerc = frm->extra2[1];
+                        v_inerc = frm->extra2[2];
                         field_194 = 1;
                         break;
                     }
@@ -3100,7 +3100,7 @@ void cirno_bullets::func10()
                 }
                 if ( chrt->get_subseq() == 2 && chrt->get_frame() == 6 )
                 {
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     scene_add_effect(chrt, 4, frm->extra1[4] * chrt->dir + chrt->x, chrt->y - frm->extra1[5], dir, 1);
                     scene_play_sfx(3);
                     field_36C = 2;
@@ -4059,7 +4059,7 @@ void cirno_bullets::func10()
             else
             {
                 dir = chrt->dir;
-                char_frame *frm = chrt->get_pframe();
+                CharFrameData *frm = chrt->get_pframe();
                 x = (frm->extra1[4] * chrt->dir) + chrt->x;
                 y = chrt->y - frm->extra1[5];
                 if ( get_elaps_frames() % 2 == 0 )
@@ -4119,7 +4119,7 @@ void cirno_bullets::func10()
                 if ( chrt->get_frame() <= 11 )
                 {
                     dir = chrt->dir;
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = (frm->extra1[4] * chrt->dir) + chrt->x;
                     y = chrt->y - frm->extra1[5];
                     if ( get_elaps_frames() % 2 == 0 )
@@ -4155,7 +4155,7 @@ void cirno_bullets::func10()
                 if ( chrt->get_frame() <= 7 )
                 {
                     dir = chrt->dir;
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = (frm->extra1[4] * chrt->dir) + chrt->x;
                     y = chrt->y - frm->extra1[5];
                     if ( get_elaps_frames() % 2 == 0 )
@@ -4269,7 +4269,7 @@ void cirno_bullets::func10()
                 }
                 else
                 {
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = (frm->extra1[4] * chrt->dir) + chrt->x;
                     y = chrt->y - frm->extra1[5];
                     scaleY = scaleX = sin_deg(get_elaps_frames()*2) * 0.25 + field_378;
@@ -5139,7 +5139,7 @@ void cirno_bullets::func10()
                     }
                     if ( chrt->get_subseq() < 2 || chrt->get_frame() < 9 )
                     {
-                        char_frame *frm = chrt->get_pframe();
+                        CharFrameData *frm = chrt->get_pframe();
                         x = (frm->extra1[4] * dir) + chrt->x;
                         y = chrt->y - frm->extra1[5];
                         scaleX += 0.1;
@@ -6677,7 +6677,7 @@ void cirno_bullets::func10()
                 set_vec_speed(addition[0], addition[1]);
             else
             {
-                char_frame *frm = chrt->get_pframe();
+                CharFrameData *frm = chrt->get_pframe();
                 x = (frm->extra1[4] * dir) + chrt->x;
                 y = chrt->y - frm->extra1[5];
             }
@@ -7762,7 +7762,7 @@ void cirno_bullets::func10()
                 if ( (chrt->get_subseq() == 0 && chrt->get_frame() <= 9) || (chrt->get_subseq() == 1 && chrt->get_frame() <= 11) )
                 {
                     dir = chrt->dir;
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = frm->extra1[4] * dir + chrt->x;
                     y = chrt->y - frm->extra1[5];
                 }
@@ -7776,7 +7776,7 @@ void cirno_bullets::func10()
                 if ( chrt->get_frame() <= 13 )
                 {
                     dir = chrt->dir;
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = frm->extra1[4] * dir + chrt->x;
                     y = chrt->y - frm->extra1[5];
                 }
@@ -7790,7 +7790,7 @@ void cirno_bullets::func10()
                 if ( chrt->get_frame() <= 8 )
                 {
                     dir = chrt->dir;
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = frm->extra1[4] * dir + chrt->x;
                     y = chrt->y - frm->extra1[5];
                 }
@@ -7804,7 +7804,7 @@ void cirno_bullets::func10()
                 if (chrt->get_frame() <= 13 )
                 {
                     dir = chrt->dir;
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = frm->extra1[4] * dir + chrt->x;
                     y = chrt->y - frm->extra1[5];
                 }

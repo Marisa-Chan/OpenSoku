@@ -7,7 +7,7 @@ char_sprite::char_sprite()
 {
     sprite  = gr_create_sprite();
     pframe  = NULL;
-    cur_seq = NULL;
+    cur_seq = Char_IdSeq();
     cur_subseq = 0;
     cur_frame  = 0;
     cur_frame_time = 0;
@@ -46,22 +46,22 @@ void char_sprite::set_elaps_frames(uint32_t frm)
     elaps_frames = frm;
 }
 
-char_frame *char_sprite::get_pframe()
+CharFrameData *char_sprite::get_pframe()
 {
     return pframe;
 }
 
-bool char_sprite::set_seq(seq *sq)
+bool char_sprite::set_seq(Char_IdSeq sq)
 {
-    cur_seq = NULL;
+    cur_seq = Char_IdSeq();
 
-    if (sq == NULL)
+    if (sq.seq == NULL)
         return false;
 
-    if (sq->subseqs.size() <= 0)
+    if (sq.seq->size() <= 0)
         return false;
 
-    if (sq->subseqs[0].frames.size() <= 0)
+    if ((*sq.seq)[0].frames.size() <= 0)
         return false;
 
     cur_seq = sq;
@@ -73,12 +73,12 @@ bool char_sprite::set_seq(seq *sq)
 
 void char_sprite::reset_seq()
 {
-    if (cur_seq == NULL)
+    if (cur_seq.seq == NULL)
         return;
 
     cur_subseq   = 0;
     elaps_frames = 0;
-    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
+    _cur_sseq   = &(*cur_seq.seq)[cur_subseq];
     _num_frames = _cur_sseq->frames.size();
 
     set_frame(0);
@@ -86,7 +86,7 @@ void char_sprite::reset_seq()
 
 void char_sprite::frame_val_set()
 {
-    pframe = cur_seq->subseqs[cur_subseq].frames[cur_frame];
+    pframe = &(*cur_seq.seq)[cur_subseq].frames[cur_frame];
 
     //if (pframe)
     if (pframe->img)
@@ -94,7 +94,7 @@ void char_sprite::frame_val_set()
         gr_set_spr_tex(sprite,pframe->img);
 
         cur_frame_time = 0;
-        cur_duration   = pframe->durate;
+        cur_duration   = pframe->duration;
 
         //setOrigin(0,0);
 
@@ -123,7 +123,7 @@ void char_sprite::frame_val_set()
 
 void char_sprite::set_frame(uint32_t frm)
 {
-    if (cur_seq == NULL || frm >= _num_frames)
+    if (cur_seq.seq == NULL || frm >= _num_frames)
         return;
 
     cur_frame = frm;
@@ -141,13 +141,13 @@ bool char_sprite::next_frame(bool ignore_loop)
 bool char_sprite::next_subseq()
 {
     uint32_t tmp = cur_subseq;
-    cur_subseq = (cur_subseq + 1) % cur_seq->subseqs.size();
+    cur_subseq = (cur_subseq + 1) % cur_seq.seq->size();
 
     if (tmp != cur_subseq)
         elaps_frames = 0;
 
 
-    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
+    _cur_sseq   = &(*cur_seq.seq)[cur_subseq];
     _num_frames = _cur_sseq->frames.size();
 
     set_frame(0);
@@ -164,13 +164,13 @@ bool char_sprite::next_subseq()
 bool char_sprite::set_subseq(uint32_t idx)
 {
     uint32_t tmp = cur_subseq;
-    cur_subseq = idx % cur_seq->subseqs.size();
+    cur_subseq = idx % cur_seq.seq->size();
 
     if (tmp != cur_subseq)
         elaps_frames = 0;
 
 
-    _cur_sseq   = &cur_seq->subseqs[cur_subseq];
+    _cur_sseq   = &(*cur_seq.seq)[cur_subseq];
     _num_frames = _cur_sseq->frames.size();
 
     set_frame(0);
@@ -224,22 +224,22 @@ void char_sprite::setTransform(gr_transform *trans)
 
 uint16_t char_sprite::get_cprior()
 {
-    if (cur_seq)
-        return cur_seq->prior_for_cancel;
+    if (_cur_sseq)
+        return _cur_sseq->prior_for_cancel;
     return 0xFFFF;
 }
 
 uint16_t char_sprite::get_prior()
 {
-    if (cur_seq)
-        return cur_seq->prior;
+    if (_cur_sseq)
+        return _cur_sseq->prior;
     return 0xFFFF;
 }
 
 uint32_t char_sprite::get_seq_id()
 {
-    if (cur_seq)
-        return cur_seq->id;
+    if (cur_seq.seq)
+        return cur_seq.id;
     return 0xFFFFFFFF;
 }
 

@@ -4191,7 +4191,7 @@ void char_alice::func10()
         {
             field_4A6 = 40;
             scene_play_sfx(23);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             float yy = y - frm->extra1[5];
             float xx = frm->extra1[4] * dir + x;
             scene_add_effect(this, 115, xx, yy, dir, 1);
@@ -4513,7 +4513,7 @@ void char_alice::func10()
             tmp[0] = scene_rand_rngf(360);
             tmp[1] = scene_rand_rngf(400) + 200.0;
             tmp[2] = scene_rand_rngf(7);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
             float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
             addbullet(this, NULL, 970, xx, yy, dir, 1, tmp, 3);
@@ -4526,7 +4526,7 @@ void char_alice::func10()
                 tmp[0] = scene_rand_rngf(360);
                 tmp[1] = scene_rand_rngf(400) + 200.0;
                 tmp[2] = scene_rand_rngf(7);
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
                 float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
                 addbullet(this, NULL, 970, xx, yy, dir, 1, tmp, 3);
@@ -4603,7 +4603,7 @@ void char_alice::func10()
             tmp[0] = scene_rand_rngf(360);
             tmp[1] = scene_rand_rngf(400) + 200.0;
             tmp[2] = scene_rand_rngf(7);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
             float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
             addbullet(this, NULL, 970, xx, yy, dir, 1, tmp, 3);
@@ -4616,7 +4616,7 @@ void char_alice::func10()
                 tmp[0] = scene_rand_rngf(360);
                 tmp[1] = scene_rand_rngf(400) + 200.0;
                 tmp[2] = scene_rand_rngf(7);
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
                 float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
                 addbullet(this, NULL, 970, xx, yy, dir, 1, tmp, 3);
@@ -4686,7 +4686,7 @@ void char_alice::func10()
             tmp[0] = scene_rand_rngf(360);
             tmp[1] = scene_rand_rngf(400) + 200.0;
             tmp[2] = scene_rand_rngf(7);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
             float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
             addbullet(this, NULL, 970, xx, yy, dir, 1, tmp, 3);
@@ -4699,7 +4699,7 @@ void char_alice::func10()
                 tmp[0] = scene_rand_rngf(360);
                 tmp[1] = scene_rand_rngf(400) + 200.0;
                 tmp[2] = scene_rand_rngf(7);
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
                 float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
                 addbullet(this, NULL, 970, xx, yy, dir, 1, tmp, 3);
@@ -4858,7 +4858,7 @@ void char_alice::func10()
             tmp[0] = scene_rand_rngf(360);
             tmp[1] = scene_rand_rngf(400) + 200.0;
             tmp[2] = scene_rand_rngf(7);
-            char_frame *frm = get_pframe();
+            CharFrameData *frm = get_pframe();
             float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
             float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
             addbullet(this, NULL, 970, xx, yy, dir, 1, tmp, 3);
@@ -4871,7 +4871,7 @@ void char_alice::func10()
                 tmp[0] = scene_rand_rngf(360);
                 tmp[1] = scene_rand_rngf(400) + 200.0;
                 tmp[2] = scene_rand_rngf(7);
-                char_frame *frm = get_pframe();
+                CharFrameData *frm = get_pframe();
                 float yy = sin_deg(-tmp[0]) * tmp[1] + y - frm->extra1[5];
                 float xx = (cos_deg(-tmp[0]) * tmp[1] + frm->extra1[4]) * dir + x;
                 addbullet(this, NULL, 970, xx, yy, dir, 1, tmp, 3);

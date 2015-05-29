@@ -10,7 +10,7 @@ class c_meta;
 class c_scene_fx: public gfx_meta
 {
 public:
-    c_scene_fx(int32_t idx, gfx_seq *sq, c_meta *chr, float x, float y, int8_t dir, int8_t order);
+    c_scene_fx(gfx_IdSeq sq, c_meta *chr, float x, float y, int8_t dir, int8_t order);
 
     float par1;
     float par2;
@@ -22,7 +22,7 @@ public:
 };
 
 
-class c_scene_sp: public gfx_holder
+class c_scene_sp: public gfx_SeqData
 {
 public:
     c_scene_sp();

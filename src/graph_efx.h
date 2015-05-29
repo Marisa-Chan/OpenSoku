@@ -5,6 +5,33 @@
 
 using namespace std;
 
+struct FrameData
+{
+    FrameData();
+
+    gr_tex * img;
+    uint16_t unk1;
+    int16_t  unk2;
+    int16_t  tx_width;
+    int16_t  tx_height;
+    int16_t  x_offset;
+    int16_t  y_offset;
+    uint16_t  duration;
+    uint8_t  type;
+
+    int16_t  blend_mode;
+    uint8_t  c_A;
+    uint8_t  c_R;
+    uint8_t  c_G;
+    uint8_t  c_B;
+
+    float    scale_x;
+    float    scale_y;
+    int16_t  angle_x;
+    int16_t  angle_y;
+    int16_t  angle_z;
+};
+
 struct gfx_frame
 {
     gr_tex * img;
@@ -30,18 +57,31 @@ struct gfx_frame
     int16_t  angle_z;
 };
 
-struct gfx_subseq
+struct gfx_SubSequence;
+
+typedef deque<gfx_SubSequence> gfx_Seq;
+
+struct gfx_SubSequence
 {
-    vector<gfx_frame *> frames; //Frames of that ATOM seq
+    vector<FrameData> frames; //Frames of that ATOM seq
+    uint16_t    prior;
+    uint16_t    prior_for_cancel;
     uint8_t     looped;
+
+    gfx_Seq  * _parent;
+    uint32_t    _id;
 };
 
-struct gfx_seq
+struct gfx_IdSeq
 {
-    vector<gfx_subseq>   subseqs;
-    uint32_t    id;
-    uint32_t    refcount;
+    gfx_IdSeq();
+    gfx_IdSeq(int32_t _id, gfx_Seq *point);
+
+    int32_t id;
+    gfx_Seq *seq;
 };
+
+typedef map<int32_t, gfx_IdSeq> gfx_MapSeq;
 
 
 class gfx_sprite
@@ -53,8 +93,8 @@ protected:
     gr_sprite  *sprite;
     gr_blend    blend;
 
-    gfx_seq     *cur_seq;
-    gfx_frame   *pframe;
+    gfx_IdSeq    cur_seq;
+    FrameData   *pframe;
 
     uint32_t cur_subseq;
     uint32_t cur_frame;
@@ -63,7 +103,7 @@ protected:
     uint32_t elaps_frames;
 
     uint32_t  _num_frames;
-    gfx_subseq   *_cur_sseq;
+    gfx_SubSequence  *_cur_sseq;
 
     void frame_val_set();
 
@@ -76,10 +116,10 @@ public:
     uint32_t get_cur_frame();
     uint32_t get_cur_frame_time();
     uint32_t get_elaps_frames();
-    gfx_frame * get_pframe();
+    FrameData * get_pframe();
     uint32_t get_seq_id();
 
-    bool set_seq(gfx_seq *sq);
+    bool set_seq(gfx_IdSeq sq);
     void reset_seq();
     void set_frame(uint32_t frm);
     void set_elaps_frames(uint32_t frm);
@@ -97,12 +137,9 @@ public:
     void draw(uint8_t plane = 0);
 };
 
-class c_meta;
-
 class gfx_meta: public moveable
 {
 protected:
-    int32_t index;
 
     float skew_x;
     float skew_y;
@@ -126,7 +163,7 @@ public:
     void set_elaps_frames(uint32_t frm);
     uint32_t get_frame_time();
     uint32_t get_elaps_frames();
-    gfx_frame * get_pframe();
+    FrameData * get_pframe();
     uint32_t get_seq();
 
     void setSkew(float x, float y);
@@ -134,28 +171,39 @@ public:
     bool process(bool ignore_loop = false);
 };
 
-
-typedef map<int32_t, gfx_seq *> map_gfx_seq;
-
-class gfx_holder
+class gfx_SeqData
 {
+private:
+
 protected:
 
-    bool load_pal_pal(const char *file, uint32_t *pal);
-    bool load_dat(const char *file, const char *dir);
+    vector<gr_tex *> _imgs; //Holder for self loaded images
 
-    map_gfx_seq seqs;
+    deque<gfx_Seq *> _sequences; //Holder for loaded sequences
+
+    gfx_MapSeq seqs;
+
+    bool load_pal_pal(const char *file, uint32_t *pal);
+
     vector<gfx_meta *> fx;
-    vector<gr_tex *> imgs;
 
 public:
-    virtual ~gfx_holder();
 
-    gfx_seq *get_seq(uint32_t idx);
+    bool load_dat(const char *file, const char *dir);
 
     virtual void update();
     virtual void draw(int8_t order, int8_t plane = 0 );
     void clear();
+
+    uint16_t get_cprior(uint32_t idx);
+    uint16_t get_prior(uint32_t idx);
+
+    gfx_IdSeq get_seq(uint32_t idx);
+    bool has_seq(uint32_t idx);
+
+    gfx_SeqData(gfx_SeqData * parent);
+    gfx_SeqData();
+    virtual ~gfx_SeqData();
 };
 
 #endif //GRAPH_EFX_H_INCLUDED

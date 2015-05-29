@@ -1669,8 +1669,8 @@ void marisa_bullets::func10()
             }
             else
             {
-                char_frame *frm = chrt->get_pframe();
-                if ( frm->unk22[0] == 1)
+                CharFrameData *frm = chrt->get_pframe();
+                if ( frm->extra2[0] == 1)
                 {
                     float xx = frm->extra1[0] * chrt->dir + chrt->x - x;
                     float yy = chrt->y - frm->extra1[1] - y;
@@ -1684,7 +1684,7 @@ void marisa_bullets::func10()
                         scene_add_effect(this, 1, x, y, dir, 1);
                     }
                 }
-                if ( frm->unk22[0] == 2 )
+                if ( frm->extra2[0] == 2 )
                 {
                     float xx = frm->extra1[0] * chrt->dir + chrt->x - x;
                     float yy = chrt->y - frm->extra1[1] - y;
@@ -1698,7 +1698,7 @@ void marisa_bullets::func10()
                         scene_add_effect(this, 2, x, y, dir, 1);
                     }
                 }
-                if ( frm->unk22[0] == 3 )
+                if ( frm->extra2[0] == 3 )
                 {
                     float xx = frm->extra1[0] * chrt->dir + chrt->x - x;
                     float yy = chrt->y - frm->extra1[1] - y;
@@ -3131,7 +3131,7 @@ void marisa_bullets::func10()
                     field_378 = 0.25;
                 if ( chrt->get_seq() == 604)
                 {
-                    char_frame *frm = get_pframe();
+                    CharFrameData *frm = get_pframe();
                     x = cos_deg(-addition[0]) * addition[1] * 0.5 + frm->extra1[4] * chrt->dir + chrt->x;
                     y = sin_deg(-addition[0]) * addition[1] - frm->extra1[5] + chrt->y;
                     if (chrt->get_subseq() == 4)
@@ -3978,8 +3978,8 @@ void marisa_bullets::func10()
             }
             else
             {
-                char_frame *frm = chrt->get_pframe();
-                if ( frm->unk22[0] == 1)
+                CharFrameData *frm = chrt->get_pframe();
+                if ( frm->extra2[0] == 1)
                 {
                     float xx = frm->extra1[0] * chrt->dir + chrt->x - x;
                     float yy = chrt->y - frm->extra1[1] - y;
@@ -3993,7 +3993,7 @@ void marisa_bullets::func10()
                         scene_add_effect(this, 1, x, y, dir, 1);
                     }
                 }
-                if ( frm->unk22[0] == 2 )
+                if ( frm->extra2[0] == 2 )
                 {
                     float xx = frm->extra1[0] * chrt->dir + chrt->x - x;
                     float yy = chrt->y - frm->extra1[1] - y;
@@ -4007,7 +4007,7 @@ void marisa_bullets::func10()
                         scene_add_effect(this, 2, x, y, dir, 1);
                     }
                 }
-                if ( frm->unk22[0] == 3 )
+                if ( frm->extra2[0] == 3 )
                 {
                     float xx = frm->extra1[0] * chrt->dir + chrt->x - x;
                     float yy = chrt->y - frm->extra1[1] - y;
@@ -4792,7 +4792,7 @@ void marisa_bullets::func10()
                         {
                             addition[0] += addition[3];
                             addition[1] += 1.0;
-                            char_frame *frm = chrt->get_pframe();
+                            CharFrameData *frm = chrt->get_pframe();
                             x = (cos_deg(-addition[0]) * addition[1] + frm->extra1[4]) * dir + chrt->x;
                             y = sin_deg(-addition[0]) * addition[1] + chrt->y - frm->extra1[5];
                         }
@@ -5307,7 +5307,7 @@ void marisa_bullets::func10()
                     active = false;
                     break;
                 }
-                char_frame *frm = chrt->get_pframe();
+                CharFrameData *frm = chrt->get_pframe();
                 x = frm->extra1[4] * chrt->dir + chrt->x;
                 y = -frm->extra1[5] + chrt->y;
             }
@@ -5463,7 +5463,7 @@ void marisa_bullets::func10()
                 }
                 else
                 {
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = frm->extra1[4] * dir + chrt->x;
                     y = chrt->y - frm->extra1[5];
                 }
@@ -5591,7 +5591,7 @@ void marisa_bullets::func10()
                 }
                 if ( chrt->get_subseq() < 6 )
                 {
-                    char_frame *frm = chrt->get_pframe();
+                    CharFrameData *frm = chrt->get_pframe();
                     x = (cos_deg(-addition[0]) * 200.0 + frm->extra1[4]) * dir + chrt->x;
                     y = sin_deg(-addition[0]) * 200.0 - frm->extra1[5] + chrt->y;
                 }
@@ -6702,7 +6702,7 @@ void marisa_bullets::set_seq_params()
             angZ = scene_rand_rngf(360);
             field_378 = scene_rand_rngf(12) - 6.0;
             scaleY = scaleX = scene_rand_rngf(15) * 0.1 + 0.5;
-            char_frame *frm = chrt->get_pframe();
+            CharFrameData *frm = chrt->get_pframe();
             field_37C = frm->extra1[4] * dir + chrt->x;
             field_380 = chrt->y - frm->extra1[5];
         }
