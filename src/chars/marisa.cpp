@@ -6291,6 +6291,7 @@ void char_marisa::func10()
         break;
     default:
         char_c::func10();
+        break;
     }
 }
 

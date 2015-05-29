@@ -9655,8 +9655,8 @@ void alice_bullets::func10()
         }
         break;
     default:
-        if (process())
-            active = false;
+        c_bullet::func10();
+        break;
     }
 }
 
@@ -10980,6 +10980,7 @@ void alice_bullets::set_seq_params()
         }
         break;
     default:
+        c_bullet::set_seq_params();
         break;
     }
 }

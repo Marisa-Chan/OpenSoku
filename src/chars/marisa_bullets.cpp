@@ -5821,8 +5821,8 @@ void marisa_bullets::func10()
         }
         break;
     default:
-        if (process())
-            active = false;
+        c_bullet::func10();
+        break;
     }
 }
 
@@ -6724,6 +6724,9 @@ void marisa_bullets::set_seq_params()
             h_inerc = addition[0];
             v_inerc = addition[1];
         }
+        break;
+    default:
+        c_bullet::set_seq_params();
         break;
     }
 }

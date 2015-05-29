@@ -5133,6 +5133,7 @@ void char_alice::func10()
 
     default:
         char_c::func10();
+        break;
     }
 }
 

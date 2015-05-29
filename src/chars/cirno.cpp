@@ -6133,6 +6133,7 @@ void char_cirno::func10()
         break;
     default:
         char_c::func10();
+        break;
     }
 }
 
